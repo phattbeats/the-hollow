@@ -246,7 +246,6 @@ export const ko_KR: EnTranslations = {
       "chat": "채팅으로 건너뛰기"
     },
     "mobile": {
-      "autorun": "자동 달리기",
       "jump": "점프",
       "leaderboard": "순위",
       "nameplates": "이름표",
@@ -720,10 +719,18 @@ export const ko_KR: EnTranslations = {
         "spi": "정신력을 {value} 감소시킵니다",
         "allStats": "모든 능력치를 {value} 감소시킵니다"
       },
+      "increasePct": {
+        "ap": "공격력을 {pct}% 증가시킵니다",
+        "armor": "방어도를 {pct}% 증가시킵니다",
+        "int": "지능을 {pct}% 증가시킵니다",
+        "sta": "체력을 {pct}% 증가시킵니다"
+      },
       "dodge": "회피 확률을 {pct}% 증가시킵니다",
       "dodgeReduce": "회피 확률을 {pct}% 감소시킵니다",
       "armorFlat": "방어도를 {value} 감소시킵니다",
       "armorFlatStacks": "방어도를 {value} 감소시킵니다 ({stacks}중첩)",
+      "armorPct": "방어도를 {pct}% 감소시킵니다",
+      "armorPctStacks": "방어도를 {pct}% 감소시킵니다 ({stacks}중첩)",
       "mortalWound": "받는 치유량을 {pct}% 감소시킵니다",
       "vulnerability": "받는 피해를 {pct}% 증가시킵니다",
       "physVuln": "받는 물리 피해를 {pct}% 증가시킵니다",
@@ -990,6 +997,51 @@ export const ko_KR: EnTranslations = {
       "spore": "포자",
       "toolTier": "{tier}단계 도구",
       "toolNone": "도구 없음"
+    },
+    "crafting": {
+      "title": "제작",
+      "close": "제작 닫기",
+      "tabRecipes": "제조법",
+      "tabEnchants": "마법부여",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "제작",
+      "craftAria": "{item} 제작",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "마법 해제",
+      "disenchantButton": "마법 해제",
+      "disenchantAria": "{item} 마법 해제",
+      "disenchantEmpty": "마법을 해제할 수 있는 아이템이 없습니다.",
+      "applyButton": "적용",
+      "applyAria": "{slot}에 {enchant} 적용",
+      "activeTag": "활성",
+      "needScroll": "{scroll} 필요",
+      "craftType": {
+        "weaponcrafting": "무기 제작",
+        "armorcrafting": "방어구 제작",
+        "tailoring": "재봉",
+        "leatherworking": "가죽 세공",
+        "cooking": "요리",
+        "alchemy": "연금술",
+        "enchanting": "마법부여"
+      }
+    },
+    "warfare": {
+      "ratingLabel": "전의",
+      "balance": "명예: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "명예 {amount}",
+      "honorFloat": "+{amount} 명예",
+      "honorGain": "+{amount} 명예 ({reason})",
+      "notEnoughHonor": "명예가 부족합니다.",
+      "reasons": {
+        "arenaWin": "투기장 승리",
+        "fiestaKill": "피에스타 처치",
+        "fiestaComplete": "피에스타 경기",
+        "fiestaWin": "피에스타 승리"
+      }
+    },
+    "hitRating": {
+      "ratingLabel": "적중 레이팅"
     }
   },
   "mailUi": {
@@ -2421,6 +2473,13 @@ export const ko_KR: EnTranslations = {
       "nothingToHarvest": "그 시체에서는 채집할 것이 없습니다.",
       "alreadyHarvested": "이 시체는 이미 채집되었습니다."
     },
+    "dailyRewards": {
+      "claimed": "일일 보상을 받았습니다."
+    },
+    "collections": {
+      "notFound": "그것은 존재하지 않습니다.",
+      "tooFar": "너무 멀리 떨어져 있습니다."
+    },
     "hearth": {
       "tooFar": "브라더 초록발에게 먹이를 주려면 그의 곁에 있어야 한다.",
       "noItems1": "……친구, 빈손이구먼. 태울 것이든 배 채울 것이든 좀 가져오게, 그럼 얘기해보세.",
@@ -2481,6 +2540,18 @@ export const ko_KR: EnTranslations = {
       "readoutNoHomesteadQuest": "당신은 정착지가 없다. 브라더 초록발의 용무를 모두 마쳐야 하나를 얻을 수 있다.",
       "readoutNoHomesteadHint": "당신은 정착지가 없다. 우묵골 지대의 적당한 곳에 서서 /homestead claim이라고 입력하라.",
       "helpLine": "정착지: /homestead, /homestead claim."
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "이미 꺾꽂이를 심었다. 자랄 때까지 기다려라.",
+      "needHomestead": "이것을 심으려면 먼저 개척지가 있어야 한다.",
+      "tooFar": "이것을 심으려면 자신의 개척지에 있어야 한다.",
+      "planted": "개척지에 꺾꽂이를 심었다. 시간을 두고 기다려라.",
+      "grown": "꺾꽂이가 자라 동반자가 되었다. 이제 너를 따라다닌다."
+    },
+    "readyCheck": {
+      "mustBeInParty": "준비 확인을 시작하려면 파티에 있어야 합니다.",
+      "alreadyInProgress": "이미 준비 확인이 진행 중입니다.",
+      "summary": "준비 확인: 준비 완료 {ready}명, 미준비 {notReady}명, 무응답 {noResponse}명."
     }
   },
   "lockpickUi": {
@@ -3322,6 +3393,8 @@ export const ko_KR: EnTranslations = {
       "openTrade": "거래 열기",
       "duelRequest": "{name}님이 결투를 신청했습니다!",
       "acceptDuel": "결투 수락",
+      "readyCheckStart": "{name}님이 준비 확인을 시작했습니다.",
+      "markReady": "준비 완료",
       "decline": "거절"
     },
     "combat": {
@@ -3352,6 +3425,7 @@ export const ko_KR: EnTranslations = {
       "ignoringChat": "{name}의 채팅을 차단합니다.",
       "noLongerIgnoring": "{name}을 더 이상 차단하지 않습니다.",
       "playerNotNearby": "그 플레이어는 근처에 없습니다.",
+      "playerInfoNotFound": "해당 이름의 캐릭터를 찾을 수 없습니다.",
       "duelCountdown": "결투가 {seconds}초 후 시작됩니다...",
       "duelEndBanner": "{winner}님이 결투에서 {loser}님을 이겼습니다!",
       "duelEndLog": "{winner}님이 결투에서 {loser}님을 이겼습니다.",
@@ -3797,6 +3871,22 @@ export const ko_KR: EnTranslations = {
       "stool": "스툴"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "일일 보상",
+    "window": {
+      "title": "일일 보상",
+      "close": "일일 보상 닫기",
+      "claim": "받기",
+      "claimAria": "오늘의 보상 받기",
+      "claimed": "받았습니다. 내일 다시 오세요.",
+      "locked": "현재 이 계정에서는 일일 보상을 사용할 수 없습니다.",
+      "hint": "하루에 한 번 받을 수 있습니다. 하루를 놓쳐도 손해는 없습니다."
+    },
+    "cell": {
+      "today": "오늘",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "금",
@@ -3850,6 +3940,7 @@ export const ko_KR: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "현재 착용 중",
       "ifYouEquip": "이것을 착용하면",
       "damageSpeed": "{min} - {max} 피해 속도 {speed}",
@@ -4016,11 +4107,132 @@ export const ko_KR: EnTranslations = {
       "needAria": "{item} 필요",
       "greedAria": "{item} 탐욕",
       "passAria": "{item} 포기",
-      "everyonePassed": "모두 {item}을(를) 포기했습니다."
+      "everyonePassed": "모두 {item}을(를) 포기했습니다.",
+      "winnerOffline": "{item}의 당첨자가 오프라인 상태여서 시체로 반환되었습니다."
     }
   },
   "entities": {
     "abilities": {
+      "chain_heal": {
+        "name": "연쇄 치유",
+        "description": "우호적인 대상을 크게 치유한 후, 최대 2명의 주변 아군에게 도약하며 도약할 때마다 치유량이 50%씩 감소합니다."
+      },
+      "crusader_strike": {
+        "name": "성전사의 일격",
+        "description": "대상에게 무기 피해와 추가로 신성 피해 24를 입힙니다."
+      },
+      "metamorphosis": {
+        "name": "공포의 상",
+        "description": "20초 동안 무시무시한 악마로 변신하여 주문 피해가 20%, 시전 속도가 20% 증가합니다. 당신의 악마는 피해 50%와 시전 속도 20%를 얻습니다."
+      },
+      "holy_shock": {
+        "name": "신성 충격",
+        "description": "신성한 기운으로 우호적인 대상을 충격하여 치유하거나, 적에게 신성 피해를 입힙니다."
+      },
+      "holy_shield": {
+        "name": "신성한 벽",
+        "description": "적에게 광휘의 방패를 던져 신성 피해를 입히고 주변의 적 2명에게 튕겨나갑니다."
+      },
+      "bestial_wrath": {
+        "name": "포효하는 분노",
+        "description": "15초 동안 야수의 분노에 빠져 공격력이 20%, 펫의 피해량이 100% 증가합니다."
+      },
+      "trueshot_aura": {
+        "name": "조준의 오라",
+        "description": "30분 동안 주변 아군을 격려하여 공격력을 10% 증가시킵니다."
+      },
+      "wyvern_sting": {
+        "name": "와이번의 독침",
+        "description": "원거리에서 적을 찔러 최대 4초 동안 무력화시킵니다. 피해를 입으면 효과가 해제됩니다."
+      },
+      "arcane_power": {
+        "name": "비전 쇄도",
+        "description": "10초 동안 주문 피해가 20%, 주문 가속이 10% 증가합니다."
+      },
+      "combustion": {
+        "name": "화염구동",
+        "description": "15초 동안 주문 치명타 확률이 50% 증가합니다."
+      },
+      "icy_veins": {
+        "name": "얼음 혈관",
+        "description": "10초 동안 주문 가속이 30% 증가하며 시전 차단과 시전 지연을 방지합니다."
+      },
+      "cold_blood": {
+        "name": "냉정한 살의",
+        "description": "살의를 집중시켜 다음 공격이 반드시 치명타가 됩니다."
+      },
+      "blade_flurry": {
+        "name": "칼날 회오리",
+        "description": "칼날의 소용돌이를 일으켜 12초 동안 공격 속도가 20% 증가합니다."
+      },
+      "hemorrhage": {
+        "name": "붉은 리본",
+        "description": "무기 피해와 출혈 효과로 적을 공격하여 12초 동안 출혈 피해를 입히고 출혈 피해를 40% 증가시킵니다. 연계 점수 1점을 획득합니다."
+      },
+      "power_infusion": {
+        "name": "축복 주입",
+        "description": "우호적인 대상에게 힘을 불어넣어 15초 동안 주문 가속을 20% 증가시킵니다."
+      },
+      "holy_nova": {
+        "name": "신성한 폭발",
+        "description": "신성한 광채의 폭발을 일으켜 주변 아군을 치유하고 주변 적에게 피해를 입힙니다."
+      },
+      "shadowform": {
+        "name": "황혼의 형상",
+        "description": "그림자 형상으로 변하여 그림자 피해가 15% 증가하며, 원래 모습으로 돌아갈 때까지 유지됩니다. 치유 주문을 시전하면 형상이 해제됩니다. 다시 시전하면 원래 모습으로 돌아갑니다."
+      },
+      "elemental_mastery": {
+        "name": "원시 지배",
+        "description": "폭풍의 힘을 불러와 다음 주문을 즉시 시전합니다."
+      },
+      "siphon_life": {
+        "name": "생명 착취",
+        "description": "적에게서 생명력을 흡수하여 30초 동안 그림자 피해를 입히고 입힌 피해만큼 자신을 치유합니다."
+      },
+      "conflagrate": {
+        "name": "점화",
+        "description": "적에게 걸린 제물을 소모하여 화염 피해를 입힙니다."
+      },
+      "moonkin_form": {
+        "name": "달빛날개 형상",
+        "description": "무시무시한 달빛수호자로 변신하여 주문 피해가 20%, 방어도가 50% 증가합니다. 원래 모습으로 돌아갈 때까지 유지됩니다. 다시 시전하면 시전자 형상으로 돌아갑니다."
+      },
+      "feral_charge": {
+        "name": "원시의 쇄도",
+        "description": "원시의 힘을 발산합니다. 표범 형상에서는 10초 동안 기력 재생이 100% 증가합니다. 곰 형상에서는 즉시 분노 50을 생성합니다."
+      },
+      "swiftmend": {
+        "name": "신속한 치유",
+        "description": "우호적인 대상에게 걸린 지속 치유 효과를 소모하여 치유합니다."
+      },
+      "pummel": {
+        "name": "턱관절 강타",
+        "description": "대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다."
+      },
+      "kick": {
+        "name": "발차기",
+        "description": "대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다."
+      },
+      "counterspell": {
+        "name": "주문 차단",
+        "description": "대상의 시전을 무효화하고 6초 동안 해당 계열 주문 시전을 막습니다."
+      },
+      "counter_shot": {
+        "name": "제압 사격",
+        "description": "즉각적인 사격으로 대상의 시전을 차단하고 해당 계열을 4초 동안 봉쇄합니다."
+      },
+      "rebuke": {
+        "name": "질책",
+        "description": "대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다."
+      },
+      "skull_bash": {
+        "name": "박치기",
+        "description": "돌진하여 박치기로 대상의 시전을 차단하고 해당 계열을 4초 동안 봉쇄합니다."
+      },
+      "spell_lock": {
+        "name": "주문 봉인",
+        "description": "시전 중인 대상을 침묵시키고 5초 동안 해당 계열 주문 시전을 막습니다."
+      },
       "heroic_strike": {
         "name": "영웅의 일격",
         "description": "강력한 공격으로 근접 피해가 {damage}만큼 증가합니다. 다음 무기 공격 시 발동됩니다."
@@ -4079,7 +4291,7 @@ export const ko_KR: EnTranslations = {
       },
       "sunder_armor": {
         "name": "방어구 가르기",
-        "description": "대상의 방어구를 가르고 적용마다 {damage}만큼 감소시킵니다. 최대 5번 중첩됩니다. 많은 위협 수준을 생성합니다."
+        "description": "대상의 방어구를 가르고 적용마다 2%만큼 감소시킵니다. 최대 5번 중첩됩니다. 많은 위협 수준을 생성합니다."
       },
       "taunt": {
         "name": "도발",
@@ -5177,6 +5389,99 @@ export const ko_KR: EnTranslations = {
       "mistcallers_duffel": {
         "name": "미스트콜러의 더플백"
       },
+      "bramblewar_warhelm": {
+        "name": "가시전 머리"
+      },
+      "bramblewar_warspaulders": {
+        "name": "가시전 어깨"
+      },
+      "bramblewar_warplate": {
+        "name": "가시전 가슴"
+      },
+      "bramblewar_girdle": {
+        "name": "가시전 허리"
+      },
+      "bramblewar_legguards": {
+        "name": "가시전 다리"
+      },
+      "bramblewar_gauntlets": {
+        "name": "가시전 손"
+      },
+      "bramblewar_sabatons": {
+        "name": "가시전 발"
+      },
+      "thornbound_crown": {
+        "name": "가시결속 머리"
+      },
+      "thornbound_spaulders": {
+        "name": "가시결속 어깨"
+      },
+      "thornbound_hauberk": {
+        "name": "가시결속 가슴"
+      },
+      "thornbound_waistguard": {
+        "name": "가시결속 허리"
+      },
+      "thornbound_legmail": {
+        "name": "가시결속 다리"
+      },
+      "thornbound_handguards": {
+        "name": "가시결속 손"
+      },
+      "thornbound_greaves": {
+        "name": "가시결속 발"
+      },
+      "nettlestalker_cowl": {
+        "name": "쐐기추적 머리"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "쐐기추적 어깨"
+      },
+      "nettlestalker_harness": {
+        "name": "쐐기추적 가슴"
+      },
+      "nettlestalker_waistband": {
+        "name": "쐐기추적 허리"
+      },
+      "nettlestalker_legguards": {
+        "name": "쐐기추적 다리"
+      },
+      "nettlestalker_grips": {
+        "name": "쐐기추적 손"
+      },
+      "nettlestalker_treads": {
+        "name": "쐐기추적 발"
+      },
+      "mossweave_cowl": {
+        "name": "이끼직 머리"
+      },
+      "mossweave_mantle": {
+        "name": "이끼직 어깨"
+      },
+      "mossweave_raiment": {
+        "name": "이끼직 가슴"
+      },
+      "mossweave_cord": {
+        "name": "이끼직 허리"
+      },
+      "mossweave_legwraps": {
+        "name": "이끼직 다리"
+      },
+      "mossweave_handwraps": {
+        "name": "이끼직 손"
+      },
+      "mossweave_slippers": {
+        "name": "이끼직 발"
+      },
+      "last_bloom_greatblade": {
+        "name": "최후의 꽃 대검"
+      },
+      "thornbite_razor": {
+        "name": "가시물기 면도날"
+      },
+      "heartwood_warstaff": {
+        "name": "심재 전투봉"
+      },
       "bristleback_maul": {
         "name": "뻣센등뼈 철퇴"
       },
@@ -5581,6 +5886,10 @@ export const ko_KR: EnTranslations = {
       "reliquary_gloves_rog": {
         "name": "뼈수호 손보호구"
       },
+      "delve_heroic_mark": {
+        "name": "영웅 성물실 증표",
+        "flavorText": "성물실 수호자들이 발행한 인장. 영웅 병참장교에게 교환하면 성물실급 장비를 받을 수 있다."
+      },
       "deacon_reliquary_helm": {
         "name": "부제의 성물실 투구"
       },
@@ -5733,6 +6042,21 @@ export const ko_KR: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "선봉대 크롬"
+      },
+      "enchanting_dust": {
+        "name": "마법부여 가루"
+      },
+      "scroll_minor_might": {
+        "name": "소소한 힘의 두루마리"
+      },
+      "scroll_minor_vigor": {
+        "name": "소소한 활력의 두루마리"
+      },
+      "scroll_minor_focus": {
+        "name": "소소한 집중의 두루마리"
+      },
+      "scroll_minor_agility": {
+        "name": "소소한 민첩의 두루마리"
       }
     },
     "mobs": {
@@ -6050,6 +6374,15 @@ export const ko_KR: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "심재 거상"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "초록발의 꺾꽂이"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "초록발의 꺾꽂이"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "초록발의 꺾꽂이"
       }
     },
     "npcs": {
@@ -6168,6 +6501,11 @@ export const ko_KR: EnTranslations = {
         "title": "보조 직업 훈련사",
         "greeting": "모든 빌드는 질문에서 시작됩니다. 어떤 보조 직업이 당신을 부르고 있나요?"
       },
+      "bramble": {
+        "name": "브램블",
+        "title": "명예 보급관",
+        "greeting": "모래 경기장은 모든 승리를 기억한다. 명예를 현명하게 써라."
+      },
       "tidewatcher_ondrel": {
         "name": "온드렐 베인",
         "title": "조수지기",
@@ -6260,17 +6598,33 @@ export const ko_KR: EnTranslations = {
         "greeting": "앉아도 돼요. 다들 그냥 지나가죠. 성당지기가 오래전에 내 이름을 장부에서 지워 버렸어요. 지워진 이름은 조용히 있는 법을 배우죠, 아직 여기 있다는 걸 아무도 떠올리지 않도록."
       },
       "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+        "name": "시들어가는 묘목밭",
+        "title": "부족의 오래된 버드나무",
+        "greeting": "마른 뿌리, 마른 잎. 무엇이 되려 했든 아직은 되지 못했고, 오랜 세월을 그렇게 기다려 왔다."
       },
       "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "name": "묻힌 뿌리",
+        "title": "사당 아래",
+        "greeting": "메말랐다. 이 아래 그 무엇 못지않게 메말랐다."
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "배울 가치가 있는 기술",
+        "text": "모든 기술은 손톱 밑의 흙에서 시작되지, {playerName}. 마을 동쪽 숲에서 거미 다리 2개를 모아 오게. 그런 다음 내 대장간에서 신병의 튜닉을 만들어 보게. 재료가 되는 뼛조각은 오는 길에 충분히 주울 수 있을 걸세. 그리고 분해해서 비전 가루로 만들 만한 것도 하나 가져오게. 채집하고, 제작하고, 분해할 수 있음을 보여주면 기술의 가치를 알려주지.",
+        "completion": "바로 그게 배울 가치가 있는 기술이지. 계속 대장간에 붙어 있게, {playerName}. 언젠가 자네는 말굽을 박으면서 동시에 검에 마법을 부여하게 될 걸세.",
+        "objectives": {
+          "0": {
+            "label": "거미 다리 채집"
+          },
+          "1": {
+            "label": "신병의 튜닉 제작"
+          },
+          "2": {
+            "label": "비전 가루"
+          }
+        }
+      },
       "q_wolves": {
         "title": "문 앞의 늑대들",
         "text": "숲늑대들이 북쪽 길의 여행자들을 물어뜯고 있습니다, {playerName}. 8마리를 처치해 이스트브룩이 숨 돌리게 해 주십시오.",
@@ -7224,22 +7578,22 @@ export const ko_KR: EnTranslations = {
         }
       },
       "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "title": "멀리 돌아가는 길",
+        "text": "오래된 버드나무 위쪽에 부족이 반쯤 짓다 만 묘목밭이 있어. 제대로 된 물 한 번을 못 받아서 죽어가고 있지. 그 오르막은 이제 내가 오르지 못하지만, 자네에겐 그럴 다리가 있잖아. 물뿌리개를 가져가게. 가지를 조심하고. 정직하게 대하면 가지는 자네를 지탱해 준다네.",
+        "completion": "이제 살아날 걸세. 바깥의 그 모든 일에 비하면 오르막 한 번, 물 한 번이 뭐 대단하겠나 싶겠지. 대단한 건 아니야. 다만 자네가 물을 준 그 하나에게는 그것이 전부라네.",
         "objectives": {
           "0": {
-            "label": "Water carried up the willow path"
+            "label": "버드나무 길을 따라 물을 나르기"
           }
         }
       },
       "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "title": "물뿌리개",
+        "text": "자네에게 자잘한 일들을 부탁했고, 자네는 한 번도 이유를 묻지 않고 그 모두를 해 주었지. 이게 마지막일세. 작아 보이지만 작지 않아. 내 물뿌리개를 사당 아래로 가져가, 거기 묻혀 있는 그것에게 물을 주게. 그것은 무언가를 요구받는 대신 무언가를 받기를, 아주 오랫동안 기다려 왔다네.",
+        "completion": "자네가 해냈군. 물론 해냈지. 그건 물이었어, 알겠나. 그 모든 물, 자네가 호숫가에서 나를 발견하고 아무렇지 않게 여기던 그날까지 거슬러 올라가는 물이었지. 같은 물, 같은 약속을 한 번 더 지켜 준 거야. 고맙네. 이제 가서 이 세상을 다정하게 대하게. 세상을 바꿔 온 건 오직 그것뿐이니까.",
         "objectives": {
           "0": {
-            "label": "Water given to the buried root"
+            "label": "묻힌 뿌리에 물을 주기"
           }
         }
       }
@@ -7413,6 +7767,20 @@ export const ko_KR: EnTranslations = {
         "name": "무너진 성물실",
         "enterText": "무너진 성물실로 내려갑니다.",
         "leaveText": "성물실 폐허의 브라더 할벤에게로 다시 올라갑니다."
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "소소한 힘"
+      },
+      "enchant_minor_vigor": {
+        "name": "소소한 활력"
+      },
+      "enchant_minor_focus": {
+        "name": "소소한 집중"
+      },
+      "enchant_minor_agility": {
+        "name": "소소한 민첩"
       }
     },
     "itemSets": {

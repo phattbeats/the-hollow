@@ -7,6 +7,7 @@
 // move preserved behavior.
 
 import { describe, expect, it } from 'vitest';
+import { updateTimers } from '../src/sim/combat/auras';
 import {
   cancelCast,
   castAbility,
@@ -17,7 +18,11 @@ import { MOBS } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
 import { Sim } from '../src/sim/sim';
 import type { Entity, PlayerClass } from '../src/sim/types';
-import { CAST_PUSHBACK_SEC, CHANNEL_PUSHBACK_FRACTION } from '../src/sim/types';
+import {
+  CAST_PUSHBACK_SEC,
+  CAST_QUEUE_WINDOW_SEC,
+  CHANNEL_PUSHBACK_FRACTION,
+} from '../src/sim/types';
 
 type AnySim = Sim & Record<string, any>;
 type AnyEntity = Entity & Record<string, any>;
@@ -132,6 +137,106 @@ describe('casting_lifecycle: pushbackCast', () => {
     pushbackCast(p);
     expect(p.channeling).toBe(true);
     expect(p.castRemaining).toBeCloseTo(Math.max(0, rem0 - tot0 * CHANNEL_PUSHBACK_FRACTION), 9);
+  });
+});
+
+describe('casting_lifecycle: spell queue', () => {
+  it('a press outside the tail window still errors "You are busy."', () => {
+    const { sim, p } = makeSim('mage', 12);
+    spawnTarget(sim, p);
+    sim.drainEvents();
+    castAbility(sim.ctx, 'fireball', p.id);
+    expect(p.castRemaining).toBeGreaterThan(CAST_QUEUE_WINDOW_SEC);
+    castAbility(sim.ctx, 'fireball', p.id);
+    expect(p.queuedCastAbility).toBeNull();
+    const err = sim
+      .drainEvents()
+      .find((e: any) => e.type === 'error' && e.text === 'You are busy.');
+    expect(err).toBeTruthy();
+  });
+
+  it('a press in the tail window queues instead of erroring, and later presses overwrite the slot', () => {
+    const { sim, p, meta } = makeSim('mage', 12);
+    spawnTarget(sim, p);
+    castAbility(sim.ctx, 'fireball', p.id);
+    while (p.castRemaining > CAST_QUEUE_WINDOW_SEC) updateCasting(sim.ctx, p, meta);
+    expect(p.castingAbility).toBe('fireball'); // still mid-cast, inside the window now
+    sim.drainEvents();
+    castAbility(sim.ctx, 'frostbolt', p.id); // queues, no "You are busy." error
+    expect(p.queuedCastAbility).toBe('frostbolt');
+    expect(sim.drainEvents().some((e: any) => e.type === 'error')).toBe(false);
+    castAbility(sim.ctx, 'fireball', p.id); // single-slot: overwrites the earlier queued press
+    expect(p.queuedCastAbility).toBe('fireball');
+  });
+
+  it('fires the queued press automatically the instant the current cast completes', () => {
+    const { sim, p, meta } = makeSim('mage', 12);
+    spawnTarget(sim, p);
+    castAbility(sim.ctx, 'fireball', p.id);
+    // drive updateCasting + updateTimers (not sim.tick(), which also resolves
+    // movement/LoS against a mob spawned at an untested position) so the GCD armed
+    // at cast start decays too: fireball's 2.5s cast outlasts the 1.5s GCD, so by
+    // completion fireQueuedCast's GCD guard is clear and it re-casts immediately.
+    while (p.castRemaining > CAST_QUEUE_WINDOW_SEC) {
+      updateCasting(sim.ctx, p, meta);
+      updateTimers(p);
+    }
+    p.resource = p.maxResource; // afford the re-fired cast too, not just the first
+    castAbility(sim.ctx, 'fireball', p.id);
+    expect(p.queuedCastAbility).toBe('fireball');
+    let n = 0;
+    while (p.queuedCastAbility && n++ < 1000) {
+      updateCasting(sim.ctx, p, meta);
+      updateTimers(p);
+    }
+    expect(p.queuedCastAbility).toBeNull(); // consumed the instant the cast completed
+    expect(p.castingAbility).toBe('fireball'); // the queued press is now casting, fresh
+    expect(p.castRemaining).toBeGreaterThan(0);
+  });
+
+  it('re-validates the queued press fresh (dead target drops it instead of firing blind)', () => {
+    const { sim, p, meta } = makeSim('mage', 12);
+    const mob = spawnTarget(sim, p);
+    castAbility(sim.ctx, 'fireball', p.id);
+    while (p.castRemaining > CAST_QUEUE_WINDOW_SEC) {
+      updateCasting(sim.ctx, p, meta);
+      updateTimers(p);
+    }
+    castAbility(sim.ctx, 'fireball', p.id);
+    expect(p.queuedCastAbility).toBe('fireball');
+    mob.dead = true; // the queued press must re-validate target/range/etc at fire time
+    let n = 0;
+    while (p.queuedCastAbility && n++ < 1000) {
+      updateCasting(sim.ctx, p, meta);
+      updateTimers(p);
+    }
+    expect(p.queuedCastAbility).toBeNull(); // consumed (attempted), not stranded
+    expect(p.castingAbility).toBeNull(); // re-validation rejected it (no target), nothing fired
+  });
+
+  it('an interrupted cast (cancelCast) drops the queued press instead of firing it', () => {
+    const { sim, p, meta } = makeSim('mage', 12);
+    spawnTarget(sim, p);
+    castAbility(sim.ctx, 'fireball', p.id);
+    while (p.castRemaining > CAST_QUEUE_WINDOW_SEC) updateCasting(sim.ctx, p, meta);
+    castAbility(sim.ctx, 'fireball', p.id);
+    expect(p.queuedCastAbility).toBe('fireball');
+    cancelCast(sim.ctx, p);
+    expect(p.queuedCastAbility).toBeNull();
+    expect(p.castingAbility).toBeNull();
+  });
+
+  it('starting to fish drops a held queued press (fishing never fires the queue, so it must not strand)', () => {
+    const { sim, p, meta } = makeSim('mage', 12);
+    // Park a queued press by hand, as a GCD-held slot would (castingAbility null,
+    // slot truthy). Fishing re-parks castingAbility without going through
+    // fireQueuedCast, so without the startFishing clear this would misfire later.
+    p.queuedCastAbility = 'fireball';
+    p.castingAbility = null;
+    (sim as any).hasFishableWaterAhead = () => true; // satisfy the water guard for the unit test
+    (sim as any).startFishing(p, meta);
+    expect(p.castingAbility).toBe('fishing');
+    expect(p.queuedCastAbility).toBeNull(); // dropped, not stranded onto the next real cast
   });
 });
 

@@ -8,6 +8,7 @@ import { worldEntityText as worldNames } from '../world_entity_i18n';
 import { abilityStrings, classAbilityNames } from './abilities';
 import { apiErrorStrings } from './api_error';
 import { coldOpenStrings } from './cold_open';
+import { dailyRewardsUiStrings } from './daily_rewards_ui';
 import { gameStrings } from './game';
 import { guideStrings } from './guide';
 import { hollowEntities } from './hollow';
@@ -23,6 +24,7 @@ import { shellStrings } from './shell';
 export { abilityStrings, classAbilityNames } from './abilities';
 export { apiErrorStrings } from './api_error';
 export { coldOpenStrings } from './cold_open';
+export { dailyRewardsUiStrings } from './daily_rewards_ui';
 export {
   gameStrings,
   gameStringsDeDE,
@@ -520,6 +522,22 @@ export const en = {
       nothingToHarvest: 'That corpse has nothing to harvest.',
       alreadyHarvested: 'This corpse has already been harvested.',
     },
+    // Daily rewards (PHAA-660, docs/design/daily-rewards.md). The sim log line has
+    // no interpolated value on purpose (see src/sim/daily_rewards.ts); the claim
+    // window renders the specific copper/item breakdown itself.
+    dailyRewards: {
+      claimed: 'You claim your daily reward.',
+    },
+    // Collections core (PHAA-626): readCollectible command error text
+    // (src/sim/collections.ts). Same fill scope as gathering above: the five
+    // non-Latin locales required by the M16 completeness gate are filled, the
+    // rest ship English + pending. The tooFar matcher also re-localizes the
+    // identical pre-existing "Too far away." emits in items/interaction/
+    // trainer/gathering.
+    collections: {
+      notFound: 'That does not exist.',
+      tooFar: 'Too far away.',
+    },
     // Brother Greenpaw's hearth (PHAA-421/PHAA-428): /feed command text and his
     // in-voice feed-response lines. Re-localized through t() against these keys
     // (src/sim/greenpaw_hearth.ts + the /feed helpLines entry in
@@ -610,6 +628,25 @@ export const en = {
       readoutNoHomesteadHint:
         'You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.',
       helpLine: 'Homestead: /homestead, /homestead claim.',
+    },
+    // Greenpaw's cutting (PHAA-751): the first_cutting item-use 'plant' branch
+    // player-facing text (src/sim/greenpaw_cutting.ts). Same fill scope as
+    // hearth/house/homestead above: the five non-Latin locales required by the
+    // M16 completeness gate, the rest ship English + pending.
+    greenpawCutting: {
+      alreadyPlanted: 'You have already planted your cutting. Give it time to grow.',
+      needHomestead: 'You need a homestead plot before you can plant this.',
+      tooFar: 'You must be at your own homestead to plant this.',
+      planted: 'You plant the cutting at your homestead. Give it time.',
+      grown: 'Your cutting has grown into a companion. It follows you now.',
+    },
+    // Ready checks (PHAA-641, src/sim/social/ready_check.ts): the /ready leader
+    // guards + the counts-only finalize summary. Re-localized via the RULES array
+    // in src/ui/sim_i18n.ts.
+    readyCheck: {
+      mustBeInParty: 'You must be in a party to start a ready check.',
+      alreadyInProgress: 'A ready check is already in progress.',
+      summary: 'Ready check: {ready} ready, {notReady} not ready, {noResponse} no response.',
     },
   },
   // Lockpicking minigame ("Tumbler's Path") panel chrome. Rendered through t()
@@ -980,6 +1017,7 @@ export const en = {
   ...abilityStrings.en,
   ...questStrings.en,
   ...housingStrings.en,
+  ...dailyRewardsUiStrings.en,
   ...itemStrings.en,
   ...classAbilityNames.en,
   ...itemNames.en,
@@ -1002,6 +1040,14 @@ export const en = {
       reliquary_helm: { name: 'Ossuary Watch Helm' },
       reliquary_shoulder: { name: 'Crumbled Spaulders' },
       reliquary_gloves_rog: { name: 'Bonewarden Grips' },
+      // PHAA-659 (upstream heroic loot wave #1705/#1767): soulbound Heroic-tier
+      // currency, spent at the Heroic Quartermaster. Non-Latin + carrying-locale
+      // fills live in src/ui/i18n.locales/<lang>.ts.
+      delve_heroic_mark: {
+        name: 'Heroic Reliquary Mark',
+        flavorText:
+          'A stamped sigil issued by the keepers of the Reliquary. Redeem it at the Heroic Quartermaster for reliquary-grade gear.',
+      },
       deacon_reliquary_helm: { name: "Deacon's Reliquary Helm" },
       varric_shadow_cowl: { name: "Varric's Shadow Cowl" },
       the_codfather: { name: 'The Codfather' },
@@ -1055,6 +1101,21 @@ export const en = {
       imperial_gold_armor_plate: { name: 'Imperial Gold' },
       vanguard_azure_armor_plate: { name: 'Vanguard Azure' },
       vanguard_chrome_armor_plate: { name: 'Vanguard Chrome' },
+      // Enchanting (PHAA-649 child, upstream #1712): non-Latin fills
+      // (zh_CN/zh_TW/ja_JP/ko_KR/ru_RU) live in src/ui/i18n.locales/<lang>.ts.
+      enchanting_dust: { name: 'Enchanting Dust' },
+      scroll_minor_might: { name: 'Scroll of Minor Might' },
+      scroll_minor_vigor: { name: 'Scroll of Minor Vigor' },
+      scroll_minor_focus: { name: 'Scroll of Minor Focus' },
+      scroll_minor_agility: { name: 'Scroll of Minor Agility' },
+    },
+    // Enchant names (PHAA-818 crafting window, adapts PHAA-649/upstream #1712):
+    // non-Latin fills (zh_CN/zh_TW/ja_JP/ko_KR/ru_RU) live in src/ui/i18n.locales/<lang>.ts.
+    enchants: {
+      enchant_minor_might: { name: 'Minor Might' },
+      enchant_minor_vigor: { name: 'Minor Vigor' },
+      enchant_minor_focus: { name: 'Minor Focus' },
+      enchant_minor_agility: { name: 'Minor Agility' },
     },
     itemSets: itemSetEntityText,
     mobs: {
@@ -1089,11 +1150,21 @@ export const en = {
 // ": EnTranslations" so tsc still red-fails any missing or renamed key.
 export type EnTranslations = typeof en;
 
-// Depth 6 so the deepest real leaves (entities.quests.<id>.objectives.<n>.label,
-// entities.zones.<id>.pois.<n>.label) are members. The sparse overlays are typed
-// `Partial<Record<TranslationKey, string>>`, so TranslationKey must reach
-// every overlay key; depth 5 stopped one segment short. (Measured: no tsc cost.)
-export type TranslationKey = Leaves<typeof en, 6>;
+// TranslationKey is the build-generated flat literal union of every dotted leaf
+// path in `en` (./translation_keys.generated.ts, emitted by scripts/i18n_build.mjs;
+// regenerate with `npm run i18n:gen`). It replaced the recursive computation
+// `Leaves<typeof en, 6>`: the recursive union normalized to thousands of string
+// literals plus template-literal patterns (from the Record-over-id entity
+// subtrees: abilities, item sets, quest objectives, zone POIs), whose
+// literal-times-pattern subsumption checks exceed TypeScript 7's native-compiler
+// work budget (TS2590; issue #1868 is the durable evidence trail), and the
+// patterns accepted ANY entity id, so a typo'd id type-checked. The generated
+// union keeps every legal key, rejects typo'd entity ids (strictly stronger
+// checking), and roughly halves tsc wall time. The sparse overlays stay typed
+// `Partial<Record<TranslationKey, string>>`, so TranslationKey still reaches
+// every overlay key. Leaves above stays exported for compatibility; it has no
+// other instantiations repo-wide.
+export type TranslationKey = import('./translation_keys.generated').TranslationKeyFlat;
 export type InterpolationValue = string | number;
 export type InterpolationValues = Record<string, InterpolationValue>;
 

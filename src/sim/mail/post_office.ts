@@ -233,6 +233,10 @@ export class PostOffice {
         this.ctx.error(meta.entityId, 'The raven will not carry quest items.');
         return;
       }
+      if (def.soulbound) {
+        this.ctx.error(meta.entityId, 'That item is bound to you and cannot be mailed.');
+        return;
+      }
       totalRequested.set(slot.itemId, (totalRequested.get(slot.itemId) ?? 0) + slot.count);
     }
     for (const [itemId, count] of totalRequested) {

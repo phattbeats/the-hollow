@@ -47,6 +47,8 @@ const FRIENDLY_NPC_REJECTED_AURA_KINDS: ReadonlySet<AuraKind> = new Set([
   'polymorph',
   'attackspeed',
   'sunder',
+  'debuff_armor_pct',
+  'bleed_vuln',
   'spellvuln',
   'vulnerability',
   'tongues',
@@ -56,6 +58,13 @@ const FRIENDLY_NPC_REJECTED_AURA_KINDS: ReadonlySet<AuraKind> = new Set([
 
 export function isRejectedFriendlyNpcAura(aura: Aura): boolean {
   return FRIENDLY_NPC_REJECTED_AURA_KINDS.has(aura.kind);
+}
+
+// Percent-buff auras store either a fraction (0.4) or an integer percent point (40),
+// depending on the source convention; normalize to a fraction. Mirrors the same
+// convention already used elsewhere for percent-stored aura values.
+function pctValue(value: number): number {
+  return value > 1 ? value / 100 : value;
 }
 
 export function updateRegen(ctx: SimContext, p: Entity, _meta: PlayerMeta): void {
@@ -69,7 +78,10 @@ export function updateRegen(ctx: SimContext, p: Entity, _meta: PlayerMeta): void
       p.resource = Math.min(p.maxResource, p.resource + Math.round(regen));
     }
   } else if (p.resourceType === 'energy') {
-    p.resource = Math.min(p.maxResource, p.resource + 20);
+    // Feral Instinct (cat form) grants a buff_energyregen aura (value = fraction, 1 = +100%).
+    let regen = 20;
+    for (const a of p.auras) if (a.kind === 'buff_energyregen') regen *= 1 + a.value;
+    p.resource = Math.min(p.maxResource, p.resource + Math.round(regen));
   } else if (p.resourceType === 'rage' && !p.inCombat) {
     p.resource = Math.max(0, p.resource - 2);
   }
@@ -132,6 +144,14 @@ export function updateAuras(ctx: SimContext, e: Entity): void {
       if (a.tickTimer <= CAST_COMPLETE_EPS) {
         a.tickTimer += a.tickInterval;
         if (a.kind === 'dot') {
+          let tickDamage = a.value;
+          if (a.school === 'physical') {
+            let bleedAmp = 0;
+            for (const targetAura of e.auras) {
+              if (targetAura.kind === 'bleed_vuln') bleedAmp += pctValue(targetAura.value);
+            }
+            if (bleedAmp > 0) tickDamage = Math.round(tickDamage * (1 + bleedAmp));
+          }
           ctx.emit({
             type: 'spellfx',
             sourceId: a.sourceId,
@@ -142,7 +162,7 @@ export function updateAuras(ctx: SimContext, e: Entity): void {
           ctx.dealDamage(
             ctx.entities.get(a.sourceId) ?? null,
             e,
-            a.value,
+            tickDamage,
             false,
             a.school,
             a.name,
@@ -153,6 +173,24 @@ export function updateAuras(ctx: SimContext, e: Entity): void {
             // mob's leash anchor, so a DoT-kited mob still leashes home.
             false,
           );
+          if (a.leechPct !== undefined) {
+            const src = ctx.entities.get(a.sourceId);
+            if (src && !src.dead) {
+              const healed = Math.min(Math.round(tickDamage * a.leechPct), src.maxHp - src.hp);
+              if (healed > 0) {
+                src.hp += healed;
+                ctx.emit({
+                  type: 'heal2',
+                  sourceId: src.id,
+                  targetId: src.id,
+                  amount: healed,
+                  crit: false,
+                  ability: a.name,
+                });
+                ctx.healingThreat(src, src, healed);
+              }
+            }
+          }
           if (e.dead) return;
         } else if (a.kind === 'hot') {
           const healed = Math.min(Math.round(a.value * ctx.healingTakenMult(e)), e.maxHp - e.hp);
@@ -187,7 +225,7 @@ export function updateAuras(ctx: SimContext, e: Entity): void {
   }
   if (statsDirty && e.kind === 'player') {
     const meta = ctx.players.get(e.id);
-    if (meta) recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta));
+    if (meta) recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
   }
   e.stealthed = e.auras.some((a) => a.kind === 'stealth');
 }

@@ -23,8 +23,11 @@
 // `src/sim`-pure: no DOM/Three/render/ui/game/net imports, no Math.random/Date.now
 // (enforced by tests/architecture.test.ts).
 
+import { HEROIC_DELVE_BOSS_LOOT } from '../content/heroic_loot';
+import { heroicVariantId } from '../content/heroic_variants';
 import { ITEMS, MOBS, QUESTS } from '../data';
 import { formatMoney } from '../format_money';
+import { itemLevel } from '../item_level';
 import { effectiveMasterLooter, meetsMasterThreshold } from '../loot_master';
 import type { PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
@@ -129,6 +132,22 @@ export function rollLoot(
   let copper = 0;
   const items: LootSlot[] = [];
   const rolledGroups = new Set<string>();
+  // A Heroic DELVE claim upgrades the mob's normal epic/rare drops to their
+  // "Heroic" variant in place (content/heroic_variants.ts). Resolved once and
+  // reused by the heroic-only append below. No rng is drawn here, so normal-run
+  // draw order and the parity goldens are untouched. The fork's heroic detection
+  // rides the delve run: the run owning the mob (if any) with tierId 'heroic'.
+  const heroicClaim = ctx.delveRunForMob(mob.id)?.tierId === 'heroic';
+  // Swap a base drop for its Heroic variant when the run is heroic AND the swap
+  // is an upgrade (raid epics, already item level 29, are left as-is; the only
+  // such items in the fork are the Heroic set pieces, which the heroic-boss
+  // loot table appends separately rather than via the swap).
+  const heroicItem = (id: string): string => {
+    if (!heroicClaim) return id;
+    const variant = ITEMS[heroicVariantId(id)];
+    if (!variant) return id;
+    return (itemLevel(variant) ?? 0) > (itemLevel(ITEMS[id]) ?? 0) ? variant.id : id;
+  };
   for (const entry of template.loot) {
     // Exclusive groups: a single rng draw is partitioned by the group
     // entries' chances, so at most one matching entry drops.
@@ -142,7 +161,7 @@ export function rollLoot(
       for (const g of group) {
         cumulative += g.chance;
         if (roll < cumulative) {
-          if (g.itemId) items.push({ itemId: g.itemId, count: 1 });
+          if (g.itemId) items.push({ itemId: heroicItem(g.itemId), count: 1 });
           break;
         }
       }
@@ -154,7 +173,7 @@ export function rollLoot(
       if (!ctx.rng.chance(entry.chance)) continue;
       if (!entry.itemId) continue;
       items.push({
-        itemId: entry.itemId,
+        itemId: heroicItem(entry.itemId),
         count: 1,
         personalFor: questRecipients.map((m) => m.entityId),
       });
@@ -163,7 +182,52 @@ export function rollLoot(
     if (!ctx.rng.chance(entry.chance)) continue;
     if (entry.copper)
       copper += ctx.rng.int(Math.ceil(entry.copper * 0.6), Math.ceil(entry.copper * 1.4));
-    if (entry.itemId) items.push({ itemId: entry.itemId, count: 1 });
+    if (entry.itemId) items.push({ itemId: heroicItem(entry.itemId), count: 1 });
+  }
+  // Heroic-only drops: when the mob's claim is heroic and it has a heroic drop
+  // table (the delve finale bosses), roll those entries into the SAME items
+  // list. Each heroic entry that lands is appended with sharedPersonal +
+  // personalFor so any earner looting the corpse grants every earner their
+  // copy in one click. Shares `rolledGroups` with the table above so a
+  // rollGroup name never collides between the two tables.
+  if (heroicClaim) {
+    const heroicEntries = HEROIC_DELVE_BOSS_LOOT[mob.templateId];
+    if (heroicEntries) {
+      const pids = eligible.map((m) => m.entityId);
+      for (const entry of heroicEntries) {
+        if (entry.rollGroup) {
+          if (rolledGroups.has(entry.rollGroup)) continue;
+          rolledGroups.add(entry.rollGroup);
+          const group = heroicEntries.filter((l) => l.rollGroup === entry.rollGroup);
+          const roll = ctx.rng.next();
+          let cumulative = 0;
+          for (const g of group) {
+            cumulative += g.chance;
+            if (roll < cumulative) {
+              if (g.itemId) {
+                items.push({
+                  itemId: g.itemId,
+                  count: 1,
+                  personalFor: pids,
+                  sharedPersonal: g.sharedPersonal ?? entry.sharedPersonal ?? false,
+                });
+              }
+              break;
+            }
+          }
+          continue;
+        }
+        if (!ctx.rng.chance(entry.chance)) continue;
+        if (entry.itemId) {
+          items.push({
+            itemId: entry.itemId,
+            count: 1,
+            personalFor: pids,
+            sharedPersonal: entry.sharedPersonal ?? false,
+          });
+        }
+      }
+    }
   }
   if (copper > 0 || items.length > 0) {
     mob.loot = { copper, items };
@@ -400,14 +464,17 @@ export function assignMasterLoot(
   if (targets.length === 1) {
     if (!ctx.pendingLootRolls.delete(roll.id)) return;
     const targetName = ctx.players.get(targets[0])?.name ?? 'Unknown';
+    const delivered = isLootRollRecipientOnline(ctx, targets[0]);
     const recipients = new Set([...roll.candidates, roll.masterLooter]);
     for (const recipient of recipients)
       ctx.emit({
         type: 'loot',
-        text: `${r.meta.name} assigned ${roll.itemName} to ${targetName}.`,
+        text: delivered
+          ? `${r.meta.name} assigned ${roll.itemName} to ${targetName}.`
+          : `The winner of ${roll.itemName} was offline; it was returned to the corpse.`,
         pid: recipient,
       });
-    ctx.addItem(roll.itemId, 1, targets[0]);
+    deliverOrReturnLootRollItem(ctx, roll, targets[0], delivered);
     return;
   }
   convertMasterRollToNeedGreed(ctx, roll, targets);
@@ -519,14 +586,40 @@ export function resolveLootRoll(ctx: SimContext, roll: PendingLootRoll): void {
     tiedWinners.length === 1 ? tiedWinners[0] : tiedWinners[ctx.rng.int(0, tiedWinners.length - 1)];
   const winnerMeta = ctx.players.get(winner.pid);
   const winnerName = winnerMeta?.name ?? 'Unknown';
+  const delivered = isLootRollRecipientOnline(ctx, winner.pid);
   for (const pid of partyMembersForRoll(roll)) {
     ctx.emit({
       type: 'loot',
-      text: `${winnerName} wins ${roll.itemName} (${winner.result.roll ?? 0})`,
+      text: delivered
+        ? `${winnerName} wins ${roll.itemName} (${winner.result.roll ?? 0})`
+        : `The winner of ${roll.itemName} was offline; it was returned to the corpse.`,
       pid,
     });
   }
-  ctx.addItem(roll.itemId, 1, winner.pid);
+  deliverOrReturnLootRollItem(ctx, roll, winner.pid, delivered);
+}
+
+// A roll winner (need/greed or a single-target master-loot assignment) may have
+// disconnected between the roll opening and its resolution. `addItem` silently
+// no-ops for a pid no longer in ctx.players/ctx.entities, which would otherwise
+// destroy the item outright; return it to the corpse instead (the same open-to-all
+// slot the everyone-passes branch uses) so an eligible party member, ghost or
+// alive, can still reclaim it.
+function isLootRollRecipientOnline(ctx: SimContext, recipientPid: number): boolean {
+  return ctx.players.has(recipientPid) && ctx.entities.has(recipientPid);
+}
+
+// Applies the delivery decided by `isLootRollRecipientOnline`. Kept as a separate,
+// later call so the online/offline loot-line text (emitted above) still precedes
+// `addItem`'s own "You receive" event, preserving event order for the delivered path.
+function deliverOrReturnLootRollItem(
+  ctx: SimContext,
+  roll: PendingLootRoll,
+  recipientPid: number,
+  delivered: boolean,
+): void {
+  if (delivered) ctx.addItem(roll.itemId, 1, recipientPid);
+  else returnLootRollItemToCorpse(ctx, roll);
 }
 
 function returnLootRollItemToCorpse(ctx: SimContext, roll: PendingLootRoll): void {

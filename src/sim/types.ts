@@ -35,6 +35,9 @@ export const CHANNEL_PUSHBACK_FRACTION = 0.25; // vanilla: each hit shaves 25% o
 // Tolerance for "this per-tick timer is effectively complete" comparisons (casting,
 // channels, ground-AoE pulses). Shared across sim modules (sim.ts + entity_roster.ts).
 export const CAST_COMPLETE_EPS = 1e-9;
+// classic-era spell queue: a press during the tail of a cast queues instead of
+// erroring, and fires the instant the current cast completes.
+export const CAST_QUEUE_WINDOW_SEC = 0.4;
 export const FISHING_CAST_ID = 'fishing';
 export const FISHING_CAST_NAME = 'Fishing';
 export const FISHING_CAST_TIME = 5;
@@ -101,6 +104,19 @@ export interface ArenaCombatant {
   cls: PlayerClass;
   level: number;
 }
+
+export type HonorReason = 'arena_win' | 'fiesta_kill' | 'fiesta_complete' | 'fiesta_win';
+
+// Persisted anti-win-trading window for ranked honor. `winsByOpponent` is keyed
+// by bracket plus the stable, sorted opposing-team identity; `totalWins` drives
+// the soft daily taper independently of who was faced.
+export interface HonorArenaDailyState {
+  date: string;
+  winsByOpponent: Record<string, number>;
+  fiestaCompletionsByOpponent: Record<string, number>;
+  totalWins: number;
+}
+
 export const ALL_CLASSES: PlayerClass[] = [
   'warrior',
   'paladin',
@@ -150,6 +166,12 @@ export type AuraKind =
   | 'attackspeed'
   | 'debuff_ap'
   | 'buff_ap'
+  // Owner's pet damage bonus (Beast Mastery/Demonology masteries: petDmgPct/Howling Rage).
+  // value: percent points if > 1 (100 = +100%), else a fraction, mirroring the pctValue
+  // convention already used for the other percent-buff kinds below.
+  | 'pet_damage_pct'
+  // Pet attack/cast speed bonus (Metamorphosis demon). value: fraction (0.2 = +20%).
+  | 'pet_spellhaste'
   | 'buff_armor'
   | 'buff_int'
   | 'buff_agi'
@@ -157,6 +179,20 @@ export type AuraKind =
   | 'buff_speed'
   | 'buff_haste'
   | 'buff_spellpower'
+  // Spec-mastery/cooldown caster buffs (Combustion/Icy Veins/Arcane Power/Metamorphosis):
+  // additive spell crit chance, a spell damage percent multiplier, and a spell haste
+  // fraction, each read alongside the resolved Entity stat by spell_combat.ts.
+  | 'buff_spellcrit'
+  | 'buff_spelldmg'
+  | 'buff_spellhaste'
+  // Icy Veins: while active, casts cannot be interrupted or pushed back.
+  | 'cast_shield'
+  // Cold Blood (Assassination rogue signature): guarantees the next damaging
+  // ability use is a critical strike. Consumed in effect_dispatch.ts.
+  | 'next_attack_crit'
+  // Elemental Mastery (Elemental shaman signature): the next spell cast is instant.
+  // Consumed in casting_lifecycle.ts castAbility.
+  | 'next_cast_instant'
   | 'hot'
   | 'absorb'
   | 'imbue'
@@ -166,6 +202,18 @@ export type AuraKind =
   | 'form_bear'
   | 'form_cat'
   | 'form_travel'
+  // Balance druid signature form: Spell Power (value) lives on the aura itself so it
+  // rides the one toggle; its +20% spell damage rides a separate buff_spelldmg aura.
+  | 'form_moonkin'
+  // Shadow priest signature form: amplifies Shadow-school damage (combat/damage.ts),
+  // contributes no stat-pass bonus itself (value carries the percent for that amp).
+  | 'form_shadow'
+  // Warlock Metamorphosis: a temporary demon transform (cosmetic scale + tint in render,
+  // its damage/haste bonuses ride separate buff auras).
+  | 'form_metamorph'
+  // Feral (cat form) signature: Energy regeneration multiplier while active (value = a
+  // fraction, 1 = +100%).
+  | 'buff_energyregen'
   | 'stealth'
   | 'defensive_stance'
   | 'righteous_fury'
@@ -175,6 +223,9 @@ export type AuraKind =
   | 'blind'
   | 'disarm'
   | 'expose'
+  // Bleed damage taken debuff (Hemorrhage): a physical-school dot tick is amplified by
+  // the sum of the target's live bleed_vuln stacks (auras.ts updateAuras).
+  | 'bleed_vuln'
   | 'spellvuln'
   | 'lockout'
   | 'vulnerability'
@@ -187,7 +238,23 @@ export type AuraKind =
   // 2v2 Fiesta power-up buffs: `buff_scale` value = body-size multiplier (also
   // boosts max-hp when >1); `buff_jump` value = jump-height multiplier.
   | 'buff_scale'
-  | 'buff_jump';
+  | 'buff_jump'
+  // Percent whole-group raid buffs (PHAA-577, Board-approved exception to the
+  // classic-era flat model for these six abilities only). Value is stored as an
+  // INTEGER PERCENT POINT (5 = +5%) rather than a 0..1 fraction: applyTalentMods'
+  // buffPct fold does `Math.round(value * mul)` (see classes.ts), and a fractional
+  // value like 0.05 rounds to 0 under any multiplier below 10x. Folded as a percent
+  // of the already-flat-and-item-buffed stat in recalcPlayerStats.
+  | 'buff_ap_pct'
+  | 'buff_sta_pct'
+  | 'buff_armor_pct'
+  | 'buff_int_pct'
+  // Percent armor debuff (PHAA-577 companion to the buff conversion above): Sunder
+  // Armor / Expose Armor / Faerie Fire now reduce armor by a PERCENT (0..1 fraction,
+  // stacking) instead of a flat amount. Deliberately a separate AuraKind from
+  // 'sunder' (which stays flat) so mob corrosion (mob_swing.ts applyCorrosion, whose
+  // `value` is a flat armor number) is entirely unaffected by this change.
+  | 'debuff_armor_pct';
 
 export interface Aura {
   id: string; // ability id that applied it
@@ -207,6 +274,7 @@ export interface Aura {
   charges?: number; // thorns: remaining reflect charges (Lightning Shield); undefined => unlimited
   icd?: number; // thorns: internal-cooldown remaining, seconds (counts down each tick)
   icdMax?: number; // thorns: configured internal cooldown, seconds (re-armed on each reflect)
+  leechPct?: number; // dot only: fraction of tick damage healed back to source
 }
 
 export type CrowdControlDrCategory =
@@ -229,7 +297,16 @@ export interface Stats {
   int: number;
   spi: number;
   armor: number;
+  // Fractions derived from WARFARE ratings on equipped gear. They affect hostile
+  // player-vs-player damage only; PvE never reads them.
+  pvpOffense: number;
+  pvpDefense: number;
 }
+
+// The six class/item attributes authored in content. WARFARE fractions are
+// derived from ratings at runtime and are never authored as base growth or
+// direct item stats.
+export type CoreStats = Pick<Stats, 'str' | 'agi' | 'sta' | 'int' | 'spi' | 'armor'>;
 
 export interface WeaponInfo {
   min: number;
@@ -274,7 +351,10 @@ export type ItemUse =
   // (canGatherTier / canHarvestMonsterMaterial). This item type never carries
   // a durability field (this repo has no durability mechanic anywhere), so a
   // gathering tool can never become unusable.
-  | { type: 'gatherTool'; nodeType: GatherNodeType; tier: number };
+  | { type: 'gatherTool'; nodeType: GatherNodeType; tier: number }
+  // Plants a keepsake at the player's own claimed homestead plot (PHAA-751).
+  // See src/sim/greenpaw_cutting.ts; first_cutting is the only item using this.
+  | { type: 'plant' };
 
 // Rarity ranks for the cosmetic skin-select event, ordered low → high. A rolled
 // rank unlocks its own tier and every tier below it (epic unlocks rare+uncommon).
@@ -299,11 +379,23 @@ interface BaseItemDef {
   name: string;
   slot?: EquipSlot;
   weapon?: WeaponInfo;
-  stats?: Partial<Stats>;
+  stats?: Partial<CoreStats>;
   // Spell Power affix (caster gear): flat Spell Power, summed in recalcPlayerStats.
   // Kept off `Stats` because Spell Power is a derived combat rating (like attackPower),
   // not one of the six primary attributes.
   spellPower?: number;
+  // WARFARE ratings (PvP-only): recalcPlayerStats folds these into the Stats
+  // pvpOffense/pvpDefense fractions (src/sim/pvp/power.ts); combat re-clamps at
+  // the PvP caps before applying damage. See src/sim/content/pvp_honor.ts.
+  pvpOffenseRating?: number;
+  pvpDefenseRating?: number;
+  // Hit rating: reduces melee/ranged miss AND spell resist by the same percent
+  // (src/sim/combat/hit_rating.ts). Off the primary stat budget like spellPower;
+  // the endgame-gear differentiator (Heroic delve variants, see item_budget.ts).
+  hitRating?: number;
+  // Honor price for a Quartermaster purchase. An Honor-only item omits
+  // buyValue; both fields may coexist when a vendor charges both currencies.
+  priceHonor?: number;
   use?: ItemUse;
   sellValue: number; // copper (vendor buys at this)
   buyValue?: number; // copper (vendor sells at this)
@@ -311,6 +403,18 @@ interface BaseItemDef {
   noVendorSell?: boolean;
   noDiscard?: boolean;
   noMarketList?: boolean;
+  // Soulbound: bound-on-pickup. The item cannot be traded, mailed, listed on
+  // the World Market, sold to a vendor, or right-click discarded. The fork's
+  // Heroic Marks are the canonical example (spend at the Brother-Halven/equivalent
+  // Heroic Quartermaster) but the flag is content-driven so a future tier can
+  // mark its currency/loot the same way. See src/sim/content/heroic_loot.ts.
+  soulbound?: boolean;
+  // heroicOf: a back-reference from a Heroic-tier item variant to the base item
+  // it upgrades in-place. The HUD composes the tooltip quality tag ("[HEROIC]")
+  // from this field via entity_i18n; the variant's `name` is the base item's
+  // localized name so a variant never needs its own translated name key, and
+  // the entity manifest skips it. Build with buildHeroicVariants.
+  heroicOf?: string;
   /** Shown when interacting with a ground quest object before the quest is active. */
   pickupDeny?: string;
   /** Shown when the quest is active but the collect count is already met. */
@@ -404,6 +508,14 @@ export interface LootSlot extends InvSlot {
   personalFor?: number[];
   // Need/greed loot that everyone passed on becomes free-for-all corpse loot.
   openToAll?: boolean;
+  // Shared personal (participation tokens like Heroic Marks): a single loot
+  // action by ANY listed player grants `count` copies to EVERY player in
+  // `personalFor`, then consumes the slot. No one has to loot their own copy.
+  // Set at loot-roll time when the upstream heroic-tier mark fan-out fires;
+  // lootCorpse (interaction.ts) honours the flag before the normal personal
+  // fallback. Items WITHOUT this flag keep their classic personal single-copy
+  // behavior even on Heroic tier.
+  sharedPersonal?: boolean;
 }
 
 export interface CorpseLoot {
@@ -480,6 +592,15 @@ export interface LootEntry {
   // Entries sharing a rollGroup are exclusive: one rng draw is partitioned by
   // their chances, so at most one matching entry drops.
   rollGroup?: string;
+  // sharedPersonal: when the loot roll turns this entry into a corpse loot
+  // slot, mark it as a shared-personal fan-out (every player in `personalFor`
+  // receives one copy on the first qualifying loot action). Honours upstream
+  // PR #1705's mark fan-out, adapted to the fork's Heroic DELVE tier. Loot
+  // rolls set this on the produced LootSlot when the swap is active; entries
+  // WITHOUT it keep classic personal single-copy semantics. Optional, defaults
+  // to false; kept on LootEntry so the per-boss HEROIC_DELVE_BOSS_LOOT
+  // records can declare it at content time without an extra content index.
+  sharedPersonal?: boolean;
 }
 
 export type MobFamily =
@@ -533,6 +654,11 @@ export interface MobTemplate {
   // Rare/miniboss controls.
   canSwim?: boolean;
   ccImmune?: boolean;
+  // Immune to movement-speed slow auras (kind 'slow'). Distinct from ccImmune, which
+  // blocks the hard control auras (stun/root/incapacitate/polymorph) but intentionally
+  // leaves snares landing so most elites can still be kited; a raid boss sets both
+  // (upstream #1502).
+  slowImmune?: boolean;
   // Upstream #1643 (Thunzharr unkitable-movespeed fix): every movement step (chase,
   // flee, wander, leash return) takes moveToward's ignoreObstacles branch, a straight
   // line that ignores prop colliders, the waterline, and the steep-wall gate. For a
@@ -1106,23 +1232,56 @@ export type AbilityEffect =
       requiresBehind?: boolean;
       weaponMult?: number;
     } // instant special attack (sinister strike, overpower, backstab)
-  | { type: 'directDamage'; min: number; max: number }
+  | { type: 'directDamage'; min: number; max: number; vsRootedMult?: number }
+  // Interrupts the target's in-progress cast/channel and locks out further casts of
+  // that spell's school for `lockout` seconds. Rides the existing lockout AuraKind
+  // (already applied by mob interrupt procs, see mob/mob_swing.ts) and isLockedOut
+  // gate (combat/cc.ts, already consumed by casting_lifecycle.ts castAbility).
+  | { type: 'interrupt'; lockout: number }
   | { type: 'heal'; min: number; max: number } // friendly target (or self)
+  // Chain Heal: heal the primary friendly target, then bounce to the nearest not-yet-healed
+  // ally within `radius`, up to `jumps` extra targets, each jump healing `falloff`x the last.
+  | { type: 'chainHeal'; min: number; max: number; jumps: number; falloff: number; radius: number }
+  | { type: 'aoeHeal'; min: number; max: number; radius: number }
   | { type: 'hot'; total: number; duration: number; interval: number } // renew, rejuvenation
   | { type: 'absorb'; amount: number; duration: number } // power word: shield
   | { type: 'imbue'; bonus: number; duration: number; judgeMin?: number; judgeMax?: number } // seals / rockbiter: extra damage per swing
   | { type: 'judgement' } // consume your imbue, deal its judgement damage to the target
   | { type: 'lifeTap'; hp: number; mana: number }
   | { type: 'drainTick'; min: number; max: number; healFrac: number } // channel tick that heals the caster
-  | { type: 'buffTarget'; kind: AuraKind; value: number; duration: number } // fortitude/might/mark on a friendly target
+  | {
+      type: 'buffTarget';
+      kind: AuraKind;
+      value: number;
+      duration: number;
+      // PHAA-577: when true this is a whole-group raid buff. It lands on the
+      // caster, the explicit target (if any), and every living member of the
+      // caster's party/raid, regardless of range. Used by Blessing of Might,
+      // Power Word: Fortitude, Mark of the Wild, Battle Shout, Commanding Shout,
+      // and Arcane Intellect.
+      party?: boolean;
+    } // fortitude/might/mark on a friendly target
   | { type: 'finisherDamage'; base: number; perCombo: number; variance: number } // eviscerate
-  | { type: 'dot'; total: number; duration: number; interval: number }
+  | { type: 'dot'; total: number; duration: number; interval: number; leechPct?: number }
   | { type: 'slow'; mult: number; duration: number }
   | { type: 'root'; duration: number }
   | { type: 'stun'; duration: number }
   | { type: 'incapacitate'; duration: number } // gouge: breaks on damage
   | { type: 'polymorph'; duration: number } // sheep: breaks on damage, target heals
   | { type: 'aoeDamage'; min: number; max: number; radius: number }
+  // Bounce damage: the caster's directDamage already hit the primary target; this arcs
+  // from that target to the nearest not-yet-hit hostile within `radius`, up to `jumps`
+  // enemies (the primary and the caster are excluded), each jump dealing `falloff`x the
+  // last. The hop pick is DETERMINISTIC (nearest by distance, then lowest id), mirroring
+  // chainHeal, so the only rng is the one base roll plus each hit's crit.
+  | {
+      type: 'chainDamage';
+      min: number;
+      max: number;
+      jumps: number;
+      falloff: number;
+      radius: number;
+    }
   | {
       type: 'groundAoE';
       min: number;
@@ -1133,7 +1292,23 @@ export type AbilityEffect =
     }
   | { type: 'aoeAttackSpeed'; mult: number; duration: number; radius: number } // thunder clap rider
   | { type: 'aoeAttackPower'; amount: number; duration: number; radius: number } // demoralizing roar/shout
+  // party-style ALLY buff: +AP aura on the caster and nearby friendlies (Trueshot Aura)
+  | {
+      type: 'aoeAllyAttackPower';
+      amount?: number;
+      apPct?: number;
+      duration: number;
+      radius: number;
+    }
+  | { type: 'aoeAllyHaste'; mult: number; duration: number; radius: number }
   | { type: 'aoeRoot'; duration: number; radius: number; min: number; max: number }
+  | {
+      type: 'consumeAura';
+      auraIds?: string[];
+      auraKind?: 'dot' | 'hot';
+      deal?: { min: number; max: number };
+      heal?: { min: number; max: number };
+    }
   | {
       type: 'selfBuff';
       kind: AuraKind;
@@ -1144,12 +1319,23 @@ export type AbilityEffect =
       charges?: number;
       internalCooldown?: number;
     }
+  | { type: 'petBuff'; kind: AuraKind; value: number; duration: number }
+  | { type: 'applyDebuff'; kind: AuraKind; value: number; duration: number }
   | { type: 'finisherHaste'; mult: number; basedur: number; perCombo: number } // slice and dice
   | { type: 'finisherStun'; base: number; perCombo: number } // kidney shot: stun seconds scale with combo
   | { type: 'gainResource'; amount: number } // bloodrage immediate
   | { type: 'selfDamagePctMax'; pct: number } // bloodrage cost
   | { type: 'charge' }
+  // Druid Feral signature (Feral Instinct): a form-gated resource burst. In Cat Form it
+  // grants an Energy-regeneration buff; in Bear Form it instantly generates Rage.
+  | { type: 'feralCharge' }
   | { type: 'sunder'; armor: number; maxStacks: number } // sunder armor: stacking armor debuff + flat threat
+  // PHAA-577: the percent-armor-debuff sibling of 'sunder' above. Same stacking/
+  // threat/miss-chance mechanics (see effect_dispatch.ts case 'armorDebuffPct'),
+  // but `pct` is a 0..1 fraction reduction per stack instead of a flat amount, and
+  // it lands the AuraKind 'debuff_armor_pct' so it never collides with mob
+  // corrosion's flat 'sunder' auras. Used by Sunder Armor, Expose Armor, Faerie Fire.
+  | { type: 'armorDebuffPct'; pct: number; maxStacks: number; duration: number }
   | { type: 'taunt' } // taunt/growl: match top threat and force-attack the caster
   | { type: 'tamePet' } // hunter tame beast: the targeted mob becomes the caster's pet
   | { type: 'dismissPet' } // release the caster's pet back to the wild
@@ -1192,7 +1378,7 @@ export interface AbilityDef {
   // instead (Arcane Shot, Serpent Sting, Aimed Shot), regardless of school.
   scalesWith?: 'ranged';
   requiresTarget: boolean;
-  targetType?: 'enemy' | 'friendly'; // friendly = self or allied player (defaults to enemy)
+  targetType?: 'enemy' | 'friendly' | 'any'; // friendly = self or allied player (defaults to enemy)
   onNextSwing?: boolean; // heroic strike style: no GCD, queues on swing
   offGcd?: boolean;
   awardsCombo?: number; // rogue builders
@@ -1203,6 +1389,9 @@ export interface AbilityDef {
   // multiplier on the damage-threat (both scale with stance/form modifiers).
   threat?: { flat?: number; mult?: number };
   requiresForm?: 'bear' | 'cat'; // druid form kit (maul/growl/swipe/claw/bite)
+  // Castable while shapeshifted without requiring a SPECIFIC form (Feral Instinct works in
+  // both Cat and Bear Form). Exempts the ability from the "can't act while shapeshifted" lock.
+  usableInForm?: boolean;
   // Mutually exclusive self-buff group: casting one ability in the group cancels
   // any active buff from a sibling in the same group (e.g. hunter aspects, where
   // only one aspect may be active at a time). Distinct from form toggles, which
@@ -1233,6 +1422,11 @@ export interface NpcDef {
   // The Merchant: talking to this NPC opens the player-driven World Market
   // (auction house) instead of a fixed vendor stock.
   market?: boolean;
+  // The personal bank vault's town-service anchor (PHAA-571's follow-up):
+  // talking distance to an NPC with this flag set feeds ctx.bankerIds, gating
+  // bank.ts's nearBanker. No banker NPC is placed in built-in zone content yet
+  // (bankerIds stays empty), so this only matters for a custom map's roster.
+  banker?: boolean;
   // A Profession Trainer (GW1 build system multiclassing, Phase 3, PHAA-464):
   // talking to this NPC opens the trainer panel, offering these professions as
   // a secondary class (see setSecondaryClass in world_api/trainer.ts).
@@ -1303,6 +1497,49 @@ export interface GatherNodeDef {
   zoneId: string;
   type: GatherNodeType;
   pos: { x: number; z: number };
+}
+
+// Crafting (PHAA-574): the fixed set of crafts a recipe belongs to. Common-tier
+// only for this slice (professions-depth batch, framework + reskin); a later
+// slice adds skill-tier gating, the archetype ceiling, and recipe acquisition.
+export type CraftType =
+  | 'weaponcrafting'
+  | 'armorcrafting'
+  | 'tailoring'
+  | 'leatherworking'
+  | 'cooking'
+  | 'alchemy'
+  // Enchanting (PHAA-649 child, upstream #1712): the scroll itself is just
+  // another craftable recipe output (src/sim/content/recipes.ts), so this
+  // craft type needs no new crafting logic, only this new tag.
+  | 'enchanting';
+
+// One craftable recipe: consume `reagents` (existing gathered-material items),
+// grant `resultCount` of `resultItemId`. Every recipe is craftable by any
+// player with the materials (no per-recipe skill/known gate this slice); see
+// src/sim/crafting.ts for resolution.
+export interface RecipeDef {
+  id: string;
+  craft: CraftType;
+  reagents: { itemId: string; count: number }[];
+  resultItemId: string;
+  resultCount: number;
+}
+
+// Enchanting (PHAA-649 child, upstream #1712): reskinned onto the Hollow's flat
+// itemId+count equipment model (no per-item-instance system exists here), so
+// an enchant is applied to an EQUIP SLOT rather than to a specific item copy:
+// the bonus folds into recalcPlayerStats whenever that slot is occupied (see
+// src/sim/entity.ts), and is lost only if the player re-enchants the slot with
+// a different EnchantDef (no stacking, no refund of the old one). Applying
+// consumes one `scrollItemId` (itself a normal crafted item, output of a
+// CraftType:'enchanting' RecipeDef); see src/sim/enchanting.ts for resolution.
+export interface EnchantDef {
+  id: string;
+  name: string; // English source, localized via entity_i18n like other content records
+  slot: EquipSlot;
+  scrollItemId: string;
+  stats: Partial<CoreStats>;
 }
 
 // World-placed readable props (WoW-style journals/books lying around, PHAA-552).
@@ -1398,7 +1635,7 @@ export interface DungeonDef {
   homeRespawn?: { dungeonId: string; x: number; z: number }; // dying here revives at this instance-local point (in that dungeon's instance), not an overworld graveyard
 }
 
-export type BiomeId = 'vale' | 'marsh' | 'peaks';
+export type BiomeId = 'vale' | 'marsh' | 'peaks' | 'beach' | 'desert' | 'volcano' | 'cave';
 
 export interface ZoneDef {
   id: string;
@@ -1618,6 +1855,76 @@ export interface QuestProgress {
   state: 'active' | 'ready' | 'done';
 }
 
+// Book of Asphodelia (PHAA-744, engine/wire layer only; content lands in PHAA-745).
+// Deeds auto-track from character creation (no accept step, unlike quests): every
+// deed in the registry gains credit as its trigger objectives are met, checked
+// lazily on the same event hooks quests use (kill / inventory-change). Completing
+// a deed can grant a title, which the player then selects as their display title.
+export type DeedState = 'active' | 'done';
+
+// Content category (PHAA-745), matching upstream's grouping: used for
+// filtering/organizing the deed roster (cross-surface UI, PHAA-748) and
+// leaderboard scoring (PHAA-746). Purely descriptive; the credit engine
+// dispatches on objective type, not category.
+export type DeedCategory =
+  | 'chronicle'
+  | 'collection'
+  | 'combat'
+  | 'delve'
+  | 'dungeon'
+  | 'exploration'
+  | 'feat'
+  | 'hidden'
+  | 'progression'
+  | 'pvp'
+  | 'social';
+
+// 'pvp': a match/bout win, from the shared arena/fiesta/boarball result choke
+// point (endArenaMatch in social/arena.ts) or the duel choke point (endDuel in
+// social/duel.ts). 'social': a non-combat action, from one of several distinct
+// choke points (completeFishing / talkToNpc in sim.ts, lockpickSucceed in
+// delves/lockpick_controller.ts, the /roll handler in social/chat.ts).
+export type PvpWinKind = 'arena' | 'fiesta' | 'boarball' | 'duel';
+export type SocialActionKind = 'fish' | 'lockpick' | 'roll' | 'talk' | 'bank';
+
+export interface DeedObjective {
+  type: 'kill' | 'collect' | 'quest' | 'delve' | 'level' | 'explore' | 'pvp' | 'social';
+  targetMobId?: string; // for 'kill'; omitted means "any mob" (wildcard credit)
+  itemId?: string; // for 'collect'
+  questId?: string; // for 'quest'; omitted means "any quest" (wildcard credit)
+  delveId?: string; // for 'delve'; omitted means "any delve" (wildcard credit)
+  tierId?: string; // for 'delve'; omitted means "any tier"
+  deathless?: boolean; // for 'delve'; true requires a clear with zero deaths for the player
+  atLeast?: number; // for 'level'; the character level threshold the deed credits at
+  zoneId?: string; // for 'explore'; the zone whose first entry credits this objective
+  pvpKind?: PvpWinKind; // for 'pvp'; omitted means "any pvp win" (wildcard credit)
+  socialKind?: SocialActionKind; // for 'social'
+  npcId?: string; // for 'social' with socialKind 'talk'; omitted means "any NPC"
+  count: number;
+  label: string;
+}
+
+export interface DeedProgress {
+  deedId: string;
+  counts: number[]; // per objective, parallel to DeedDef.objectives
+  state: DeedState;
+}
+
+export interface DeedDef {
+  id: string;
+  name: string;
+  text: string;
+  category: DeedCategory;
+  objectives: DeedObjective[];
+  titleReward?: string; // TitleDef id granted on completion
+}
+
+export interface TitleDef {
+  id: string;
+  display: string; // e.g. "the Wayfarer"
+  prefix?: boolean; // shown before the character name instead of after (default false)
+}
+
 // Consumables restore their total over CONSUME_DURATION seconds while sitting,
 // ticking on the classic 2-second regen tick. Food and drink run concurrently.
 export const CONSUME_DURATION = 18; // seconds
@@ -1683,7 +1990,16 @@ export interface Entity {
   rangedHaste: number;
   spellHaste: number;
   critChance: number; // 0..1
+  // Extra critical-strike damage from a spec mastery (0 = none), split by OUTPUT CHANNEL
+  // so a mastery only strengthens the crits it is meant to. Added to the matching base
+  // crit multiplier at the crit site: spell crits deal 1.5 + critDmgSpellBonus, physical
+  // crits 2 + critDmgPhysBonus, heal crits 1.5 + critDmgHealBonus.
+  critDmgSpellBonus: number;
+  critDmgPhysBonus: number;
+  critDmgHealBonus: number;
   dodgeChance: number;
+  hitRating: number; // accumulated hit rating from gear (see combat/hit_rating.ts)
+  hitBonus: number; // hit fraction (hitRating converted): reduces miss/resist, 0..1
   castPushbackReduction: number; // 0..1: damage cast-pushback removed by item-set bonuses (1 = immune)
   moveSpeed: number;
   hostile: boolean;
@@ -1708,6 +2024,10 @@ export interface Entity {
   gcdRemaining: number;
   cooldowns: Map<string, number>;
   queuedOnSwing: string | null; // heroic strike
+  // single-slot spell queue: a press during the tail of the current cast (see
+  // CAST_QUEUE_WINDOW_SEC), fired by updateCasting on cast completion. Distinct
+  // from queuedOnSwing (a melee on-next-swing queue, not a cast queue).
+  queuedCastAbility: string | null;
   fiveSecondRule: number; // time since last mana spend
   comboPoints: number;
   comboTargetId: number | null;
@@ -1774,6 +2094,10 @@ export interface Entity {
   /** GM character: invulnerable (dealDamage no-ops). Server-set from the
    *  characters.is_gm column; never user-settable. */
   gm?: boolean;
+  /** Moderation-jailed player: prisoners are mutually hostile (the jail
+   *  brawl, see Sim.isHostileTo). Server-set via setJailed on /jail, /unjail,
+   *  and join restore; never user-settable. */
+  jailed?: boolean;
   respawnTimer: number;
   corpseTimer: number;
   lootFfaTimer: number; // seconds of owner-lock left before tap loot opens to all (FFA); Infinity until rollLoot starts it
@@ -1923,6 +2247,19 @@ export type CalendarResultCode =
   | 'calendarFull'
   | 'eventGone';
 
+// An in-flight party/raid ready check (social/ready_check.ts). Keyed on Sim by
+// party id. Each member is 'pending' until they answer; anyone still 'pending'
+// when the timeout fires is counted as "no response" (there is no separate afk
+// state). Sim-internal state, never wired to the client (the outcome is
+// announced as chat/log lines and the yes/no prompt rides the readyCheckStart
+// event).
+export interface ReadyCheck {
+  partyId: number;
+  initiator: number; // pid who ran /ready
+  endsAt: number; // sim-clock seconds (ctx.time) when the check auto-finalizes
+  responses: Map<number, 'ready' | 'notready' | 'pending'>; // pid -> answer
+}
+
 // `pid` (when present) marks a personal event that should only be delivered to
 // that player entity's owner; events without pid are world-visible.
 export type SimEvent = { pid?: number } & (
@@ -1939,11 +2276,21 @@ export type SimEvent = { pid?: number } & (
   | { type: 'heal'; targetId: number; amount: number }
   | { type: 'death'; entityId: number; killerId: number }
   | { type: 'xp'; amount: number; rested?: number }
+  | { type: 'honor'; amount: number; reason: HonorReason }
   | { type: 'levelup'; level: number }
   // post-cap cosmetic progression (Max-Level XP Overflow): crossing a virtual
   // level past the cap, and unlocking a cosmetic lifetime-XP milestone
   | { type: 'virtualLevelUp'; level: number }
   | { type: 'milestoneUnlocked'; milestoneId: string }
+  // Collection tracking core (PHAA-626): a collectible (world readable today;
+  // future kinds later) was newly marked collected for this player. Personal
+  // (always carries pid); never re-fired for an already-collected id.
+  | { type: 'collectibleFound'; collectibleId: string }
+  // Achievements (PHAA-687): a discrete achievement was newly unlocked for this
+  // player. Personal (always carries pid); idempotent, never re-fired for an
+  // already-unlocked id. Carries the stable achievement id only (the sim stays
+  // language-agnostic); the client resolves the display name.
+  | { type: 'achievementUnlocked'; achievementId: string }
   | { type: 'learnAbility'; abilityId: string; rank: number }
   | { type: 'loot'; text: string }
   | {
@@ -1969,6 +2316,9 @@ export type SimEvent = { pid?: number } & (
   | { type: 'questProgress'; questId: string; text: string }
   | { type: 'questReady'; questId: string }
   | { type: 'questDone'; questId: string }
+  | { type: 'deedProgress'; deedId: string; text: string }
+  | { type: 'deedDone'; deedId: string }
+  | { type: 'titleEarned'; titleId: string }
   | { type: 'aura'; targetId: number; name: string; gained: boolean }
   | { type: 'castStart'; entityId: number; ability: string; time: number }
   | { type: 'castStop'; entityId: number; success: boolean }
@@ -2007,6 +2357,9 @@ export type SimEvent = { pid?: number } & (
       to?: string;
     }
   | { type: 'partyInvite'; fromPid: number; fromName: string }
+  // The party/raid leader started a ready check: the recipient's client plays a
+  // sound and shows a yes/no prompt (social/ready_check.ts). Personal (pid set).
+  | { type: 'readyCheckStart'; fromName: string }
   // a guild invitation from an online guild officer/leader; resolved by name
   // server-side so it carries no pid
   | { type: 'guildInvite'; fromName: string; guildName: string }
@@ -2085,7 +2438,7 @@ export type SimEvent = { pid?: number } & (
       sourceId: number;
       targetId: number;
       school: string;
-      fx: 'projectile' | 'beam' | 'tick' | 'nova' | 'lightning';
+      fx: 'projectile' | 'beam' | 'tick' | 'nova' | 'lightning' | 'chainHeal';
     }
   // entityId (when set) anchors the log to that entity so the server only
   // delivers it to nearby players; anchorless logs broadcast server-wide.
@@ -2148,6 +2501,91 @@ export type SimEvent = { pid?: number } & (
   | { type: 'skinEvent'; rank: SkinRank; catalog?: SkinCatalog }
 );
 
+// A bounded height edit (the sculpt brush stamp), applied inside terrainHeight()
+// exactly like MIREFEN_IMPACT_CRATER. Pure data, no RNG: the sim and renderer both
+// sample it so collision and the ground mesh stay in agreement. Stamps apply in
+// array order: `add` (default) adds `delta`, weighted by the falloff; `level`
+// pulls the height toward the ABSOLUTE height `delta`, weighted by the falloff
+// (the flatten/plateau brush; full weight means h becomes exactly `delta`).
+export interface HeightStamp {
+  x: number;
+  z: number;
+  radius: number;
+  delta: number; // add: +raise / -lower at the centre; level: target height
+  falloff: 'smooth' | 'flat';
+  mode?: 'add' | 'level'; // absent = 'add' (v1 documents)
+}
+
+// A freely placed GLB model the editor drops onto the world. Rendered by the
+// placed-asset instancer (never a Sim entity); when `collideRadius` is set (> 0)
+// the sim additionally derives a static circle collider from this record, so
+// what-you-see-is-what-you-collide-with holds for editor placements too.
+// Carried on WorldContent so both sides read the SAME record.
+export interface PlacedAsset {
+  path: string; // public GLB url, e.g. "/models/props/well.glb"
+  x: number;
+  z: number;
+  rotY: number; // radians
+  scale: number;
+  // Circle collider radius in yards (already scaled), or absent/0 for walk-through.
+  collideRadius?: number;
+}
+
+// An invisible blocker wall (editor-authored, custom maps only): a world-space
+// XZ segment the sim turns into a fence-width OBB collider at playtest. Pure
+// collision data; there is NO render mesh for it in the shipped game, so map
+// makers can wall off areas without visible geometry.
+export interface BlockerDef {
+  x1: number;
+  z1: number;
+  x2: number;
+  z2: number;
+}
+
+// A coarse 2D biome paint grid (editor). Each cell holds a biome id (0=vale,
+// 1=marsh, 2=peaks) or 255 for unpainted. Where painted, it overrides both the
+// terrain SHAPE (sim, in shapeAt) and the ground COLOR (render). Absent for the
+// built-in world, so terrain stays byte-identical.
+export interface BiomePaint {
+  cell: number; // cell size in yards
+  cols: number;
+  rows: number;
+  originX: number; // world x of the grid's (col 0) edge
+  originZ: number; // world z of the grid's (row 0) edge
+  ids: number[]; // length cols*rows; 0/1/2 = biome, 255 = unpainted
+}
+
+// A swappable world definition: the spatial + content data the terrain function
+// and the Sim spawn loop derive a playable world from. The built-in 3-zone world
+// is one of these (data.ts BUILTIN_WORLD); the map editor produces custom ones for
+// offline play-testing. Injected via SimConfig.world plus the data.ts active-content
+// registry (both, because terrain reaches the data by module global and the Sim
+// reaches it by config). CAMPS order is a determinism contract: append, never
+// reorder, since the Sim draws the shared Rng in array order.
+export interface WorldContent {
+  zones: ZoneDef[];
+  camps: CampDef[];
+  npcs: Record<string, NpcDef>;
+  groundObjects: GroundObjectDef[];
+  roads: { x: number; z: number }[][];
+  props: ZonePropsDef;
+  playerStart: { x: number; z: number };
+  // Heightfield edits applied inside terrainHeight(). Absent/empty for the
+  // built-in world, so its heightfield stays byte-identical.
+  terrainEdits?: HeightStamp[];
+  // Freely placed GLB models (editor). Rendered by the placed-asset instancer;
+  // records with collideRadius also feed the sim's static colliders.
+  placements?: PlacedAsset[];
+  // Invisible blocker walls (editor). Collision-only OBBs in the sim's static
+  // colliders; never rendered. Absent for the built-in world.
+  blockers?: BlockerDef[];
+  // 2D biome paint overriding terrain shape (sim) and color (render).
+  biomePaint?: BiomePaint;
+  // Water surface height for this map; absent = the built-in WATER_LEVEL (-4.5).
+  // Read through waterLevel() in src/sim/world.ts, never directly.
+  waterLevel?: number;
+}
+
 export interface MoveInput {
   forward: boolean;
   back: boolean;
@@ -2177,6 +2615,11 @@ export interface SimConfig {
   // The real hosts (offline client, online server) set this; tests and the RL
   // env keep the legacy base-world spawn, so the dormant world stays testable.
   hollowStart?: boolean;
+  // Offline play-test: a custom world to run instead of the built-in one. The Sim
+  // ctor reads spawns from here; render/terrain read it via the data.ts registry,
+  // so callers that set this MUST also call setActiveWorldContent() with content
+  // whose terrain-relevant fields are identical (see the sim.ts ctor invariant).
+  world?: WorldContent;
 }
 
 export function emptyMoveInput(): MoveInput {
@@ -2379,20 +2822,26 @@ export function rageFromTaking(damage: number, attackerLevel: number): number {
   return damage / (Math.max(1, attackerLevel) * 1.5);
 }
 
-// Attacking a target ABOVE your level adds a steep miss penalty (extra miss %),
-// tuned so +2 is ~19% and +4 is ~85% miss: fighting way-above-level enemies is meant
-// to be near-futile. The curve approximates 2.5 * diff^2.5, but is stored as an integer
-// table (level diffs are always integers) so it stays bit-for-bit deterministic across
-// engines — Math.pow with a fractional exponent is not guaranteed identical browser vs node.
-//   +1 -> 2.5   +2 -> 14   +3 -> 39   +4 -> 80   (+5 and beyond saturate past the clamp)
-const ABOVE_LEVEL_MISS_PCT = [0, 2.5, 14, 39, 80];
+// Attacking a target ABOVE your level adds a miss/resist penalty (extra %) on top of
+// the base miss (5%) / resist (4%). It ramps with the level gap but is CAPPED so even
+// far-above content (Heroic delves run enemies at +3) never reads as a coin flip: the
+// penalty tops out at 21, so melee miss maxes at ~26% and spell resist at ~25%. Stored
+// as an integer table (level diffs are always integers) so it stays bit-for-bit
+// deterministic across engines. Beyond the last entry the penalty SATURATES at the cap
+// (it does not keep climbing). Gear Hit rating (combat/hit_rating.ts) then closes the
+// remainder of this penalty back toward 0; see swingMissChance/spell_resist.ts.
+//   +1 -> 2.5   +2 -> 14   +3 -> 21   (+4 and beyond hold at 21)
+const ABOVE_LEVEL_MISS_PCT = [0, 2.5, 14, 21];
 function aboveLevelMissPct(diff: number): number {
   if (diff <= 0) return 0;
-  return diff < ABOVE_LEVEL_MISS_PCT.length ? ABOVE_LEVEL_MISS_PCT[diff] : 100;
+  return diff < ABOVE_LEVEL_MISS_PCT.length
+    ? ABOVE_LEVEL_MISS_PCT[diff]
+    : ABOVE_LEVEL_MISS_PCT[ABOVE_LEVEL_MISS_PCT.length - 1];
 }
 
 // Spell hit by level difference (target - caster): 96% at equal level, a gentle
-// +1%/level bonus below you, and the steep above-level penalty above. cap 99%, floor 5%.
+// +1%/level bonus below you, and the capped above-level penalty above (resist tops
+// out at ~25%). cap 99%, floor 5%.
 export function spellHitChance(casterLevel: number, targetLevel: number): number {
   const diff = targetLevel - casterLevel;
   const hit = diff <= 0 ? 96 + -diff * 1 : 96 - aboveLevelMissPct(diff);
@@ -2400,7 +2849,7 @@ export function spellHitChance(casterLevel: number, targetLevel: number): number
 }
 
 // Melee miss vs target by level difference: 5% base, a gentle -0.2%/level below you,
-// and the steep above-level penalty above. cap 95%, floor 0.5%.
+// and the capped above-level penalty above (miss tops out at ~26%). cap 95%, floor 0.5%.
 export function meleeMissChance(attackerLevel: number, targetLevel: number): number {
   const diff = targetLevel - attackerLevel;
   const miss = diff > 0 ? 5 + aboveLevelMissPct(diff) : 5 + diff * 0.2;
@@ -2422,7 +2871,11 @@ export function swingMissChance(attacker: Entity, target: Entity): number {
   const miss = meleeMissChance(attacker.level, target.level);
   const mobAttacker = attacker.kind === 'mob' && attacker.hostile && attacker.ownerId === null;
   const playerSide = target.kind === 'player' || target.ownerId !== null;
-  return mobAttacker && playerSide ? Math.min(miss, MOB_VS_PLAYER_MAX_MISS) : miss;
+  if (mobAttacker && playerSide) return Math.min(miss, MOB_VS_PLAYER_MAX_MISS);
+  // Player/pet -> mob keeps the full above-level scaling, minus the attacker's gear
+  // Hit rating (attacker.hitBonus, 0 for anything without hit gear so ungeared draws
+  // are unchanged), floored at 0 so a hit-capped attacker can reach 0% miss.
+  return Math.max(0, miss - attacker.hitBonus);
 }
 
 export function armorReduction(armor: number, attackerLevel: number): number {

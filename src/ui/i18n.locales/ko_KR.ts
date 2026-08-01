@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1052,6 +1051,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hud.prompts.openTrade': '거래 열기',
   'hud.prompts.duelRequest': '{name}님이 결투를 신청했습니다!',
   'hud.prompts.acceptDuel': '결투 수락',
+  'hud.prompts.readyCheckStart': '{name}님이 준비 확인을 시작했습니다.',
+  'hud.prompts.markReady': '준비 완료',
   'hud.prompts.decline': '거절',
   'hud.combat.floatingMiss': '빗나감',
   'hud.combat.floatingDodge': '회피',
@@ -1077,6 +1078,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': '{name}의 채팅을 차단합니다.',
   'hud.system.noLongerIgnoring': '{name}을 더 이상 차단하지 않습니다.',
   'hud.system.playerNotNearby': '그 플레이어는 근처에 없습니다.',
+  'hud.system.playerInfoNotFound': '해당 이름의 캐릭터를 찾을 수 없습니다.',
   'hud.system.duelCountdown': '결투가 {seconds}초 후 시작됩니다...',
   'hud.system.duelEndBanner': '{winner}님이 결투에서 {loser}님을 이겼습니다!',
   'hud.system.duelEndLog': '{winner}님이 결투에서 {loser}님을 이겼습니다.',
@@ -1612,6 +1614,95 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '{item} 탐욕',
   'itemUi.lootRoll.passAria': '{item} 포기',
   'itemUi.lootRoll.everyonePassed': '모두 {item}을(를) 포기했습니다.',
+  'entities.abilities.chain_heal.name': '연쇄 치유',
+  'entities.abilities.chain_heal.description':
+    '우호적인 대상을 크게 치유한 후, 최대 2명의 주변 아군에게 도약하며 도약할 때마다 치유량이 50%씩 감소합니다.',
+  'entities.abilities.crusader_strike.name': '성전사의 일격',
+  'entities.abilities.crusader_strike.description':
+    '대상에게 무기 피해와 추가로 신성 피해 24를 입힙니다.',
+  'entities.abilities.metamorphosis.name': '공포의 상',
+  'entities.abilities.metamorphosis.description':
+    '20초 동안 무시무시한 악마로 변신하여 주문 피해가 20%, 시전 속도가 20% 증가합니다. 당신의 악마는 피해 50%와 시전 속도 20%를 얻습니다.',
+  'entities.abilities.holy_shock.name': '신성 충격',
+  'entities.abilities.holy_shock.description':
+    '신성한 기운으로 우호적인 대상을 충격하여 치유하거나, 적에게 신성 피해를 입힙니다.',
+  'entities.abilities.holy_shield.name': '신성한 벽',
+  'entities.abilities.holy_shield.description':
+    '적에게 광휘의 방패를 던져 신성 피해를 입히고 주변의 적 2명에게 튕겨나갑니다.',
+  'entities.abilities.bestial_wrath.name': '포효하는 분노',
+  'entities.abilities.bestial_wrath.description':
+    '15초 동안 야수의 분노에 빠져 공격력이 20%, 펫의 피해량이 100% 증가합니다.',
+  'entities.abilities.trueshot_aura.name': '조준의 오라',
+  'entities.abilities.trueshot_aura.description':
+    '30분 동안 주변 아군을 격려하여 공격력을 10% 증가시킵니다.',
+  'entities.abilities.wyvern_sting.name': '와이번의 독침',
+  'entities.abilities.wyvern_sting.description':
+    '원거리에서 적을 찔러 최대 4초 동안 무력화시킵니다. 피해를 입으면 효과가 해제됩니다.',
+  'entities.abilities.arcane_power.name': '비전 쇄도',
+  'entities.abilities.arcane_power.description':
+    '10초 동안 주문 피해가 20%, 주문 가속이 10% 증가합니다.',
+  'entities.abilities.combustion.name': '화염구동',
+  'entities.abilities.combustion.description': '15초 동안 주문 치명타 확률이 50% 증가합니다.',
+  'entities.abilities.icy_veins.name': '얼음 혈관',
+  'entities.abilities.icy_veins.description':
+    '10초 동안 주문 가속이 30% 증가하며 시전 차단과 시전 지연을 방지합니다.',
+  'entities.abilities.cold_blood.name': '냉정한 살의',
+  'entities.abilities.cold_blood.description':
+    '살의를 집중시켜 다음 공격이 반드시 치명타가 됩니다.',
+  'entities.abilities.blade_flurry.name': '칼날 회오리',
+  'entities.abilities.blade_flurry.description':
+    '칼날의 소용돌이를 일으켜 12초 동안 공격 속도가 20% 증가합니다.',
+  'entities.abilities.hemorrhage.name': '붉은 리본',
+  'entities.abilities.hemorrhage.description':
+    '무기 피해와 출혈 효과로 적을 공격하여 12초 동안 출혈 피해를 입히고 출혈 피해를 40% 증가시킵니다. 연계 점수 1점을 획득합니다.',
+  'entities.abilities.power_infusion.name': '축복 주입',
+  'entities.abilities.power_infusion.description':
+    '우호적인 대상에게 힘을 불어넣어 15초 동안 주문 가속을 20% 증가시킵니다.',
+  'entities.abilities.holy_nova.name': '신성한 폭발',
+  'entities.abilities.holy_nova.description':
+    '신성한 광채의 폭발을 일으켜 주변 아군을 치유하고 주변 적에게 피해를 입힙니다.',
+  'entities.abilities.shadowform.name': '황혼의 형상',
+  'entities.abilities.shadowform.description':
+    '그림자 형상으로 변하여 그림자 피해가 15% 증가하며, 원래 모습으로 돌아갈 때까지 유지됩니다. 치유 주문을 시전하면 형상이 해제됩니다. 다시 시전하면 원래 모습으로 돌아갑니다.',
+  'entities.abilities.elemental_mastery.name': '원시 지배',
+  'entities.abilities.elemental_mastery.description':
+    '폭풍의 힘을 불러와 다음 주문을 즉시 시전합니다.',
+  'entities.abilities.siphon_life.name': '생명 착취',
+  'entities.abilities.siphon_life.description':
+    '적에게서 생명력을 흡수하여 30초 동안 그림자 피해를 입히고 입힌 피해만큼 자신을 치유합니다.',
+  'entities.abilities.conflagrate.name': '점화',
+  'entities.abilities.conflagrate.description': '적에게 걸린 제물을 소모하여 화염 피해를 입힙니다.',
+  'entities.abilities.moonkin_form.name': '달빛날개 형상',
+  'entities.abilities.moonkin_form.description':
+    '무시무시한 달빛수호자로 변신하여 주문 피해가 20%, 방어도가 50% 증가합니다. 원래 모습으로 돌아갈 때까지 유지됩니다. 다시 시전하면 시전자 형상으로 돌아갑니다.',
+  'entities.abilities.feral_charge.name': '원시의 쇄도',
+  'entities.abilities.feral_charge.description':
+    '원시의 힘을 발산합니다. 표범 형상에서는 10초 동안 기력 재생이 100% 증가합니다. 곰 형상에서는 즉시 분노 50을 생성합니다.',
+  'entities.abilities.swiftmend.name': '신속한 치유',
+  'entities.abilities.swiftmend.description':
+    '우호적인 대상에게 걸린 지속 치유 효과를 소모하여 치유합니다.',
+  'entities.abilities.pummel.name': '턱관절 강타',
+  'entities.abilities.pummel.description':
+    '대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다.',
+  'entities.abilities.kick.name': '발차기',
+  'entities.abilities.kick.description':
+    '대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다.',
+  'entities.abilities.counterspell.name': '주문 차단',
+  'entities.abilities.counterspell.description':
+    '대상의 시전을 무효화하고 6초 동안 해당 계열 주문 시전을 막습니다.',
+  'entities.abilities.counter_shot.name': '제압 사격',
+  'entities.abilities.counter_shot.description':
+    '즉각적인 사격으로 대상의 시전을 차단하고 해당 계열을 4초 동안 봉쇄합니다.',
+  'entities.abilities.rebuke.name': '질책',
+  'entities.abilities.rebuke.description':
+    '대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다.',
+  'entities.abilities.skull_bash.name': '박치기',
+  'entities.abilities.skull_bash.description':
+    '돌진하여 박치기로 대상의 시전을 차단하고 해당 계열을 4초 동안 봉쇄합니다.',
+  'entities.abilities.spell_lock.name': '주문 봉인',
+  'entities.abilities.spell_lock.description':
+    '시전 중인 대상을 침묵시키고 5초 동안 해당 계열 주문 시전을 막습니다.',
+  'itemUi.lootRoll.winnerOffline': '{item}의 당첨자가 오프라인 상태여서 시체로 반환되었습니다.',
   'entities.abilities.heroic_strike.name': '영웅의 일격',
   'entities.abilities.heroic_strike.description':
     '강력한 공격으로 근접 피해가 {damage}만큼 증가합니다. 다음 무기 공격 시 발동됩니다.',
@@ -1651,7 +1742,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '방어 전투 태세입니다. 위협 수준을 30% 더 생성하지만, 주고받는 피해가 10% 감소합니다. 다시 시전하면 태세를 해제합니다.',
   'entities.abilities.sunder_armor.name': '방어구 가르기',
   'entities.abilities.sunder_armor.description':
-    '대상의 방어구를 가르고 적용마다 {damage}만큼 감소시킵니다. 최대 5번 중첩됩니다. 많은 위협 수준을 생성합니다.',
+    '대상의 방어구를 가르고 적용마다 2%만큼 감소시킵니다. 최대 5번 중첩됩니다. 많은 위협 수준을 생성합니다.',
   'entities.abilities.taunt.name': '도발',
   'entities.abilities.taunt.description':
     '대상을 도발합니다. 자신의 위협 수준이 대상이 가장 증오하는 적과 같아지며, 3초 동안 자신을 공격하게 만듭니다.',
@@ -2147,6 +2238,15 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': '황실 황금',
   'entities.items.vanguard_azure_armor_plate.name': '선봉대 하늘빛',
   'entities.items.vanguard_chrome_armor_plate.name': '선봉대 크롬',
+  'entities.items.enchanting_dust.name': '마법부여 가루',
+  'entities.items.scroll_minor_might.name': '소소한 힘의 두루마리',
+  'entities.items.scroll_minor_vigor.name': '소소한 활력의 두루마리',
+  'entities.items.scroll_minor_focus.name': '소소한 집중의 두루마리',
+  'entities.items.scroll_minor_agility.name': '소소한 민첩의 두루마리',
+  'entities.enchants.enchant_minor_might.name': '소소한 힘',
+  'entities.enchants.enchant_minor_vigor.name': '소소한 활력',
+  'entities.enchants.enchant_minor_focus.name': '소소한 집중',
+  'entities.enchants.enchant_minor_agility.name': '소소한 민첩',
   'entities.items.deacons_cleaver.name': '부제의 도끼',
   'entities.items.staff_of_drowned_prayers.name': '익사한 기도의 지팡이',
   'entities.items.mistbinder_kris.name': '안개결속 크리스',
@@ -2472,6 +2572,14 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.tidewatcher_ondrel.title': '조수지기',
   'entities.npcs.tidewatcher_ondrel.greeting':
     '이 호수는 달빛을 마시고, {className}, 익사한 자들을 되돌려 보낸다네. 나는 서른 밤 동안 저 관문을 지켜보았지 — 그리고 오늘 밤, 마침내 그것이 열렸네.',
+  'entities.quests.q_prof_intro.title': '배울 가치가 있는 기술',
+  'entities.quests.q_prof_intro.text':
+    '모든 기술은 손톱 밑의 흙에서 시작되지, {playerName}. 마을 동쪽 숲에서 거미 다리 2개를 모아 오게. 그런 다음 내 대장간에서 신병의 튜닉을 만들어 보게. 재료가 되는 뼛조각은 오는 길에 충분히 주울 수 있을 걸세. 그리고 분해해서 비전 가루로 만들 만한 것도 하나 가져오게. 채집하고, 제작하고, 분해할 수 있음을 보여주면 기술의 가치를 알려주지.',
+  'entities.quests.q_prof_intro.completion':
+    '바로 그게 배울 가치가 있는 기술이지. 계속 대장간에 붙어 있게, {playerName}. 언젠가 자네는 말굽을 박으면서 동시에 검에 마법을 부여하게 될 걸세.',
+  'entities.quests.q_prof_intro.objectives.0.label': '거미 다리 채집',
+  'entities.quests.q_prof_intro.objectives.1.label': '신병의 튜닉 제작',
+  'entities.quests.q_prof_intro.objectives.2.label': '비전 가루',
   'entities.quests.q_wolves.title': '문 앞의 늑대들',
   'entities.quests.q_wolves.text':
     '숲늑대들이 북쪽 길의 여행자들을 물어뜯고 있습니다, {playerName}. 8마리를 처치해 이스트브룩이 숨 돌리게 해 주십시오.',
@@ -2995,6 +3103,26 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_someone_your_own_size.completion':
     '있어 줬군요. 그녀는 별거 아니었다고 하겠지만, 별거였어요, 정말이에요. 자, 이건 당신 거예요. 내가 아끼는 버드나무에서 딴 잔가지. 아무 쓸모도 없어요. 그저 아무도 시키지 않았는데도 당신이 친절했다는 걸 기억할 뿐이죠.',
   'entities.quests.q_someone_your_own_size.objectives.0.label': '오를라 곁에 잠시 앉음',
+  // PHAA-614/PHAA-699: Sister Shade questline quests 2 and 4 plus the two NPCs.
+  'entities.npcs.withered_planting.name': '시들어가는 묘목밭',
+  'entities.npcs.withered_planting.title': '부족의 오래된 버드나무',
+  'entities.npcs.withered_planting.greeting':
+    '마른 뿌리, 마른 잎. 무엇이 되려 했든 아직은 되지 못했고, 오랜 세월을 그렇게 기다려 왔다.',
+  'entities.npcs.buried_root.name': '묻힌 뿌리',
+  'entities.npcs.buried_root.title': '사당 아래',
+  'entities.npcs.buried_root.greeting': '메말랐다. 이 아래 그 무엇 못지않게 메말랐다.',
+  'entities.quests.q_the_long_way_around.title': '멀리 돌아가는 길',
+  'entities.quests.q_the_long_way_around.text':
+    '오래된 버드나무 위쪽에 부족이 반쯤 짓다 만 묘목밭이 있어. 제대로 된 물 한 번을 못 받아서 죽어가고 있지. 그 오르막은 이제 내가 오르지 못하지만, 자네에겐 그럴 다리가 있잖아. 물뿌리개를 가져가게. 가지를 조심하고. 정직하게 대하면 가지는 자네를 지탱해 준다네.',
+  'entities.quests.q_the_long_way_around.completion':
+    '이제 살아날 걸세. 바깥의 그 모든 일에 비하면 오르막 한 번, 물 한 번이 뭐 대단하겠나 싶겠지. 대단한 건 아니야. 다만 자네가 물을 준 그 하나에게는 그것이 전부라네.',
+  'entities.quests.q_the_long_way_around.objectives.0.label': '버드나무 길을 따라 물을 나르기',
+  'entities.quests.q_the_watering_can.title': '물뿌리개',
+  'entities.quests.q_the_watering_can.text':
+    '자네에게 자잘한 일들을 부탁했고, 자네는 한 번도 이유를 묻지 않고 그 모두를 해 주었지. 이게 마지막일세. 작아 보이지만 작지 않아. 내 물뿌리개를 사당 아래로 가져가, 거기 묻혀 있는 그것에게 물을 주게. 그것은 무언가를 요구받는 대신 무언가를 받기를, 아주 오랫동안 기다려 왔다네.',
+  'entities.quests.q_the_watering_can.completion':
+    '자네가 해냈군. 물론 해냈지. 그건 물이었어, 알겠나. 그 모든 물, 자네가 호숫가에서 나를 발견하고 아무렇지 않게 여기던 그날까지 거슬러 올라가는 물이었지. 같은 물, 같은 약속을 한 번 더 지켜 준 거야. 고맙네. 이제 가서 이 세상을 다정하게 대하게. 세상을 바꿔 온 건 오직 그것뿐이니까.',
+  'entities.quests.q_the_watering_can.objectives.0.label': '묻힌 뿌리에 물을 주기',
   'entities.npcs.sexton_faddick.title': '떠도는 관리인',
   'entities.npcs.sexton_faddick.greeting':
     '패딕이오. 아직 지켜야 할 사당이 있는 한, 무덤지기 노릇을 하지. 나는 어디에도 머물지 않소, 그저 지킬 뿐이오. 밤마다 늑대가 묵정밭의 가축 떼 주위를 맴도는데, 오래 맴돌다 보면 제가 맴도는 것의 모양을 익히게 되는 법이오. 그저 가축 떼로 남는 편이 낫겠지.',
@@ -3504,7 +3632,6 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/초',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s}초',
-  'hudChrome.mobile.autorun': '자동 달리기',
   'hudChrome.mobile.haptics': '진동',
   'hudChrome.mobile.hapticsOff': '진동 꺼짐',
   'hudChrome.mobile.jump': '점프',
@@ -4840,6 +4967,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': '납골당 경비 투구',
   'entities.items.reliquary_shoulder.name': '부서진 어깨보호구',
   'entities.items.reliquary_gloves_rog.name': '뼈수호 손보호구',
+  'entities.items.delve_heroic_mark.name': '영웅 성물실 증표',
+  'entities.items.delve_heroic_mark.flavorText':
+    '성물실 수호자들이 발행한 인장. 영웅 병참장교에게 교환하면 성물실급 장비를 받을 수 있다.',
   'entities.items.deacon_reliquary_helm.name': '부제의 성물실 투구',
   'entities.items.varric_shadow_cowl.name': '바릭의 그림자 두건',
   'entities.items.cave_morsel.name': '동굴 고기 조각',
@@ -4877,9 +5007,43 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '그것이 자라난 나무가 움직임을 멈춘 지 오래되었어도, 만지면 따뜻하다.',
   'entities.items.bloomcrown_pauldrons.name': '만개한 왕관 견갑',
   'entities.items.verdantguard_mantle.name': '상록 수호자의 망토',
+  'entities.items.bramblewar_warhelm.name': '가시전 머리',
+  'entities.items.bramblewar_warspaulders.name': '가시전 어깨',
+  'entities.items.bramblewar_warplate.name': '가시전 가슴',
+  'entities.items.bramblewar_girdle.name': '가시전 허리',
+  'entities.items.bramblewar_legguards.name': '가시전 다리',
+  'entities.items.bramblewar_gauntlets.name': '가시전 손',
+  'entities.items.bramblewar_sabatons.name': '가시전 발',
+  'entities.items.thornbound_crown.name': '가시결속 머리',
+  'entities.items.thornbound_spaulders.name': '가시결속 어깨',
+  'entities.items.thornbound_hauberk.name': '가시결속 가슴',
+  'entities.items.thornbound_waistguard.name': '가시결속 허리',
+  'entities.items.thornbound_legmail.name': '가시결속 다리',
+  'entities.items.thornbound_handguards.name': '가시결속 손',
+  'entities.items.thornbound_greaves.name': '가시결속 발',
+  'entities.items.nettlestalker_cowl.name': '쐐기추적 머리',
+  'entities.items.nettlestalker_shoulderguards.name': '쐐기추적 어깨',
+  'entities.items.nettlestalker_harness.name': '쐐기추적 가슴',
+  'entities.items.nettlestalker_waistband.name': '쐐기추적 허리',
+  'entities.items.nettlestalker_legguards.name': '쐐기추적 다리',
+  'entities.items.nettlestalker_grips.name': '쐐기추적 손',
+  'entities.items.nettlestalker_treads.name': '쐐기추적 발',
+  'entities.items.mossweave_cowl.name': '이끼직 머리',
+  'entities.items.mossweave_mantle.name': '이끼직 어깨',
+  'entities.items.mossweave_raiment.name': '이끼직 가슴',
+  'entities.items.mossweave_cord.name': '이끼직 허리',
+  'entities.items.mossweave_legwraps.name': '이끼직 다리',
+  'entities.items.mossweave_handwraps.name': '이끼직 손',
+  'entities.items.mossweave_slippers.name': '이끼직 발',
+  'entities.items.last_bloom_greatblade.name': '최후의 꽃 대검',
+  'entities.items.thornbite_razor.name': '가시물기 면도날',
+  'entities.items.heartwood_warstaff.name': '심재 전투봉',
   'entities.mobs.palefeeder.name': '창백포식자',
   'entities.mobs.rootmaw.name': '뿌리아가리',
   'entities.mobs.the_witness_root.name': '증언의 뿌리',
+  'entities.mobs.greenpaw_cutting_dawn.name': '초록발의 꺾꽂이',
+  'entities.mobs.greenpaw_cutting_moss.name': '초록발의 꺾꽂이',
+  'entities.mobs.greenpaw_cutting_ash.name': '초록발의 꺾꽂이',
   'entities.npcs.brother_halven.greeting': '아래의 성물실이 또 움직였소.',
   'entities.npcs.brother_halven.name': '브라더 할벤',
   'entities.npcs.brother_halven.title': '성물실 관리인',
@@ -5085,7 +5249,15 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'sim.delve.wayOutNotOpen': '나가는 길이 아직 열리지 않았습니다.',
   'sim.delve.whileTrading': '거래 중에는 탐굴에 진입할 수 없습니다.',
   'sim.gathering.alreadyHarvested': '이 시체는 이미 채집되었습니다.',
+  'sim.collections.notFound': '그것은 존재하지 않습니다.',
+  'sim.collections.tooFar': '너무 멀리 떨어져 있습니다.',
   'sim.gathering.nothingToHarvest': '그 시체에서는 채집할 것이 없습니다.',
+  'sim.greenpawCutting.alreadyPlanted': '이미 꺾꽂이를 심었다. 자랄 때까지 기다려라.',
+  'sim.greenpawCutting.needHomestead': '이것을 심으려면 먼저 개척지가 있어야 한다.',
+  'sim.greenpawCutting.tooFar': '이것을 심으려면 자신의 개척지에 있어야 한다.',
+  'sim.greenpawCutting.planted': '개척지에 꺾꽂이를 심었다. 시간을 두고 기다려라.',
+  'sim.greenpawCutting.grown': '꺾꽂이가 자라 동반자가 되었다. 이제 너를 따라다닌다.',
+  'sim.dailyRewards.claimed': '일일 보상을 받았습니다.',
   'sim.hearth.emberbulb1': '이거야말로 제대로 된 땔감이지… 보게, 그녀가 숨 쉬는 걸, 친구…',
   'sim.hearth.emberbulb2': '화로는 천천히, 깨끗하게 태우는 걸 좋아하지, 그녀가 딱 그렇다네…',
   'sim.hearth.emberbulb3': '불을 지피고 연기도 났군… 파장이 벌써 열리기 시작했어, 느껴지는군.',
@@ -5145,6 +5317,10 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'sim.lockpick.tierMedium': '중급',
   'sim.lockpick.tierPremium': '최상급',
   'sim.lockpick.toolSlips': '도구가 이 자물쇠에서 미끄러집니다.',
+  'sim.readyCheck.alreadyInProgress': '이미 준비 확인이 진행 중입니다.',
+  'sim.readyCheck.mustBeInParty': '준비 확인을 시작하려면 파티에 있어야 합니다.',
+  'sim.readyCheck.summary':
+    '준비 확인: 준비 완료 {ready}명, 미준비 {notReady}명, 무응답 {noResponse}명.',
   'delveUi.board.tabDelve': '탐굴',
   'delveUi.shop.price': '증표 {marks}개',
   'delveUi.shop.buyAria': '탐굴 증표 {marks}개로 {item} 구매',
@@ -5235,10 +5411,16 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.auraEffect.reduce.sta': '체력을 {value} 감소시킵니다',
   'hudChrome.auraEffect.reduce.spi': '정신력을 {value} 감소시킵니다',
   'hudChrome.auraEffect.reduce.allStats': '모든 능력치를 {value} 감소시킵니다',
+  'hudChrome.auraEffect.increasePct.ap': '공격력을 {pct}% 증가시킵니다',
+  'hudChrome.auraEffect.increasePct.armor': '방어도를 {pct}% 증가시킵니다',
+  'hudChrome.auraEffect.increasePct.int': '지능을 {pct}% 증가시킵니다',
+  'hudChrome.auraEffect.increasePct.sta': '체력을 {pct}% 증가시킵니다',
   'hudChrome.auraEffect.dodge': '회피 확률을 {pct}% 증가시킵니다',
   'hudChrome.auraEffect.dodgeReduce': '회피 확률을 {pct}% 감소시킵니다',
   'hudChrome.auraEffect.armorFlat': '방어도를 {value} 감소시킵니다',
   'hudChrome.auraEffect.armorFlatStacks': '방어도를 {value} 감소시킵니다 ({stacks}중첩)',
+  'hudChrome.auraEffect.armorPct': '방어도를 {pct}% 감소시킵니다',
+  'hudChrome.auraEffect.armorPctStacks': '방어도를 {pct}% 감소시킵니다 ({stacks}중첩)',
   'hudChrome.auraEffect.physVuln': '받는 물리 피해를 {pct}% 증가시킵니다',
   'hudChrome.auraEffect.mortalWound': '받는 치유량을 {pct}% 감소시킵니다',
   'hudChrome.auraEffect.vulnerability': '받는 피해를 {pct}% 증가시킵니다',
@@ -5428,6 +5610,15 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.npcJournal.next': '다음 페이지',
   'hudChrome.npcJournal.close': '일지 닫기',
   'hudChrome.npcJournal.title': '{name}의 일지',
+  'dailyRewardsUi.menuButton': '일일 보상',
+  'dailyRewardsUi.window.title': '일일 보상',
+  'dailyRewardsUi.window.close': '일일 보상 닫기',
+  'dailyRewardsUi.window.claim': '받기',
+  'dailyRewardsUi.window.claimAria': '오늘의 보상 받기',
+  'dailyRewardsUi.window.claimed': '받았습니다. 내일 다시 오세요.',
+  'dailyRewardsUi.window.locked': '현재 이 계정에서는 일일 보상을 사용할 수 없습니다.',
+  'dailyRewardsUi.window.hint': '하루에 한 번 받을 수 있습니다. 하루를 놓쳐도 손해는 없습니다.',
+  'dailyRewardsUi.cell.today': '오늘',
   'housingUi.claimedBanner': '당신은 이 부지를 보금자리로 인정했습니다.',
   'housingUi.ownerBanner': '여기는 {name}의 보금자리입니다.',
   'housingUi.prompt.claim': '이 부지 인정하기',
@@ -5580,4 +5771,39 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.gathering.spore': '포자',
   'hudChrome.gathering.toolTier': '{tier}단계 도구',
   'hudChrome.gathering.toolNone': '도구 없음',
+  'hudChrome.crafting.title': '제작',
+  'hudChrome.crafting.close': '제작 닫기',
+  'hudChrome.crafting.tabRecipes': '제조법',
+  'hudChrome.crafting.tabEnchants': '마법부여',
+  'hudChrome.crafting.craftButton': '제작',
+  'hudChrome.crafting.craftAria': '{item} 제작',
+  'hudChrome.crafting.disenchantSectionTitle': '마법 해제',
+  'hudChrome.crafting.disenchantButton': '마법 해제',
+  'hudChrome.crafting.disenchantAria': '{item} 마법 해제',
+  'hudChrome.crafting.disenchantEmpty': '마법을 해제할 수 있는 아이템이 없습니다.',
+  'hudChrome.crafting.applyButton': '적용',
+  'hudChrome.crafting.applyAria': '{slot}에 {enchant} 적용',
+  'hudChrome.crafting.activeTag': '활성',
+  'hudChrome.crafting.needScroll': '{scroll} 필요',
+  'hudChrome.crafting.craftType.weaponcrafting': '무기 제작',
+  'hudChrome.crafting.craftType.armorcrafting': '방어구 제작',
+  'hudChrome.crafting.craftType.tailoring': '재봉',
+  'hudChrome.crafting.craftType.leatherworking': '가죽 세공',
+  'hudChrome.crafting.craftType.cooking': '요리',
+  'hudChrome.crafting.craftType.alchemy': '연금술',
+  'hudChrome.crafting.craftType.enchanting': '마법부여',
+  'hudChrome.warfare.ratingLabel': '전의',
+  'hudChrome.warfare.balance': '명예: {amount}',
+  'hudChrome.warfare.honorAmount': '명예 {amount}',
+  'hudChrome.warfare.honorFloat': '+{amount} 명예',
+  'hudChrome.warfare.honorGain': '+{amount} 명예 ({reason})',
+  'hudChrome.warfare.notEnoughHonor': '명예가 부족합니다.',
+  'hudChrome.warfare.reasons.arenaWin': '투기장 승리',
+  'hudChrome.warfare.reasons.fiestaKill': '피에스타 처치',
+  'hudChrome.warfare.reasons.fiestaComplete': '피에스타 경기',
+  'hudChrome.warfare.reasons.fiestaWin': '피에스타 승리',
+  'hudChrome.hitRating.ratingLabel': '적중 레이팅',
+  'entities.npcs.bramble.name': '브램블',
+  'entities.npcs.bramble.title': '명예 보급관',
+  'entities.npcs.bramble.greeting': '모래 경기장은 모든 승리를 기억한다. 명예를 현명하게 써라.',
 };

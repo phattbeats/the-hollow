@@ -246,7 +246,6 @@ export const zh_TW: EnTranslations = {
       "chat": "跳至聊天"
     },
     "mobile": {
-      "autorun": "自動奔跑",
       "jump": "跳躍",
       "leaderboard": "排行榜",
       "nameplates": "名條",
@@ -720,10 +719,18 @@ export const zh_TW: EnTranslations = {
         "spi": "精神降低 {value}",
         "allStats": "所有屬性降低 {value}"
       },
+      "increasePct": {
+        "ap": "攻擊強度提高 {pct}%",
+        "armor": "護甲提高 {pct}%",
+        "int": "智力提高 {pct}%",
+        "sta": "耐力提高 {pct}%"
+      },
       "dodge": "閃躲機率提高 {pct}%",
       "dodgeReduce": "閃避機率降低 {pct}%",
       "armorFlat": "護甲降低 {value}",
       "armorFlatStacks": "護甲降低 {value}（{stacks} 層）",
+      "armorPct": "護甲降低 {pct}%",
+      "armorPctStacks": "護甲降低 {pct}%（{stacks} 層）",
       "mortalWound": "受到的治療降低 {pct}%",
       "vulnerability": "受到的傷害提高 {pct}%",
       "physVuln": "受到的物理傷害提高 {pct}%",
@@ -990,6 +997,51 @@ export const zh_TW: EnTranslations = {
       "spore": "孢子",
       "toolTier": "{tier}級工具",
       "toolNone": "無工具"
+    },
+    "crafting": {
+      "title": "製作",
+      "close": "關閉製作",
+      "tabRecipes": "配方",
+      "tabEnchants": "附魔",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "製作",
+      "craftAria": "製作{item}",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "分解",
+      "disenchantButton": "分解",
+      "disenchantAria": "分解{item}",
+      "disenchantEmpty": "沒有可分解的物品。",
+      "applyButton": "施加",
+      "applyAria": "將{enchant}施加到{slot}",
+      "activeTag": "已生效",
+      "needScroll": "需要{scroll}",
+      "craftType": {
+        "weaponcrafting": "武器鍛造",
+        "armorcrafting": "護甲鍛造",
+        "tailoring": "裁縫",
+        "leatherworking": "製皮",
+        "cooking": "烹飪",
+        "alchemy": "煉金",
+        "enchanting": "附魔"
+      }
+    },
+    "warfare": {
+      "ratingLabel": "戰意",
+      "balance": "榮譽：{amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} 榮譽",
+      "honorFloat": "+{amount} 榮譽",
+      "honorGain": "+{amount} 榮譽（{reason}）",
+      "notEnoughHonor": "榮譽不足。",
+      "reasons": {
+        "arenaWin": "競技場勝利",
+        "fiestaKill": "狂歡擊倒",
+        "fiestaComplete": "狂歡比賽",
+        "fiestaWin": "狂歡勝利"
+      }
+    },
+    "hitRating": {
+      "ratingLabel": "命中等級"
     }
   },
   "mailUi": {
@@ -2421,6 +2473,13 @@ export const zh_TW: EnTranslations = {
       "nothingToHarvest": "這具屍體沒有什麼可以採集的。",
       "alreadyHarvested": "這具屍體已經被採集過了。"
     },
+    "dailyRewards": {
+      "claimed": "你領取了每日獎勵。"
+    },
+    "collections": {
+      "notFound": "那個東西不存在。",
+      "tooFar": "太遠了。"
+    },
     "hearth": {
       "tooFar": "你得靠近綠掌修士才能餵他。",
       "noItems1": "……夥計，你兩手空空啊。帶點能燒的或能填飽肚子的東西來，我們再聊。",
@@ -2481,6 +2540,18 @@ export const zh_TW: EnTranslations = {
       "readoutNoHomesteadQuest": "你還沒有家園。先完成綠掌修士的全部差事才能解鎖。",
       "readoutNoHomesteadHint": "你還沒有家園。站在空谷地裡合適的位置，輸入 /homestead claim。",
       "helpLine": "家園：/homestead，/homestead claim。"
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "你已經種下了插枝。給它一些時間成長。",
+      "needHomestead": "你需要先擁有一塊宅地才能種下它。",
+      "tooFar": "你必須在自己的宅地才能種下它。",
+      "planted": "你在自己的宅地種下了插枝。耐心等待吧。",
+      "grown": "你的插枝已經長成了一隻夥伴。牠現在會跟隨你。"
+    },
+    "readyCheck": {
+      "mustBeInParty": "你必須在隊伍中才能發起準備檢查。",
+      "alreadyInProgress": "準備檢查已在進行中。",
+      "summary": "準備檢查：{ready} 人已準備，{notReady} 人未準備，{noResponse} 人無回應。"
     }
   },
   "lockpickUi": {
@@ -3322,6 +3393,8 @@ export const zh_TW: EnTranslations = {
       "openTrade": "開啟交易",
       "duelRequest": "{name} 向你發起了決鬥挑戰！",
       "acceptDuel": "接受決鬥",
+      "readyCheckStart": "{name} 發起了準備檢查。",
+      "markReady": "準備",
       "decline": "拒絕"
     },
     "combat": {
@@ -3352,6 +3425,7 @@ export const zh_TW: EnTranslations = {
       "ignoringChat": "已封鎖來自 {name} 的聊天。",
       "noLongerIgnoring": "不再封鎖 {name}。",
       "playerNotNearby": "該玩家不在附近。",
+      "playerInfoNotFound": "找不到該名稱的角色。",
       "duelCountdown": "決鬥將在 {seconds} 秒後開始...",
       "duelEndBanner": "{winner} 在決鬥中擊敗了 {loser}！",
       "duelEndLog": "{winner} 在決鬥中擊敗了 {loser}。",
@@ -3797,6 +3871,22 @@ export const zh_TW: EnTranslations = {
       "stool": "凳子"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "每日獎勵",
+    "window": {
+      "title": "每日獎勵",
+      "close": "關閉每日獎勵",
+      "claim": "領取",
+      "claimAria": "領取今日獎勵",
+      "claimed": "已領取，明天再來。",
+      "locked": "此帳號暫時無法領取每日獎勵。",
+      "hint": "每天可領取一次。錯過一天不會有任何損失。"
+    },
+    "cell": {
+      "today": "今天",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "金",
@@ -3850,6 +3940,7 @@ export const zh_TW: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality}{kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "目前已裝備",
       "ifYouEquip": "裝備後",
       "damageSpeed": "{min} - {max} 傷害 速度 {speed}",
@@ -4016,11 +4107,132 @@ export const zh_TW: EnTranslations = {
       "needAria": "需求 {item}",
       "greedAria": "貪婪 {item}",
       "passAria": "放棄 {item}",
-      "everyonePassed": "所有人都放棄了 {item}。"
+      "everyonePassed": "所有人都放棄了 {item}。",
+      "winnerOffline": "{item}的獲勝者已離線；戰利品已歸還屍體。"
     }
   },
   "entities": {
     "abilities": {
+      "chain_heal": {
+        "name": "治療鏈",
+        "description": "對一名友方目標進行大量治療，然後跳躍至最多2名附近的盟友，每次跳躍治療量降低50%。"
+      },
+      "crusader_strike": {
+        "name": "十字軍打擊",
+        "description": "對目標造成武器傷害加24點神聖傷害。"
+      },
+      "metamorphosis": {
+        "name": "恐懼之相",
+        "description": "變身為可怕的惡魔，持續20秒，法術傷害提高20%，施法速度提高20%。你的惡魔獲得50%傷害提高和20%施法速度提高。"
+      },
+      "holy_shock": {
+        "name": "神聖震擊",
+        "description": "用神聖能量震擊友方目標進行治療，或對敵人造成神聖傷害。"
+      },
+      "holy_shield": {
+        "name": "聖牆",
+        "description": "向敵人投擲神聖聖盾，造成神聖傷害並彈射至2個附近的敵人。"
+      },
+      "bestial_wrath": {
+        "name": "咆哮怒火",
+        "description": "使你陷入野獸狂怒，持續15秒，攻擊強度提高20%，寵物傷害提高100%。"
+      },
+      "trueshot_aura": {
+        "name": "穩射光環",
+        "description": "激勵附近的盟友，攻擊強度提高10%，持續30分鐘。"
+      },
+      "wyvern_sting": {
+        "name": "翼龍釘刺",
+        "description": "從遠處刺向敵人，使其失能最多4秒。受到傷害將解除該效果。"
+      },
+      "arcane_power": {
+        "name": "以太湧動",
+        "description": "法術傷害提高20%，法術急速提高10%，持續10秒。"
+      },
+      "combustion": {
+        "name": "閃焰",
+        "description": "法術暴擊機率提高50%，持續15秒。"
+      },
+      "icy_veins": {
+        "name": "冰脈",
+        "description": "法術急速提高30%，並防止施法被打斷或產生施法後仰，持續10秒。"
+      },
+      "cold_blood": {
+        "name": "殺意冷靜",
+        "description": "凝聚你的殺意，使你的下一次攻擊必定爆擊。"
+      },
+      "blade_flurry": {
+        "name": "劍刃亂舞",
+        "description": "釋放一連串劍刃攻擊，攻擊速度提高20%，持續12秒。"
+      },
+      "hemorrhage": {
+        "name": "紅絲帶",
+        "description": "以武器傷害加流血效果擊中敵人，造成持續12秒的流血傷害，並使流血傷害提高40%。獲得1點連擊點數。"
+      },
+      "power_infusion": {
+        "name": "恩澤",
+        "description": "為友方目標注入力量，使其法術急速提高20%，持續15秒。"
+      },
+      "holy_nova": {
+        "name": "神聖新星",
+        "description": "引發神聖光輝的爆發，治療附近的盟友並傷害附近的敵人。"
+      },
+      "shadowform": {
+        "name": "暮靄形態",
+        "description": "化身闇影形態，使闇影傷害提高15%，直至你變回原形。施放治療法術會解除該形態。再次施放可變回原形。"
+      },
+      "elemental_mastery": {
+        "name": "元素掌控",
+        "description": "召喚風暴之力，使你的下一個法術瞬發。"
+      },
+      "siphon_life": {
+        "name": "汲取生命",
+        "description": "從敵人身上汲取生命，造成持續30秒的闇影傷害並治療你等同於造成的傷害。"
+      },
+      "conflagrate": {
+        "name": "燃燒",
+        "description": "引燃你施放在敵人身上的獻祭效果，造成火焰傷害。"
+      },
+      "moonkin_form": {
+        "name": "月翼形態",
+        "description": "變身為可怕的梟獸，法術傷害提高20%，護甲提高50%。直至你變回原形。再次施放可變回施法者形態。"
+      },
+      "feral_charge": {
+        "name": "原始衝能",
+        "description": "釋放原始衝能。在獵豹形態下，能量回復速度提高100%，持續10秒。在熊形態下，立即產生50點怒氣。"
+      },
+      "swiftmend": {
+        "name": "迅捷治療",
+        "description": "消耗友方目標身上的一個持續治療效果，為其恢復生命值。"
+      },
+      "pummel": {
+        "name": "碎顎",
+        "description": "打斷目標的施法，並使其在4秒內無法施放該系法術。"
+      },
+      "kick": {
+        "name": "重踢",
+        "description": "打斷目標的施法，並使其在4秒內無法施放該系法術。"
+      },
+      "counterspell": {
+        "name": "法術反制",
+        "description": "反制目標的施法，並使其在6秒內無法施放該系法術。"
+      },
+      "counter_shot": {
+        "name": "靜默射擊",
+        "description": "快速射擊，打斷目標的施法並封鎖該系法術4秒。"
+      },
+      "rebuke": {
+        "name": "譴責",
+        "description": "打斷目標的施法，並使其在4秒內無法施放該系法術。"
+      },
+      "skull_bash": {
+        "name": "頭槌",
+        "description": "猛衝頭槌，打斷目標的施法並封鎖該系法術4秒。"
+      },
+      "spell_lock": {
+        "name": "咒縛",
+        "description": "使目標在施法中沉默，並使其在5秒內無法施放該系法術。"
+      },
       "heroic_strike": {
         "name": "英勇打擊",
         "description": "一次強力攻擊，使近戰傷害提高 {damage}。在你的下一次揮擊時觸發。"
@@ -4079,7 +4291,7 @@ export const zh_TW: EnTranslations = {
       },
       "sunder_armor": {
         "name": "破甲攻擊",
-        "description": "撕裂目標的護甲，每次使其降低 {damage}。最多疊加 5 次。產生大量威脅值。"
+        "description": "撕裂目標的護甲，每次使其降低 2%。最多疊加 5 次。產生大量威脅值。"
       },
       "taunt": {
         "name": "嘲諷",
@@ -5177,6 +5389,99 @@ export const zh_TW: EnTranslations = {
       "mistcallers_duffel": {
         "name": "喚霧者的行囊"
       },
+      "bramblewar_warhelm": {
+        "name": "荊棘戰頭部"
+      },
+      "bramblewar_warspaulders": {
+        "name": "荊棘戰肩部"
+      },
+      "bramblewar_warplate": {
+        "name": "荊棘戰胸部"
+      },
+      "bramblewar_girdle": {
+        "name": "荊棘戰腰部"
+      },
+      "bramblewar_legguards": {
+        "name": "荊棘戰腿部"
+      },
+      "bramblewar_gauntlets": {
+        "name": "荊棘戰手部"
+      },
+      "bramblewar_sabatons": {
+        "name": "荊棘戰腳部"
+      },
+      "thornbound_crown": {
+        "name": "荊棘縛頭部"
+      },
+      "thornbound_spaulders": {
+        "name": "荊棘縛肩部"
+      },
+      "thornbound_hauberk": {
+        "name": "荊棘縛胸部"
+      },
+      "thornbound_waistguard": {
+        "name": "荊棘縛腰部"
+      },
+      "thornbound_legmail": {
+        "name": "荊棘縛腿部"
+      },
+      "thornbound_handguards": {
+        "name": "荊棘縛手部"
+      },
+      "thornbound_greaves": {
+        "name": "荊棘縛腳部"
+      },
+      "nettlestalker_cowl": {
+        "name": "蕁麻潛者頭部"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "蕁麻潛者肩部"
+      },
+      "nettlestalker_harness": {
+        "name": "蕁麻潛者胸部"
+      },
+      "nettlestalker_waistband": {
+        "name": "蕁麻潛者腰部"
+      },
+      "nettlestalker_legguards": {
+        "name": "蕁麻潛者腿部"
+      },
+      "nettlestalker_grips": {
+        "name": "蕁麻潛者手部"
+      },
+      "nettlestalker_treads": {
+        "name": "蕁麻潛者腳部"
+      },
+      "mossweave_cowl": {
+        "name": "苔蘚織頭部"
+      },
+      "mossweave_mantle": {
+        "name": "苔蘚織肩部"
+      },
+      "mossweave_raiment": {
+        "name": "苔蘚織胸部"
+      },
+      "mossweave_cord": {
+        "name": "苔蘚織腰部"
+      },
+      "mossweave_legwraps": {
+        "name": "苔蘚織腿部"
+      },
+      "mossweave_handwraps": {
+        "name": "苔蘚織手部"
+      },
+      "mossweave_slippers": {
+        "name": "苔蘚織腳部"
+      },
+      "last_bloom_greatblade": {
+        "name": "末花巨刃"
+      },
+      "thornbite_razor": {
+        "name": "棘咬剃刃"
+      },
+      "heartwood_warstaff": {
+        "name": "心木戰杖"
+      },
       "bristleback_maul": {
         "name": "硬鬃重槌"
       },
@@ -5581,6 +5886,10 @@ export const zh_TW: EnTranslations = {
       "reliquary_gloves_rog": {
         "name": "護骨者護手"
       },
+      "delve_heroic_mark": {
+        "name": "英雄聖物庫印記",
+        "flavorText": "由聖物庫守護者頒發的鈐印。在英雄軍需官處兌換聖物庫級裝備。"
+      },
       "deacon_reliquary_helm": {
         "name": "執事的聖物庫頭盔"
       },
@@ -5733,6 +6042,21 @@ export const zh_TW: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "先鋒鉻銀"
+      },
+      "enchanting_dust": {
+        "name": "附魔塵"
+      },
+      "scroll_minor_might": {
+        "name": "微弱力量卷軸"
+      },
+      "scroll_minor_vigor": {
+        "name": "微弱活力卷軸"
+      },
+      "scroll_minor_focus": {
+        "name": "微弱專注卷軸"
+      },
+      "scroll_minor_agility": {
+        "name": "微弱敏捷卷軸"
       }
     },
     "mobs": {
@@ -6050,6 +6374,15 @@ export const zh_TW: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "心材巨像"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "綠掌的插枝"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "綠掌的插枝"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "綠掌的插枝"
       }
     },
     "npcs": {
@@ -6168,6 +6501,11 @@ export const zh_TW: EnTranslations = {
         "title": "副職業訓練師",
         "greeting": "每一套build都始於一個問題：哪個副職業在召喚你？"
       },
+      "bramble": {
+        "name": "布蘭博",
+        "title": "榮譽軍需官",
+        "greeting": "沙場記得每一場勝利。好好花你的榮譽吧。"
+      },
       "tidewatcher_ondrel": {
         "name": "翁德瑞爾·韋恩",
         "title": "守潮者",
@@ -6260,17 +6598,33 @@ export const zh_TW: EnTranslations = {
         "greeting": "你可以坐下。大多數人只是走過去。司事早就把我的名字從冊子上劃掉了，一個被劃掉的名字，學會了安靜，好讓誰都不必想起它還在這兒。"
       },
       "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+        "name": "枯萎的苗圃",
+        "title": "部族的老柳樹",
+        "greeting": "乾枯的根，乾枯的葉。無論它本該長成什麼，如今都還沒長成，而它已經等了很久很久。"
       },
       "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "name": "一截埋著的根",
+        "title": "神龕之下",
+        "greeting": "乾。乾得就像這底下所有東西一樣。"
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "值得學習的手藝",
+        "text": "每門手藝都從指甲縫裡的泥土開始，{playerName}。去鎮東的林地裡採集2條蜘蛛腿，然後到我的鍛爐前打一件新兵束衣；打造它所需的骨骼碎片沿途很容易找到。再給我帶些值得分解出奧術塵埃的東西。讓我看看你能採集、能打造、也能分解，我就讓你見識手藝的價值。",
+        "completion": "這才是值得學習的手藝。多在鍛爐邊下功夫，{playerName}，總有一天你能一口氣釘馬掌又附魔利刃。",
+        "objectives": {
+          "0": {
+            "label": "採集蜘蛛腿"
+          },
+          "1": {
+            "label": "打造新兵束衣"
+          },
+          "2": {
+            "label": "附魔塵埃"
+          }
+        }
+      },
       "q_wolves": {
         "title": "門前群狼",
         "text": "森林狼已敢撲咬北路旅人，{playerName}。擊敗8隻森林狼，讓東溪能鬆一口氣。",
@@ -7224,22 +7578,22 @@ export const zh_TW: EnTranslations = {
         }
       },
       "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "title": "繞遠的路",
+        "text": "老柳樹上頭有一處苗圃，部族沒能栽完，如今就差一場好好的澆灌，眼看要枯死了。那樣的攀爬我再也做不來了，可你有這副腿腳。把水壺帶上。當心那些枝子，只要你對它們誠實，它們就撐得住你。",
+        "completion": "它現在能活下來了。你或許會覺得，比起外頭那麼多事，一次攀爬、一次澆灌算不得什麼。它確實算不得什麼。可對你澆灌的那一樣東西來說，它就是一切。",
         "objectives": {
           "0": {
-            "label": "Water carried up the willow path"
+            "label": "沿柳樹小徑把水送上去"
           }
         }
       },
       "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "title": "那把水壺",
+        "text": "我請你做過許多小事，你件件都做了，一次也沒問過為什麼。這是最後一件，它看著小，其實不小。把我的水壺帶到神龕底下，交給埋在那裡的那一樣東西，給它澆上水。它等了很久很久，等的是有人給它什麼，而不是向它要什麼。",
+        "completion": "你做到了。你當然做到了。你明白嗎，那澆下去的是水。是全部的水，一直追溯到你在湖邊遇見我、卻不當一回事的那一天。同樣的一澆，同樣的一諾，又一次守住了。謝謝你。去吧，溫柔地對待這個世界。唯有這一樣，才真正改變過它。",
         "objectives": {
           "0": {
-            "label": "Water given to the buried root"
+            "label": "把水澆給那截埋著的根"
           }
         }
       }
@@ -7413,6 +7767,20 @@ export const zh_TW: EnTranslations = {
         "name": "崩塌的聖物庫",
         "enterText": "你向下深入崩塌的聖物庫。",
         "leaveText": "你爬回聖物庫遺墟處的哈爾文修士身邊。"
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "微弱力量"
+      },
+      "enchant_minor_vigor": {
+        "name": "微弱活力"
+      },
+      "enchant_minor_focus": {
+        "name": "微弱專注"
+      },
+      "enchant_minor_agility": {
+        "name": "微弱敏捷"
       }
     },
     "itemSets": {

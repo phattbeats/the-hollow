@@ -193,7 +193,7 @@ const hudStringsEn = {
       close: 'Close meters',
     },
     chat: {
-      rightClickName: 'Right-click {name}',
+      rightClickName: 'Open menu for {name}',
       templates: {
         party: '[Party] {name}: {message}',
         yell: '{name} yells: {message}',
@@ -260,6 +260,8 @@ const hudStringsEn = {
       openTrade: 'Open Trade',
       duelRequest: '{name} has challenged you to a duel!',
       acceptDuel: 'Accept Duel',
+      readyCheckStart: '{name} has started a ready check.',
+      markReady: 'Ready',
       decline: 'Decline',
     },
     combat: {
@@ -290,6 +292,7 @@ const hudStringsEn = {
       ignoringChat: 'Ignoring chat from {name}.',
       noLongerIgnoring: 'No longer ignoring {name}.',
       playerNotNearby: 'That player is not nearby.',
+      playerInfoNotFound: 'No character found with that name.',
       duelCountdown: 'Duel begins in {seconds}...',
       duelEndBanner: '{winner} has defeated {loser} in a duel!',
       duelEndLog: '{winner} has defeated {loser} in a duel.',

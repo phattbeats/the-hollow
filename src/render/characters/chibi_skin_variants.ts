@@ -20,16 +20,20 @@ export const CHIBI_VARIANT_TINT_STRENGTH = 0.6;
 const BASE: ChibiSkinVariant = { tints: {} };
 
 export const CHIBI_SKIN_VARIANTS: Record<string, ChibiSkinVariant[]> = {
-  // knight outfit (warrior/paladin)
+  // knight outfit (warrior/paladin): the closed helm occludes 'hair' and
+  // 'armorbelt' is a thin waist strip, so variants instead target the
+  // materials that actually read on the silhouette: 'armorthigh' (the large
+  // flared tasset plates, the dominant garment) and 'armorplastron' (the
+  // chestpiece), confirmed by a per-material render probe, see PHAA-631.
   player_warrior_f: [
     BASE,
-    { tints: { hair: 0x3a2a1a, armorbelt: 0x8a1f1f } },
-    { tints: { hair: 0xc9a227, armorbelt: 0x2f4f8a } },
+    { tints: { armorthigh: 0x8a1f1f, armorplastron: 0x5a1414 } },
+    { tints: { armorthigh: 0x2f4f8a, armorplastron: 0x1f3a66 } },
   ],
   player_paladin_f: [
     BASE,
-    { tints: { hair: 0xe8d9b0, armorbelt: 0xdba43c } },
-    { tints: { hair: 0x5c4326, armorbelt: 0x8f8f8f } },
+    { tints: { armorthigh: 0x2f4f8a, armorplastron: 0x1f3a66 } },
+    { tints: { armorthigh: 0x4a2a6e, armorplastron: 0x331c4d } },
   ],
   // archer outfit (hunter/druid)
   player_hunter_f: [

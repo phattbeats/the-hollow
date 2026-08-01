@@ -1,17 +1,20 @@
 import {
   ABILITIES,
   CLASSES,
+  DEEDS,
   DELVES,
   DUNGEONS,
+  ENCHANTS,
   ITEM_SETS,
   ITEMS,
   MOBS,
   NPCS,
   QUESTS,
   READABLES_BY_ID,
+  TITLES,
   ZONES,
 } from '../sim/data';
-import type { ItemDef, PlayerClass } from '../sim/types';
+import type { EnchantDef, ItemDef, PlayerClass } from '../sim/types';
 import {
   en,
   getLanguage,
@@ -22,11 +25,17 @@ import {
   tOptional,
 } from './i18n';
 
-export type EntityTranslationGroup = 'classAbility' | 'item' | 'itemSet' | 'world';
+// 'deed' is its own group (not folded into 'world'): the Book of Asphodelia
+// roster lands English-only per PHAA-745, and 'world' is asserted fully
+// translated in every supported locale (tests/localization_coverage.test.ts) -
+// a group of its own keeps that gate green while the deed/title translations
+// backfill over time.
+export type EntityTranslationGroup = 'classAbility' | 'item' | 'itemSet' | 'world' | 'deed';
 export type EntityTranslationKind =
   | 'class'
   | 'ability'
   | 'item'
+  | 'enchant'
   | 'mob'
   | 'npc'
   | 'npcIntro'
@@ -40,7 +49,9 @@ export type EntityTranslationKind =
   | 'zonePoi'
   | 'dungeon'
   | 'delve'
-  | 'itemSet';
+  | 'itemSet'
+  | 'deed'
+  | 'title';
 export type EntityTranslationField =
   | 'name'
   | 'description'
@@ -64,12 +75,14 @@ export type EntityTranslationField =
   | 'complain'
   | 'complainReply'
   | 'refuse'
-  | 'refuseReply';
+  | 'refuseReply'
+  | 'display';
 
 export type EntityTranslationRequest =
   | { kind: 'class'; id: PlayerClass; field: 'name' | 'description'; values?: InterpolationValues }
   | { kind: 'ability'; id: string; field: 'name' | 'description'; values?: InterpolationValues }
   | { kind: 'item'; id: string; field: 'name' | 'flavorText'; values?: InterpolationValues }
+  | { kind: 'enchant'; id: string; field: 'name'; values?: InterpolationValues }
   | {
       kind: 'itemSet';
       id: string;
@@ -152,7 +165,9 @@ export type EntityTranslationRequest =
       id: string;
       field: 'name' | 'enterText' | 'leaveText';
       values?: InterpolationValues;
-    };
+    }
+  | { kind: 'deed'; id: string; field: 'name' | 'text'; values?: InterpolationValues }
+  | { kind: 'title'; id: string; field: 'display'; values?: InterpolationValues };
 
 export interface EntityTranslationManifestEntry {
   kind: EntityTranslationKind;
@@ -257,6 +272,8 @@ function canonicalEntityText(request: EntityTranslationRequest): string {
       const pieces = request.field === 'bonus2' ? 2 : 3;
       return set.bonuses.find((b) => b.pieces === pieces)?.text ?? request.id;
     }
+    case 'enchant':
+      return ENCHANTS.find((e) => e.id === request.id)?.name ?? request.id;
     case 'mob':
       return MOBS[request.id]?.name ?? request.id;
     case 'npc': {
@@ -333,6 +350,13 @@ function canonicalEntityText(request: EntityTranslationRequest): string {
       if (request.field === 'leaveText') return delve.leaveText;
       return delve.name;
     }
+    case 'deed': {
+      const deed = DEEDS[request.id];
+      if (!deed) return request.id;
+      return request.field === 'text' ? deed.text : deed.name;
+    }
+    case 'title':
+      return TITLES[request.id]?.display ?? request.id;
   }
 }
 
@@ -344,10 +368,19 @@ export function entityTranslationKey(request: EntityTranslationRequest): string 
         : CLASS_DESCRIPTION_KEYS[request.id];
     case 'ability':
       return `entities.abilities.${entityPathSegment(request.id)}.${request.field}`;
-    case 'item':
-      return `entities.items.${entityPathSegment(request.id)}.${request.field}`;
+    case 'item': {
+      // A Heroic variant (heroicOf set) reuses its base item's translated
+      // name/flavorText verbatim (see src/sim/content/heroic_variants.ts): it
+      // never gets its own key, so every locale that already covers the base
+      // item covers the variant for free.
+      const item = ITEMS[request.id];
+      const keyId = item?.heroicOf ?? request.id;
+      return `entities.items.${entityPathSegment(keyId)}.${request.field}`;
+    }
     case 'itemSet':
       return `entities.itemSets.${entityPathSegment(request.id)}.${request.field}`;
+    case 'enchant':
+      return `entities.enchants.${entityPathSegment(request.id)}.name`;
     case 'mob':
       return `entities.mobs.${entityPathSegment(request.id)}.name`;
     case 'npc':
@@ -380,6 +413,10 @@ export function entityTranslationKey(request: EntityTranslationRequest): string 
       return `entities.dungeons.${entityPathSegment(request.id)}.${request.field}`;
     case 'delve':
       return `entities.delves.${entityPathSegment(request.id)}.${request.field}`;
+    case 'deed':
+      return `entities.deeds.${entityPathSegment(request.id)}.${request.field}`;
+    case 'title':
+      return `entities.titles.${entityPathSegment(request.id)}.display`;
   }
 }
 
@@ -441,6 +478,10 @@ export function itemDisplayName(item: ItemDef): string {
 
 export function itemFlavorText(item: ItemDef): string | undefined {
   return item.flavorText ? tEntity({ kind: 'item', id: item.id, field: 'flavorText' }) : undefined;
+}
+
+export function enchantDisplayName(enchant: EnchantDef): string {
+  return tEntity({ kind: 'enchant', id: enchant.id, field: 'name' });
 }
 
 // Thin tEntity wrappers for the display helpers that several windows + painters each
@@ -522,6 +563,10 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
     );
   }
   for (const item of Object.values(ITEMS).sort(compareById)) {
+    // Heroic variants reuse their base item's key (entityTranslationKey above),
+    // so they carry no manifest entry of their own; requiring one would demand a
+    // second, identical translation per locale for text that never changes.
+    if (item.heroicOf) continue;
     entries.push(
       entry(
         'item',
@@ -563,6 +608,18 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
         ),
       );
     }
+  }
+  for (const enchant of [...ENCHANTS].sort(compareById)) {
+    entries.push(
+      entry(
+        'enchant',
+        enchant.id,
+        'name',
+        enchant.name,
+        'world',
+        entityTranslationKey({ kind: 'enchant', id: enchant.id, field: 'name' }),
+      ),
+    );
   }
   for (const mob of Object.values(MOBS).sort(compareById)) {
     entries.push(
@@ -855,6 +912,40 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
         delve.leaveText,
         'world',
         entityTranslationKey({ kind: 'delve', id: delve.id, field: 'leaveText' }),
+      ),
+    );
+  }
+  for (const deed of Object.values(DEEDS).sort(compareById)) {
+    entries.push(
+      entry(
+        'deed',
+        deed.id,
+        'name',
+        deed.name,
+        'deed',
+        entityTranslationKey({ kind: 'deed', id: deed.id, field: 'name' }),
+      ),
+    );
+    entries.push(
+      entry(
+        'deed',
+        deed.id,
+        'text',
+        deed.text,
+        'deed',
+        entityTranslationKey({ kind: 'deed', id: deed.id, field: 'text' }),
+      ),
+    );
+  }
+  for (const title of Object.values(TITLES).sort(compareById)) {
+    entries.push(
+      entry(
+        'title',
+        title.id,
+        'display',
+        title.display,
+        'deed',
+        entityTranslationKey({ kind: 'title', id: title.id, field: 'display' }),
       ),
     );
   }

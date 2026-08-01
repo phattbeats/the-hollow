@@ -109,9 +109,11 @@ const NPC_IDS = [
   'brother_aldric_raid', // dynamically-spawned raid turn-in NPC (Crypt of Nythraxis)
   'brother_halven', // Collapsed Reliquary delve board NPC
   'elder_yarrow', // GW1 build system multiclassing (Phase 3, PHAA-464) profession trainer
+  'bramble', // Honor Quartermaster, Ashen Coliseum WARFARE vendor (PHAA-716)
 ] as const;
 
 const QUEST_IDS = [
+  'q_prof_intro',
   'q_wolves',
   'q_greyjaw',
   'q_boars',

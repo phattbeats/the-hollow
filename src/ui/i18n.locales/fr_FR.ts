@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1600,6 +1599,8 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Cupidité pour {item}',
   'itemUi.lootRoll.passAria': 'Passer pour {item}',
   'itemUi.lootRoll.everyonePassed': 'Tout le monde a passé pour {item}.',
+  'itemUi.lootRoll.winnerOffline':
+    'Le gagnant de {item} était hors ligne ; il a été rendu au corps.',
   'entities.abilities.heroic_strike.name': 'Frappe héroïque',
   'entities.abilities.heroic_strike.description':
     "Une attaque puissante qui augmente les dégâts de mêlée de {damage}. S'active lors de votre prochaine frappe.",
@@ -1642,7 +1643,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
     'Posture de combat défensive: vous générez 30% de menace en plus, mais infligez et subissez 10% de dégâts en moins. Relancez pour quitter la posture.',
   'entities.abilities.sunder_armor.name': 'Fracasser armure',
   'entities.abilities.sunder_armor.description':
-    "Fracasse l'armure de la cible et la réduit de {damage} par application. Cumulable jusqu'à 5 fois. Génère beaucoup de menace.",
+    "Fracasse l'armure de la cible, la réduisant de 2% par application. Cumulable jusqu'à 5 fois. Génère beaucoup de menace.",
   'entities.abilities.taunt.name': 'Provocation',
   'entities.abilities.taunt.description':
     'Provoque la cible: votre menace rejoint celle de son ennemi le plus haï et elle est forcée de vous attaquer pendant 3 s.',
@@ -2167,6 +2168,11 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': 'Or impérial',
   'entities.items.vanguard_azure_armor_plate.name': 'Avant-garde azur',
   'entities.items.vanguard_chrome_armor_plate.name': 'Avant-garde chrome',
+  'entities.items.enchanting_dust.name': "Poussière d'Enchantement",
+  'entities.items.scroll_minor_might.name': 'Parchemin de Puissance Mineure',
+  'entities.items.scroll_minor_vigor.name': 'Parchemin de Vigueur Mineure',
+  'entities.items.scroll_minor_focus.name': 'Parchemin de Concentration Mineure',
+  'entities.items.scroll_minor_agility.name': "Parchemin d'Agilité Mineure",
   'entities.items.deacons_cleaver.name': 'Fendoir du diacre',
   'entities.items.staff_of_drowned_prayers.name': 'Bâton des prières noyées',
   'entities.items.mistbinder_kris.name': 'Kris Lie-brume',
@@ -3369,7 +3375,6 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s} s',
-  'hudChrome.mobile.autorun': 'Course automatique',
   'hudChrome.mobile.haptics': 'Vibrations',
   'hudChrome.mobile.hapticsOff': 'Vibrations désactivées',
   'hudChrome.mobile.jump': 'Sauter',
@@ -4646,8 +4651,42 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': "Heaume du guet de l'ossuaire",
   'entities.items.reliquary_shoulder.name': 'Spallières effritées',
   'entities.items.reliquary_gloves_rog.name': 'Gantelets du gardien des os',
+  'entities.items.delve_heroic_mark.name': 'Marque héroïque du Reliquaire',
+  'entities.items.delve_heroic_mark.flavorText':
+    "Un sceau frappé délivré par les gardiens du Reliquaire. Échangez-le auprès du Quartier-maître héroïque contre de l'équipement de qualité reliquaire.",
   'entities.items.deacon_reliquary_helm.name': 'Heaume du reliquaire du diacre',
   'entities.items.varric_shadow_cowl.name': "Cagoule d'ombre de Varric",
+  'entities.items.bramblewar_warhelm.name': 'Ronceguerre Tête',
+  'entities.items.bramblewar_warspaulders.name': 'Ronceguerre Épaules',
+  'entities.items.bramblewar_warplate.name': 'Ronceguerre Torse',
+  'entities.items.bramblewar_girdle.name': 'Ronceguerre Taille',
+  'entities.items.bramblewar_legguards.name': 'Ronceguerre Jambes',
+  'entities.items.bramblewar_gauntlets.name': 'Ronceguerre Mains',
+  'entities.items.bramblewar_sabatons.name': 'Ronceguerre Pieds',
+  'entities.items.thornbound_crown.name': 'Roncelié Tête',
+  'entities.items.thornbound_spaulders.name': 'Roncelié Épaules',
+  'entities.items.thornbound_hauberk.name': 'Roncelié Torse',
+  'entities.items.thornbound_waistguard.name': 'Roncelié Taille',
+  'entities.items.thornbound_legmail.name': 'Roncelié Jambes',
+  'entities.items.thornbound_handguards.name': 'Roncelié Mains',
+  'entities.items.thornbound_greaves.name': 'Roncelié Pieds',
+  'entities.items.nettlestalker_cowl.name': 'Ortie Furtive Tête',
+  'entities.items.nettlestalker_shoulderguards.name': 'Ortie Furtive Épaules',
+  'entities.items.nettlestalker_harness.name': 'Ortie Furtive Torse',
+  'entities.items.nettlestalker_waistband.name': 'Ortie Furtive Taille',
+  'entities.items.nettlestalker_legguards.name': 'Ortie Furtive Jambes',
+  'entities.items.nettlestalker_grips.name': 'Ortie Furtive Mains',
+  'entities.items.nettlestalker_treads.name': 'Ortie Furtive Pieds',
+  'entities.items.mossweave_cowl.name': 'Moussetissé Tête',
+  'entities.items.mossweave_mantle.name': 'Moussetissé Épaules',
+  'entities.items.mossweave_raiment.name': 'Moussetissé Torse',
+  'entities.items.mossweave_cord.name': 'Moussetissé Taille',
+  'entities.items.mossweave_legwraps.name': 'Moussetissé Jambes',
+  'entities.items.mossweave_handwraps.name': 'Moussetissé Mains',
+  'entities.items.mossweave_slippers.name': 'Moussetissé Pieds',
+  'entities.items.last_bloom_greatblade.name': 'Grande Lame de la Dernière Fleur',
+  'entities.items.thornbite_razor.name': "Rasoir Morsure-d'Épine",
+  'entities.items.heartwood_warstaff.name': 'Bâton de Guerre de Bois de Cœur',
   'entities.mobs.acolyte_tessa.name': 'Acolyte Tessa',
   'entities.mobs.deacon_varric.name': 'Diacre Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Marche-os relevé',

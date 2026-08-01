@@ -246,7 +246,6 @@ export const ja_JP: EnTranslations = {
       "chat": "チャットへスキップ"
     },
     "mobile": {
-      "autorun": "オートラン",
       "jump": "ジャンプ",
       "leaderboard": "ランキング",
       "nameplates": "ネームプレート",
@@ -720,10 +719,18 @@ export const ja_JP: EnTranslations = {
         "spi": "精神力を{value}低下させる",
         "allStats": "すべての能力値を{value}低下させる"
       },
+      "increasePct": {
+        "ap": "攻撃力を{pct}%上昇させる",
+        "armor": "防御力を{pct}%上昇させる",
+        "int": "知力を{pct}%上昇させる",
+        "sta": "耐久力を{pct}%上昇させる"
+      },
       "dodge": "回避率を{pct}%上昇させる",
       "dodgeReduce": "回避率を{pct}%低下させる",
       "armorFlat": "防御力を{value}低下させる",
       "armorFlatStacks": "防御力を{value}低下させる({stacks}スタック)",
+      "armorPct": "防御力を{pct}%低下させる",
+      "armorPctStacks": "防御力を{pct}%低下させる({stacks}スタック)",
       "mortalWound": "受ける回復量を{pct}%低下させる",
       "vulnerability": "受けるダメージを{pct}%増加させる",
       "physVuln": "受ける物理ダメージを{pct}%増加させる",
@@ -990,6 +997,51 @@ export const ja_JP: EnTranslations = {
       "spore": "胞子",
       "toolTier": "ティア{tier}の道具",
       "toolNone": "道具なし"
+    },
+    "crafting": {
+      "title": "製作",
+      "close": "製作を閉じる",
+      "tabRecipes": "レシピ",
+      "tabEnchants": "エンチャント",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "製作",
+      "craftAria": "{item}を製作",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "分解",
+      "disenchantButton": "分解",
+      "disenchantAria": "{item}を分解",
+      "disenchantEmpty": "分解できるアイテムがありません。",
+      "applyButton": "付与",
+      "applyAria": "{slot}に{enchant}を付与",
+      "activeTag": "有効",
+      "needScroll": "{scroll}が必要",
+      "craftType": {
+        "weaponcrafting": "武器鍛冶",
+        "armorcrafting": "防具鍛冶",
+        "tailoring": "裁縫",
+        "leatherworking": "皮革加工",
+        "cooking": "料理",
+        "alchemy": "錬金術",
+        "enchanting": "エンチャント"
+      }
+    },
+    "warfare": {
+      "ratingLabel": "戦意",
+      "balance": "名誉：{amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "名誉 {amount}",
+      "honorFloat": "+{amount} 名誉",
+      "honorGain": "+{amount} 名誉（{reason}）",
+      "notEnoughHonor": "名誉が足りません。",
+      "reasons": {
+        "arenaWin": "アリーナ勝利",
+        "fiestaKill": "フィエスタ撃破",
+        "fiestaComplete": "フィエスタ試合",
+        "fiestaWin": "フィエスタ勝利"
+      }
+    },
+    "hitRating": {
+      "ratingLabel": "命中レーティング"
     }
   },
   "mailUi": {
@@ -2421,6 +2473,13 @@ export const ja_JP: EnTranslations = {
       "nothingToHarvest": "その死骸には採集できるものが何もない。",
       "alreadyHarvested": "この死骸はすでに採集済みだ。"
     },
+    "dailyRewards": {
+      "claimed": "デイリー報酬を受け取った。"
+    },
+    "collections": {
+      "notFound": "それは存在しない。",
+      "tooFar": "遠すぎる。"
+    },
     "hearth": {
       "tooFar": "緑掌修道士のそばに行かねば、彼に餌をやれんぞ。",
       "noItems1": "……手ぶらじゃな、お前さん。燃えるもんか、腹の足しになるもんを持ってきな、話はそれからだ。",
@@ -2481,6 +2540,18 @@ export const ja_JP: EnTranslations = {
       "readoutNoHomesteadQuest": "お前は開拓地を持っていない。緑掌修道士の用事をすべて終えれば手に入る。",
       "readoutNoHomesteadHint": "お前は開拓地を持っていない。ホロウ低地の適した場所に立ち、/homestead claim と入力しろ。",
       "helpLine": "開拓地：/homestead、/homestead claim。"
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "挿し木はもう植えた。育つのを待て。",
+      "needHomestead": "これを植えるには、まず開拓地が必要だ。",
+      "tooFar": "これを植えるには自分の開拓地にいなければならない。",
+      "planted": "開拓地に挿し木を植えた。時が満ちるのを待とう。",
+      "grown": "挿し木が育ち、伴侶となった。今はお前について歩く。"
+    },
+    "readyCheck": {
+      "mustBeInParty": "準備確認を開始するにはパーティに入っている必要があります。",
+      "alreadyInProgress": "準備確認はすでに進行中です。",
+      "summary": "準備確認：準備完了 {ready} 人、未準備 {notReady} 人、応答なし {noResponse} 人。"
     }
   },
   "lockpickUi": {
@@ -3322,6 +3393,8 @@ export const ja_JP: EnTranslations = {
       "openTrade": "取引を開く",
       "duelRequest": "{name}があなたに決闘を申し込みました！",
       "acceptDuel": "決闘を受ける",
+      "readyCheckStart": "{name}が準備確認を開始しました。",
+      "markReady": "準備完了",
       "decline": "断る"
     },
     "combat": {
@@ -3352,6 +3425,7 @@ export const ja_JP: EnTranslations = {
       "ignoringChat": "{name}のチャットを無視します。",
       "noLongerIgnoring": "{name}の無視を解除しました。",
       "playerNotNearby": "そのプレイヤーは近くにいません。",
+      "playerInfoNotFound": "その名前のキャラクターは見つかりませんでした。",
       "duelCountdown": "決闘開始まで{seconds}秒...",
       "duelEndBanner": "{winner}が決闘で{loser}を倒しました！",
       "duelEndLog": "{winner}が決闘で{loser}を倒しました。",
@@ -3797,6 +3871,22 @@ export const ja_JP: EnTranslations = {
       "stool": "スツール"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "デイリー報酬",
+    "window": {
+      "title": "デイリー報酬",
+      "close": "デイリー報酬を閉じる",
+      "claim": "受け取る",
+      "claimAria": "今日の報酬を受け取る",
+      "claimed": "受け取り済み。また明日。",
+      "locked": "このアカウントでは現在デイリー報酬を利用できません。",
+      "hint": "1日1回受け取れます。逃した日があっても損はありません。"
+    },
+    "cell": {
+      "today": "今日",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "金",
@@ -3850,6 +3940,7 @@ export const ja_JP: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "現在の装備",
       "ifYouEquip": "これを装備すると",
       "damageSpeed": "{min} - {max} ダメージ 速度 {speed}",
@@ -4016,11 +4107,132 @@ export const ja_JP: EnTranslations = {
       "needAria": "{item}を必要",
       "greedAria": "{item}を強欲",
       "passAria": "{item}をパス",
-      "everyonePassed": "全員が{item}をパスしました。"
+      "everyonePassed": "全員が{item}をパスしました。",
+      "winnerOffline": "{item}の勝者がオフラインだったため、死体に返却されました。"
     }
   },
   "entities": {
     "abilities": {
+      "chain_heal": {
+        "name": "チェインヒール",
+        "description": "友好的な対象を大きく回復し、最大2体の近くの味方に連鎖します。連鎖するたびに回復量が50%減少します。"
+      },
+      "crusader_strike": {
+        "name": "クルセイダーストライク",
+        "description": "対象に武器ダメージに加えて24の聖なるダメージを与えます。"
+      },
+      "metamorphosis": {
+        "name": "ドレッドアスペクト",
+        "description": "20秒間恐ろしい悪魔に変身し、呪文ダメージが20%、詠唱速度が20%増加します。あなたの悪魔はダメージ50%、詠唱速度20%を得ます。"
+      },
+      "holy_shock": {
+        "name": "ホーリーショック",
+        "description": "友好的な対象を神聖なエネルギーで癒すか、敵に神聖ダメージを与えます。"
+      },
+      "holy_shield": {
+        "name": "聖なる壁",
+        "description": "敵に光り輝く盾を投げつけ、神聖ダメージを与えて近くの敵2体に跳ね返ります。"
+      },
+      "bestial_wrath": {
+        "name": "猛る咆哮",
+        "description": "15秒間野獣の怒りに入り、攻撃力が20%、ペットのダメージが100%増加します。"
+      },
+      "trueshot_aura": {
+        "name": "精密照準のオーラ",
+        "description": "近くの味方を鼓舞し、30分間攻撃力を10%増加させます。"
+      },
+      "wyvern_sting": {
+        "name": "ワイバーンの毒針",
+        "description": "遠距離から敵を刺し、最大4秒間無力化します。ダメージを受けると効果が解除されます。"
+      },
+      "arcane_power": {
+        "name": "エーテルサージ",
+        "description": "10秒間、呪文ダメージが20%、呪文の速さが10%増加します。"
+      },
+      "combustion": {
+        "name": "フラッシュファイア",
+        "description": "15秒間、呪文クリティカル率が50%増加します。"
+      },
+      "icy_veins": {
+        "name": "アイシーヴェイン",
+        "description": "10秒間、呪文の速さが30%増加し、詠唱の中断とノックバックを防ぎます。"
+      },
+      "cold_blood": {
+        "name": "冷徹な殺意",
+        "description": "殺意を集中させ、次の攻撃を必ずクリティカルにします。"
+      },
+      "blade_flurry": {
+        "name": "ミラードブレード",
+        "description": "剣閃の乱舞を放ち、12秒間攻撃速度が20%増加します。"
+      },
+      "hemorrhage": {
+        "name": "レッドリボン",
+        "description": "武器ダメージに加え出血効果で敵を攻撃し、12秒間出血ダメージを与え、出血ダメージを40%増加させます。コンボポイントを1得ます。"
+      },
+      "power_infusion": {
+        "name": "祝福の注入",
+        "description": "友好的な対象に力を注ぎ、15秒間呪文の速さを20%増加させます。"
+      },
+      "holy_nova": {
+        "name": "ホーリーノヴァ",
+        "description": "神聖な輝きの爆発を起こし、近くの味方を回復し近くの敵にダメージを与えます。"
+      },
+      "shadowform": {
+        "name": "グルームヴェイルフォーム",
+        "description": "シャドウフォームになり、元の姿に戻るまで暗影ダメージが15%増加します。回復呪文を唱えるとフォームが解除されます。再度詠唱すると元の姿に戻ります。"
+      },
+      "elemental_mastery": {
+        "name": "プライマルマスタリー",
+        "description": "嵐の力を呼び、次の呪文を即時発動にします。"
+      },
+      "siphon_life": {
+        "name": "ヴェインリーチ",
+        "description": "敵から生命力を吸収し、30秒間暗影ダメージを与え、与えたダメージ分自分を回復します。"
+      },
+      "conflagrate": {
+        "name": "コンフラグレイト",
+        "description": "敵にかけたイモレイトを消費し、炎のダメージで発火させます。"
+      },
+      "moonkin_form": {
+        "name": "ムーンウィングフォーム",
+        "description": "恐ろしいムーンキンに変身し、呪文ダメージが20%、防御力が50%増加します。元の姿に戻るまで持続します。再度詠唱すると詠唱者フォームに戻ります。"
+      },
+      "feral_charge": {
+        "name": "プライマルサージ",
+        "description": "原始の力を解き放ちます。ワイルドキャットフォームではエネルギー回復が10秒間100%増加します。ベアフォームでは即座に怒りを50得ます。"
+      },
+      "swiftmend": {
+        "name": "スイフトメンド",
+        "description": "友好的な対象にかかった継続回復効果を消費して回復します。"
+      },
+      "pummel": {
+        "name": "ジョークラック",
+        "description": "対象の詠唱を中断し、4秒間その系統の詠唱を防ぎます。"
+      },
+      "kick": {
+        "name": "ブート",
+        "description": "対象の詠唱を中断し、4秒間その系統の詠唱を防ぎます。"
+      },
+      "counterspell": {
+        "name": "スペルブレイク",
+        "description": "対象の詠唱を妨害し、6秒間その系統の詠唱を防ぎます。"
+      },
+      "counter_shot": {
+        "name": "ハッシングショット",
+        "description": "咄嗟の射撃で対象の詠唱を中断し、その系統を4秒間封じます。"
+      },
+      "rebuke": {
+        "name": "リプローチ",
+        "description": "対象の詠唱を中断し、4秒間その系統の詠唱を防ぎます。"
+      },
+      "skull_bash": {
+        "name": "ヘッドバット",
+        "description": "突進頭突きで対象の詠唱を中断し、その系統を4秒間封じます。"
+      },
+      "spell_lock": {
+        "name": "ギャグオーダー",
+        "description": "詠唱中の対象を沈黙させ、5秒間その系統の詠唱を防ぎます。"
+      },
       "heroic_strike": {
         "name": "英雄の一撃",
         "description": "強力な攻撃で近接ダメージが {damage} 増加します。次のスイングで発動します。"
@@ -4079,7 +4291,7 @@ export const ja_JP: EnTranslations = {
       },
       "sunder_armor": {
         "name": "アーマー破壊",
-        "description": "対象のアーマーを破壊し、1回ごとに {damage} 低下させます。最大5回まで重なります。大量の脅威を生成します。"
+        "description": "対象のアーマーを破壊し、1回ごとに 2% 低下させます。最大5回まで重なります。大量の脅威を生成します。"
       },
       "taunt": {
         "name": "挑発",
@@ -5177,6 +5389,99 @@ export const ja_JP: EnTranslations = {
       "mistcallers_duffel": {
         "name": "ミストコーラーのダッフルバッグ"
       },
+      "bramblewar_warhelm": {
+        "name": "いばら戦の頭"
+      },
+      "bramblewar_warspaulders": {
+        "name": "いばら戦の肩"
+      },
+      "bramblewar_warplate": {
+        "name": "いばら戦の胸"
+      },
+      "bramblewar_girdle": {
+        "name": "いばら戦の腰"
+      },
+      "bramblewar_legguards": {
+        "name": "いばら戦の脚"
+      },
+      "bramblewar_gauntlets": {
+        "name": "いばら戦の手"
+      },
+      "bramblewar_sabatons": {
+        "name": "いばら戦の足"
+      },
+      "thornbound_crown": {
+        "name": "いばら縛の頭"
+      },
+      "thornbound_spaulders": {
+        "name": "いばら縛の肩"
+      },
+      "thornbound_hauberk": {
+        "name": "いばら縛の胸"
+      },
+      "thornbound_waistguard": {
+        "name": "いばら縛の腰"
+      },
+      "thornbound_legmail": {
+        "name": "いばら縛の脚"
+      },
+      "thornbound_handguards": {
+        "name": "いばら縛の手"
+      },
+      "thornbound_greaves": {
+        "name": "いばら縛の足"
+      },
+      "nettlestalker_cowl": {
+        "name": "棘草追跡の頭"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "棘草追跡の肩"
+      },
+      "nettlestalker_harness": {
+        "name": "棘草追跡の胸"
+      },
+      "nettlestalker_waistband": {
+        "name": "棘草追跡の腰"
+      },
+      "nettlestalker_legguards": {
+        "name": "棘草追跡の脚"
+      },
+      "nettlestalker_grips": {
+        "name": "棘草追跡の手"
+      },
+      "nettlestalker_treads": {
+        "name": "棘草追跡の足"
+      },
+      "mossweave_cowl": {
+        "name": "苔織りの頭"
+      },
+      "mossweave_mantle": {
+        "name": "苔織りの肩"
+      },
+      "mossweave_raiment": {
+        "name": "苔織りの胸"
+      },
+      "mossweave_cord": {
+        "name": "苔織りの腰"
+      },
+      "mossweave_legwraps": {
+        "name": "苔織りの脚"
+      },
+      "mossweave_handwraps": {
+        "name": "苔織りの手"
+      },
+      "mossweave_slippers": {
+        "name": "苔織りの足"
+      },
+      "last_bloom_greatblade": {
+        "name": "最後の花の大剣"
+      },
+      "thornbite_razor": {
+        "name": "棘咬みの剃刀"
+      },
+      "heartwood_warstaff": {
+        "name": "心材の戦杖"
+      },
       "bristleback_maul": {
         "name": "ブリストルバックの大槌"
       },
@@ -5581,6 +5886,10 @@ export const ja_JP: EnTranslations = {
       "reliquary_gloves_rog": {
         "name": "骨守りの手甲"
       },
+      "delve_heroic_mark": {
+        "name": "ヒロイック聖遺物庫の刻印",
+        "flavorText": "聖遺物庫の守人が発行した刻印。ヒロイック需品係と交換すれば、聖遺物庫級の装備が手に入る。"
+      },
       "deacon_reliquary_helm": {
         "name": "助祭の聖遺物庫の兜"
       },
@@ -5733,6 +6042,21 @@ export const ja_JP: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "ヴァンガードクローム"
+      },
+      "enchanting_dust": {
+        "name": "付呪の粉塵"
+      },
+      "scroll_minor_might": {
+        "name": "小さな力の巻物"
+      },
+      "scroll_minor_vigor": {
+        "name": "小さな活力の巻物"
+      },
+      "scroll_minor_focus": {
+        "name": "小さな集中の巻物"
+      },
+      "scroll_minor_agility": {
+        "name": "小さな俊敏の巻物"
       }
     },
     "mobs": {
@@ -6050,6 +6374,15 @@ export const ja_JP: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "心材の巨像"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "緑掌の挿し木"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "緑掌の挿し木"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "緑掌の挿し木"
       }
     },
     "npcs": {
@@ -6168,6 +6501,11 @@ export const ja_JP: EnTranslations = {
         "title": "副職業トレーナー",
         "greeting": "ビルドはすべて、ひとつの問いから始まる。どの副職業があなたを呼んでいる？"
       },
+      "bramble": {
+        "name": "ブランブル",
+        "title": "名誉調達官",
+        "greeting": "闘技場の砂は、すべての勝利を覚えている。名誉は賢く使うといい。"
+      },
       "tidewatcher_ondrel": {
         "name": "オンドレル・ヴェイン",
         "title": "潮見の番人",
@@ -6260,17 +6598,33 @@ export const ja_JP: EnTranslations = {
         "greeting": "座っていいのよ。たいていの人は通り過ぎる。堂守はずっと前に私の名を台帳から消したの。消された名は、静かにしていることを覚える。まだここにいると、誰にも思い出させないように。"
       },
       "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+        "name": "枯れゆく苗床",
+        "title": "部族の古い柳",
+        "greeting": "乾いた根、乾いた葉。これが何になるはずだったにせよ、まだそうはなっていない。ずいぶん長いあいだ、待ち続けている。"
       },
       "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "name": "埋もれた根",
+        "title": "祠の下",
+        "greeting": "乾いている。この地の底にあるどんなものにも劣らぬほど、乾ききっている。"
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "学ぶ価値のある手仕事",
+        "text": "どんな手仕事も爪の間の泥から始まるものだ、{playerName}。町の東の茂みでクモの脚を2本集めてこい。それから鍛冶場で新兵の上着を作るんだ。材料の骨片は道中で拾えば十分だろう。ついでに、分解して魔力の粉塵になりそうな物も持ってきてくれ。集め、作り、そして分解できることを見せてくれたら、手仕事の値打ちを教えてやろう。",
+        "completion": "それでこそ学ぶ価値のある手仕事だ。鍛冶場に通い続ければ、{playerName}、いつか蹄鉄を打つのと剣にエンチャントをかけるのを息もつかせず両方こなせるようになるだろう。",
+        "objectives": {
+          "0": {
+            "label": "クモの脚を採集"
+          },
+          "1": {
+            "label": "新兵の上着を製作"
+          },
+          "2": {
+            "label": "魔力の粉塵"
+          }
+        }
+      },
       "q_wolves": {
         "title": "戸口の狼",
         "text": "森の狼が北の道で旅人に牙をむけています、{playerName}。8頭を討ち、イーストブルックに息をつかせてください。",
@@ -7224,22 +7578,22 @@ export const ja_JP: EnTranslations = {
         }
       },
       "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "title": "遠まわりの道",
+        "text": "古い柳の上のほうに、部族がやりかけのまま残していった苗床がある。ひと注ぎの水がないばかりに、枯れかけているんだ。あの登りはもうわたしには無理だが、お前には脚がある。じょうろを持っていきなさい。枝には気をつけて。正直に向き合えば、枝はちゃんと支えてくれる。",
+        "completion": "これでもう生きていける。あの外のいろんなことに比べれば、一度の登りと一度の水やりなんて、たいしたことに思えないだろう。実際、たいしたことじゃない。ただ、お前が水をやったそのひとつにとっては、それがすべてなんだ。",
         "objectives": {
           "0": {
-            "label": "Water carried up the willow path"
+            "label": "柳の小道を登って水を運ぶ"
           }
         }
       },
       "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "title": "じょうろ",
+        "text": "これまで小さな頼みごとをいくつもしてきたが、お前は一度も理由を訊かず、そのすべてをやってくれた。これが最後のひとつ。小さく見えるが、小さくはない。わたしのじょうろを祠の下へ持っていって、そこに埋もれているものに水をやってくれ。それはずっと長いあいだ、何かを求められるのではなく、何かを与えられるのを待っていたんだ。",
+        "completion": "やってくれたんだね。もちろん、お前ならそうする。あれは水だったんだよ、わかるかい。すべての水だ。お前が湖のほとりでわたしを見つけて、何とも思わなかったあの日にまでさかのぼる、すべての水。同じひと注ぎ、同じ約束を、もう一度守ってくれた。ありがとう。さあ行って、この世界にやさしくしておやり。それだけが、世界を変えてきた唯一のものなんだ。",
         "objectives": {
           "0": {
-            "label": "Water given to the buried root"
+            "label": "埋もれた根に水をやる"
           }
         }
       }
@@ -7413,6 +7767,20 @@ export const ja_JP: EnTranslations = {
         "name": "崩れた聖遺物庫",
         "enterText": "あなたは崩れた聖遺物庫へと降りていく。",
         "leaveText": "あなたは聖遺物庫の廃墟にいるハルヴェン修道士のもとへ登り戻る。"
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "小さな力"
+      },
+      "enchant_minor_vigor": {
+        "name": "小さな活力"
+      },
+      "enchant_minor_focus": {
+        "name": "小さな集中"
+      },
+      "enchant_minor_agility": {
+        "name": "小さな俊敏"
       }
     },
     "itemSets": {
