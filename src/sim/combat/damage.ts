@@ -246,11 +246,16 @@ export function dealDamage(
   // there is no death to deny. Letting the ward fire there would spend it for
   // nothing, leave the duel running because endDuel never gets called, and
   // (below the restore fraction) hand the loser a free heal.
+  // Only a player can carry the ward, so resolve hostility lazily: asking
+  // isHostileTo about a mob target is both wasted work on the damage hot path
+  // and outside that helper's contract.
   let guardianWardRestore = 0;
   const guardianWardEnemyHit =
-    source?.kind === 'mob' && source.ownerId === null
-      ? source.hostile
-      : !!source && ctx.isHostileTo(source, target);
+    target.kind !== 'player' || !source
+      ? false
+      : source.kind === 'mob' && source.ownerId === null
+        ? source.hostile
+        : ctx.isHostileTo(source, target);
   const guardianWardDuel =
     !!duel &&
     duel.state === 'active' &&
