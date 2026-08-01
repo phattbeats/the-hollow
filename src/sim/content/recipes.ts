@@ -88,6 +88,7 @@ export const RECIPES: RecipeDef[] = [
     reagents: [{ itemId: 'enchanting_dust', count: 2 }],
     resultItemId: 'scroll_minor_might',
     resultCount: 1,
+    level: 1,
   },
   {
     id: 'recipe_scroll_minor_vigor',
@@ -95,6 +96,7 @@ export const RECIPES: RecipeDef[] = [
     reagents: [{ itemId: 'enchanting_dust', count: 2 }],
     resultItemId: 'scroll_minor_vigor',
     resultCount: 1,
+    level: 1,
   },
   {
     id: 'recipe_scroll_minor_focus',
@@ -102,6 +104,7 @@ export const RECIPES: RecipeDef[] = [
     reagents: [{ itemId: 'enchanting_dust', count: 2 }],
     resultItemId: 'scroll_minor_focus',
     resultCount: 1,
+    level: 1,
   },
   {
     id: 'recipe_scroll_minor_agility',
@@ -109,5 +112,6 @@ export const RECIPES: RecipeDef[] = [
     reagents: [{ itemId: 'enchanting_dust', count: 2 }],
     resultItemId: 'scroll_minor_agility',
     resultCount: 1,
+    level: 1,
   },
 ];
