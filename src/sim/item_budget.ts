@@ -66,6 +66,14 @@ export const STAT_PER_ILVL = 0.7;
 // never the boss-only epics; see src/sim/content/heroic_variants.ts).
 export const HEROIC_VARIANT_SOURCE_LEVEL = 25;
 
+// Hit rating carried by an epic (item-level-31) Heroic variant, off the primary-stat
+// budget above (like spellPower). A rare variant (item-level 28) carries none: the
+// rating is what makes the epic tier a qualitative step, not just +2 stats. Values
+// mirror upstream PR #1860's ilvl-31 allowance (4.0% armor / 5.0% weapon via
+// hitFractionFromRating in src/sim/combat/hit_rating.ts).
+export const HEROIC_HIT_RATING_ARMOR = 40;
+export const HEROIC_HIT_RATING_WEAPON = 50;
+
 // Weapon DPS ladder fitted to the authored drops. The base item's damage is scaled
 // toward this curve when the variant is built, keeping its swing speed and spread.
 // Used by content/heroic_variants.ts so an upgraded weapon matches its item level.

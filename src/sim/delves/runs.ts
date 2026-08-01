@@ -543,7 +543,7 @@ export function ejectToDelveDoor(ctx: SimContext, pid: number, delve: DelveDef):
   p.facing = 0;
   p.auras = [];
   p.ccDr.clear();
-  recalcPlayerStats(p, r.meta.cls, r.meta.equipment, r.meta.talentMods);
+  recalcPlayerStats(p, r.meta.cls, r.meta.equipment, r.meta.talentMods, r.meta.enchants);
   p.hp = p.maxHp;
   p.resource = p.resourceType === 'mana' ? p.maxResource : p.resourceType === 'energy' ? 100 : 0;
   p.targetId = null;

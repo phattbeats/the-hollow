@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -2120,6 +2119,11 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': 'Ouro Imperial',
   'entities.items.vanguard_azure_armor_plate.name': 'Vanguarda Azul-celeste',
   'entities.items.vanguard_chrome_armor_plate.name': 'Vanguarda Cromada',
+  'entities.items.enchanting_dust.name': 'Pó de Encantamento',
+  'entities.items.scroll_minor_might.name': 'Pergaminho de Força Menor',
+  'entities.items.scroll_minor_vigor.name': 'Pergaminho de Vigor Menor',
+  'entities.items.scroll_minor_focus.name': 'Pergaminho de Foco Menor',
+  'entities.items.scroll_minor_agility.name': 'Pergaminho de Agilidade Menor',
   'entities.items.deacons_cleaver.name': 'Cutelo do diácono',
   'entities.items.staff_of_drowned_prayers.name': 'Cajado das preces afogadas',
   'entities.items.mistbinder_kris.name': 'Kris Prendenévoa',
@@ -3289,7 +3293,6 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s}s',
-  'hudChrome.mobile.autorun': 'Corrida automática',
   'hudChrome.mobile.haptics': 'Vibração',
   'hudChrome.mobile.hapticsOff': 'Vibração desligada',
   'hudChrome.mobile.jump': 'Pular',

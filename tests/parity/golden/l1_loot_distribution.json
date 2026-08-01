@@ -30,7 +30,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 411,
-      "state": "ae3a8caa",
+      "state": "3e5d2b57",
       "events": "a13755b5",
       "rng": {
         "draws": 1,
@@ -55,6 +55,7 @@
           "counters": {
             "lootCopper": 34
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -146,6 +147,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -181,9 +183,11 @@
           "counters": {
             "lootCopper": 33
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -213,9 +217,11 @@
           "counters": {
             "lootCopper": 33
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -443,7 +449,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 411,
-      "state": "34cc6ccf",
+      "state": "a8133db2",
       "events": "9f3d712d",
       "rng": {
         "draws": 3,
@@ -468,6 +474,7 @@
           "counters": {
             "lootCopper": 34
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -599,6 +606,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -639,6 +647,7 @@
           "counters": {
             "lootCopper": 33
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -684,6 +693,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -714,6 +724,7 @@
           "counters": {
             "lootCopper": 33
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -759,6 +770,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -993,7 +1005,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 411,
-      "state": "2559104b",
+      "state": "71083672",
       "events": "0436e226",
       "rng": {
         "draws": 3,
@@ -1018,6 +1030,7 @@
           "counters": {
             "lootCopper": 34
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1149,6 +1162,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1189,6 +1203,7 @@
           "counters": {
             "lootCopper": 33
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1320,6 +1335,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1360,6 +1376,7 @@
           "counters": {
             "lootCopper": 33
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1405,6 +1422,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1622,7 +1640,7 @@
       "tick": 3,
       "time": 0.15,
       "nextId": 411,
-      "state": "aa36c0f0",
+      "state": "c180095d",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -1647,6 +1665,7 @@
           "counters": {
             "lootCopper": 34
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1778,6 +1797,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1818,6 +1838,7 @@
           "counters": {
             "lootCopper": 33
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1949,6 +1970,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1989,6 +2011,7 @@
           "counters": {
             "lootCopper": 33
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2034,6 +2057,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",

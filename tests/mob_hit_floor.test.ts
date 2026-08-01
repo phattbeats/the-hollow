@@ -11,7 +11,14 @@ import { MOB_VS_PLAYER_MAX_MISS, meleeMissChance, swingMissChance } from '../src
 // swingMissChance only reads kind / level / hostile / ownerId, so a minimal stub is
 // enough to exercise the directional guard without standing up a whole world.
 function ent(over: Partial<Entity>): Entity {
-  return { kind: 'mob', level: 1, hostile: true, ownerId: null, ...over } as unknown as Entity;
+  return {
+    kind: 'mob',
+    level: 1,
+    hostile: true,
+    ownerId: null,
+    hitBonus: 0,
+    ...over,
+  } as unknown as Entity;
 }
 
 describe('enemy mobs always hit players at >= 80% (PR #443 penalty is player -> mob only)', () => {

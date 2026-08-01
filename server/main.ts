@@ -74,6 +74,7 @@ import {
   listCharacters,
   listCompanionTokens,
   loadAccountCosmetics,
+  loadAccountDailyRewardsInfo,
   moderationStatusForAccount,
   pool,
   primarySlugForAccount,
@@ -1726,6 +1727,7 @@ async function main(): Promise<void> {
   await game.loadHousing();
   await game.loadGreenpawHearth();
   await game.loadHomestead();
+  await game.loadGreenpawCutting();
   await game.loadChatFilter();
   await game.loadBlockedIps();
   void game.recordOnlineSnapshot();
@@ -1872,6 +1874,7 @@ async function main(): Promise<void> {
       return;
     }
     const accountCosmetics = await loadAccountCosmetics(accountId);
+    const accountDailyRewards = await loadAccountDailyRewardsInfo(accountId);
     const result = game.join(
       ws,
       accountId,
@@ -1886,6 +1889,7 @@ async function main(): Promise<void> {
         reason: chatMute.reason,
         chatStrikes: status.chatStrikes,
         accountCosmetics,
+        accountDailyRewards,
         isAdmin,
         adminPermissions,
         clientSeed,
