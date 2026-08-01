@@ -578,6 +578,153 @@ function abilityTranslations(
 const classAbilityNamesEn = {
   entities: {
     abilities: abilityTranslations([
+      // Talents 2.0 (PHAA-715): grant-only spec signature abilities + per-class interrupts.
+      [
+        'chain_heal',
+        'Chain Heal',
+        'Heals a friendly target for a large amount, then jumps to up to 2 additional nearby allies, healing for 50% less with each jump.',
+      ],
+      [
+        'crusader_strike',
+        'Crusader Strike',
+        'Strikes the target for weapon damage plus 24 Holy damage.',
+      ],
+      [
+        'metamorphosis',
+        'Dread Aspect',
+        'Transform into a monstrous demon for 20 sec, increasing your spell damage by 20% and casting speed by 20%. Your demon gains 50% damage and 20% casting speed.',
+      ],
+      [
+        'holy_shock',
+        'Holy Shock',
+        'Shocks a friendly target with Holy energy to heal them, or an enemy for Holy damage.',
+      ],
+      [
+        'holy_shield',
+        'Hallowed Wall',
+        'Hurls a radiant aegis at an enemy, dealing Holy damage and bouncing to 2 nearby enemies.',
+      ],
+      [
+        'bestial_wrath',
+        'Howling Rage',
+        'Sends you into a bestial rage, increasing your attack power by 20% and your pet damage by 100% for 15 sec.',
+      ],
+      [
+        'trueshot_aura',
+        'Sureflight Aura',
+        'Inspires nearby allies, increasing attack power by 10% for 30 min.',
+      ],
+      [
+        'wyvern_sting',
+        'Wyvern Sting',
+        'Stings the enemy from range, incapacitating it for up to 4 sec. Any damage breaks the effect.',
+      ],
+      [
+        'arcane_power',
+        'Aether Surge',
+        'Increases spell damage by 20% and spell haste by 10% for 10 sec.',
+      ],
+      ['combustion', 'Flashfire', 'Increases spell critical chance by 50% for 15 sec.'],
+      [
+        'icy_veins',
+        'Icy Veins',
+        'Increases spell haste by 30% and prevents cast interruption and pushback for 10 sec.',
+      ],
+      [
+        'cold_blood',
+        "Killer's Calm",
+        'Focuses your killing intent so your next attack is a critical strike.',
+      ],
+      [
+        'blade_flurry',
+        'Mirrored Blades',
+        'Unleashes a flurry of blades, increasing attack speed by 20% for 12 sec.',
+      ],
+      [
+        'hemorrhage',
+        'Red Ribbon',
+        'Strikes the enemy for weapon damage plus bleed, causes bleeding damage over 12 sec, and increases bleed damage taken by 40%. Awards 1 combo point.',
+      ],
+      [
+        'power_infusion',
+        'Anointing',
+        'Infuses a friendly target with power, increasing spell haste by 20% for 15 sec.',
+      ],
+      [
+        'holy_nova',
+        'Holy Nova',
+        'Causes an explosion of holy radiance, healing nearby allies and damaging nearby enemies.',
+      ],
+      [
+        'shadowform',
+        'Gloamveil Form',
+        'Assume a Shadowform, increasing your Shadow damage by 15% until you shift back. Casting a healing spell ends the form. Cast again to return to normal form.',
+      ],
+      [
+        'elemental_mastery',
+        'Primal Mastery',
+        'Calls on the storm, making your next spell instant.',
+      ],
+      [
+        'siphon_life',
+        'Veinleech',
+        'Siphons life from the enemy, causing Shadow damage over 30 sec and healing you for the damage done.',
+      ],
+      [
+        'conflagrate',
+        'Conflagrate',
+        'Consumes your Immolate on the enemy to ignite them for Fire damage.',
+      ],
+      [
+        'moonkin_form',
+        'Moonwing Form',
+        'Shapeshift into a fearsome Moonkin, increasing your spell damage by 20% and your armor by 50%. Lasts until you shift out. Cast again to return to caster form.',
+      ],
+      [
+        'feral_charge',
+        'Primal Surge',
+        'Unleash a primal surge. In Cat Form, Energy regeneration is increased by 100% for 10 sec. In Bear Form, instantly generates 50 Rage.',
+      ],
+      [
+        'swiftmend',
+        'Swiftmend',
+        'Consumes a heal-over-time effect on a friendly target to heal them.',
+      ],
+      [
+        'pummel',
+        'Jawcrack',
+        "Interrupts the target's spellcast and prevents casting from that school for 4 sec.",
+      ],
+      [
+        'kick',
+        'Boot',
+        "Interrupts the target's spellcast and prevents casting from that school for 4 sec.",
+      ],
+      [
+        'counterspell',
+        'Spellbreak',
+        "Counters the target's spellcast and prevents casting from that school for 6 sec.",
+      ],
+      [
+        'counter_shot',
+        'Hushing Shot',
+        "A snap shot that interrupts the target's spellcast and locks that school for 4 sec.",
+      ],
+      [
+        'rebuke',
+        'Reproach',
+        "Interrupts the target's spellcast and prevents casting from that school for 4 sec.",
+      ],
+      [
+        'skull_bash',
+        'Headbutt',
+        "A lunging headbutt that interrupts the target's spellcast and locks that school for 4 sec.",
+      ],
+      [
+        'spell_lock',
+        'Gag Order',
+        'Silences the target mid-cast and prevents casting from that school for 5 sec.',
+      ],
       [
         'heroic_strike',
         'Heroic Strike',
@@ -3696,6 +3843,68 @@ export const classAbilityNames = {
     entities: {
       abilities: abilityTranslations([
         [
+          'chain_heal',
+          '治疗链',
+          '对一名友方目标进行大量治疗，然后跳跃至最多2名附近的盟友，每次跳跃治疗量降低50%。',
+        ],
+        ['crusader_strike', '十字军打击', '对目标造成武器伤害加24点神圣伤害。'],
+        [
+          'metamorphosis',
+          '恐惧之相',
+          '变身为可怕的恶魔，持续20秒，法术伤害提高20%，施法速度提高20%。你的恶魔获得50%伤害提高和20%施法速度提高。',
+        ],
+        ['holy_shock', '神圣震击', '用神圣能量震击友方目标进行治疗，或对敌人造成神圣伤害。'],
+        ['holy_shield', '圣墙', '向敌人投掷神圣圣盾，造成神圣伤害并弹射至2个附近的敌人。'],
+        [
+          'bestial_wrath',
+          '咆哮怒火',
+          '使你陷入野兽狂怒，持续15秒，攻击强度提高20%，宠物伤害提高100%。',
+        ],
+        ['trueshot_aura', '稳射光环', '激励附近的盟友，攻击强度提高10%，持续30分钟。'],
+        ['wyvern_sting', '翼龙钉刺', '从远处刺向敌人，使其失能最多4秒。受到伤害将解除该效果。'],
+        ['arcane_power', '以太涌动', '法术伤害提高20%，法术急速提高10%，持续10秒。'],
+        ['combustion', '闪焰', '法术暴击几率提高50%，持续15秒。'],
+        ['icy_veins', '冰脉', '法术急速提高30%，并防止施法被打断或产生施法后仰，持续10秒。'],
+        ['cold_blood', '杀意冷静', '凝聚你的杀意，使你的下一次攻击必定暴击。'],
+        ['blade_flurry', '剑刃乱舞', '释放一连串剑刃攻击，攻击速度提高20%，持续12秒。'],
+        [
+          'hemorrhage',
+          '红丝带',
+          '以武器伤害加流血效果击中敌人，造成持续12秒的流血伤害，并使流血伤害提高40%。获得1点连击点数。',
+        ],
+        ['power_infusion', '恩泽', '为友方目标注入力量，使其法术急速提高20%，持续15秒。'],
+        ['holy_nova', '神圣新星', '引发神圣光辉的爆发，治疗附近的盟友并伤害附近的敌人。'],
+        [
+          'shadowform',
+          '暮蔼形态',
+          '化身暗影形态，使暗影伤害提高15%，直至你变回原形。施放治疗法术会解除该形态。再次施放可变回原形。',
+        ],
+        ['elemental_mastery', '元素掌控', '召唤风暴之力，使你的下一个法术瞬发。'],
+        [
+          'siphon_life',
+          '汲取生命',
+          '从敌人身上汲取生命，造成持续30秒的暗影伤害并治疗你等同于造成的伤害。',
+        ],
+        ['conflagrate', '燃烧', '引燃你施放在敌人身上的献祭效果，造成火焰伤害。'],
+        [
+          'moonkin_form',
+          '月翼形态',
+          '变身为可怕的枭兽，法术伤害提高20%，护甲提高50%。直至你变回原形。再次施放可变回施法者形态。',
+        ],
+        [
+          'feral_charge',
+          '原始冲能',
+          '释放原始冲能。在猎豹形态下，能量回复速度提高100%，持续10秒。在熊形态下，立即产生50点怒气。',
+        ],
+        ['swiftmend', '迅捷治疗', '消耗友方目标身上的一个持续治疗效果，为其恢复生命值。'],
+        ['pummel', '碎颚', '打断目标的施法，并使其在4秒内无法施放该系法术。'],
+        ['kick', '重踢', '打断目标的施法，并使其在4秒内无法施放该系法术。'],
+        ['counterspell', '法术反制', '反制目标的施法，并使其在6秒内无法施放该系法术。'],
+        ['counter_shot', '静默射击', '快速射击，打断目标的施法并封锁该系法术4秒。'],
+        ['rebuke', '谴责', '打断目标的施法，并使其在4秒内无法施放该系法术。'],
+        ['skull_bash', '头槌', '猛冲头槌，打断目标的施法并封锁该系法术4秒。'],
+        ['spell_lock', '咒缚', '使目标在施法中沉默，并使其在5秒内无法施放该系法术。'],
+        [
           'heroic_strike',
           '英勇打击',
           '一次强力攻击，使近战伤害提高 {damage}。在你的下一次挥击时触发。',
@@ -4013,6 +4222,68 @@ export const classAbilityNames = {
     entities: {
       abilities: abilityTranslations([
         [
+          'chain_heal',
+          '治療鏈',
+          '對一名友方目標進行大量治療，然後跳躍至最多2名附近的盟友，每次跳躍治療量降低50%。',
+        ],
+        ['crusader_strike', '十字軍打擊', '對目標造成武器傷害加24點神聖傷害。'],
+        [
+          'metamorphosis',
+          '恐懼之相',
+          '變身為可怕的惡魔，持續20秒，法術傷害提高20%，施法速度提高20%。你的惡魔獲得50%傷害提高和20%施法速度提高。',
+        ],
+        ['holy_shock', '神聖震擊', '用神聖能量震擊友方目標進行治療，或對敵人造成神聖傷害。'],
+        ['holy_shield', '聖牆', '向敵人投擲神聖聖盾，造成神聖傷害並彈射至2個附近的敵人。'],
+        [
+          'bestial_wrath',
+          '咆哮怒火',
+          '使你陷入野獸狂怒，持續15秒，攻擊強度提高20%，寵物傷害提高100%。',
+        ],
+        ['trueshot_aura', '穩射光環', '激勵附近的盟友，攻擊強度提高10%，持續30分鐘。'],
+        ['wyvern_sting', '翼龍釘刺', '從遠處刺向敵人，使其失能最多4秒。受到傷害將解除該效果。'],
+        ['arcane_power', '以太湧動', '法術傷害提高20%，法術急速提高10%，持續10秒。'],
+        ['combustion', '閃焰', '法術暴擊機率提高50%，持續15秒。'],
+        ['icy_veins', '冰脈', '法術急速提高30%，並防止施法被打斷或產生施法後仰，持續10秒。'],
+        ['cold_blood', '殺意冷靜', '凝聚你的殺意，使你的下一次攻擊必定爆擊。'],
+        ['blade_flurry', '劍刃亂舞', '釋放一連串劍刃攻擊，攻擊速度提高20%，持續12秒。'],
+        [
+          'hemorrhage',
+          '紅絲帶',
+          '以武器傷害加流血效果擊中敵人，造成持續12秒的流血傷害，並使流血傷害提高40%。獲得1點連擊點數。',
+        ],
+        ['power_infusion', '恩澤', '為友方目標注入力量，使其法術急速提高20%，持續15秒。'],
+        ['holy_nova', '神聖新星', '引發神聖光輝的爆發，治療附近的盟友並傷害附近的敵人。'],
+        [
+          'shadowform',
+          '暮靄形態',
+          '化身闇影形態，使闇影傷害提高15%，直至你變回原形。施放治療法術會解除該形態。再次施放可變回原形。',
+        ],
+        ['elemental_mastery', '元素掌控', '召喚風暴之力，使你的下一個法術瞬發。'],
+        [
+          'siphon_life',
+          '汲取生命',
+          '從敵人身上汲取生命，造成持續30秒的闇影傷害並治療你等同於造成的傷害。',
+        ],
+        ['conflagrate', '燃燒', '引燃你施放在敵人身上的獻祭效果，造成火焰傷害。'],
+        [
+          'moonkin_form',
+          '月翼形態',
+          '變身為可怕的梟獸，法術傷害提高20%，護甲提高50%。直至你變回原形。再次施放可變回施法者形態。',
+        ],
+        [
+          'feral_charge',
+          '原始衝能',
+          '釋放原始衝能。在獵豹形態下，能量回復速度提高100%，持續10秒。在熊形態下，立即產生50點怒氣。',
+        ],
+        ['swiftmend', '迅捷治療', '消耗友方目標身上的一個持續治療效果，為其恢復生命值。'],
+        ['pummel', '碎顎', '打斷目標的施法，並使其在4秒內無法施放該系法術。'],
+        ['kick', '重踢', '打斷目標的施法，並使其在4秒內無法施放該系法術。'],
+        ['counterspell', '法術反制', '反制目標的施法，並使其在6秒內無法施放該系法術。'],
+        ['counter_shot', '靜默射擊', '快速射擊，打斷目標的施法並封鎖該系法術4秒。'],
+        ['rebuke', '譴責', '打斷目標的施法，並使其在4秒內無法施放該系法術。'],
+        ['skull_bash', '頭槌', '猛衝頭槌，打斷目標的施法並封鎖該系法術4秒。'],
+        ['spell_lock', '咒縛', '使目標在施法中沉默，並使其在5秒內無法施放該系法術。'],
+        [
           'heroic_strike',
           '英勇打擊',
           '一次強力攻擊，使近戰傷害提高 {damage}。在你的下一次揮擊時觸發。',
@@ -4329,6 +4600,128 @@ export const classAbilityNames = {
   ko_KR: {
     entities: {
       abilities: abilityTranslations([
+        [
+          'chain_heal',
+          '연쇄 치유',
+          '우호적인 대상을 크게 치유한 후, 최대 2명의 주변 아군에게 도약하며 도약할 때마다 치유량이 50%씩 감소합니다.',
+        ],
+        [
+          'crusader_strike',
+          '성전사의 일격',
+          '대상에게 무기 피해와 추가로 신성 피해 24를 입힙니다.',
+        ],
+        [
+          'metamorphosis',
+          '공포의 상',
+          '20초 동안 무시무시한 악마로 변신하여 주문 피해가 20%, 시전 속도가 20% 증가합니다. 당신의 악마는 피해 50%와 시전 속도 20%를 얻습니다.',
+        ],
+        [
+          'holy_shock',
+          '신성 충격',
+          '신성한 기운으로 우호적인 대상을 충격하여 치유하거나, 적에게 신성 피해를 입힙니다.',
+        ],
+        [
+          'holy_shield',
+          '신성한 벽',
+          '적에게 광휘의 방패를 던져 신성 피해를 입히고 주변의 적 2명에게 튕겨나갑니다.',
+        ],
+        [
+          'bestial_wrath',
+          '포효하는 분노',
+          '15초 동안 야수의 분노에 빠져 공격력이 20%, 펫의 피해량이 100% 증가합니다.',
+        ],
+        [
+          'trueshot_aura',
+          '조준의 오라',
+          '30분 동안 주변 아군을 격려하여 공격력을 10% 증가시킵니다.',
+        ],
+        [
+          'wyvern_sting',
+          '와이번의 독침',
+          '원거리에서 적을 찔러 최대 4초 동안 무력화시킵니다. 피해를 입으면 효과가 해제됩니다.',
+        ],
+        ['arcane_power', '비전 쇄도', '10초 동안 주문 피해가 20%, 주문 가속이 10% 증가합니다.'],
+        ['combustion', '화염구동', '15초 동안 주문 치명타 확률이 50% 증가합니다.'],
+        [
+          'icy_veins',
+          '얼음 혈관',
+          '10초 동안 주문 가속이 30% 증가하며 시전 차단과 시전 지연을 방지합니다.',
+        ],
+        ['cold_blood', '냉정한 살의', '살의를 집중시켜 다음 공격이 반드시 치명타가 됩니다.'],
+        [
+          'blade_flurry',
+          '칼날 회오리',
+          '칼날의 소용돌이를 일으켜 12초 동안 공격 속도가 20% 증가합니다.',
+        ],
+        [
+          'hemorrhage',
+          '붉은 리본',
+          '무기 피해와 출혈 효과로 적을 공격하여 12초 동안 출혈 피해를 입히고 출혈 피해를 40% 증가시킵니다. 연계 점수 1점을 획득합니다.',
+        ],
+        [
+          'power_infusion',
+          '축복 주입',
+          '우호적인 대상에게 힘을 불어넣어 15초 동안 주문 가속을 20% 증가시킵니다.',
+        ],
+        [
+          'holy_nova',
+          '신성한 폭발',
+          '신성한 광채의 폭발을 일으켜 주변 아군을 치유하고 주변 적에게 피해를 입힙니다.',
+        ],
+        [
+          'shadowform',
+          '황혼의 형상',
+          '그림자 형상으로 변하여 그림자 피해가 15% 증가하며, 원래 모습으로 돌아갈 때까지 유지됩니다. 치유 주문을 시전하면 형상이 해제됩니다. 다시 시전하면 원래 모습으로 돌아갑니다.',
+        ],
+        ['elemental_mastery', '원시 지배', '폭풍의 힘을 불러와 다음 주문을 즉시 시전합니다.'],
+        [
+          'siphon_life',
+          '생명 착취',
+          '적에게서 생명력을 흡수하여 30초 동안 그림자 피해를 입히고 입힌 피해만큼 자신을 치유합니다.',
+        ],
+        ['conflagrate', '점화', '적에게 걸린 제물을 소모하여 화염 피해를 입힙니다.'],
+        [
+          'moonkin_form',
+          '달빛날개 형상',
+          '무시무시한 달빛수호자로 변신하여 주문 피해가 20%, 방어도가 50% 증가합니다. 원래 모습으로 돌아갈 때까지 유지됩니다. 다시 시전하면 시전자 형상으로 돌아갑니다.',
+        ],
+        [
+          'feral_charge',
+          '원시의 쇄도',
+          '원시의 힘을 발산합니다. 표범 형상에서는 10초 동안 기력 재생이 100% 증가합니다. 곰 형상에서는 즉시 분노 50을 생성합니다.',
+        ],
+        [
+          'swiftmend',
+          '신속한 치유',
+          '우호적인 대상에게 걸린 지속 치유 효과를 소모하여 치유합니다.',
+        ],
+        [
+          'pummel',
+          '턱관절 강타',
+          '대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다.',
+        ],
+        ['kick', '발차기', '대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다.'],
+        [
+          'counterspell',
+          '주문 차단',
+          '대상의 시전을 무효화하고 6초 동안 해당 계열 주문 시전을 막습니다.',
+        ],
+        [
+          'counter_shot',
+          '제압 사격',
+          '즉각적인 사격으로 대상의 시전을 차단하고 해당 계열을 4초 동안 봉쇄합니다.',
+        ],
+        ['rebuke', '질책', '대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다.'],
+        [
+          'skull_bash',
+          '박치기',
+          '돌진하여 박치기로 대상의 시전을 차단하고 해당 계열을 4초 동안 봉쇄합니다.',
+        ],
+        [
+          'spell_lock',
+          '주문 봉인',
+          '시전 중인 대상을 침묵시키고 5초 동안 해당 계열 주문 시전을 막습니다.',
+        ],
         [
           'heroic_strike',
           '영웅의 일격',
@@ -4838,6 +5231,112 @@ export const classAbilityNames = {
   ja_JP: {
     entities: {
       abilities: abilityTranslations([
+        [
+          'chain_heal',
+          'チェインヒール',
+          '友好的な対象を大きく回復し、最大2体の近くの味方に連鎖します。連鎖するたびに回復量が50%減少します。',
+        ],
+        [
+          'crusader_strike',
+          'クルセイダーストライク',
+          '対象に武器ダメージに加えて24の聖なるダメージを与えます。',
+        ],
+        [
+          'metamorphosis',
+          'ドレッドアスペクト',
+          '20秒間恐ろしい悪魔に変身し、呪文ダメージが20%、詠唱速度が20%増加します。あなたの悪魔はダメージ50%、詠唱速度20%を得ます。',
+        ],
+        [
+          'holy_shock',
+          'ホーリーショック',
+          '友好的な対象を神聖なエネルギーで癒すか、敵に神聖ダメージを与えます。',
+        ],
+        [
+          'holy_shield',
+          '聖なる壁',
+          '敵に光り輝く盾を投げつけ、神聖ダメージを与えて近くの敵2体に跳ね返ります。',
+        ],
+        [
+          'bestial_wrath',
+          '猛る咆哮',
+          '15秒間野獣の怒りに入り、攻撃力が20%、ペットのダメージが100%増加します。',
+        ],
+        [
+          'trueshot_aura',
+          '精密照準のオーラ',
+          '近くの味方を鼓舞し、30分間攻撃力を10%増加させます。',
+        ],
+        [
+          'wyvern_sting',
+          'ワイバーンの毒針',
+          '遠距離から敵を刺し、最大4秒間無力化します。ダメージを受けると効果が解除されます。',
+        ],
+        [
+          'arcane_power',
+          'エーテルサージ',
+          '10秒間、呪文ダメージが20%、呪文の速さが10%増加します。',
+        ],
+        ['combustion', 'フラッシュファイア', '15秒間、呪文クリティカル率が50%増加します。'],
+        [
+          'icy_veins',
+          'アイシーヴェイン',
+          '10秒間、呪文の速さが30%増加し、詠唱の中断とノックバックを防ぎます。',
+        ],
+        ['cold_blood', '冷徹な殺意', '殺意を集中させ、次の攻撃を必ずクリティカルにします。'],
+        ['blade_flurry', 'ミラードブレード', '剣閃の乱舞を放ち、12秒間攻撃速度が20%増加します。'],
+        [
+          'hemorrhage',
+          'レッドリボン',
+          '武器ダメージに加え出血効果で敵を攻撃し、12秒間出血ダメージを与え、出血ダメージを40%増加させます。コンボポイントを1得ます。',
+        ],
+        [
+          'power_infusion',
+          '祝福の注入',
+          '友好的な対象に力を注ぎ、15秒間呪文の速さを20%増加させます。',
+        ],
+        [
+          'holy_nova',
+          'ホーリーノヴァ',
+          '神聖な輝きの爆発を起こし、近くの味方を回復し近くの敵にダメージを与えます。',
+        ],
+        [
+          'shadowform',
+          'グルームヴェイルフォーム',
+          'シャドウフォームになり、元の姿に戻るまで暗影ダメージが15%増加します。回復呪文を唱えるとフォームが解除されます。再度詠唱すると元の姿に戻ります。',
+        ],
+        ['elemental_mastery', 'プライマルマスタリー', '嵐の力を呼び、次の呪文を即時発動にします。'],
+        [
+          'siphon_life',
+          'ヴェインリーチ',
+          '敵から生命力を吸収し、30秒間暗影ダメージを与え、与えたダメージ分自分を回復します。',
+        ],
+        [
+          'conflagrate',
+          'コンフラグレイト',
+          '敵にかけたイモレイトを消費し、炎のダメージで発火させます。',
+        ],
+        [
+          'moonkin_form',
+          'ムーンウィングフォーム',
+          '恐ろしいムーンキンに変身し、呪文ダメージが20%、防御力が50%増加します。元の姿に戻るまで持続します。再度詠唱すると詠唱者フォームに戻ります。',
+        ],
+        [
+          'feral_charge',
+          'プライマルサージ',
+          '原始の力を解き放ちます。ワイルドキャットフォームではエネルギー回復が10秒間100%増加します。ベアフォームでは即座に怒りを50得ます。',
+        ],
+        ['swiftmend', 'スイフトメンド', '友好的な対象にかかった継続回復効果を消費して回復します。'],
+        ['pummel', 'ジョークラック', '対象の詠唱を中断し、4秒間その系統の詠唱を防ぎます。'],
+        ['kick', 'ブート', '対象の詠唱を中断し、4秒間その系統の詠唱を防ぎます。'],
+        ['counterspell', 'スペルブレイク', '対象の詠唱を妨害し、6秒間その系統の詠唱を防ぎます。'],
+        [
+          'counter_shot',
+          'ハッシングショット',
+          '咄嗟の射撃で対象の詠唱を中断し、その系統を4秒間封じます。',
+        ],
+        ['rebuke', 'リプローチ', '対象の詠唱を中断し、4秒間その系統の詠唱を防ぎます。'],
+        ['skull_bash', 'ヘッドバット', '突進頭突きで対象の詠唱を中断し、その系統を4秒間封じます。'],
+        ['spell_lock', 'ギャグオーダー', '詠唱中の対象を沈黙させ、5秒間その系統の詠唱を防ぎます。'],
         [
           'heroic_strike',
           '英雄の一撃',
@@ -5972,6 +6471,152 @@ export const classAbilityNames = {
   ru_RU: {
     entities: {
       abilities: abilityTranslations([
+        [
+          'chain_heal',
+          'Цепное исцеление',
+          'Исцеляет дружественную цель на большое количество здоровья, затем перескакивает на до 2 ближайших союзников, с уменьшением исцеления на 50% с каждым скачком.',
+        ],
+        ['crusader_strike', 'Удар крестоносца', 'Наносит цели урон оружием плюс 24 урона Светом.'],
+        [
+          'metamorphosis',
+          'Устрашающий облик',
+          'Превращает вас в чудовищного демона на 20 сек, увеличивая урон от заклинаний на 20% и скорость сотворения на 20%. Ваш демон получает 50% урона и 20% скорости сотворения.',
+        ],
+        [
+          'holy_shock',
+          'Священный шок',
+          'Поражает дружественную цель Священной энергией, исцеляя её, или врага, нанося урон Светом.',
+        ],
+        [
+          'holy_shield',
+          'Освящённая стена',
+          'Метает сияющий щит во врага, нанося урон Светом и рикошетируя на 2 ближайших врагов.',
+        ],
+        [
+          'bestial_wrath',
+          'Рёв ярости',
+          'Погружает вас в звериную ярость на 15 сек, увеличивая силу атаки на 20% и урон питомца на 100%.',
+        ],
+        [
+          'trueshot_aura',
+          'Аура меткого выстрела',
+          'Воодушевляет находящихся рядом союзников, увеличивая силу атаки на 10% на 30 мин.',
+        ],
+        [
+          'wyvern_sting',
+          'Укус виверны',
+          'Жалит врага издалека, обездвиживая его на срок до 4 сек. Любой урон снимает эффект.',
+        ],
+        [
+          'arcane_power',
+          'Всплеск эфира',
+          'Увеличивает урон от заклинаний на 20% и ускорение заклинаний на 10% на 10 сек.',
+        ],
+        [
+          'combustion',
+          'Мгновенное возгорание',
+          'Увеличивает шанс критического удара заклинаниями на 50% на 15 сек.',
+        ],
+        [
+          'icy_veins',
+          'Ледяные вены',
+          'Увеличивает ускорение заклинаний на 30% и предотвращает прерывание и отбрасывание сотворения на 10 сек.',
+        ],
+        [
+          'cold_blood',
+          'Холодная ярость',
+          'Сосредотачивает вашу жажду убийства, гарантируя, что следующая атака станет критическим ударом.',
+        ],
+        [
+          'blade_flurry',
+          'Зеркальные клинки',
+          'Обрушивает шквал клинков, увеличивая скорость атаки на 20% на 12 сек.',
+        ],
+        [
+          'hemorrhage',
+          'Алая лента',
+          'Поражает врага уроном оружием и эффектом кровотечения, нанося урон от кровотечения на протяжении 12 сек и увеличивая получаемый урон от кровотечения на 40%. Дает 1 очко комбо.',
+        ],
+        [
+          'power_infusion',
+          'Помазание',
+          'Наполняет дружественную цель силой, увеличивая ускорение заклинаний на 20% на 15 сек.',
+        ],
+        [
+          'holy_nova',
+          'Священная нова',
+          'Вызывает взрыв священного сияния, исцеляя находящихся рядом союзников и нанося урон находящимся рядом врагам.',
+        ],
+        [
+          'shadowform',
+          'Сумеречный облик',
+          'Принимает облик Тьмы, увеличивая урон Тьмой на 15% до тех пор, пока вы не вернётесь в обычный облик. Применение лечащего заклинания снимает облик. Повторное применение возвращает обычный облик.',
+        ],
+        [
+          'elemental_mastery',
+          'Стихийное мастерство',
+          'Призывает силу шторма, делая ваше следующее заклинание мгновенным.',
+        ],
+        [
+          'siphon_life',
+          'Похититель жизни',
+          'Похищает жизнь у врага, нанося урон Тьмой на протяжении 30 сек и исцеляя вас на количество нанесённого урона.',
+        ],
+        [
+          'conflagrate',
+          'Воспламенение',
+          'Расходует наложенное на врага Воспламенение, поджигая его и нанося урон Огнём.',
+        ],
+        [
+          'moonkin_form',
+          'Облик совухи',
+          'Превращает вас в грозного лунного стража, увеличивая урон от заклинаний на 20% и броню на 50%. Действует, пока вы не вернётесь в обычный облик. Повторное применение возвращает облик заклинателя.',
+        ],
+        [
+          'feral_charge',
+          'Первобытный всплеск',
+          'Высвобождает первобытную силу. В облике пантеры восстановление энергии увеличивается на 100% на 10 сек. В облике медведя мгновенно создаёт 50 ярости.',
+        ],
+        [
+          'swiftmend',
+          'Быстрое исцеление',
+          'Расходует эффект исцеления с течением времени на дружественной цели, исцеляя её.',
+        ],
+        [
+          'pummel',
+          'Хрустнуть челюстью',
+          'Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 4 сек.',
+        ],
+        [
+          'kick',
+          'Удар ногой',
+          'Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 4 сек.',
+        ],
+        [
+          'counterspell',
+          'Развеивание заклинания',
+          'Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 6 сек.',
+        ],
+        [
+          'counter_shot',
+          'Заглушающий выстрел',
+          'Молниеносный выстрел, прерывающий применяемое целью заклинание и запрещающий эту школу на 4 сек.',
+        ],
+        [
+          'rebuke',
+          'Упрёк',
+          'Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 4 сек.',
+        ],
+        [
+          'skull_bash',
+          'Удар головой',
+          'Стремительный удар головой, прерывающий применяемое целью заклинание и запрещающий эту школу на 4 сек.',
+        ],
+        [
+          'spell_lock',
+          'Кляп',
+          'Заставляет цель замолчать во время сотворения заклинания и запрещает применение заклинаний этой школы на 5 сек.',
+        ],
         [
           'heroic_strike',
           'Удар героя',

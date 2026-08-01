@@ -166,6 +166,12 @@ export type AuraKind =
   | 'attackspeed'
   | 'debuff_ap'
   | 'buff_ap'
+  // Owner's pet damage bonus (Beast Mastery/Demonology masteries: petDmgPct/Howling Rage).
+  // value: percent points if > 1 (100 = +100%), else a fraction, mirroring the pctValue
+  // convention already used for the other percent-buff kinds below.
+  | 'pet_damage_pct'
+  // Pet attack/cast speed bonus (Metamorphosis demon). value: fraction (0.2 = +20%).
+  | 'pet_spellhaste'
   | 'buff_armor'
   | 'buff_int'
   | 'buff_agi'
@@ -173,6 +179,20 @@ export type AuraKind =
   | 'buff_speed'
   | 'buff_haste'
   | 'buff_spellpower'
+  // Spec-mastery/cooldown caster buffs (Combustion/Icy Veins/Arcane Power/Metamorphosis):
+  // additive spell crit chance, a spell damage percent multiplier, and a spell haste
+  // fraction, each read alongside the resolved Entity stat by spell_combat.ts.
+  | 'buff_spellcrit'
+  | 'buff_spelldmg'
+  | 'buff_spellhaste'
+  // Icy Veins: while active, casts cannot be interrupted or pushed back.
+  | 'cast_shield'
+  // Cold Blood (Assassination rogue signature): guarantees the next damaging
+  // ability use is a critical strike. Consumed in effect_dispatch.ts.
+  | 'next_attack_crit'
+  // Elemental Mastery (Elemental shaman signature): the next spell cast is instant.
+  // Consumed in casting_lifecycle.ts castAbility.
+  | 'next_cast_instant'
   | 'hot'
   | 'absorb'
   | 'imbue'
@@ -182,6 +202,18 @@ export type AuraKind =
   | 'form_bear'
   | 'form_cat'
   | 'form_travel'
+  // Balance druid signature form: Spell Power (value) lives on the aura itself so it
+  // rides the one toggle; its +20% spell damage rides a separate buff_spelldmg aura.
+  | 'form_moonkin'
+  // Shadow priest signature form: amplifies Shadow-school damage (combat/damage.ts),
+  // contributes no stat-pass bonus itself (value carries the percent for that amp).
+  | 'form_shadow'
+  // Warlock Metamorphosis: a temporary demon transform (cosmetic scale + tint in render,
+  // its damage/haste bonuses ride separate buff auras).
+  | 'form_metamorph'
+  // Feral (cat form) signature: Energy regeneration multiplier while active (value = a
+  // fraction, 1 = +100%).
+  | 'buff_energyregen'
   | 'stealth'
   | 'defensive_stance'
   | 'righteous_fury'
@@ -191,6 +223,9 @@ export type AuraKind =
   | 'blind'
   | 'disarm'
   | 'expose'
+  // Bleed damage taken debuff (Hemorrhage): a physical-school dot tick is amplified by
+  // the sum of the target's live bleed_vuln stacks (auras.ts updateAuras).
+  | 'bleed_vuln'
   | 'spellvuln'
   | 'lockout'
   | 'vulnerability'
@@ -239,6 +274,7 @@ export interface Aura {
   charges?: number; // thorns: remaining reflect charges (Lightning Shield); undefined => unlimited
   icd?: number; // thorns: internal-cooldown remaining, seconds (counts down each tick)
   icdMax?: number; // thorns: configured internal cooldown, seconds (re-armed on each reflect)
+  leechPct?: number; // dot only: fraction of tick damage healed back to source
 }
 
 export type CrowdControlDrCategory =
@@ -1196,8 +1232,17 @@ export type AbilityEffect =
       requiresBehind?: boolean;
       weaponMult?: number;
     } // instant special attack (sinister strike, overpower, backstab)
-  | { type: 'directDamage'; min: number; max: number }
+  | { type: 'directDamage'; min: number; max: number; vsRootedMult?: number }
+  // Interrupts the target's in-progress cast/channel and locks out further casts of
+  // that spell's school for `lockout` seconds. Rides the existing lockout AuraKind
+  // (already applied by mob interrupt procs, see mob/mob_swing.ts) and isLockedOut
+  // gate (combat/cc.ts, already consumed by casting_lifecycle.ts castAbility).
+  | { type: 'interrupt'; lockout: number }
   | { type: 'heal'; min: number; max: number } // friendly target (or self)
+  // Chain Heal: heal the primary friendly target, then bounce to the nearest not-yet-healed
+  // ally within `radius`, up to `jumps` extra targets, each jump healing `falloff`x the last.
+  | { type: 'chainHeal'; min: number; max: number; jumps: number; falloff: number; radius: number }
+  | { type: 'aoeHeal'; min: number; max: number; radius: number }
   | { type: 'hot'; total: number; duration: number; interval: number } // renew, rejuvenation
   | { type: 'absorb'; amount: number; duration: number } // power word: shield
   | { type: 'imbue'; bonus: number; duration: number; judgeMin?: number; judgeMax?: number } // seals / rockbiter: extra damage per swing
@@ -1217,13 +1262,26 @@ export type AbilityEffect =
       party?: boolean;
     } // fortitude/might/mark on a friendly target
   | { type: 'finisherDamage'; base: number; perCombo: number; variance: number } // eviscerate
-  | { type: 'dot'; total: number; duration: number; interval: number }
+  | { type: 'dot'; total: number; duration: number; interval: number; leechPct?: number }
   | { type: 'slow'; mult: number; duration: number }
   | { type: 'root'; duration: number }
   | { type: 'stun'; duration: number }
   | { type: 'incapacitate'; duration: number } // gouge: breaks on damage
   | { type: 'polymorph'; duration: number } // sheep: breaks on damage, target heals
   | { type: 'aoeDamage'; min: number; max: number; radius: number }
+  // Bounce damage: the caster's directDamage already hit the primary target; this arcs
+  // from that target to the nearest not-yet-hit hostile within `radius`, up to `jumps`
+  // enemies (the primary and the caster are excluded), each jump dealing `falloff`x the
+  // last. The hop pick is DETERMINISTIC (nearest by distance, then lowest id), mirroring
+  // chainHeal, so the only rng is the one base roll plus each hit's crit.
+  | {
+      type: 'chainDamage';
+      min: number;
+      max: number;
+      jumps: number;
+      falloff: number;
+      radius: number;
+    }
   | {
       type: 'groundAoE';
       min: number;
@@ -1234,7 +1292,23 @@ export type AbilityEffect =
     }
   | { type: 'aoeAttackSpeed'; mult: number; duration: number; radius: number } // thunder clap rider
   | { type: 'aoeAttackPower'; amount: number; duration: number; radius: number } // demoralizing roar/shout
+  // party-style ALLY buff: +AP aura on the caster and nearby friendlies (Trueshot Aura)
+  | {
+      type: 'aoeAllyAttackPower';
+      amount?: number;
+      apPct?: number;
+      duration: number;
+      radius: number;
+    }
+  | { type: 'aoeAllyHaste'; mult: number; duration: number; radius: number }
   | { type: 'aoeRoot'; duration: number; radius: number; min: number; max: number }
+  | {
+      type: 'consumeAura';
+      auraIds?: string[];
+      auraKind?: 'dot' | 'hot';
+      deal?: { min: number; max: number };
+      heal?: { min: number; max: number };
+    }
   | {
       type: 'selfBuff';
       kind: AuraKind;
@@ -1245,11 +1319,16 @@ export type AbilityEffect =
       charges?: number;
       internalCooldown?: number;
     }
+  | { type: 'petBuff'; kind: AuraKind; value: number; duration: number }
+  | { type: 'applyDebuff'; kind: AuraKind; value: number; duration: number }
   | { type: 'finisherHaste'; mult: number; basedur: number; perCombo: number } // slice and dice
   | { type: 'finisherStun'; base: number; perCombo: number } // kidney shot: stun seconds scale with combo
   | { type: 'gainResource'; amount: number } // bloodrage immediate
   | { type: 'selfDamagePctMax'; pct: number } // bloodrage cost
   | { type: 'charge' }
+  // Druid Feral signature (Feral Instinct): a form-gated resource burst. In Cat Form it
+  // grants an Energy-regeneration buff; in Bear Form it instantly generates Rage.
+  | { type: 'feralCharge' }
   | { type: 'sunder'; armor: number; maxStacks: number } // sunder armor: stacking armor debuff + flat threat
   // PHAA-577: the percent-armor-debuff sibling of 'sunder' above. Same stacking/
   // threat/miss-chance mechanics (see effect_dispatch.ts case 'armorDebuffPct'),
@@ -1299,7 +1378,7 @@ export interface AbilityDef {
   // instead (Arcane Shot, Serpent Sting, Aimed Shot), regardless of school.
   scalesWith?: 'ranged';
   requiresTarget: boolean;
-  targetType?: 'enemy' | 'friendly'; // friendly = self or allied player (defaults to enemy)
+  targetType?: 'enemy' | 'friendly' | 'any'; // friendly = self or allied player (defaults to enemy)
   onNextSwing?: boolean; // heroic strike style: no GCD, queues on swing
   offGcd?: boolean;
   awardsCombo?: number; // rogue builders
@@ -1310,6 +1389,9 @@ export interface AbilityDef {
   // multiplier on the damage-threat (both scale with stance/form modifiers).
   threat?: { flat?: number; mult?: number };
   requiresForm?: 'bear' | 'cat'; // druid form kit (maul/growl/swipe/claw/bite)
+  // Castable while shapeshifted without requiring a SPECIFIC form (Feral Instinct works in
+  // both Cat and Bear Form). Exempts the ability from the "can't act while shapeshifted" lock.
+  usableInForm?: boolean;
   // Mutually exclusive self-buff group: casting one ability in the group cancels
   // any active buff from a sibling in the same group (e.g. hunter aspects, where
   // only one aspect may be active at a time). Distinct from form toggles, which
@@ -1908,6 +1990,13 @@ export interface Entity {
   rangedHaste: number;
   spellHaste: number;
   critChance: number; // 0..1
+  // Extra critical-strike damage from a spec mastery (0 = none), split by OUTPUT CHANNEL
+  // so a mastery only strengthens the crits it is meant to. Added to the matching base
+  // crit multiplier at the crit site: spell crits deal 1.5 + critDmgSpellBonus, physical
+  // crits 2 + critDmgPhysBonus, heal crits 1.5 + critDmgHealBonus.
+  critDmgSpellBonus: number;
+  critDmgPhysBonus: number;
+  critDmgHealBonus: number;
   dodgeChance: number;
   hitRating: number; // accumulated hit rating from gear (see combat/hit_rating.ts)
   hitBonus: number; // hit fraction (hitRating converted): reduces miss/resist, 0..1
@@ -2349,7 +2438,7 @@ export type SimEvent = { pid?: number } & (
       sourceId: number;
       targetId: number;
       school: string;
-      fx: 'projectile' | 'beam' | 'tick' | 'nova' | 'lightning';
+      fx: 'projectile' | 'beam' | 'tick' | 'nova' | 'lightning' | 'chainHeal';
     }
   // entityId (when set) anchors the log to that entity so the server only
   // delivers it to nearby players; anchorless logs broadcast server-wide.
