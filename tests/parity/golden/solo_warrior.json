@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "34f1b800",
+      "state": "4b1d4301",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -40,9 +40,11 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -111,8 +113,8 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "b9d16e58",
-      "events": "f21aa85b",
+      "state": "4f9604b8",
+      "events": "97ef93cb",
       "rng": {
         "draws": 6,
         "digest": "2344d084"
@@ -122,7 +124,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 409,
-      "state": "c528de1d",
+      "state": "b27d2cb9",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -133,7 +135,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 409,
-      "state": "198b7461",
+      "state": "7cbfc945",
       "events": "c7750db5",
       "rng": {
         "draws": 98,
@@ -144,8 +146,8 @@
       "tick": 72,
       "time": 3.6,
       "nextId": 409,
-      "state": "bdcbfbe0",
-      "events": "440145af",
+      "state": "60715f22",
+      "events": "c39bdf93",
       "rng": {
         "draws": 155,
         "digest": "1ad3720f"
@@ -171,15 +173,104 @@
             "damageTaken": 4,
             "kills": 1
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "cmb_wolf_cull",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood",
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 27600,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -311,7 +402,7 @@
       "tick": 76,
       "time": 3.8,
       "nextId": 409,
-      "state": "1ad73db8",
+      "state": "d7832d3a",
       "events": "741638a5",
       "rng": {
         "draws": 173,
@@ -338,15 +429,104 @@
             "damageTaken": 4,
             "kills": 1
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "cmb_wolf_cull",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood",
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 27600,
           "nodeHarvestReadyAt": {},
           "talents": {

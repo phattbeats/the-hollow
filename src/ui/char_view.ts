@@ -14,12 +14,16 @@
 // The skin-event preview randomness lives in the painter / the separate skin-event
 // overlay, never here.
 
-import type { EquipSlot, ItemDef } from '../sim/types';
+import { ENCHANTS } from '../sim/data';
+import type { EnchantDef, EquipSlot, ItemDef } from '../sim/types';
 
-/** One paperdoll cell: a slot and the item equipped there (null when empty). */
+/** One paperdoll cell: a slot, the item equipped there (null when empty), and
+ *  the active enchant on that slot (PHAA-818, IWorldEnchanting#enchants), or
+ *  null when the slot carries none. */
 export interface PaperdollSlot {
   slot: EquipSlot;
   item: ItemDef | null;
+  enchant: EnchantDef | null;
 }
 
 /** The two equipment columns that flank the character model. */
@@ -42,17 +46,21 @@ export const PAPERDOLL_RIGHT_SLOTS: readonly EquipSlot[] = ['gloves', 'waist', '
 /**
  * Build the paperdoll view from the player's equipment and the item table. A
  * slot resolves to its item only when the id is present AND the item still
- * exists in the table; otherwise the cell is empty.
+ * exists in the table; otherwise the cell is empty. `enchants` defaults to
+ * empty (older ClientWorld-mirror shapes predating PHAA-818 carry no field).
  */
 export function buildPaperdollView(
   equipment: Partial<Record<EquipSlot, string>>,
   items: Record<string, ItemDef>,
+  enchants: Partial<Record<EquipSlot, string>> = {},
 ): PaperdollView {
   const column = (slots: readonly EquipSlot[]): PaperdollSlot[] =>
     slots.map((slot) => {
       const itemId = equipment[slot];
       const item = itemId ? (items[itemId] ?? null) : null;
-      return { slot, item };
+      const enchantId = enchants[slot];
+      const enchant = enchantId ? (ENCHANTS.find((e) => e.id === enchantId) ?? null) : null;
+      return { slot, item, enchant };
     });
   return { left: column(PAPERDOLL_LEFT_SLOTS), right: column(PAPERDOLL_RIGHT_SLOTS) };
 }

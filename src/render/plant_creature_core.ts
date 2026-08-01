@@ -26,6 +26,17 @@ export const PLANT_MOB_ARCHETYPES: Readonly<Record<string, PlantArchetype>> = {
   palefeeder: 'palefeeder',
   rootmaw: 'rootmaw',
   the_witness_root: 'witness_root',
+  // Greenpaw's cutting companion (PHAA-751, src/sim/greenpaw_cutting.ts): no
+  // new GLB/art assets, reuses this seeded generator as the on-theme,
+  // asset-free small-creature visual. Each rolled variant id maps to a
+  // different archetype so the "random color/design" the design calls for
+  // comes from shape family (this table) crossed with the seeded palette
+  // pick inside plantCreatureSpec (color), both driven off the stable
+  // templateId, not the entity id, so a companion looks the same across
+  // logouts/respawns even though its live entity id changes every session.
+  greenpaw_cutting_dawn: 'palefeeder',
+  greenpaw_cutting_moss: 'rootmaw',
+  greenpaw_cutting_ash: 'witness_root',
 };
 
 export type HeadKind = 'bulb' | 'maw' | 'crown';

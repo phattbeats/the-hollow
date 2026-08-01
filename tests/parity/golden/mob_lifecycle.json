@@ -31,8 +31,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 412,
-      "state": "4c90c510",
-      "events": "a7e70537",
+      "state": "196f4128",
+      "events": "d06fa9cb",
       "rng": {
         "draws": 5,
         "digest": "787c6302"
@@ -57,9 +57,59 @@
             "kills": 1,
             "xpGained": 84
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "cmb_wolf_cull",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -355,8 +405,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "6a214487",
-      "events": "0956ce65",
+      "state": "d82f446f",
+      "events": "936be890",
       "rng": {
         "draws": 8,
         "digest": "47072ea8"
@@ -381,9 +431,59 @@
             "kills": 2,
             "xpGained": 198
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "cmb_wolf_cull",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -737,7 +837,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "b337fbdf",
+      "state": "b58e5917",
       "events": "15a15eb5",
       "rng": {
         "draws": 9,
@@ -764,9 +864,59 @@
             "kills": 2,
             "xpGained": 198
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "cmb_wolf_cull",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1121,8 +1271,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 415,
-      "state": "29de056c",
-      "events": "823e3f83",
+      "state": "ee96c78d",
+      "events": "0154f981",
       "rng": {
         "draws": 15,
         "digest": "5ea2badb"
@@ -1148,9 +1298,59 @@
             "kills": 3,
             "xpGained": 282
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "cmb_wolf_cull",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1547,8 +1747,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 416,
-      "state": "9b2946e5",
-      "events": "33694187",
+      "state": "7c653d0b",
+      "events": "02fa36da",
       "rng": {
         "draws": 20,
         "digest": "1208d7e8"
@@ -1574,9 +1774,59 @@
             "kills": 4,
             "xpGained": 366
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  4
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "cmb_wolf_cull",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  4
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2027,7 +2277,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 416,
-      "state": "9b2946e5",
+      "state": "7c653d0b",
       "events": "741638a5",
       "rng": {
         "draws": 20,
@@ -2054,9 +2304,59 @@
             "kills": 4,
             "xpGained": 366
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  4
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "cmb_wolf_cull",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  4
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",

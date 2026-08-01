@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "335d5203",
+      "state": "f66e68ec",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -39,9 +39,11 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -112,8 +114,8 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 422,
-      "state": "5e2ae31d",
-      "events": "00c2622c",
+      "state": "1b3030e3",
+      "events": "307e1200",
       "rng": {
         "draws": 3,
         "digest": "34c4acb5"
@@ -123,7 +125,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 422,
-      "state": "c42cc1ed",
+      "state": "64a007f3",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -134,7 +136,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 422,
-      "state": "747655bf",
+      "state": "b0c382e5",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -145,7 +147,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 422,
-      "state": "ca0d5cf9",
+      "state": "fb699147",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -156,7 +158,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 422,
-      "state": "4e063e97",
+      "state": "816f84cd",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -167,7 +169,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 422,
-      "state": "3f12dd1d",
+      "state": "ae73aee3",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -178,7 +180,7 @@
       "tick": 69,
       "time": 3.45,
       "nextId": 423,
-      "state": "f37f873f",
+      "state": "6b97b365",
       "events": "80b8299e",
       "rng": {
         "draws": 3,
@@ -205,15 +207,105 @@
             "kills": 1,
             "xpGained": 198
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_twice_a_deacon",
+              {
+                "counts": [
+                  0,
+                  1
+                ],
+                "deedId": "hid_twice_a_deacon",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11398,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -316,7 +408,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 423,
-      "state": "edece2c3",
+      "state": "2a591741",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -327,7 +419,7 @@
       "tick": 71,
       "time": 3.55,
       "nextId": 423,
-      "state": "ad76dcef",
+      "state": "28c1fa15",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -354,15 +446,105 @@
             "kills": 1,
             "xpGained": 198
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_twice_a_deacon",
+              {
+                "counts": [
+                  0,
+                  1
+                ],
+                "deedId": "hid_twice_a_deacon",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11398,
           "nodeHarvestReadyAt": {},
           "talents": {

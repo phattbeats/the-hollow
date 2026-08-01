@@ -855,7 +855,7 @@ export function readyArenaFighter(ctx: SimContext, e: Entity, opts: { clearPrep:
   }
   const meta = ctx.players.get(e.id);
   if (meta) {
-    recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta));
+    recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
     // A movement key held when the fighter died (or when the bout started) must not
     // carry over into the reset body, or it ghost-walks with no input held (upstream
     // #1723, same class as the death/respawn sites; in-place to keep the reference).
@@ -940,6 +940,9 @@ export function endArenaMatch(
         if (match.fiesta && !match.practice && reason !== 'forfeit') {
           awardFiestaCompletionHonor(ctx, meta, opponentTeamKey, won === true);
         }
+      }
+      if (won === true) {
+        ctx.onPvpWinForDeeds(match.boarball ? 'boarball' : match.fiesta ? 'fiesta' : 'arena', meta);
       }
       ctx.emit({
         type: 'arenaEnd',

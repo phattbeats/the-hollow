@@ -53,8 +53,10 @@ describe('warlock low-level sustained damage tuning', () => {
   });
 
   it('keeps affliction and destruction low-level talent amplification in line with other casters', () => {
-    expect(spec('affliction').mastery.effect.global?.spellDmgPct).toBe(0.04);
-    expect(spec('destruction').mastery.effect.global?.spellDmgPct).toBe(0.03);
+    // PHAA-715 (Talents 2.0): affliction/destruction masteries were reworked from a flat
+    // spellDmgPct into differentiated mechanics (DoT amp / spell crit amp).
+    expect(spec('affliction').mastery.effect.global?.dotDmgPct).toBe(0.2);
+    expect(spec('destruction').mastery.effect.global?.critDmgSpellPct).toBe(0.5);
 
     const afflictionPact = node('wlk_dark_pact').choices?.find(
       (choice) => choice.id === 'wlk_pact_affliction',

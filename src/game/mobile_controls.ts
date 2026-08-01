@@ -18,6 +18,8 @@ export const PHONE_TOUCH_QUERY =
   '(pointer: coarse) and (hover: none), (pointer: coarse) and (max-width: 940px), (pointer: coarse) and (max-height: 760px)';
 const DEADZONE = 0.22;
 const CAMERA_SENSITIVITY = 0.8;
+export const MOVE_AUTORUN_REVEAL_THRESHOLD = 1.45;
+export const MOVE_AUTORUN_THRESHOLD = 2.05;
 const SWIPE_LOOK_DEADZONE_PX = 6;
 // Pinch: each pixel the two fingers spread/close maps to this many yards of
 // camera distance. Tuned so a comfortable thumb-to-finger pinch sweeps roughly
@@ -97,7 +99,6 @@ export interface MobileControlCallbacks {
   onJump(): void;
   onTarget(): void;
   onInteract(): void;
-  onAutorun(): boolean;
   onChat(): void;
   onMenu(): void;
   onSocial(): void;
@@ -217,6 +218,14 @@ export function mapJoystickVector(x: number, y: number, deadzone = DEADZONE): To
   };
 }
 
+export function isMoveAutorunPush(y: number, threshold = MOVE_AUTORUN_THRESHOLD): boolean {
+  return y <= -threshold;
+}
+
+export function isMoveAutorunNear(y: number, threshold = MOVE_AUTORUN_REVEAL_THRESHOLD): boolean {
+  return y <= -threshold;
+}
+
 export class MobileControls {
   private active = false;
   private hapticsOn = loadHapticsEnabled();
@@ -234,6 +243,7 @@ export class MobileControls {
   private moveOriginX = 0;
   private moveOriginY = 0;
   private moveRadius = 1;
+  private moveAutorunLocked = false;
 
   // two-finger pinch-to-zoom on the game view (phones have no scroll wheel)
   private pinchPointers = new Map<number, { x: number; y: number }>();
@@ -255,7 +265,7 @@ export class MobileControls {
   private moveStick = document.getElementById('mobile-move-stick') as HTMLElement | null;
   private cameraJoystick = document.getElementById('mobile-camera-joystick') as HTMLElement | null;
   private cameraStick = document.getElementById('mobile-camera-stick') as HTMLElement | null;
-  private autorunButton = document.getElementById('mobile-autorun') as HTMLElement | null;
+  private autorunTarget = document.getElementById('mobile-autorun-target') as HTMLElement | null;
 
   constructor(
     private input: Input,
@@ -326,14 +336,6 @@ export class MobileControls {
         this.releaseMove();
         this.releaseCamera();
       }
-    });
-
-    this.autorunButton?.addEventListener('click', (e) => {
-      if (!this.active) return;
-      e.preventDefault();
-      triggerHaptic(HAPTIC_TAP, this.hapticsOn);
-      const on = this.callbacks.onAutorun();
-      this.autorunButton?.classList.toggle('active', on);
     });
 
     this.canvas?.addEventListener('pointerdown', (e) => {
@@ -420,7 +422,6 @@ export class MobileControls {
     document.body.classList.toggle('mobile-touch', active);
     if (!active) {
       this.root?.classList.remove('expanded');
-      this.autorunButton?.classList.remove('active');
       document.body.classList.remove('mobile-more-open', 'mobile-chat-open', 'mobile-chatlog-peek');
       this.releaseMove();
       this.releaseCamera();
@@ -571,6 +572,11 @@ export class MobileControls {
     this.moveOriginX = origin.x;
     this.moveOriginY = origin.y;
     this.moveRadius = radius;
+    this.moveAutorunLocked = false;
+    this.syncMoveAutorunTarget('hidden');
+    // Autorun is a latch from the previous joystick drag; a fresh grab is a new
+    // movement intent, so it cancels the latch before steering.
+    if (this.input.autorun) this.input.setAutorun(false);
     this.moveJoystick.style.left = `${(origin.x - radius).toFixed(1)}px`;
     this.moveJoystick.style.top = `${(origin.y - radius).toFixed(1)}px`;
     this.moveJoystick.classList.add('floating', 'active');
@@ -593,9 +599,28 @@ export class MobileControls {
     const y = rawY / mag;
     this.moveStick.style.transform = `translate(${(x * radius * 0.46).toFixed(1)}px, ${(y * radius * 0.46).toFixed(1)}px)`;
     const move = mapJoystickVector(x, y, this.moveDeadzone);
+    const inAutorunTarget = isMoveAutorunPush(rawY);
+    if (this.moveAutorunLocked && inAutorunTarget) {
+      this.input.clearTouchMove();
+      this.input.setAutorun(true);
+      this.syncMoveAutorunTarget('locked');
+      return;
+    }
+    if (this.moveAutorunLocked && !inAutorunTarget) {
+      this.moveAutorunLocked = false;
+      this.input.setAutorun(false);
+    }
+    if (inAutorunTarget) {
+      this.moveAutorunLocked = true;
+      this.input.clearTouchMove();
+      this.input.setAutorun(true);
+      this.syncMoveAutorunTarget('locked');
+      return;
+    }
     this.input.setTouchMove(move);
-    // setTouchMove cancels autorun on forward/back input — keep the button glow honest.
-    if (move.forward || move.back) this.autorunButton?.classList.remove('active');
+    const moving = move.forward || move.back || move.strafeLeft || move.strafeRight;
+    if (moving && this.input.autorun) this.input.setAutorun(false);
+    this.syncMoveAutorunTarget(isMoveAutorunNear(rawY) ? 'near' : 'hidden');
   }
 
   private onMoveEnd(e: PointerEvent): void {
@@ -616,6 +641,8 @@ export class MobileControls {
       }
     }
     this.joyPointer = null;
+    this.moveAutorunLocked = false;
+    this.syncMoveAutorunTarget(this.input.autorun ? 'locked' : 'hidden');
     this.input.clearTouchMove();
     if (this.moveStick) this.moveStick.style.transform = '';
     if (this.moveJoystick) {
@@ -623,6 +650,16 @@ export class MobileControls {
       this.moveJoystick.style.left = '';
       this.moveJoystick.style.top = '';
     }
+  }
+
+  private syncMoveAutorunTarget(state: 'hidden' | 'near' | 'locked'): void {
+    this.autorunTarget?.classList.toggle('near', state === 'near' || state === 'locked');
+    this.autorunTarget?.classList.toggle('locked', state === 'locked');
+  }
+
+  syncAutorun(on: boolean): void {
+    this.moveAutorunLocked = false;
+    this.syncMoveAutorunTarget(on ? 'locked' : 'hidden');
   }
 
   private onCameraDown(e: PointerEvent): void {

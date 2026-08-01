@@ -54,10 +54,16 @@ import type { Entity } from '../types';
 // The ONLY place a talent tree is walked. Re-resolves the flat modifier struct and
 // refreshes the stat pass + known-ability resolver that consume it.
 function recomputeTalents(ctx: SimContext, meta: PlayerMeta): void {
-  meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, meta.secondaryCls);
   const e = ctx.entities.get(meta.entityId);
-  if (e) recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta));
-  ctx.refreshKnownAbilities(meta, false);
+  meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, meta.secondaryCls, e?.level);
+  if (e) recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
+  // Announce newly granted abilities (spec signature, active nodes): emits
+  // `learnAbility` (the HUD places it on the bar + spellbook) and a "You have
+  // learned" log. This is a LIVE-action path only (apply/spec-pick/respec/loadout-
+  // switch); character LOAD resolves known abilities via its own silent path, so
+  // this never spams on login. refreshKnownAbilities only fires for abilities
+  // genuinely new since the last known-set.
+  ctx.refreshKnownAbilities(meta, true);
 }
 
 function talentLockReason(ctx: SimContext, p: Entity): string | null {

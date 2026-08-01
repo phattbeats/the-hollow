@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1579,6 +1578,8 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Brama per {item}',
   'itemUi.lootRoll.passAria': 'Passa su {item}',
   'itemUi.lootRoll.everyonePassed': 'Tutti hanno passato su {item}.',
+  'itemUi.lootRoll.winnerOffline':
+    'Il vincitore di {item} era offline; è stato restituito al cadavere.',
   'entities.abilities.heroic_strike.name': 'Colpo Eroico',
   'entities.abilities.heroic_strike.description':
     'Un attacco potente che aumenta i danni in mischia di {damage}. Si attiva al tuo prossimo colpo.',
@@ -2121,6 +2122,11 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': 'Oro imperiale',
   'entities.items.vanguard_azure_armor_plate.name': 'Avanguardia azzurro',
   'entities.items.vanguard_chrome_armor_plate.name': 'Avanguardia cromo',
+  'entities.items.enchanting_dust.name': 'Polvere Incantata',
+  'entities.items.scroll_minor_might.name': 'Pergamena di Forza Minore',
+  'entities.items.scroll_minor_vigor.name': 'Pergamena di Vigore Minore',
+  'entities.items.scroll_minor_focus.name': 'Pergamena di Concentrazione Minore',
+  'entities.items.scroll_minor_agility.name': 'Pergamena di Agilità Minore',
   'entities.items.deacons_cleaver.name': 'Mannaia del diacono',
   'entities.items.staff_of_drowned_prayers.name': 'Bastone delle preghiere annegate',
   'entities.items.mistbinder_kris.name': 'Kris Leganebbia',
@@ -3289,7 +3295,6 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s}s',
-  'hudChrome.mobile.autorun': 'Corsa automatica',
   'hudChrome.mobile.haptics': 'Vibrazione',
   'hudChrome.mobile.hapticsOff': 'Vibrazione disattivata',
   'hudChrome.mobile.jump': 'Salta',
