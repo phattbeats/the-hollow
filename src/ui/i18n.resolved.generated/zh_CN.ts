@@ -246,7 +246,6 @@ export const zh_CN: EnTranslations = {
       "chat": "跳转到聊天"
     },
     "mobile": {
-      "autorun": "自动奔跑",
       "jump": "跳跃",
       "leaderboard": "排行榜",
       "nameplates": "姓名板",
@@ -999,6 +998,33 @@ export const zh_CN: EnTranslations = {
       "toolTier": "{tier}级工具",
       "toolNone": "无工具"
     },
+    "crafting": {
+      "title": "制作",
+      "close": "关闭制作",
+      "tabRecipes": "配方",
+      "tabEnchants": "附魔",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "制作",
+      "craftAria": "制作{item}",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "分解",
+      "disenchantButton": "分解",
+      "disenchantAria": "分解{item}",
+      "disenchantEmpty": "没有可分解的物品。",
+      "applyButton": "施加",
+      "applyAria": "将{enchant}施加到{slot}",
+      "activeTag": "已生效",
+      "needScroll": "需要{scroll}",
+      "craftType": {
+        "weaponcrafting": "武器锻造",
+        "armorcrafting": "护甲锻造",
+        "tailoring": "裁缝",
+        "leatherworking": "制皮",
+        "cooking": "烹饪",
+        "alchemy": "炼金",
+        "enchanting": "附魔"
+      }
+    },
     "warfare": {
       "ratingLabel": "战意",
       "balance": "荣誉：{amount}",
@@ -1013,6 +1039,9 @@ export const zh_CN: EnTranslations = {
         "fiestaComplete": "狂欢比赛",
         "fiestaWin": "狂欢胜利"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "命中等级"
     }
   },
   "mailUi": {
@@ -2512,6 +2541,13 @@ export const zh_CN: EnTranslations = {
       "readoutNoHomesteadHint": "你还没有家园。站在空谷地里合适的位置，输入 /homestead claim。",
       "helpLine": "家园：/homestead，/homestead claim。"
     },
+    "greenpawCutting": {
+      "alreadyPlanted": "你已经种下了插枝。给它一些时间成长。",
+      "needHomestead": "你需要先拥有一块宅地才能种下它。",
+      "tooFar": "你必须在自己的宅地才能种下它。",
+      "planted": "你在自己的宅地种下了插枝。耐心等待吧。",
+      "grown": "你的插枝已经长成了一只伙伴。它现在会跟随你。"
+    },
     "readyCheck": {
       "mustBeInParty": "你必须在队伍中才能发起准备检查。",
       "alreadyInProgress": "准备检查已在进行中。",
@@ -3389,6 +3425,7 @@ export const zh_CN: EnTranslations = {
       "ignoringChat": "已屏蔽来自 {name} 的聊天。",
       "noLongerIgnoring": "不再屏蔽 {name}。",
       "playerNotNearby": "该玩家不在附近。",
+      "playerInfoNotFound": "未找到该名称的角色。",
       "duelCountdown": "决斗将在 {seconds} 秒后开始...",
       "duelEndBanner": "{winner} 在决斗中击败了 {loser}！",
       "duelEndLog": "{winner} 在决斗中击败了 {loser}。",
@@ -4076,6 +4113,126 @@ export const zh_CN: EnTranslations = {
   },
   "entities": {
     "abilities": {
+      "chain_heal": {
+        "name": "治疗链",
+        "description": "对一名友方目标进行大量治疗，然后跳跃至最多2名附近的盟友，每次跳跃治疗量降低50%。"
+      },
+      "crusader_strike": {
+        "name": "十字军打击",
+        "description": "对目标造成武器伤害加24点神圣伤害。"
+      },
+      "metamorphosis": {
+        "name": "恐惧之相",
+        "description": "变身为可怕的恶魔，持续20秒，法术伤害提高20%，施法速度提高20%。你的恶魔获得50%伤害提高和20%施法速度提高。"
+      },
+      "holy_shock": {
+        "name": "神圣震击",
+        "description": "用神圣能量震击友方目标进行治疗，或对敌人造成神圣伤害。"
+      },
+      "holy_shield": {
+        "name": "圣墙",
+        "description": "向敌人投掷神圣圣盾，造成神圣伤害并弹射至2个附近的敌人。"
+      },
+      "bestial_wrath": {
+        "name": "咆哮怒火",
+        "description": "使你陷入野兽狂怒，持续15秒，攻击强度提高20%，宠物伤害提高100%。"
+      },
+      "trueshot_aura": {
+        "name": "稳射光环",
+        "description": "激励附近的盟友，攻击强度提高10%，持续30分钟。"
+      },
+      "wyvern_sting": {
+        "name": "翼龙钉刺",
+        "description": "从远处刺向敌人，使其失能最多4秒。受到伤害将解除该效果。"
+      },
+      "arcane_power": {
+        "name": "以太涌动",
+        "description": "法术伤害提高20%，法术急速提高10%，持续10秒。"
+      },
+      "combustion": {
+        "name": "闪焰",
+        "description": "法术暴击几率提高50%，持续15秒。"
+      },
+      "icy_veins": {
+        "name": "冰脉",
+        "description": "法术急速提高30%，并防止施法被打断或产生施法后仰，持续10秒。"
+      },
+      "cold_blood": {
+        "name": "杀意冷静",
+        "description": "凝聚你的杀意，使你的下一次攻击必定暴击。"
+      },
+      "blade_flurry": {
+        "name": "剑刃乱舞",
+        "description": "释放一连串剑刃攻击，攻击速度提高20%，持续12秒。"
+      },
+      "hemorrhage": {
+        "name": "红丝带",
+        "description": "以武器伤害加流血效果击中敌人，造成持续12秒的流血伤害，并使流血伤害提高40%。获得1点连击点数。"
+      },
+      "power_infusion": {
+        "name": "恩泽",
+        "description": "为友方目标注入力量，使其法术急速提高20%，持续15秒。"
+      },
+      "holy_nova": {
+        "name": "神圣新星",
+        "description": "引发神圣光辉的爆发，治疗附近的盟友并伤害附近的敌人。"
+      },
+      "shadowform": {
+        "name": "暮蔼形态",
+        "description": "化身暗影形态，使暗影伤害提高15%，直至你变回原形。施放治疗法术会解除该形态。再次施放可变回原形。"
+      },
+      "elemental_mastery": {
+        "name": "元素掌控",
+        "description": "召唤风暴之力，使你的下一个法术瞬发。"
+      },
+      "siphon_life": {
+        "name": "汲取生命",
+        "description": "从敌人身上汲取生命，造成持续30秒的暗影伤害并治疗你等同于造成的伤害。"
+      },
+      "conflagrate": {
+        "name": "燃烧",
+        "description": "引燃你施放在敌人身上的献祭效果，造成火焰伤害。"
+      },
+      "moonkin_form": {
+        "name": "月翼形态",
+        "description": "变身为可怕的枭兽，法术伤害提高20%，护甲提高50%。直至你变回原形。再次施放可变回施法者形态。"
+      },
+      "feral_charge": {
+        "name": "原始冲能",
+        "description": "释放原始冲能。在猎豹形态下，能量回复速度提高100%，持续10秒。在熊形态下，立即产生50点怒气。"
+      },
+      "swiftmend": {
+        "name": "迅捷治疗",
+        "description": "消耗友方目标身上的一个持续治疗效果，为其恢复生命值。"
+      },
+      "pummel": {
+        "name": "碎颚",
+        "description": "打断目标的施法，并使其在4秒内无法施放该系法术。"
+      },
+      "kick": {
+        "name": "重踢",
+        "description": "打断目标的施法，并使其在4秒内无法施放该系法术。"
+      },
+      "counterspell": {
+        "name": "法术反制",
+        "description": "反制目标的施法，并使其在6秒内无法施放该系法术。"
+      },
+      "counter_shot": {
+        "name": "静默射击",
+        "description": "快速射击，打断目标的施法并封锁该系法术4秒。"
+      },
+      "rebuke": {
+        "name": "谴责",
+        "description": "打断目标的施法，并使其在4秒内无法施放该系法术。"
+      },
+      "skull_bash": {
+        "name": "头槌",
+        "description": "猛冲头槌，打断目标的施法并封锁该系法术4秒。"
+      },
+      "spell_lock": {
+        "name": "咒缚",
+        "description": "使目标在施法中沉默，并使其在5秒内无法施放该系法术。"
+      },
       "heroic_strike": {
         "name": "英勇打击",
         "description": "一次强力攻击，使近战伤害提高 {damage}。在你的下一次挥击时触发。"
@@ -5885,6 +6042,21 @@ export const zh_CN: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "先锋铬银"
+      },
+      "enchanting_dust": {
+        "name": "附魔尘"
+      },
+      "scroll_minor_might": {
+        "name": "微弱力量卷轴"
+      },
+      "scroll_minor_vigor": {
+        "name": "微弱活力卷轴"
+      },
+      "scroll_minor_focus": {
+        "name": "微弱专注卷轴"
+      },
+      "scroll_minor_agility": {
+        "name": "微弱敏捷卷轴"
       }
     },
     "mobs": {
@@ -6202,6 +6374,15 @@ export const zh_CN: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "心材巨像"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "绿掌的插枝"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "绿掌的插枝"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "绿掌的插枝"
       }
     },
     "npcs": {
@@ -6428,6 +6609,22 @@ export const zh_CN: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "值得学习的手艺",
+        "text": "每门手艺都从指甲缝里的泥土开始，{playerName}。去镇东的林地里采集2条蜘蛛腿，然后到我的锻炉前打一件新兵束衣；打造它所需的骨骼碎片沿途很容易找到。再给我带些值得分解出奥术尘埃的东西。让我看看你能采集、能打造、也能分解，我就让你见识手艺的价值。",
+        "completion": "这才是值得学习的手艺。多在锻炉边下功夫，{playerName}，总有一天你能一口气钉马掌又附魔利刃。",
+        "objectives": {
+          "0": {
+            "label": "采集蜘蛛腿"
+          },
+          "1": {
+            "label": "打造新兵束衣"
+          },
+          "2": {
+            "label": "附魔尘埃"
+          }
+        }
+      },
       "q_wolves": {
         "title": "门前群狼",
         "text": "森林狼已经敢扑咬北路旅人，{playerName}。击败8只森林狼，让东溪能松一口气。",
@@ -7570,6 +7767,20 @@ export const zh_CN: EnTranslations = {
         "name": "坍塌的圣物库",
         "enterText": "你向下深入坍塌的圣物库。",
         "leaveText": "你攀回圣物库废墟旁的哈尔文修士身边。"
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "微弱力量"
+      },
+      "enchant_minor_vigor": {
+        "name": "微弱活力"
+      },
+      "enchant_minor_focus": {
+        "name": "微弱专注"
+      },
+      "enchant_minor_agility": {
+        "name": "微弱敏捷"
       }
     },
     "itemSets": {

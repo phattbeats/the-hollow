@@ -27,6 +27,8 @@ export const CRAFT_TYPES: readonly CraftType[] = [
   'leatherworking',
   'cooking',
   'alchemy',
+  // Enchanting (PHAA-649 child, upstream #1712): see src/sim/enchanting.ts.
+  'enchanting',
 ];
 
 /** A fresh, all-zero craft proficiency record: one counter per craft type. */

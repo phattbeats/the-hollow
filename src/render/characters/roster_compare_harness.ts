@@ -21,6 +21,13 @@ export interface RosterCompareResult {
   scale: number;
   playerPos: { x: number; y: number; z: number };
   spawnPos: { x: number; y: number; z: number };
+  /**
+   * The spawned visual itself, so a dev/QA harness can drive it through a
+   * locomotion clip (e.g. tick it with a moving AnimState) to inspect how the
+   * rig deforms in motion, not just the settled idle pose. Never used by the
+   * game (this whole module is dynamically imported from a script).
+   */
+  visual: CharacterVisual;
 }
 
 const IDLE: AnimState = {
@@ -96,5 +103,6 @@ export async function spawnRosterCompare(
     scale,
     playerPos: { x: pWorld.x, y: pbox.min.y, z: pWorld.z },
     spawnPos: { x: cp.x, y: cp.y, z: cp.z },
+    visual,
   };
 }

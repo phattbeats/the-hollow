@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "4c9b0280",
+      "state": "f66e68ec",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -42,6 +42,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -112,7 +113,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "6d40aeca",
+      "state": "ae2668ee",
       "events": "2dbca997",
       "rng": {
         "draws": 7,
@@ -123,7 +124,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 409,
-      "state": "bd0c2c6b",
+      "state": "318aa423",
       "events": "6690317e",
       "rng": {
         "draws": 13,
@@ -134,7 +135,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 409,
-      "state": "6d70c0b5",
+      "state": "baa2846d",
       "events": "ea55cf38",
       "rng": {
         "draws": 96,
@@ -145,7 +146,7 @@
       "tick": 72,
       "time": 3.6,
       "nextId": 409,
-      "state": "a4f2b043",
+      "state": "3f59cf4b",
       "events": "741638a5",
       "rng": {
         "draws": 153,
@@ -217,6 +218,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",

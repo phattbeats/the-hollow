@@ -30,7 +30,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 414,
-      "state": "013301a7",
+      "state": "54f3f3ef",
       "events": "6f7bf6da",
       "rng": {
         "draws": 0,
@@ -56,6 +56,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -86,6 +87,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -116,6 +118,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -146,6 +149,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -176,6 +180,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 411,
           "equipment": {
             "chest": "apprentice_robe",
@@ -206,6 +211,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 412,
           "equipment": {
             "chest": "recruit_tunic",
@@ -236,6 +242,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 413,
           "equipment": {
             "chest": "recruit_tunic",
@@ -599,7 +606,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 414,
-      "state": "013301a7",
+      "state": "54f3f3ef",
       "events": "03a15cf0",
       "rng": {
         "draws": 0,
@@ -625,6 +632,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -655,6 +663,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -685,6 +694,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -715,6 +725,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -745,6 +756,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 411,
           "equipment": {
             "chest": "apprentice_robe",
@@ -775,6 +787,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 412,
           "equipment": {
             "chest": "recruit_tunic",
@@ -805,6 +818,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 413,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1168,7 +1182,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 414,
-      "state": "013301a7",
+      "state": "54f3f3ef",
       "events": "e9347696",
       "rng": {
         "draws": 0,
@@ -1194,6 +1208,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1224,6 +1239,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1254,6 +1270,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1284,6 +1301,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1314,6 +1332,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 411,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1344,6 +1363,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 412,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1374,6 +1394,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 413,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1737,7 +1758,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 414,
-      "state": "013301a7",
+      "state": "54f3f3ef",
       "events": "1bc53490",
       "rng": {
         "draws": 0,
@@ -1763,6 +1784,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1793,6 +1815,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1823,6 +1846,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1853,6 +1877,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1883,6 +1908,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 411,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1913,6 +1939,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 412,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1943,6 +1970,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 413,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2306,7 +2334,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 414,
-      "state": "013301a7",
+      "state": "54f3f3ef",
       "events": "8745a93a",
       "rng": {
         "draws": 0,
@@ -2332,6 +2360,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2362,6 +2391,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2392,6 +2422,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -2422,6 +2453,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -2452,6 +2484,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 411,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2482,6 +2515,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 412,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2512,6 +2546,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 413,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2875,7 +2910,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 414,
-      "state": "013301a7",
+      "state": "54f3f3ef",
       "events": "f3b83013",
       "rng": {
         "draws": 0,
@@ -2901,6 +2936,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2931,6 +2967,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2961,6 +2998,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -2991,6 +3029,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -3021,6 +3060,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 411,
           "equipment": {
             "chest": "apprentice_robe",
@@ -3051,6 +3091,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 412,
           "equipment": {
             "chest": "recruit_tunic",
@@ -3081,6 +3122,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 413,
           "equipment": {
             "chest": "recruit_tunic",
@@ -3444,7 +3486,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 414,
-      "state": "013301a7",
+      "state": "54f3f3ef",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -3470,6 +3512,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -3500,6 +3543,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -3530,6 +3574,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -3560,6 +3605,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -3590,6 +3636,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 411,
           "equipment": {
             "chest": "apprentice_robe",
@@ -3620,6 +3667,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 412,
           "equipment": {
             "chest": "recruit_tunic",
@@ -3650,6 +3698,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 413,
           "equipment": {
             "chest": "recruit_tunic",

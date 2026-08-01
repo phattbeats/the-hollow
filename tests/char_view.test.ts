@@ -42,6 +42,22 @@ describe('char_view: paperdoll data model', () => {
     // every right-column slot is empty when nothing is equipped there
     expect(view.right.every((c) => c.item === null)).toBe(true);
   });
+
+  it('resolves the active enchant per slot (PHAA-818), null when absent or unknown', () => {
+    const view = buildPaperdollView(FULL, ITEMS, {
+      mainhand: 'enchant_minor_might',
+      chest: 'no_such_enchant',
+    });
+    expect(view.left[3].enchant?.id).toBe('enchant_minor_might'); // mainhand
+    expect(view.left[2].enchant).toBeNull(); // chest: unknown enchant id -> empty
+    expect(view.left[0].enchant).toBeNull(); // helmet: no enchant applied
+  });
+
+  it('defaults every slot enchant to null when the enchants map is omitted', () => {
+    const view = buildPaperdollView(FULL, ITEMS);
+    expect(view.left.every((c) => c.enchant === null)).toBe(true);
+    expect(view.right.every((c) => c.enchant === null)).toBe(true);
+  });
 });
 
 describe('char_view: determinism + ClientWorld-vs-Sim parity', () => {

@@ -76,4 +76,38 @@ export const RECIPES: RecipeDef[] = [
     resultCount: 1,
     level: 1,
   },
+  // Enchanting scrolls (PHAA-649 child, upstream #1712): each scroll is
+  // crafted from disenchant's own salvage output (enchanting_dust), so the
+  // profession is a closed loop through the existing crafting pipeline with
+  // no new "how do I make it" logic; see src/sim/enchanting.ts for the
+  // disenchant/apply-enchant actions and content/enchants.ts for what each
+  // scroll's EnchantDef does when applied.
+  {
+    id: 'recipe_scroll_minor_might',
+    craft: 'enchanting',
+    reagents: [{ itemId: 'enchanting_dust', count: 2 }],
+    resultItemId: 'scroll_minor_might',
+    resultCount: 1,
+  },
+  {
+    id: 'recipe_scroll_minor_vigor',
+    craft: 'enchanting',
+    reagents: [{ itemId: 'enchanting_dust', count: 2 }],
+    resultItemId: 'scroll_minor_vigor',
+    resultCount: 1,
+  },
+  {
+    id: 'recipe_scroll_minor_focus',
+    craft: 'enchanting',
+    reagents: [{ itemId: 'enchanting_dust', count: 2 }],
+    resultItemId: 'scroll_minor_focus',
+    resultCount: 1,
+  },
+  {
+    id: 'recipe_scroll_minor_agility',
+    craft: 'enchanting',
+    reagents: [{ itemId: 'enchanting_dust', count: 2 }],
+    resultItemId: 'scroll_minor_agility',
+    resultCount: 1,
+  },
 ];

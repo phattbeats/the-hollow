@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "3e3fbaf3",
+      "state": "c1fdee47",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -42,6 +42,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
@@ -111,7 +112,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "3175d1df",
+      "state": "a8f5434b",
       "events": "bb6ee107",
       "rng": {
         "draws": 2,
@@ -122,7 +123,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 409,
-      "state": "4ec26007",
+      "state": "d7ef7023",
       "events": "d8bd2a52",
       "rng": {
         "draws": 2,
@@ -133,7 +134,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 409,
-      "state": "b1c2917f",
+      "state": "d9874c6b",
       "events": "d68fc10b",
       "rng": {
         "draws": 75,
@@ -144,7 +145,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 409,
-      "state": "edd8fe0e",
+      "state": "a367b056",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -155,7 +156,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 409,
-      "state": "e11c855c",
+      "state": "ddedd5d4",
       "events": "00314fc7",
       "rng": {
         "draws": 280,
@@ -166,7 +167,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 409,
-      "state": "5f5daf13",
+      "state": "95e134bf",
       "events": "867eff19",
       "rng": {
         "draws": 390,
@@ -177,7 +178,7 @@
       "tick": 128,
       "time": 6.4,
       "nextId": 409,
-      "state": "bb5cc893",
+      "state": "b1a7b23f",
       "events": "741638a5",
       "rng": {
         "draws": 437,
@@ -249,6 +250,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",

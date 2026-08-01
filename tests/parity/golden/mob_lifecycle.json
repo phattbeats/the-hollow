@@ -31,7 +31,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 412,
-      "state": "850c848c",
+      "state": "196f4128",
       "events": "d06fa9cb",
       "rng": {
         "draws": 5,
@@ -109,6 +109,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -404,7 +405,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "417af4d7",
+      "state": "d82f446f",
       "events": "936be890",
       "rng": {
         "draws": 8,
@@ -482,6 +483,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -835,7 +837,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "76462c6f",
+      "state": "b58e5917",
       "events": "15a15eb5",
       "rng": {
         "draws": 9,
@@ -914,6 +916,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1268,7 +1271,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 415,
-      "state": "2f9b1485",
+      "state": "ee96c78d",
       "events": "0154f981",
       "rng": {
         "draws": 15,
@@ -1347,6 +1350,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1743,7 +1747,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 416,
-      "state": "854561a3",
+      "state": "7c653d0b",
       "events": "02fa36da",
       "rng": {
         "draws": 20,
@@ -1822,6 +1826,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2272,7 +2277,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 416,
-      "state": "854561a3",
+      "state": "7c653d0b",
       "events": "741638a5",
       "rng": {
         "draws": 20,
@@ -2351,6 +2356,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",

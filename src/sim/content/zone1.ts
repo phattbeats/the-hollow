@@ -584,7 +584,7 @@ export const ZONE1_NPCS: Record<string, NpcDef> = {
     pos: { x: 7, z: 16.5 },
     facing: -2.7,
     color: 0x707b7c,
-    questIds: [],
+    questIds: ['q_prof_intro'],
     vendorItems: [
       'eastbrook_arming_sword',
       'bronzework_mace',
@@ -646,6 +646,31 @@ export const ZONE1_NPCS: Record<string, NpcDef> = {
 // ---------------------------------------------------------------------------
 
 export const ZONE1_QUESTS: Record<string, QuestDef> = {
+  // Professions onboarding (PHAA-818, adapts upstream #1708): a short starter
+  // quest introducing gathering, crafting, and enchanting groundwork in one
+  // pass, without a per-recipe/enchant known gate (src/sim/crafting.ts,
+  // src/sim/enchanting.ts). Three distinct 'collect' objectives, each on an
+  // item only the taught action grants, so none can starve another: gather
+  // spider legs (spore nodes, src/sim/gathering.ts), craft a Recruit's Tunic
+  // (recipe_recruit_tunic needs bone_fragments only, never spider_leg), then
+  // disenchant something for dust (the enchanting scroll reagent).
+  q_prof_intro: {
+    id: 'q_prof_intro',
+    name: 'A Trade Worth Learning',
+    giverNpcId: 'smith_haldren',
+    turnInNpcId: 'smith_haldren',
+    text: "Every trade starts with dirt under your nails, $N. Gather 2 spider legs from the groves east of town, then work my forge for a Recruit's Tunic; bone fragments for it are easy enough to scrounge along the way. Bring me something worth breaking down for its arcane dust besides. Show me you can gather, craft, and unmake, and I will show you what a trade is worth.",
+    completionText:
+      'Now that is a trade worth learning. Keep at the forge, $N, and one day you will be shoeing horses and enchanting blades in the same breath.',
+    objectives: [
+      { type: 'collect', itemId: 'spider_leg', count: 2, label: 'Spider Leg gathered' },
+      { type: 'collect', itemId: 'recruit_tunic', count: 1, label: "Recruit's Tunic crafted" },
+      { type: 'collect', itemId: 'enchanting_dust', count: 1, label: 'Enchanting Dust' },
+    ],
+    xpReward: 200,
+    copperReward: 60,
+    itemRewards: {},
+  },
   q_wolves: {
     id: 'q_wolves',
     name: 'Wolves at the Door',
@@ -955,6 +980,7 @@ export const ZONE1_QUESTS: Record<string, QuestDef> = {
 };
 
 export const ZONE1_QUEST_ORDER = [
+  'q_prof_intro',
   'q_wolves',
   'q_boars',
   'q_spiders',
