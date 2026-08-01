@@ -53,7 +53,7 @@ describe('char_window: WCAG 2.2 AA', () => {
 
 describe('char_window: paperdoll core + HUD-owned preview boundary', () => {
   it('drives the paperdoll off the pure char_view core', () => {
-    expect(painter).toContain('buildPaperdollView(world.equipment, ITEMS)');
+    expect(painter).toContain('buildPaperdollView(world.equipment, ITEMS, world.enchants)');
   });
 
   it('preserves the unequip / drag / context-menu dispatch', () => {

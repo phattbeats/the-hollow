@@ -8,14 +8,14 @@
     "casting lifecycle (C4a)",
     "effect dispatch + spell damage (C4b/C1)"
   ],
-  "draws": 438,
-  "drawDigest": "c7a0eda6",
+  "draws": 437,
+  "drawDigest": "7cabd707",
   "frames": [
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "a6da5f9c",
+      "nextId": 408,
+      "state": "c1fdee47",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -38,10 +38,12 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
-          "entityId": 406,
+          "enchants": {},
+          "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
@@ -65,7 +67,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 54,
-          "id": 406,
+          "id": 407,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -109,9 +111,9 @@
     {
       "tick": 20,
       "time": 1,
-      "nextId": 408,
-      "state": "dbd78cdd",
-      "events": "d77d0bf8",
+      "nextId": 409,
+      "state": "a8f5434b",
+      "events": "bb6ee107",
       "rng": {
         "draws": 2,
         "digest": "e313f022"
@@ -120,9 +122,9 @@
     {
       "tick": 40,
       "time": 2,
-      "nextId": 408,
-      "state": "eed104b5",
-      "events": "90a066cd",
+      "nextId": 409,
+      "state": "d7ef7023",
+      "events": "d8bd2a52",
       "rng": {
         "draws": 2,
         "digest": "e313f022"
@@ -131,9 +133,9 @@
     {
       "tick": 60,
       "time": 3,
-      "nextId": 408,
-      "state": "803f7885",
-      "events": "b4806541",
+      "nextId": 409,
+      "state": "d9874c6b",
+      "events": "d68fc10b",
       "rng": {
         "draws": 75,
         "digest": "032f8fd0"
@@ -142,8 +144,8 @@
     {
       "tick": 80,
       "time": 4,
-      "nextId": 408,
-      "state": "04ced0d4",
+      "nextId": 409,
+      "state": "a367b056",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -153,9 +155,9 @@
     {
       "tick": 100,
       "time": 5,
-      "nextId": 408,
-      "state": "fd254465",
-      "events": "ee0d216a",
+      "nextId": 409,
+      "state": "ddedd5d4",
+      "events": "00314fc7",
       "rng": {
         "draws": 280,
         "digest": "d8899923"
@@ -164,9 +166,9 @@
     {
       "tick": 120,
       "time": 6,
-      "nextId": 408,
-      "state": "0c200d3e",
-      "events": "f503827d",
+      "nextId": 409,
+      "state": "95e134bf",
+      "events": "867eff19",
       "rng": {
         "draws": 390,
         "digest": "8950862e"
@@ -175,12 +177,12 @@
     {
       "tick": 128,
       "time": 6.4,
-      "nextId": 408,
-      "state": "94a045bc",
+      "nextId": 409,
+      "state": "b1a7b23f",
       "events": "741638a5",
       "rng": {
-        "draws": 438,
-        "digest": "c7a0eda6"
+        "draws": 437,
+        "digest": "7cabd707"
       },
       "label": "final",
       "players": [
@@ -202,15 +204,60 @@
             "damageDealt": 87,
             "damageTaken": 18
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
-          "entityId": 406,
+          "enchants": {},
+          "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 27600,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -234,7 +281,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 2.05,
           "hp": 49982,
-          "id": 406,
+          "id": 407,
           "inCombat": true,
           "kind": "player",
           "level": 10,
@@ -267,7 +314,7 @@
             "sta": 23,
             "str": 10
           },
-          "targetId": 407,
+          "targetId": 408,
           "templateId": "mage",
           "weapon": {
             "max": 6,
@@ -276,7 +323,7 @@
           }
         },
         {
-          "aggroTargetId": 406,
+          "aggroTargetId": 407,
           "aiState": "attack",
           "auras": [
             {
@@ -286,7 +333,7 @@
               "name": "Fireball",
               "remaining": 2.55,
               "school": "fire",
-              "sourceId": 406,
+              "sourceId": 407,
               "tickInterval": 2,
               "tickTimer": 0.55,
               "value": 1
@@ -298,7 +345,7 @@
               "name": "Frostbolt",
               "remaining": 4.4,
               "school": "frost",
-              "sourceId": 406,
+              "sourceId": 407,
               "value": 0.6
             }
           ],
@@ -311,7 +358,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 8913,
-          "id": 407,
+          "id": 408,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
@@ -341,11 +388,11 @@
             "armor": 40
           },
           "swingTimer": 1.55,
-          "tappedById": 406,
+          "tappedById": 407,
           "templateId": "forest_wolf",
           "threat": [
             [
-              406,
+              407,
               88
             ]
           ],

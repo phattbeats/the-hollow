@@ -599,8 +599,8 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
 // Trash packs of 2 elites (spaced beyond social-aggro range so groups can
 // pull them one pack at a time), a miniboss pair, then Morthen with guards.
 const CRYPT_SPAWN_LIST: DungeonSpawn[] = [
-  { mobId: 'crypt_shambler', x: -3, z: 18 },
-  { mobId: 'crypt_shambler', x: 3, z: 19 },
+  { mobId: 'crypt_shambler', x: -3, z: 20 },
+  { mobId: 'crypt_shambler', x: 3, z: 21 },
   { mobId: 'crypt_shambler', x: -9, z: 38 },
   { mobId: 'hollow_acolyte', x: -5, z: 39 },
   { mobId: 'crypt_shambler', x: 9, z: 54 },
@@ -617,8 +617,8 @@ const CRYPT_SPAWN_LIST: DungeonSpawn[] = [
 // Sunken Bastion: same 13-spawn pacing as the crypt — packs of 2 elites,
 // the Knight-Commander as miniboss, then Vael on the dais with two guards.
 const BASTION_SPAWN_LIST: DungeonSpawn[] = [
-  { mobId: 'bastion_revenant', x: -3, z: 18 },
-  { mobId: 'bastion_revenant', x: 3, z: 19 },
+  { mobId: 'bastion_revenant', x: -3, z: 20 },
+  { mobId: 'bastion_revenant', x: 3, z: 21 },
   { mobId: 'bastion_revenant', x: -9, z: 38 },
   { mobId: 'tidebound_acolyte', x: -5, z: 39 },
   { mobId: 'tidebound_acolyte', x: 9, z: 54 },
@@ -636,8 +636,8 @@ const BASTION_SPAWN_LIST: DungeonSpawn[] = [
 // (75-115) and the Wyrm's Hollow (115+) — with Korgath holding the first
 // waist, Velkhar the second, and Korzul on the great dais at the end.
 const SANCTUM_SPAWN_LIST: DungeonSpawn[] = [
-  { mobId: 'sanctum_boneguard', x: -3, z: 16 },
-  { mobId: 'sanctum_boneguard', x: 3, z: 17 },
+  { mobId: 'sanctum_boneguard', x: -3, z: 20 },
+  { mobId: 'sanctum_boneguard', x: 3, z: 21 },
   { mobId: 'sanctum_boneguard', x: -8, z: 30 },
   { mobId: 'sanctum_drakonid', x: -4, z: 31 },
   { mobId: 'sanctum_drakonid', x: 7, z: 44 },
@@ -669,7 +669,10 @@ export const DUNGEON_DEFS: Record<string, DungeonDef> = {
     name: 'The Hollow Crypt',
     index: 0,
     doorPos: { x: 80, z: 90 }, // entrance portal at the chapel ruin
-    entry: { x: 0, z: 4 },
+    // Arrive back near the exit portal so the first pack (z 20+) is outside
+    // aggro range on entry: no mob can pull the moment you zone in. See
+    // dungeon_entry_clearance test.
+    entry: { x: 0, z: -2 },
     exitOffset: { x: 0, z: -6 },
     spawns: CRYPT_SPAWN_LIST,
     interior: 'crypt',
@@ -682,7 +685,7 @@ export const DUNGEON_DEFS: Record<string, DungeonDef> = {
     name: 'The Sunken Bastion',
     index: 1,
     doorPos: { x: 45, z: 515 }, // drowned keep south of the Gravecaller camp
-    entry: { x: 0, z: 4 },
+    entry: { x: 0, z: -2 }, // clear-of-aggro arrival (see dungeon_entry_clearance test)
     exitOffset: { x: 0, z: -6 },
     spawns: BASTION_SPAWN_LIST,
     interior: 'crypt',
@@ -695,7 +698,7 @@ export const DUNGEON_DEFS: Record<string, DungeonDef> = {
     name: 'Gravewyrm Sanctum',
     index: 2,
     doorPos: { x: 0, z: 880 }, // sealed gate at the head of the Sanctum Approach
-    entry: { x: 0, z: 4 },
+    entry: { x: 0, z: -2 }, // clear-of-aggro arrival (see dungeon_entry_clearance test)
     exitOffset: { x: 0, z: -6 },
     spawns: SANCTUM_SPAWN_LIST,
     interior: 'sanctum',

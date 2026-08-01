@@ -40,6 +40,7 @@ import {
 import { abilitiesKnownAt, arenaOrigin } from '../data';
 import { ARENA_SPAWNS_A_2v2, ARENA_SPAWNS_B_2v2 } from '../dungeon_layout';
 import { recalcPlayerStats } from '../entity';
+import { awardFiestaKillHonor } from '../pvp';
 import { Rng } from '../rng';
 import type { ArenaMatch, FiestaPowerup, FiestaState, PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
@@ -87,6 +88,7 @@ export function createFiestaState(ctx: SimContext): FiestaState {
     respawn: new Map(),
     deaths: new Map(),
     kills: new Map(),
+    honorKillsByPair: new Map(),
     streak: new Map(),
     lastKill: new Map(),
     pending: new Map(),
@@ -184,7 +186,7 @@ export function fiestaApplyAugments(meta: PlayerMeta, e: Entity): void {
   meta.fiestaSpecial = sp;
   meta.known = abilitiesKnownAt(meta.cls, e.level, meta.fiestaMods, meta.secondaryCls);
   const frac = e.maxHp > 0 ? e.hp / e.maxHp : 1;
-  recalcPlayerStats(e, meta.cls, meta.equipment, meta.fiestaMods);
+  recalcPlayerStats(e, meta.cls, meta.equipment, meta.fiestaMods, meta.enchants);
   e.hp = e.dead ? 0 : Math.max(1, Math.round(e.maxHp * frac));
 }
 
@@ -202,7 +204,7 @@ export function clearFiestaAugments(meta: PlayerMeta, e: Entity): void {
   meta.fiestaMods = null;
   meta.fiestaSpecial = {};
   meta.known = abilitiesKnownAt(meta.cls, e.level, meta.talentMods, meta.secondaryCls);
-  recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods);
+  recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods, meta.enchants);
 }
 
 // Standardize a fighter to a balanced level-20 build for the bout. The
@@ -213,10 +215,10 @@ export function fiestaStandardize(ctx: SimContext, meta: PlayerMeta, e: Entity):
   meta.fiestaRestore = { level: e.level, xp: meta.xp, talents: cloneAllocation(meta.talents) };
   e.level = FIESTA_STANDARD_LEVEL;
   meta.talents = defaultBuild(meta.cls, talentPointsAtLevel(FIESTA_STANDARD_LEVEL));
-  meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, meta.secondaryCls);
+  meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, meta.secondaryCls, e.level);
   meta.known = abilitiesKnownAt(meta.cls, e.level, ctx.playerMods(meta), meta.secondaryCls);
   meta.wireRev++; // talents/loadouts swapped for the bout, refresh the wire promptly
-  recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta));
+  recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
 }
 
 // Undo fiestaStandardize: restore the player's real level/xp/talents.
@@ -226,11 +228,11 @@ export function fiestaRestoreChar(meta: PlayerMeta, e: Entity): void {
   e.level = snap.level;
   meta.xp = snap.xp;
   meta.talents = snap.talents;
-  meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, meta.secondaryCls);
+  meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, meta.secondaryCls, e.level);
   meta.fiestaRestore = null;
   meta.known = abilitiesKnownAt(meta.cls, e.level, meta.talentMods, meta.secondaryCls);
   meta.wireRev++; // real talents restored, refresh the wire promptly
-  recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods);
+  recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods, meta.enchants);
 }
 
 // Player command: lock in one of the augments currently on offer.
@@ -286,6 +288,7 @@ export function fiestaDownEntity(ctx: SimContext, e: Entity, killer: Entity | nu
   e.channeling = false;
   e.autoAttack = false;
   e.queuedOnSwing = null;
+  e.queuedCastAbility = null;
   e.comboPoints = 0;
   e.comboTargetId = null;
   e.eating = null;
@@ -338,6 +341,9 @@ export function fiestaTakedown(
   else if (killerTeam === 'B') f.scoreB += points;
   if (killerMeta) killerMeta.counters.kills++;
   f.kills.set(killerPid, (f.kills.get(killerPid) ?? 0) + 1);
+  if (killerMeta && !match.practice && ctx.isArenaCrossTeam(match, killerPid, victim.id)) {
+    awardFiestaKillHonor(ctx, killerMeta, victim.id, f.honorKillsByPair);
+  }
 
   fiestaDown(ctx, match, victim, killerPid);
 

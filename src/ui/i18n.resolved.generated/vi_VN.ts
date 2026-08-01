@@ -246,7 +246,6 @@ export const vi_VN: EnTranslations = {
       "chat": "Chuyển tới Trò Chuyện"
     },
     "mobile": {
-      "autorun": "Tự Chạy",
       "jump": "Nhảy",
       "leaderboard": "Xếp Hạng",
       "nameplates": "Tên",
@@ -720,10 +719,18 @@ export const vi_VN: EnTranslations = {
         "spi": "Reduce el espíritu en {value}",
         "allStats": "Reduce todos los atributos en {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Aumenta la probabilidad de esquivar un {pct}%",
       "dodgeReduce": "Reduce la probabilidad de esquivar un {pct}%",
       "armorFlat": "Reduce la armadura en {value}",
       "armorFlatStacks": "Reduce la armadura en {value} ({stacks} acumulaciones)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Reduce la sanación recibida un {pct}%",
       "vulnerability": "Aumenta el daño recibido un {pct}%",
       "physVuln": "Aumenta el daño físico recibido un {pct}%",
@@ -990,6 +997,51 @@ export const vi_VN: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "crafting": {
+      "title": "Crafting",
+      "close": "Close crafting",
+      "tabRecipes": "Recipes",
+      "tabEnchants": "Enchants",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "Craft",
+      "craftAria": "Craft {item}",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "Disenchant",
+      "disenchantButton": "Disenchant",
+      "disenchantAria": "Disenchant {item}",
+      "disenchantEmpty": "Nothing eligible to disenchant.",
+      "applyButton": "Apply",
+      "applyAria": "Apply {enchant} to {slot}",
+      "activeTag": "Active",
+      "needScroll": "Requires {scroll}",
+      "craftType": {
+        "weaponcrafting": "Weaponsmithing",
+        "armorcrafting": "Armorsmithing",
+        "tailoring": "Tailoring",
+        "leatherworking": "Leatherworking",
+        "cooking": "Cooking",
+        "alchemy": "Alchemy",
+        "enchanting": "Enchanting"
+      }
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
+    },
+    "hitRating": {
+      "ratingLabel": "Hit Rating"
     }
   },
   "mailUi": {
@@ -2421,6 +2473,13 @@ export const vi_VN: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "dailyRewards": {
+      "claimed": "You claim your daily reward."
+    },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
@@ -2481,6 +2540,18 @@ export const vi_VN: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "You have already planted your cutting. Give it time to grow.",
+      "needHomestead": "You need a homestead plot before you can plant this.",
+      "tooFar": "You must be at your own homestead to plant this.",
+      "planted": "You plant the cutting at your homestead. Give it time.",
+      "grown": "Your cutting has grown into a companion. It follows you now."
+    },
+    "readyCheck": {
+      "mustBeInParty": "You must be in a party to start a ready check.",
+      "alreadyInProgress": "A ready check is already in progress.",
+      "summary": "Ready check: {ready} ready, {notReady} not ready, {noResponse} no response."
     }
   },
   "lockpickUi": {
@@ -3322,6 +3393,8 @@ export const vi_VN: EnTranslations = {
       "openTrade": "Mở Giao Dịch",
       "duelRequest": "{name} đã thách đấu tay đôi với bạn!",
       "acceptDuel": "Chấp Nhận Đấu Tay Đôi",
+      "readyCheckStart": "{name} has started a ready check.",
+      "markReady": "Ready",
       "decline": "Từ Chối"
     },
     "combat": {
@@ -3352,6 +3425,7 @@ export const vi_VN: EnTranslations = {
       "ignoringChat": "Đang bỏ qua tin nhắn từ {name}.",
       "noLongerIgnoring": "Không còn bỏ qua {name} nữa.",
       "playerNotNearby": "Người chơi đó không ở gần đây.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Tỉ thí bắt đầu sau {seconds}...",
       "duelEndBanner": "{winner} đã đánh bại {loser} trong một trận tỉ thí!",
       "duelEndLog": "{winner} đã đánh bại {loser} trong một trận tỉ thí.",
@@ -3797,6 +3871,22 @@ export const vi_VN: EnTranslations = {
       "stool": "Stool"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "Daily Rewards",
+    "window": {
+      "title": "Daily Rewards",
+      "close": "Close daily rewards",
+      "claim": "Claim",
+      "claimAria": "Claim today's reward",
+      "claimed": "Claimed. Come back tomorrow.",
+      "locked": "Daily rewards are unavailable on this account right now.",
+      "hint": "One reward per day. Missing a day never costs you anything."
+    },
+    "cell": {
+      "today": "Today",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "v",
@@ -4017,11 +4107,132 @@ export const vi_VN: EnTranslations = {
       "needAria": "Cần Dùng {item}",
       "greedAria": "Tham Lam giành {item}",
       "passAria": "Bỏ qua {item}",
-      "everyonePassed": "Mọi người đều bỏ qua {item}."
+      "everyonePassed": "Mọi người đều bỏ qua {item}.",
+      "winnerOffline": "The winner of {item} was offline; it was returned to the corpse."
     }
   },
   "entities": {
     "abilities": {
+      "chain_heal": {
+        "name": "Chain Heal",
+        "description": "Heals a friendly target for a large amount, then jumps to up to 2 additional nearby allies, healing for 50% less with each jump."
+      },
+      "crusader_strike": {
+        "name": "Crusader Strike",
+        "description": "Strikes the target for weapon damage plus 24 Holy damage."
+      },
+      "metamorphosis": {
+        "name": "Dread Aspect",
+        "description": "Transform into a monstrous demon for 20 sec, increasing your spell damage by 20% and casting speed by 20%. Your demon gains 50% damage and 20% casting speed."
+      },
+      "holy_shock": {
+        "name": "Holy Shock",
+        "description": "Shocks a friendly target with Holy energy to heal them, or an enemy for Holy damage."
+      },
+      "holy_shield": {
+        "name": "Hallowed Wall",
+        "description": "Hurls a radiant aegis at an enemy, dealing Holy damage and bouncing to 2 nearby enemies."
+      },
+      "bestial_wrath": {
+        "name": "Howling Rage",
+        "description": "Sends you into a bestial rage, increasing your attack power by 20% and your pet damage by 100% for 15 sec."
+      },
+      "trueshot_aura": {
+        "name": "Sureflight Aura",
+        "description": "Inspires nearby allies, increasing attack power by 10% for 30 min."
+      },
+      "wyvern_sting": {
+        "name": "Wyvern Sting",
+        "description": "Stings the enemy from range, incapacitating it for up to 4 sec. Any damage breaks the effect."
+      },
+      "arcane_power": {
+        "name": "Aether Surge",
+        "description": "Increases spell damage by 20% and spell haste by 10% for 10 sec."
+      },
+      "combustion": {
+        "name": "Flashfire",
+        "description": "Increases spell critical chance by 50% for 15 sec."
+      },
+      "icy_veins": {
+        "name": "Icy Veins",
+        "description": "Increases spell haste by 30% and prevents cast interruption and pushback for 10 sec."
+      },
+      "cold_blood": {
+        "name": "Killer's Calm",
+        "description": "Focuses your killing intent so your next attack is a critical strike."
+      },
+      "blade_flurry": {
+        "name": "Mirrored Blades",
+        "description": "Unleashes a flurry of blades, increasing attack speed by 20% for 12 sec."
+      },
+      "hemorrhage": {
+        "name": "Red Ribbon",
+        "description": "Strikes the enemy for weapon damage plus bleed, causes bleeding damage over 12 sec, and increases bleed damage taken by 40%. Awards 1 combo point."
+      },
+      "power_infusion": {
+        "name": "Anointing",
+        "description": "Infuses a friendly target with power, increasing spell haste by 20% for 15 sec."
+      },
+      "holy_nova": {
+        "name": "Holy Nova",
+        "description": "Causes an explosion of holy radiance, healing nearby allies and damaging nearby enemies."
+      },
+      "shadowform": {
+        "name": "Gloamveil Form",
+        "description": "Assume a Shadowform, increasing your Shadow damage by 15% until you shift back. Casting a healing spell ends the form. Cast again to return to normal form."
+      },
+      "elemental_mastery": {
+        "name": "Primal Mastery",
+        "description": "Calls on the storm, making your next spell instant."
+      },
+      "siphon_life": {
+        "name": "Veinleech",
+        "description": "Siphons life from the enemy, causing Shadow damage over 30 sec and healing you for the damage done."
+      },
+      "conflagrate": {
+        "name": "Conflagrate",
+        "description": "Consumes your Immolate on the enemy to ignite them for Fire damage."
+      },
+      "moonkin_form": {
+        "name": "Moonwing Form",
+        "description": "Shapeshift into a fearsome Moonkin, increasing your spell damage by 20% and your armor by 50%. Lasts until you shift out. Cast again to return to caster form."
+      },
+      "feral_charge": {
+        "name": "Primal Surge",
+        "description": "Unleash a primal surge. In Cat Form, Energy regeneration is increased by 100% for 10 sec. In Bear Form, instantly generates 50 Rage."
+      },
+      "swiftmend": {
+        "name": "Swiftmend",
+        "description": "Consumes a heal-over-time effect on a friendly target to heal them."
+      },
+      "pummel": {
+        "name": "Jawcrack",
+        "description": "Interrupts the target's spellcast and prevents casting from that school for 4 sec."
+      },
+      "kick": {
+        "name": "Boot",
+        "description": "Interrupts the target's spellcast and prevents casting from that school for 4 sec."
+      },
+      "counterspell": {
+        "name": "Spellbreak",
+        "description": "Counters the target's spellcast and prevents casting from that school for 6 sec."
+      },
+      "counter_shot": {
+        "name": "Hushing Shot",
+        "description": "A snap shot that interrupts the target's spellcast and locks that school for 4 sec."
+      },
+      "rebuke": {
+        "name": "Reproach",
+        "description": "Interrupts the target's spellcast and prevents casting from that school for 4 sec."
+      },
+      "skull_bash": {
+        "name": "Headbutt",
+        "description": "A lunging headbutt that interrupts the target's spellcast and locks that school for 4 sec."
+      },
+      "spell_lock": {
+        "name": "Gag Order",
+        "description": "Silences the target mid-cast and prevents casting from that school for 5 sec."
+      },
       "heroic_strike": {
         "name": "Đòn Anh Hùng",
         "description": "Một đòn đánh mạnh tăng sát thương cận chiến thêm {damage}. Kích hoạt ở đòn đánh tiếp theo của bạn."
@@ -4080,7 +4291,7 @@ export const vi_VN: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Nghiền Giáp",
-        "description": "Nghiền nát giáp của mục tiêu, giảm giáp đi {damage} mỗi lần áp dụng. Cộng dồn tối đa 5 lần. Tạo lượng đe dọa cao."
+        "description": "Nghiền nát giáp của mục tiêu, giảm giáp đi 2% mỗi lần áp dụng. Cộng dồn tối đa 5 lần. Tạo lượng đe dọa cao."
       },
       "taunt": {
         "name": "Khiêu Khích",
@@ -5178,6 +5389,99 @@ export const vi_VN: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Túi Du Lịch Của Mistcaller"
       },
+      "bramblewar_warhelm": {
+        "name": "Chiến Gai Đầu"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Chiến Gai Vai"
+      },
+      "bramblewar_warplate": {
+        "name": "Chiến Gai Ngực"
+      },
+      "bramblewar_girdle": {
+        "name": "Chiến Gai Eo"
+      },
+      "bramblewar_legguards": {
+        "name": "Chiến Gai Đùi"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Chiến Gai Tay"
+      },
+      "bramblewar_sabatons": {
+        "name": "Chiến Gai Chân"
+      },
+      "thornbound_crown": {
+        "name": "Gai Buộc Đầu"
+      },
+      "thornbound_spaulders": {
+        "name": "Gai Buộc Vai"
+      },
+      "thornbound_hauberk": {
+        "name": "Gai Buộc Ngực"
+      },
+      "thornbound_waistguard": {
+        "name": "Gai Buộc Eo"
+      },
+      "thornbound_legmail": {
+        "name": "Gai Buộc Đùi"
+      },
+      "thornbound_handguards": {
+        "name": "Gai Buộc Tay"
+      },
+      "thornbound_greaves": {
+        "name": "Gai Buộc Chân"
+      },
+      "nettlestalker_cowl": {
+        "name": "Tầm Gai Ẩn Đầu"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Tầm Gai Ẩn Vai"
+      },
+      "nettlestalker_harness": {
+        "name": "Tầm Gai Ẩn Ngực"
+      },
+      "nettlestalker_waistband": {
+        "name": "Tầm Gai Ẩn Eo"
+      },
+      "nettlestalker_legguards": {
+        "name": "Tầm Gai Ẩn Đùi"
+      },
+      "nettlestalker_grips": {
+        "name": "Tầm Gai Ẩn Tay"
+      },
+      "nettlestalker_treads": {
+        "name": "Tầm Gai Ẩn Chân"
+      },
+      "mossweave_cowl": {
+        "name": "Rêu Dệt Đầu"
+      },
+      "mossweave_mantle": {
+        "name": "Rêu Dệt Vai"
+      },
+      "mossweave_raiment": {
+        "name": "Rêu Dệt Ngực"
+      },
+      "mossweave_cord": {
+        "name": "Rêu Dệt Eo"
+      },
+      "mossweave_legwraps": {
+        "name": "Rêu Dệt Đùi"
+      },
+      "mossweave_handwraps": {
+        "name": "Rêu Dệt Tay"
+      },
+      "mossweave_slippers": {
+        "name": "Rêu Dệt Chân"
+      },
+      "last_bloom_greatblade": {
+        "name": "Đại Kiếm Hoa Tàn"
+      },
+      "thornbite_razor": {
+        "name": "Dao Cạo Cắn Gai"
+      },
+      "heartwood_warstaff": {
+        "name": "Trượng Chiến Lõi Gỗ"
+      },
       "bristleback_maul": {
         "name": "Vồ Lưng Gai"
       },
@@ -5747,6 +6051,21 @@ export const vi_VN: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Crôm Tiên Phong"
+      },
+      "enchanting_dust": {
+        "name": "Bụi Phù Phép"
+      },
+      "scroll_minor_might": {
+        "name": "Cuộn Giấy Sức Mạnh Nhỏ"
+      },
+      "scroll_minor_vigor": {
+        "name": "Cuộn Giấy Sinh Lực Nhỏ"
+      },
+      "scroll_minor_focus": {
+        "name": "Cuộn Giấy Tập Trung Nhỏ"
+      },
+      "scroll_minor_agility": {
+        "name": "Cuộn Giấy Nhanh Nhẹn Nhỏ"
       }
     },
     "mobs": {
@@ -6073,6 +6392,15 @@ export const vi_VN: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "Heartwood Colossus"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "Greenpaw's Cutting"
       }
     },
     "npcs": {
@@ -6191,6 +6519,11 @@ export const vi_VN: EnTranslations = {
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
       },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
+      },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
         "title": "Người Canh Thủy Triều",
@@ -6294,6 +6627,22 @@ export const vi_VN: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "A Trade Worth Learning",
+        "text": "Every trade starts with dirt under your nails, {playerName}. Gather 2 spider legs from the groves east of town, then work my forge for a Recruit's Tunic; bone fragments for it are easy enough to scrounge along the way. Bring me something worth breaking down for its arcane dust besides. Show me you can gather, craft, and unmake, and I will show you what a trade is worth.",
+        "completion": "Now that is a trade worth learning. Keep at the forge, {playerName}, and one day you will be shoeing horses and enchanting blades in the same breath.",
+        "objectives": {
+          "0": {
+            "label": "Spider Leg gathered"
+          },
+          "1": {
+            "label": "Recruit's Tunic crafted"
+          },
+          "2": {
+            "label": "Enchanting Dust"
+          }
+        }
+      },
       "q_wolves": {
         "title": "Sói Trước Cửa",
         "text": "Lũ sói rừng ngày càng hung hăng, chực vồ lữ khách trên con đường phía bắc. Hãy thưa bớt số lượng chúng, {playerName}. Hạ 8 con Sói Rừng và Đông Khê sẽ dễ thở hơn.",
@@ -7436,6 +7785,20 @@ export const vi_VN: EnTranslations = {
         "name": "Thánh Tích Sụp Đổ",
         "enterText": "Bạn đi xuống thánh tích sụp đổ.",
         "leaveText": "Bạn trèo trở lại chỗ Tu Huynh Halven tại tàn tích thánh tích."
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "Minor Might"
+      },
+      "enchant_minor_vigor": {
+        "name": "Minor Vigor"
+      },
+      "enchant_minor_focus": {
+        "name": "Minor Focus"
+      },
+      "enchant_minor_agility": {
+        "name": "Minor Agility"
       }
     },
     "itemSets": {

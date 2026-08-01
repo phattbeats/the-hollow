@@ -246,7 +246,6 @@ export const fr_CA: EnTranslations = {
       "chat": "Aller à la discussion"
     },
     "mobile": {
-      "autorun": "Course automatique",
       "jump": "Sauter",
       "leaderboard": "Classement",
       "nameplates": "Noms",
@@ -720,10 +719,18 @@ export const fr_CA: EnTranslations = {
         "spi": "Diminue l'esprit de {value}",
         "allStats": "Diminue tous les attributs de {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Accroît les chances d'esquive de {pct}%",
       "dodgeReduce": "Diminue les chances d'esquive de {pct}%",
       "armorFlat": "Diminue l'armure de {value}",
       "armorFlatStacks": "Diminue l'armure de {value} ({stacks} charges)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Diminue les soins reçus de {pct}%",
       "vulnerability": "Accroît les dégâts subis de {pct}%",
       "physVuln": "Accroît les dégâts physiques subis de {pct}%",
@@ -990,6 +997,51 @@ export const fr_CA: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "crafting": {
+      "title": "Crafting",
+      "close": "Close crafting",
+      "tabRecipes": "Recipes",
+      "tabEnchants": "Enchants",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "Craft",
+      "craftAria": "Craft {item}",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "Disenchant",
+      "disenchantButton": "Disenchant",
+      "disenchantAria": "Disenchant {item}",
+      "disenchantEmpty": "Nothing eligible to disenchant.",
+      "applyButton": "Apply",
+      "applyAria": "Apply {enchant} to {slot}",
+      "activeTag": "Active",
+      "needScroll": "Requires {scroll}",
+      "craftType": {
+        "weaponcrafting": "Weaponsmithing",
+        "armorcrafting": "Armorsmithing",
+        "tailoring": "Tailoring",
+        "leatherworking": "Leatherworking",
+        "cooking": "Cooking",
+        "alchemy": "Alchemy",
+        "enchanting": "Enchanting"
+      }
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
+    },
+    "hitRating": {
+      "ratingLabel": "Hit Rating"
     }
   },
   "mailUi": {
@@ -2421,6 +2473,13 @@ export const fr_CA: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "dailyRewards": {
+      "claimed": "You claim your daily reward."
+    },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
@@ -2481,6 +2540,18 @@ export const fr_CA: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "You have already planted your cutting. Give it time to grow.",
+      "needHomestead": "You need a homestead plot before you can plant this.",
+      "tooFar": "You must be at your own homestead to plant this.",
+      "planted": "You plant the cutting at your homestead. Give it time.",
+      "grown": "Your cutting has grown into a companion. It follows you now."
+    },
+    "readyCheck": {
+      "mustBeInParty": "You must be in a party to start a ready check.",
+      "alreadyInProgress": "A ready check is already in progress.",
+      "summary": "Ready check: {ready} ready, {notReady} not ready, {noResponse} no response."
     }
   },
   "lockpickUi": {
@@ -3322,6 +3393,8 @@ export const fr_CA: EnTranslations = {
       "openTrade": "Ouvrir l'échange",
       "duelRequest": "{name} vous a provoqué en duel !",
       "acceptDuel": "Accepter le duel",
+      "readyCheckStart": "{name} has started a ready check.",
+      "markReady": "Ready",
       "decline": "Refuser"
     },
     "combat": {
@@ -3352,6 +3425,7 @@ export const fr_CA: EnTranslations = {
       "ignoringChat": "Discussion de {name} ignorée.",
       "noLongerIgnoring": "Vous n'ignorez plus {name}.",
       "playerNotNearby": "Ce joueur n'est pas à proximité.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Le duel commence dans {seconds}...",
       "duelEndBanner": "{winner} a vaincu {loser} en duel !",
       "duelEndLog": "{winner} a vaincu {loser} en duel.",
@@ -3797,6 +3871,22 @@ export const fr_CA: EnTranslations = {
       "stool": "Stool"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "Daily Rewards",
+    "window": {
+      "title": "Daily Rewards",
+      "close": "Close daily rewards",
+      "claim": "Claim",
+      "claimAria": "Claim today's reward",
+      "claimed": "Claimed. Come back tomorrow.",
+      "locked": "Daily rewards are unavailable on this account right now.",
+      "hint": "One reward per day. Missing a day never costs you anything."
+    },
+    "cell": {
+      "today": "Today",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "po",
@@ -4017,11 +4107,132 @@ export const fr_CA: EnTranslations = {
       "needAria": "Besoin pour {item}",
       "greedAria": "Cupidité pour {item}",
       "passAria": "Passer pour {item}",
-      "everyonePassed": "Tout le monde a passé pour {item}."
+      "everyonePassed": "Tout le monde a passé pour {item}.",
+      "winnerOffline": "Le gagnant de {item} était hors ligne ; il a été rendu au corps."
     }
   },
   "entities": {
     "abilities": {
+      "chain_heal": {
+        "name": "Chain Heal",
+        "description": "Heals a friendly target for a large amount, then jumps to up to 2 additional nearby allies, healing for 50% less with each jump."
+      },
+      "crusader_strike": {
+        "name": "Crusader Strike",
+        "description": "Strikes the target for weapon damage plus 24 Holy damage."
+      },
+      "metamorphosis": {
+        "name": "Dread Aspect",
+        "description": "Transform into a monstrous demon for 20 sec, increasing your spell damage by 20% and casting speed by 20%. Your demon gains 50% damage and 20% casting speed."
+      },
+      "holy_shock": {
+        "name": "Holy Shock",
+        "description": "Shocks a friendly target with Holy energy to heal them, or an enemy for Holy damage."
+      },
+      "holy_shield": {
+        "name": "Hallowed Wall",
+        "description": "Hurls a radiant aegis at an enemy, dealing Holy damage and bouncing to 2 nearby enemies."
+      },
+      "bestial_wrath": {
+        "name": "Howling Rage",
+        "description": "Sends you into a bestial rage, increasing your attack power by 20% and your pet damage by 100% for 15 sec."
+      },
+      "trueshot_aura": {
+        "name": "Sureflight Aura",
+        "description": "Inspires nearby allies, increasing attack power by 10% for 30 min."
+      },
+      "wyvern_sting": {
+        "name": "Wyvern Sting",
+        "description": "Stings the enemy from range, incapacitating it for up to 4 sec. Any damage breaks the effect."
+      },
+      "arcane_power": {
+        "name": "Aether Surge",
+        "description": "Increases spell damage by 20% and spell haste by 10% for 10 sec."
+      },
+      "combustion": {
+        "name": "Flashfire",
+        "description": "Increases spell critical chance by 50% for 15 sec."
+      },
+      "icy_veins": {
+        "name": "Icy Veins",
+        "description": "Increases spell haste by 30% and prevents cast interruption and pushback for 10 sec."
+      },
+      "cold_blood": {
+        "name": "Killer's Calm",
+        "description": "Focuses your killing intent so your next attack is a critical strike."
+      },
+      "blade_flurry": {
+        "name": "Mirrored Blades",
+        "description": "Unleashes a flurry of blades, increasing attack speed by 20% for 12 sec."
+      },
+      "hemorrhage": {
+        "name": "Red Ribbon",
+        "description": "Strikes the enemy for weapon damage plus bleed, causes bleeding damage over 12 sec, and increases bleed damage taken by 40%. Awards 1 combo point."
+      },
+      "power_infusion": {
+        "name": "Anointing",
+        "description": "Infuses a friendly target with power, increasing spell haste by 20% for 15 sec."
+      },
+      "holy_nova": {
+        "name": "Holy Nova",
+        "description": "Causes an explosion of holy radiance, healing nearby allies and damaging nearby enemies."
+      },
+      "shadowform": {
+        "name": "Gloamveil Form",
+        "description": "Assume a Shadowform, increasing your Shadow damage by 15% until you shift back. Casting a healing spell ends the form. Cast again to return to normal form."
+      },
+      "elemental_mastery": {
+        "name": "Primal Mastery",
+        "description": "Calls on the storm, making your next spell instant."
+      },
+      "siphon_life": {
+        "name": "Veinleech",
+        "description": "Siphons life from the enemy, causing Shadow damage over 30 sec and healing you for the damage done."
+      },
+      "conflagrate": {
+        "name": "Conflagrate",
+        "description": "Consumes your Immolate on the enemy to ignite them for Fire damage."
+      },
+      "moonkin_form": {
+        "name": "Moonwing Form",
+        "description": "Shapeshift into a fearsome Moonkin, increasing your spell damage by 20% and your armor by 50%. Lasts until you shift out. Cast again to return to caster form."
+      },
+      "feral_charge": {
+        "name": "Primal Surge",
+        "description": "Unleash a primal surge. In Cat Form, Energy regeneration is increased by 100% for 10 sec. In Bear Form, instantly generates 50 Rage."
+      },
+      "swiftmend": {
+        "name": "Swiftmend",
+        "description": "Consumes a heal-over-time effect on a friendly target to heal them."
+      },
+      "pummel": {
+        "name": "Jawcrack",
+        "description": "Interrupts the target's spellcast and prevents casting from that school for 4 sec."
+      },
+      "kick": {
+        "name": "Boot",
+        "description": "Interrupts the target's spellcast and prevents casting from that school for 4 sec."
+      },
+      "counterspell": {
+        "name": "Spellbreak",
+        "description": "Counters the target's spellcast and prevents casting from that school for 6 sec."
+      },
+      "counter_shot": {
+        "name": "Hushing Shot",
+        "description": "A snap shot that interrupts the target's spellcast and locks that school for 4 sec."
+      },
+      "rebuke": {
+        "name": "Reproach",
+        "description": "Interrupts the target's spellcast and prevents casting from that school for 4 sec."
+      },
+      "skull_bash": {
+        "name": "Headbutt",
+        "description": "A lunging headbutt that interrupts the target's spellcast and locks that school for 4 sec."
+      },
+      "spell_lock": {
+        "name": "Gag Order",
+        "description": "Silences the target mid-cast and prevents casting from that school for 5 sec."
+      },
       "heroic_strike": {
         "name": "Frappe héroïque",
         "description": "Une attaque puissante qui augmente les dégâts de mêlée de {damage}. S'active lors de votre prochaine frappe."
@@ -4080,7 +4291,7 @@ export const fr_CA: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Fracasser armure",
-        "description": "Fracasse l'armure de la cible et la réduit de {damage} par application. Cumulable jusqu'à 5 fois. Génère beaucoup de menace."
+        "description": "Fracasse l'armure de la cible, la réduisant de 2% par application. Cumulable jusqu'à 5 fois. Génère beaucoup de menace."
       },
       "taunt": {
         "name": "Provocation",
@@ -5178,6 +5389,99 @@ export const fr_CA: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Sac Marin de Mistcaller"
       },
+      "bramblewar_warhelm": {
+        "name": "Ronceguerre Tête"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Ronceguerre Épaules"
+      },
+      "bramblewar_warplate": {
+        "name": "Ronceguerre Torse"
+      },
+      "bramblewar_girdle": {
+        "name": "Ronceguerre Taille"
+      },
+      "bramblewar_legguards": {
+        "name": "Ronceguerre Jambes"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Ronceguerre Mains"
+      },
+      "bramblewar_sabatons": {
+        "name": "Ronceguerre Pieds"
+      },
+      "thornbound_crown": {
+        "name": "Roncelié Tête"
+      },
+      "thornbound_spaulders": {
+        "name": "Roncelié Épaules"
+      },
+      "thornbound_hauberk": {
+        "name": "Roncelié Torse"
+      },
+      "thornbound_waistguard": {
+        "name": "Roncelié Taille"
+      },
+      "thornbound_legmail": {
+        "name": "Roncelié Jambes"
+      },
+      "thornbound_handguards": {
+        "name": "Roncelié Mains"
+      },
+      "thornbound_greaves": {
+        "name": "Roncelié Pieds"
+      },
+      "nettlestalker_cowl": {
+        "name": "Ortie Furtive Tête"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Ortie Furtive Épaules"
+      },
+      "nettlestalker_harness": {
+        "name": "Ortie Furtive Torse"
+      },
+      "nettlestalker_waistband": {
+        "name": "Ortie Furtive Taille"
+      },
+      "nettlestalker_legguards": {
+        "name": "Ortie Furtive Jambes"
+      },
+      "nettlestalker_grips": {
+        "name": "Ortie Furtive Mains"
+      },
+      "nettlestalker_treads": {
+        "name": "Ortie Furtive Pieds"
+      },
+      "mossweave_cowl": {
+        "name": "Moussetissé Tête"
+      },
+      "mossweave_mantle": {
+        "name": "Moussetissé Épaules"
+      },
+      "mossweave_raiment": {
+        "name": "Moussetissé Torse"
+      },
+      "mossweave_cord": {
+        "name": "Moussetissé Taille"
+      },
+      "mossweave_legwraps": {
+        "name": "Moussetissé Jambes"
+      },
+      "mossweave_handwraps": {
+        "name": "Moussetissé Mains"
+      },
+      "mossweave_slippers": {
+        "name": "Moussetissé Pieds"
+      },
+      "last_bloom_greatblade": {
+        "name": "Grande Lame de la Dernière Fleur"
+      },
+      "thornbite_razor": {
+        "name": "Rasoir Morsure-d'Épine"
+      },
+      "heartwood_warstaff": {
+        "name": "Bâton de Guerre de Bois de Cœur"
+      },
       "bristleback_maul": {
         "name": "Maillet Bristleback"
       },
@@ -5747,6 +6051,21 @@ export const fr_CA: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Avant-garde chrome"
+      },
+      "enchanting_dust": {
+        "name": "Poussière d'Enchantement"
+      },
+      "scroll_minor_might": {
+        "name": "Parchemin de Puissance Mineure"
+      },
+      "scroll_minor_vigor": {
+        "name": "Parchemin de Vigueur Mineure"
+      },
+      "scroll_minor_focus": {
+        "name": "Parchemin de Concentration Mineure"
+      },
+      "scroll_minor_agility": {
+        "name": "Parchemin d'Agilité Mineure"
       }
     },
     "mobs": {
@@ -6073,6 +6392,15 @@ export const fr_CA: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "Heartwood Colossus"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "Greenpaw's Cutting"
       }
     },
     "npcs": {
@@ -6191,6 +6519,11 @@ export const fr_CA: EnTranslations = {
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
       },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
+      },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
         "title": "Veille-marées",
@@ -6294,6 +6627,22 @@ export const fr_CA: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "A Trade Worth Learning",
+        "text": "Every trade starts with dirt under your nails, {playerName}. Gather 2 spider legs from the groves east of town, then work my forge for a Recruit's Tunic; bone fragments for it are easy enough to scrounge along the way. Bring me something worth breaking down for its arcane dust besides. Show me you can gather, craft, and unmake, and I will show you what a trade is worth.",
+        "completion": "Now that is a trade worth learning. Keep at the forge, {playerName}, and one day you will be shoeing horses and enchanting blades in the same breath.",
+        "objectives": {
+          "0": {
+            "label": "Spider Leg gathered"
+          },
+          "1": {
+            "label": "Recruit's Tunic crafted"
+          },
+          "2": {
+            "label": "Enchanting Dust"
+          }
+        }
+      },
       "q_wolves": {
         "title": "Des loups à la porte",
         "text": "Les loups des bois s'enhardissent sur la route du nord, {playerName}. Tuez-en 8 pour qu'Eastbrook respire un peu mieux.",
@@ -7436,6 +7785,20 @@ export const fr_CA: EnTranslations = {
         "name": "Le Reliquaire effondré",
         "enterText": "Vous descendez dans le reliquaire effondré.",
         "leaveText": "Vous remontez auprès du frère Halven, à la ruine du reliquaire."
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "Minor Might"
+      },
+      "enchant_minor_vigor": {
+        "name": "Minor Vigor"
+      },
+      "enchant_minor_focus": {
+        "name": "Minor Focus"
+      },
+      "enchant_minor_agility": {
+        "name": "Minor Agility"
       }
     },
     "itemSets": {

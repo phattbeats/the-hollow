@@ -59,6 +59,7 @@ import {
   DT,
   dist2d,
   type Entity,
+  emptyMoveInput,
   INSTANCE_EMPTY_TIMEOUT,
   type Vec3,
 } from '../types';
@@ -542,13 +543,16 @@ export function ejectToDelveDoor(ctx: SimContext, pid: number, delve: DelveDef):
   p.facing = 0;
   p.auras = [];
   p.ccDr.clear();
-  recalcPlayerStats(p, r.meta.cls, r.meta.equipment, r.meta.talentMods);
+  recalcPlayerStats(p, r.meta.cls, r.meta.equipment, r.meta.talentMods, r.meta.enchants);
   p.hp = p.maxHp;
   p.resource = p.resourceType === 'mana' ? p.maxResource : p.resourceType === 'energy' ? 100 : 0;
   p.targetId = null;
   p.combatTimer = 99;
   p.inCombat = false;
   p.autoAttack = false;
+  // A held movement key at the moment of a second delve death must not carry over into
+  // the door-ejected body, or it walks off on its own with no input held (upstream #1723).
+  Object.assign(r.meta.moveInput, emptyMoveInput());
 }
 
 export function failDelveRun(ctx: SimContext, run: DelveRun): void {
@@ -659,6 +663,7 @@ export function grantDelveClearTo(
   unlockNextDelveLore(ctx, meta, pid);
   ctx.maybeCompanionBark(run, pid, 'completion');
   restorePetFromDelveStash(ctx, pid);
+  ctx.onDelveClearedForDeeds(run.delveId, run.tierId, (run.deathsThisRun[pid] ?? 0) === 0, meta);
   ctx.emit({ type: 'delveComplete', delveId: run.delveId, tierId: run.tierId, pid });
 }
 

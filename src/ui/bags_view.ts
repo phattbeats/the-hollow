@@ -87,7 +87,10 @@ export function bagItemAction(item: BagItemInfo, mode: BagMode): BagAction {
   }
   if (mode.vendorOpen) return 'vendorSell';
   if (mode.petFeed) return item.kind === 'food' ? 'petFeed' : 'petFeedBlocked';
-  if (item.kind === 'quest') return 'discardQuest';
+  // A quest item with its own use action (e.g. first_cutting's plant use,
+  // PHAA-751) is usable, not destroy-prompted; a quest item with no use action
+  // keeps the original discard-prompt behavior.
+  if (item.kind === 'quest') return item.use ? 'use' : 'discardQuest';
   if (item.kind === 'bag') return 'equipBag';
   return 'use';
 }
@@ -106,7 +109,8 @@ export function bagTooltipHintKey(item: BagItemInfo, mode: BagMode): BagTooltipH
   }
   if (mode.vendorOpen)
     return item.kind === 'quest' ? 'itemUi.tooltip.cannotVendor' : 'itemUi.tooltip.clickSell';
-  if (item.kind === 'quest') return 'itemUi.tooltip.clickDestroy';
+  if (item.kind === 'quest')
+    return item.use ? 'itemUi.tooltip.clickUse' : 'itemUi.tooltip.clickDestroy';
   if (item.kind === 'weapon' || item.kind === 'armor' || item.kind === 'bag')
     return 'itemUi.tooltip.clickEquip';
   if (item.kind === 'food' || item.kind === 'drink') return 'itemUi.tooltip.clickConsume';

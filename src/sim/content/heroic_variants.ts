@@ -26,6 +26,8 @@
 // `src/sim`-pure (deterministic over content tables): no rng, no clock, no DOM.
 
 import {
+  HEROIC_HIT_RATING_ARMOR,
+  HEROIC_HIT_RATING_WEAPON,
   HEROIC_VARIANT_SOURCE_LEVEL,
   normalizePrimaryStats,
   PRIMARY_STATS,
@@ -89,6 +91,13 @@ function makeHeroicVariant(
       ...base.weapon,
       ...scaleWeaponDamage(base.weapon, Math.max(weaponDpsBudget(targetLevel), baseDps)),
     };
+  }
+  // Hit rating, off the primary-stat budget above: only an epic base reaches the
+  // item-level-31 tier (a rare stays at 28, the lesser rung), so only epics carry
+  // the rating. This is what makes ilvl 31 a qualitative step over 26/28, not just
+  // +2 stats (PHAA-733 / upstream PR #1860's ilvl-31 allowance).
+  if (quality === 'epic') {
+    variant.hitRating = base.kind === 'weapon' ? HEROIC_HIT_RATING_WEAPON : HEROIC_HIT_RATING_ARMOR;
   }
   return variant;
 }

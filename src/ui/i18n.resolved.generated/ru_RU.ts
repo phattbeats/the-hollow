@@ -246,7 +246,6 @@ export const ru_RU: EnTranslations = {
       "chat": "Перейти к чату"
     },
     "mobile": {
-      "autorun": "Автобег",
       "jump": "Прыжок",
       "leaderboard": "Рейтинг",
       "nameplates": "Имена",
@@ -720,10 +719,18 @@ export const ru_RU: EnTranslations = {
         "spi": "Снижает дух на {value}",
         "allStats": "Снижает все характеристики на {value}"
       },
+      "increasePct": {
+        "ap": "Повышает силу атаки на {pct}%",
+        "armor": "Повышает броню на {pct}%",
+        "int": "Повышает интеллект на {pct}%",
+        "sta": "Повышает выносливость на {pct}%"
+      },
       "dodge": "Повышает шанс уклонения на {pct}%",
       "dodgeReduce": "Снижает шанс уклонения на {pct}%",
       "armorFlat": "Снижает броню на {value}",
       "armorFlatStacks": "Снижает броню на {value} ({stacks} зарядов)",
+      "armorPct": "Снижает броню на {pct}%",
+      "armorPctStacks": "Снижает броню на {pct}% ({stacks} зарядов)",
       "mortalWound": "Снижает получаемое исцеление на {pct}%",
       "vulnerability": "Увеличивает получаемый урон на {pct}%",
       "physVuln": "Увеличивает получаемый физический урон на {pct}%",
@@ -990,6 +997,51 @@ export const ru_RU: EnTranslations = {
       "spore": "Спора",
       "toolTier": "Инструмент {tier} ур.",
       "toolNone": "Нет инструмента"
+    },
+    "crafting": {
+      "title": "Изготовление",
+      "close": "Закрыть изготовление",
+      "tabRecipes": "Рецепты",
+      "tabEnchants": "Чары",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "Изготовить",
+      "craftAria": "Изготовить {item}",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "Распыление",
+      "disenchantButton": "Распылить",
+      "disenchantAria": "Распылить {item}",
+      "disenchantEmpty": "Нет предметов для распыления.",
+      "applyButton": "Применить",
+      "applyAria": "Применить чары {enchant} на {slot}",
+      "activeTag": "Активно",
+      "needScroll": "Требуется {scroll}",
+      "craftType": {
+        "weaponcrafting": "Оружейное дело",
+        "armorcrafting": "Кузнечное дело",
+        "tailoring": "Портняжное дело",
+        "leatherworking": "Кожевничество",
+        "cooking": "Кулинария",
+        "alchemy": "Алхимия",
+        "enchanting": "Наложение чар"
+      }
+    },
+    "warfare": {
+      "ratingLabel": "Воинственность",
+      "balance": "Честь: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} чести",
+      "honorFloat": "+{amount} чести",
+      "honorGain": "+{amount} чести ({reason})",
+      "notEnoughHonor": "Недостаточно чести.",
+      "reasons": {
+        "arenaWin": "Победа на арене",
+        "fiestaKill": "Повержение на фиесте",
+        "fiestaComplete": "Матч фиесты",
+        "fiestaWin": "Победа на фиесте"
+      }
+    },
+    "hitRating": {
+      "ratingLabel": "Рейтинг меткости"
     }
   },
   "mailUi": {
@@ -2421,6 +2473,13 @@ export const ru_RU: EnTranslations = {
       "nothingToHarvest": "С этого трупа нечего собирать.",
       "alreadyHarvested": "Этот труп уже разделан."
     },
+    "dailyRewards": {
+      "claimed": "Вы получаете ежедневную награду."
+    },
+    "collections": {
+      "notFound": "Этого не существует.",
+      "tooFar": "Слишком далеко."
+    },
     "hearth": {
       "tooFar": "Чтобы покормить брата Зеленолапа, нужно быть рядом с ним.",
       "noItems1": "…у тебя пусто в руках, дружище. Принеси то, что горит, или то, чем сыт бываешь, тогда и поговорим.",
@@ -2481,6 +2540,18 @@ export const ru_RU: EnTranslations = {
       "readoutNoHomesteadQuest": "У вас нет хутора. Закончите всю цепочку поручений брата Зеленолапа, чтобы получить его.",
       "readoutNoHomesteadHint": "У вас нет хутора. Встаньте на подходящем месте в Лощинных Плёсах и введите /homestead claim.",
       "helpLine": "Хутор: /homestead, /homestead claim."
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "Ты уже посадил свой черенок. Дай ему время вырасти.",
+      "needHomestead": "Чтобы посадить это, тебе сначала нужен участок.",
+      "tooFar": "Чтобы посадить это, ты должен быть на своем участке.",
+      "planted": "Ты сажаешь черенок на своем участке. Дай ему время.",
+      "grown": "Твой черенок вырос в спутника. Теперь он следует за тобой."
+    },
+    "readyCheck": {
+      "mustBeInParty": "Чтобы начать проверку готовности, вы должны состоять в группе.",
+      "alreadyInProgress": "Проверка готовности уже идет.",
+      "summary": "Проверка готовности: готовы {ready}, не готовы {notReady}, без ответа {noResponse}."
     }
   },
   "lockpickUi": {
@@ -3322,6 +3393,8 @@ export const ru_RU: EnTranslations = {
       "openTrade": "Открыть обмен",
       "duelRequest": "{name} вызвал вас на дуэль!",
       "acceptDuel": "Принять дуэль",
+      "readyCheckStart": "{name} начал проверку готовности.",
+      "markReady": "Готов",
       "decline": "Отклонить"
     },
     "combat": {
@@ -3352,6 +3425,7 @@ export const ru_RU: EnTranslations = {
       "ignoringChat": "Чат от {name} игнорируется.",
       "noLongerIgnoring": "{name} больше не игнорируется.",
       "playerNotNearby": "Этого игрока нет рядом.",
+      "playerInfoNotFound": "Персонаж с таким именем не найден.",
       "duelCountdown": "Дуэль начнется через {seconds}...",
       "duelEndBanner": "{winner} победил {loser} в дуэли!",
       "duelEndLog": "{winner} победил {loser} в дуэли.",
@@ -3797,6 +3871,22 @@ export const ru_RU: EnTranslations = {
       "stool": "Табурет"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "Ежедневные награды",
+    "window": {
+      "title": "Ежедневные награды",
+      "close": "Закрыть ежедневные награды",
+      "claim": "Забрать",
+      "claimAria": "Забрать сегодняшнюю награду",
+      "claimed": "Получено. Возвращайтесь завтра.",
+      "locked": "Ежедневные награды сейчас недоступны для этого аккаунта.",
+      "hint": "Одна награда в день. Пропущенный день ничего не стоит."
+    },
+    "cell": {
+      "today": "Сегодня",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "з",
@@ -4017,11 +4107,132 @@ export const ru_RU: EnTranslations = {
       "needAria": "Нужно: {item}",
       "greedAria": "Жадность: {item}",
       "passAria": "Пас: {item}",
-      "everyonePassed": "Все отказались от {item}."
+      "everyonePassed": "Все отказались от {item}.",
+      "winnerOffline": "Победитель {item} был офлайн; предмет вернулся к трупу."
     }
   },
   "entities": {
     "abilities": {
+      "chain_heal": {
+        "name": "Цепное исцеление",
+        "description": "Исцеляет дружественную цель на большое количество здоровья, затем перескакивает на до 2 ближайших союзников, с уменьшением исцеления на 50% с каждым скачком."
+      },
+      "crusader_strike": {
+        "name": "Удар крестоносца",
+        "description": "Наносит цели урон оружием плюс 24 урона Светом."
+      },
+      "metamorphosis": {
+        "name": "Устрашающий облик",
+        "description": "Превращает вас в чудовищного демона на 20 сек, увеличивая урон от заклинаний на 20% и скорость сотворения на 20%. Ваш демон получает 50% урона и 20% скорости сотворения."
+      },
+      "holy_shock": {
+        "name": "Священный шок",
+        "description": "Поражает дружественную цель Священной энергией, исцеляя её, или врага, нанося урон Светом."
+      },
+      "holy_shield": {
+        "name": "Освящённая стена",
+        "description": "Метает сияющий щит во врага, нанося урон Светом и рикошетируя на 2 ближайших врагов."
+      },
+      "bestial_wrath": {
+        "name": "Рёв ярости",
+        "description": "Погружает вас в звериную ярость на 15 сек, увеличивая силу атаки на 20% и урон питомца на 100%."
+      },
+      "trueshot_aura": {
+        "name": "Аура меткого выстрела",
+        "description": "Воодушевляет находящихся рядом союзников, увеличивая силу атаки на 10% на 30 мин."
+      },
+      "wyvern_sting": {
+        "name": "Укус виверны",
+        "description": "Жалит врага издалека, обездвиживая его на срок до 4 сек. Любой урон снимает эффект."
+      },
+      "arcane_power": {
+        "name": "Всплеск эфира",
+        "description": "Увеличивает урон от заклинаний на 20% и ускорение заклинаний на 10% на 10 сек."
+      },
+      "combustion": {
+        "name": "Мгновенное возгорание",
+        "description": "Увеличивает шанс критического удара заклинаниями на 50% на 15 сек."
+      },
+      "icy_veins": {
+        "name": "Ледяные вены",
+        "description": "Увеличивает ускорение заклинаний на 30% и предотвращает прерывание и отбрасывание сотворения на 10 сек."
+      },
+      "cold_blood": {
+        "name": "Холодная ярость",
+        "description": "Сосредотачивает вашу жажду убийства, гарантируя, что следующая атака станет критическим ударом."
+      },
+      "blade_flurry": {
+        "name": "Зеркальные клинки",
+        "description": "Обрушивает шквал клинков, увеличивая скорость атаки на 20% на 12 сек."
+      },
+      "hemorrhage": {
+        "name": "Алая лента",
+        "description": "Поражает врага уроном оружием и эффектом кровотечения, нанося урон от кровотечения на протяжении 12 сек и увеличивая получаемый урон от кровотечения на 40%. Дает 1 очко комбо."
+      },
+      "power_infusion": {
+        "name": "Помазание",
+        "description": "Наполняет дружественную цель силой, увеличивая ускорение заклинаний на 20% на 15 сек."
+      },
+      "holy_nova": {
+        "name": "Священная нова",
+        "description": "Вызывает взрыв священного сияния, исцеляя находящихся рядом союзников и нанося урон находящимся рядом врагам."
+      },
+      "shadowform": {
+        "name": "Сумеречный облик",
+        "description": "Принимает облик Тьмы, увеличивая урон Тьмой на 15% до тех пор, пока вы не вернётесь в обычный облик. Применение лечащего заклинания снимает облик. Повторное применение возвращает обычный облик."
+      },
+      "elemental_mastery": {
+        "name": "Стихийное мастерство",
+        "description": "Призывает силу шторма, делая ваше следующее заклинание мгновенным."
+      },
+      "siphon_life": {
+        "name": "Похититель жизни",
+        "description": "Похищает жизнь у врага, нанося урон Тьмой на протяжении 30 сек и исцеляя вас на количество нанесённого урона."
+      },
+      "conflagrate": {
+        "name": "Воспламенение",
+        "description": "Расходует наложенное на врага Воспламенение, поджигая его и нанося урон Огнём."
+      },
+      "moonkin_form": {
+        "name": "Облик совухи",
+        "description": "Превращает вас в грозного лунного стража, увеличивая урон от заклинаний на 20% и броню на 50%. Действует, пока вы не вернётесь в обычный облик. Повторное применение возвращает облик заклинателя."
+      },
+      "feral_charge": {
+        "name": "Первобытный всплеск",
+        "description": "Высвобождает первобытную силу. В облике пантеры восстановление энергии увеличивается на 100% на 10 сек. В облике медведя мгновенно создаёт 50 ярости."
+      },
+      "swiftmend": {
+        "name": "Быстрое исцеление",
+        "description": "Расходует эффект исцеления с течением времени на дружественной цели, исцеляя её."
+      },
+      "pummel": {
+        "name": "Хрустнуть челюстью",
+        "description": "Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 4 сек."
+      },
+      "kick": {
+        "name": "Удар ногой",
+        "description": "Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 4 сек."
+      },
+      "counterspell": {
+        "name": "Развеивание заклинания",
+        "description": "Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 6 сек."
+      },
+      "counter_shot": {
+        "name": "Заглушающий выстрел",
+        "description": "Молниеносный выстрел, прерывающий применяемое целью заклинание и запрещающий эту школу на 4 сек."
+      },
+      "rebuke": {
+        "name": "Упрёк",
+        "description": "Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 4 сек."
+      },
+      "skull_bash": {
+        "name": "Удар головой",
+        "description": "Стремительный удар головой, прерывающий применяемое целью заклинание и запрещающий эту школу на 4 сек."
+      },
+      "spell_lock": {
+        "name": "Кляп",
+        "description": "Заставляет цель замолчать во время сотворения заклинания и запрещает применение заклинаний этой школы на 5 сек."
+      },
       "heroic_strike": {
         "name": "Удар героя",
         "description": "Мощная атака, увеличивающая урон в ближнем бою на {damage}. Срабатывает при следующем взмахе оружием."
@@ -4080,7 +4291,7 @@ export const ru_RU: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Раскол брони",
-        "description": "Раскалывает броню цели, снижая ее на {damage} за применение. Суммируется до 5 раз. Создает большое количество угрозы."
+        "description": "Раскалывает броню цели, снижая ее на 2% за применение. Суммируется до 5 раз. Создает большое количество угрозы."
       },
       "taunt": {
         "name": "Провокация",
@@ -5178,6 +5389,99 @@ export const ru_RU: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Баул Мистколлера"
       },
+      "bramblewar_warhelm": {
+        "name": "Терновойна: Голова"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Терновойна: Плечи"
+      },
+      "bramblewar_warplate": {
+        "name": "Терновойна: Грудь"
+      },
+      "bramblewar_girdle": {
+        "name": "Терновойна: Пояс"
+      },
+      "bramblewar_legguards": {
+        "name": "Терновойна: Ноги"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Терновойна: Кисти рук"
+      },
+      "bramblewar_sabatons": {
+        "name": "Терновойна: Ступни"
+      },
+      "thornbound_crown": {
+        "name": "Терносвяз: Голова"
+      },
+      "thornbound_spaulders": {
+        "name": "Терносвяз: Плечи"
+      },
+      "thornbound_hauberk": {
+        "name": "Терносвяз: Грудь"
+      },
+      "thornbound_waistguard": {
+        "name": "Терносвяз: Пояс"
+      },
+      "thornbound_legmail": {
+        "name": "Терносвяз: Ноги"
+      },
+      "thornbound_handguards": {
+        "name": "Терносвяз: Кисти рук"
+      },
+      "thornbound_greaves": {
+        "name": "Терносвяз: Ступни"
+      },
+      "nettlestalker_cowl": {
+        "name": "Крапивный Ловчий: Голова"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Крапивный Ловчий: Плечи"
+      },
+      "nettlestalker_harness": {
+        "name": "Крапивный Ловчий: Грудь"
+      },
+      "nettlestalker_waistband": {
+        "name": "Крапивный Ловчий: Пояс"
+      },
+      "nettlestalker_legguards": {
+        "name": "Крапивный Ловчий: Ноги"
+      },
+      "nettlestalker_grips": {
+        "name": "Крапивный Ловчий: Кисти рук"
+      },
+      "nettlestalker_treads": {
+        "name": "Крапивный Ловчий: Ступни"
+      },
+      "mossweave_cowl": {
+        "name": "Мохоткань: Голова"
+      },
+      "mossweave_mantle": {
+        "name": "Мохоткань: Плечи"
+      },
+      "mossweave_raiment": {
+        "name": "Мохоткань: Грудь"
+      },
+      "mossweave_cord": {
+        "name": "Мохоткань: Пояс"
+      },
+      "mossweave_legwraps": {
+        "name": "Мохоткань: Ноги"
+      },
+      "mossweave_handwraps": {
+        "name": "Мохоткань: Кисти рук"
+      },
+      "mossweave_slippers": {
+        "name": "Мохоткань: Ступни"
+      },
+      "last_bloom_greatblade": {
+        "name": "Большой клинок последнего цветка"
+      },
+      "thornbite_razor": {
+        "name": "Бритва Шипоукус"
+      },
+      "heartwood_warstaff": {
+        "name": "Боевой посох сердцевины"
+      },
       "bristleback_maul": {
         "name": "Кувалда Щетиноспина"
       },
@@ -5747,6 +6051,21 @@ export const ru_RU: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Хромированный авангард"
+      },
+      "enchanting_dust": {
+        "name": "Пыль зачарования"
+      },
+      "scroll_minor_might": {
+        "name": "Свиток малой мощи"
+      },
+      "scroll_minor_vigor": {
+        "name": "Свиток малой стойкости"
+      },
+      "scroll_minor_focus": {
+        "name": "Свиток малой концентрации"
+      },
+      "scroll_minor_agility": {
+        "name": "Свиток малой ловкости"
       }
     },
     "mobs": {
@@ -6073,6 +6392,15 @@ export const ru_RU: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "Колосс Сердцевины"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "Черенок Зеленолапа"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "Черенок Зеленолапа"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "Черенок Зеленолапа"
       }
     },
     "npcs": {
@@ -6191,6 +6519,11 @@ export const ru_RU: EnTranslations = {
         "title": "Наставник дополнительных профессий",
         "greeting": "Каждый билд начинается с вопроса. Какое ещё призвание зовёт вас?"
       },
+      "bramble": {
+        "name": "Брэмбл",
+        "title": "Квартирмейстер чести",
+        "greeting": "Пески помнят каждую победу. Трать свою честь с умом."
+      },
       "tidewatcher_ondrel": {
         "name": "Ондрел Вейн",
         "title": "Страж приливов",
@@ -6283,17 +6616,33 @@ export const ru_RU: EnTranslations = {
         "greeting": "Можешь сесть. Почти все проходят мимо. Пономарь давным-давно вычеркнул моё имя из своего журнала, а вычеркнутое имя учится молчать, чтобы никому не пришлось вспоминать, что оно ещё здесь."
       },
       "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+        "name": "Увядшая посадка",
+        "title": "Старая ива племени",
+        "greeting": "Сухие корни, сухие листья. Чем бы это ни должно было стать, оно ещё не стало, и ждёт уже очень долго."
       },
       "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "name": "Погребённый корень",
+        "title": "Под святилищем",
+        "greeting": "Сухо. Сухо, как только может быть сухо здесь, в глубине."
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "Ремесло, которое стоит освоить",
+        "text": "Любое ремесло начинается с грязи под ногтями, {playerName}. Собери 2 паучьи лапки в рощах к востоку от города, а затем поработай у моего горна над Туникой новобранца; костяные обломки для нее легко найти по пути. И принеси мне что-нибудь, что стоит разобрать ради тайной пыли. Покажи, что умеешь собирать, изготавливать и разбирать, и я покажу тебе, чего стоит ремесло.",
+        "completion": "Вот это ремесло стоит освоить. Держись горна, {playerName}, и однажды ты будешь подковывать лошадей и накладывать чары на клинки одним и тем же вечером.",
+        "objectives": {
+          "0": {
+            "label": "Собраны паучьи лапки"
+          },
+          "1": {
+            "label": "Изготовлена туника новобранца"
+          },
+          "2": {
+            "label": "Пыль зачарования"
+          }
+        }
+      },
       "q_wolves": {
         "title": "Волки у дверей",
         "text": "Лесные волки осмелели и бросаются на путников у северной дороги, {playerName}. Убейте 8, чтобы Истврук вздохнул свободнее.",
@@ -7247,22 +7596,22 @@ export const ru_RU: EnTranslations = {
         }
       },
       "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "title": "Долгий обходной путь",
+        "text": "На старой иве осталась посадка, которую племя не успело закончить, и теперь она гибнет без одного хорошего полива. Мне уже не одолеть этот подъём, но у тебя ноги молодые. Возьми лейку. Берегись ветвей, но будь с ними честен, и они выдержат.",
+        "completion": "Теперь она будет жить. Тебе покажется, что один подъём и один полив, это пустяк на фоне всего прочего. Это и вправду пустяк. Но для того единственного, что ты полил, это всё.",
         "objectives": {
           "0": {
-            "label": "Water carried up the willow path"
+            "label": "Вода, поднятая по тропе к иве"
           }
         }
       },
       "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "title": "Лейка",
+        "text": "Я просил тебя о малом, и ты всё исполнил, ни разу не спросив зачем. Вот последняя просьба, и она не мала, хотя такой и покажется. Отнеси мою лейку под святилище, к тому, что там погребено, и полей его. Оно давно ждёт, чтобы ему что-то дали, а не что-то у него просили.",
+        "completion": "Ты сделал это. Конечно, сделал. Это была вода, понимаешь. Вся она, вплоть до того дня, когда ты нашёл меня у озера и не придал этому значения. Тот же полив, то же обещание, сдержанное ещё раз. Спасибо тебе. А теперь ступай и будь добр к этому миру. Только это его когда-либо и меняло.",
         "objectives": {
           "0": {
-            "label": "Water given to the buried root"
+            "label": "Вода, отданная погребённому корню"
           }
         }
       }
@@ -7436,6 +7785,20 @@ export const ru_RU: EnTranslations = {
         "name": "Обрушившийся Реликварий",
         "enterText": "Вы спускаетесь в обрушившийся реликварий.",
         "leaveText": "Вы поднимаетесь обратно к Брату Хальвену у руин реликвария."
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "Малая мощь"
+      },
+      "enchant_minor_vigor": {
+        "name": "Малая стойкость"
+      },
+      "enchant_minor_focus": {
+        "name": "Малая концентрация"
+      },
+      "enchant_minor_agility": {
+        "name": "Малая ловкость"
       }
     },
     "itemSets": {

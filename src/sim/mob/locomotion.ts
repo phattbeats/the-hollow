@@ -47,6 +47,11 @@ import { rallyFleeingAllies } from './social_aggro';
 import { isTrivialTo, retargetMob, updateMobTarget } from './targeting';
 import { emitMobYell } from './yells';
 
+// Hard ceiling on a mob's effective aggro/detection radius, whatever its template
+// aggroRadius or level advantage. Exported so the dungeon door-clearance module and
+// its guard test pin the same number: a mob spawned strictly outside this radius of
+// a dungeon door can never aggro a player standing on the door.
+export const MAX_AGGRO_RADIUS = 20;
 const EVADE_SPEED_MULT = 1.6;
 // An evading mob walks a straight line home (no pathfinding) and stalls if deep
 // water or a collider sits between it and its spawn. Since evading mobs are
@@ -118,6 +123,13 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
     if (ctx.isStunned(mob)) return;
     if (ctx.isDelveCompanionMob(mob)) {
       ctx.updateDelveCompanion(mob);
+      return;
+    }
+    // Greenpaw's cutting companion (PHAA-751): a cosmetic, non-combat owned
+    // mob, dispatched to its own follow-only tick instead of falling through
+    // to the combat pet branch below (ctx.updatePet, pet_ai.ts).
+    if (ctx.isGreenpawCompanionMob(mob)) {
+      ctx.updateGreenpawCompanion(mob);
       return;
     }
     ctx.updatePet(mob);
@@ -194,7 +206,7 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
           if (e.dead) return;
           const radius = Math.max(
             4,
-            Math.min(20, template.aggroRadius + (mob.level - e.level) * 1.5),
+            Math.min(MAX_AGGRO_RADIUS, template.aggroRadius + (mob.level - e.level) * 1.5),
           );
           const d = Math.sqrt(d2);
           if (d < radius && d < detectedD) {
@@ -211,7 +223,10 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
       ctx.playerGrid.forEachInRadius(mob.pos.x, mob.pos.z, 25, (e, d2) => {
         if (e.dead) return;
         if (isTrivialTo(mob, e)) return;
-        let radius = Math.max(4, Math.min(20, template.aggroRadius + (mob.level - e.level) * 1.5));
+        let radius = Math.max(
+          4,
+          Math.min(MAX_AGGRO_RADIUS, template.aggroRadius + (mob.level - e.level) * 1.5),
+        );
         radius *= ctx.delveDetectMult(e);
         // stealthed rogues are harder to detect, relative to observer level
         if (e.auras.some((a) => a.kind === 'stealth'))

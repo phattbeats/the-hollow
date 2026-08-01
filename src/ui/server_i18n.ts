@@ -1884,6 +1884,31 @@ const RULES: Rule[] = [
   },
   { re: /^Banned (.+)\.$/, build: (m) => tServer('moderation.banConfirm', { name: m[1] }) },
   {
+    re: /^Usage: \/jail <minutes> <reason>$/,
+    build: () => tServer('moderation.jailUsage'),
+  },
+  {
+    re: /^Jailed (.+) for (.+)\.$/,
+    build: (m) =>
+      tServer('moderation.jailConfirm', { name: m[1], duration: localizeServerDuration(m[2]) }),
+  },
+  {
+    re: /^Released (.+) from jail\.$/,
+    build: (m) => tServer('moderation.unjailConfirm', { name: m[1] }),
+  },
+  {
+    re: /^(.+) is already jailed\.$/,
+    build: (m) => tServer('moderation.jailAlready', { name: m[1] }),
+  },
+  {
+    re: /^(.+) is not jailed\.$/,
+    build: (m) => tServer('moderation.jailNotJailed', { name: m[1] }),
+  },
+  {
+    re: /^A moderator has moved you to jail for (.+)\.$/,
+    build: (m) => tServer('moderation.jailedNotice', { duration: localizeServerDuration(m[1]) }),
+  },
+  {
     re: /^No online player named '(.+)'\.$/,
     build: (m) => tServer('moderation.spectateNotOnline', { name: m[1] }),
   },
