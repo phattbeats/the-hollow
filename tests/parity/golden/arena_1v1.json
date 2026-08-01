@@ -29,7 +29,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 409,
-      "state": "615f440f",
+      "state": "e50fa49b",
       "events": "000dd833",
       "rng": {
         "draws": 0,
@@ -40,7 +40,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 409,
-      "state": "c640dc7b",
+      "state": "82b95b97",
       "events": "723b7bd0",
       "rng": {
         "draws": 36,
@@ -51,7 +51,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 409,
-      "state": "56c89dab",
+      "state": "24a19947",
       "events": "ad51fec8",
       "rng": {
         "draws": 136,
@@ -62,7 +62,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 409,
-      "state": "722709ef",
+      "state": "dd14a8fb",
       "events": "7b4d7618",
       "rng": {
         "draws": 266,
@@ -73,7 +73,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 409,
-      "state": "ff1b8fbe",
+      "state": "d9620e24",
       "events": "d451ce7d",
       "rng": {
         "draws": 399,
@@ -84,7 +84,7 @@
       "tick": 142,
       "time": 7.1,
       "nextId": 409,
-      "state": "683112ea",
+      "state": "b70600e0",
       "events": "741638a5",
       "rng": {
         "draws": 507,
@@ -107,6 +107,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -206,6 +207,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -245,6 +247,7 @@
           "counters": {
             "deaths": 1
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -301,6 +304,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",

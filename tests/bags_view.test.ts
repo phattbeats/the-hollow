@@ -28,6 +28,13 @@ const ITEMS: Record<string, ItemDef> = {
   potion: { kind: 'potion', name: 'Potion', quality: 'common' } as ItemDef,
   bread: { kind: 'food', name: 'Bread', quality: 'common' } as ItemDef,
   questItem: { kind: 'quest', name: 'Relic', quality: 'epic' } as ItemDef,
+  // PHAA-751: a quest item with its own use action (first_cutting's plant use).
+  plantableQuestItem: {
+    kind: 'quest',
+    name: 'Cutting',
+    quality: 'common',
+    use: { type: 'plant' },
+  } as ItemDef,
   bound: { kind: 'armor', name: 'Bound Plate', quality: 'uncommon', noMarketList: true } as ItemDef,
   rod: { kind: 'tool', name: 'Fishing Rod', use: { type: 'fishing' } } as ItemDef,
 };
@@ -52,6 +59,14 @@ describe('bagItemAction priority order', () => {
     expect(bagItemAction(ITEMS.sword, { ...NO_MODE, petFeed: true })).toBe('petFeedBlocked');
     expect(bagItemAction(ITEMS.questItem, NO_MODE)).toBe('discardQuest');
     expect(bagItemAction(ITEMS.potion, NO_MODE)).toBe('use');
+  });
+
+  it('a quest item with its own use action is usable, not destroy-prompted (PHAA-751)', () => {
+    expect(bagItemAction(ITEMS.plantableQuestItem, NO_MODE)).toBe('use');
+    // Still blocked from market/mail like any other quest item.
+    expect(bagItemAction(ITEMS.plantableQuestItem, { ...NO_MODE, marketSell: true })).toBe(
+      'marketSellBlockedQuest',
+    );
   });
 });
 
@@ -79,6 +94,7 @@ describe('bagTooltipHintKey', () => {
       'itemUi.tooltip.clickSell',
     );
     expect(bagTooltipHintKey(ITEMS.questItem, NO_MODE)).toBe('itemUi.tooltip.clickDestroy');
+    expect(bagTooltipHintKey(ITEMS.plantableQuestItem, NO_MODE)).toBe('itemUi.tooltip.clickUse');
     expect(bagTooltipHintKey(ITEMS.sword, NO_MODE)).toBe('itemUi.tooltip.clickEquip');
     expect(bagTooltipHintKey(ITEMS.bread, NO_MODE)).toBe('itemUi.tooltip.clickConsume');
     expect(bagTooltipHintKey(ITEMS.potion, NO_MODE)).toBe('itemUi.tooltip.clickUseInstant');

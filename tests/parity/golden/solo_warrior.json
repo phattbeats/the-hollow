@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "34f1b800",
+      "state": "4b1d4301",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -40,9 +40,11 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -111,7 +113,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "f80193c3",
+      "state": "4f9604b8",
       "events": "97ef93cb",
       "rng": {
         "draws": 6,
@@ -122,7 +124,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 409,
-      "state": "b32b244a",
+      "state": "b27d2cb9",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -133,7 +135,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 409,
-      "state": "0e219ad6",
+      "state": "7cbfc945",
       "events": "c7750db5",
       "rng": {
         "draws": 98,
@@ -144,7 +146,7 @@
       "tick": 72,
       "time": 3.6,
       "nextId": 409,
-      "state": "e83c3607",
+      "state": "60715f22",
       "events": "c39bdf93",
       "rng": {
         "draws": 155,
@@ -171,6 +173,7 @@
             "damageTaken": 4,
             "kills": 1
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -260,6 +263,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -398,7 +402,7 @@
       "tick": 76,
       "time": 3.8,
       "nextId": 409,
-      "state": "c04d51df",
+      "state": "d7832d3a",
       "events": "741638a5",
       "rng": {
         "draws": 173,
@@ -425,6 +429,7 @@
             "damageTaken": 4,
             "kills": 1
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -514,6 +519,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",

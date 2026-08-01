@@ -12,6 +12,7 @@ import type {
   DelveDef,
   DelveModuleDef,
   DungeonDef,
+  EnchantDef,
   GatherNodeDef,
   GroundObjectDef,
   ItemDef,
@@ -21,6 +22,7 @@ import type {
   QuestDef,
   QuestState,
   ReadableDef,
+  RecipeDef,
   TitleDef,
   WorldContent,
   ZoneDef,
@@ -42,6 +44,7 @@ import {
   DELVE_MOBS,
 } from './content/delves';
 import { DUNGEON_DEFS, DUNGEON_MOBS } from './content/dungeons';
+import { ENCHANTS as ENCHANTS_CONTENT } from './content/enchants';
 import { GATHER_NODES as GATHER_NODES_CONTENT } from './content/gather_nodes';
 import { GROUND_PICKUP_LINES } from './content/ground_pickup_lines';
 import {
@@ -67,6 +70,7 @@ import {
   READ_RADIUS as READ_RADIUS_CONTENT,
   READABLES as READABLES_CONTENT,
 } from './content/readables';
+import { RECIPES as RECIPES_CONTENT } from './content/recipes';
 import {
   TEMPLE_CAMPS,
   TEMPLE_DUNGEON_DEFS,
@@ -272,6 +276,16 @@ export const GROUND_OBJECTS: GroundObjectDef[] = [
 ];
 
 export const GATHER_NODES: GatherNodeDef[] = [...GATHER_NODES_CONTENT];
+
+// Crafting recipes (PHAA-574). Static content; both the offline Sim and the
+// online ClientWorld read this same table directly (same convention as
+// GATHER_NODES above), so recipe browsing needs no IWorld method or wire field.
+export const RECIPES: RecipeDef[] = [...RECIPES_CONTENT];
+
+// Enchanting (PHAA-649 child, upstream #1712). Static content; both the
+// offline Sim and the online ClientWorld read this same table directly (same
+// convention as RECIPES above), so browsing needs no IWorld method or wire field.
+export const ENCHANTS: EnchantDef[] = [...ENCHANTS_CONTENT];
 
 // World-placed readable books (PHAA-552). Static content; both the offline Sim
 // and the online ClientWorld expose them through IWorldReadables by reading this

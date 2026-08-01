@@ -23,7 +23,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "2db6b1c9",
+      "state": "126553fc",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -46,9 +46,11 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -119,7 +121,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 410,
-      "state": "2d5acb5c",
+      "state": "66ce45b3",
       "events": "466f74b0",
       "rng": {
         "draws": 0,
@@ -142,9 +144,11 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -256,7 +260,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 410,
-      "state": "23c07588",
+      "state": "3d05ed67",
       "events": "3ac76b8d",
       "rng": {
         "draws": 0,
@@ -279,6 +283,7 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -370,6 +375,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -495,7 +501,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 410,
-      "state": "a17c1176",
+      "state": "d8d17c1d",
       "events": "90d3a995",
       "rng": {
         "draws": 0,
@@ -506,7 +512,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 410,
-      "state": "6543db8f",
+      "state": "ce676c3c",
       "events": "2861bfc5",
       "rng": {
         "draws": 0,
@@ -517,7 +523,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "fc101f78",
+      "state": "6f0de31b",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -540,6 +546,7 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -671,6 +678,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -858,7 +866,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "91e725da",
+      "state": "a96a1a01",
       "events": "b87a9c1f",
       "rng": {
         "draws": 0,
@@ -881,6 +889,7 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1012,6 +1021,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1139,7 +1149,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 413,
-      "state": "39fe5aff",
+      "state": "a415774c",
       "events": "94fc61db",
       "rng": {
         "draws": 0,
@@ -1162,6 +1172,7 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1293,6 +1304,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1460,7 +1472,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 413,
-      "state": "3b2fbfcb",
+      "state": "bc0ccec8",
       "events": "d9f98d21",
       "rng": {
         "draws": 0,
@@ -1483,6 +1495,7 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1614,6 +1627,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1781,7 +1795,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 413,
-      "state": "91e725da",
+      "state": "a96a1a01",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1804,6 +1818,7 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1935,6 +1950,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -2062,7 +2078,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 414,
-      "state": "91e725da",
+      "state": "a96a1a01",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -2085,6 +2101,7 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -2216,6 +2233,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -2343,7 +2361,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 416,
-      "state": "3aa35d11",
+      "state": "834d26b1",
       "events": "d063243b",
       "rng": {
         "draws": 0,
@@ -2366,6 +2384,7 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -2497,6 +2516,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -2525,9 +2545,11 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 414,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2749,7 +2771,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 416,
-      "state": "c63a6c15",
+      "state": "4d7628b1",
       "events": "553ddb3e",
       "rng": {
         "draws": 84,
@@ -2760,7 +2782,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 416,
-      "state": "977038b3",
+      "state": "11468397",
       "events": "241aed30",
       "rng": {
         "draws": 164,
@@ -2771,7 +2793,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 416,
-      "state": "977038b3",
+      "state": "11468397",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -2796,6 +2818,7 @@
           "counters": {
             "damageTaken": 10
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -2927,6 +2950,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -2955,6 +2979,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -3000,6 +3025,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 414,
           "equipment": {
             "chest": "apprentice_robe",
@@ -3231,7 +3257,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 418,
-      "state": "18aec06f",
+      "state": "3d907113",
       "events": "5285d7e6",
       "rng": {
         "draws": 164,
@@ -3256,6 +3282,7 @@
           "counters": {
             "damageTaken": 10
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -3387,6 +3414,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -3415,6 +3443,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -3460,6 +3489,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 414,
           "equipment": {
             "chest": "apprentice_robe",
@@ -3691,7 +3721,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 420,
-      "state": "4e3b3f35",
+      "state": "0ff453d1",
       "events": "239b67c4",
       "rng": {
         "draws": 164,
@@ -3716,6 +3746,7 @@
           "counters": {
             "damageTaken": 10
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -3847,6 +3878,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -3875,6 +3907,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -3920,6 +3953,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 414,
           "equipment": {
             "chest": "apprentice_robe",
@@ -4160,7 +4194,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 420,
-      "state": "4e3b3f35",
+      "state": "0ff453d1",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -4185,6 +4219,7 @@
           "counters": {
             "damageTaken": 10
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -4316,6 +4351,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -4344,6 +4380,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -4389,6 +4426,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 414,
           "equipment": {
             "chest": "apprentice_robe",

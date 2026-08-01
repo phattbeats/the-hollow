@@ -246,7 +246,6 @@ export const ko_KR: EnTranslations = {
       "chat": "채팅으로 건너뛰기"
     },
     "mobile": {
-      "autorun": "자동 달리기",
       "jump": "점프",
       "leaderboard": "순위",
       "nameplates": "이름표",
@@ -999,6 +998,33 @@ export const ko_KR: EnTranslations = {
       "toolTier": "{tier}단계 도구",
       "toolNone": "도구 없음"
     },
+    "crafting": {
+      "title": "제작",
+      "close": "제작 닫기",
+      "tabRecipes": "제조법",
+      "tabEnchants": "마법부여",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "제작",
+      "craftAria": "{item} 제작",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "마법 해제",
+      "disenchantButton": "마법 해제",
+      "disenchantAria": "{item} 마법 해제",
+      "disenchantEmpty": "마법을 해제할 수 있는 아이템이 없습니다.",
+      "applyButton": "적용",
+      "applyAria": "{slot}에 {enchant} 적용",
+      "activeTag": "활성",
+      "needScroll": "{scroll} 필요",
+      "craftType": {
+        "weaponcrafting": "무기 제작",
+        "armorcrafting": "방어구 제작",
+        "tailoring": "재봉",
+        "leatherworking": "가죽 세공",
+        "cooking": "요리",
+        "alchemy": "연금술",
+        "enchanting": "마법부여"
+      }
+    },
     "warfare": {
       "ratingLabel": "전의",
       "balance": "명예: {amount}",
@@ -1045,6 +1071,9 @@ export const ko_KR: EnTranslations = {
     "titleTracker": {
       "unspent": "+{count} new",
       "ariaLabel": "Active title: {display}"
+    },
+    "hitRating": {
+      "ratingLabel": "적중 레이팅"
     }
   },
   "mailUi": {
@@ -2544,6 +2573,13 @@ export const ko_KR: EnTranslations = {
       "readoutNoHomesteadHint": "당신은 정착지가 없다. 우묵골 지대의 적당한 곳에 서서 /homestead claim이라고 입력하라.",
       "helpLine": "정착지: /homestead, /homestead claim."
     },
+    "greenpawCutting": {
+      "alreadyPlanted": "이미 꺾꽂이를 심었다. 자랄 때까지 기다려라.",
+      "needHomestead": "이것을 심으려면 먼저 개척지가 있어야 한다.",
+      "tooFar": "이것을 심으려면 자신의 개척지에 있어야 한다.",
+      "planted": "개척지에 꺾꽂이를 심었다. 시간을 두고 기다려라.",
+      "grown": "꺾꽂이가 자라 동반자가 되었다. 이제 너를 따라다닌다."
+    },
     "readyCheck": {
       "mustBeInParty": "준비 확인을 시작하려면 파티에 있어야 합니다.",
       "alreadyInProgress": "이미 준비 확인이 진행 중입니다.",
@@ -3421,6 +3457,7 @@ export const ko_KR: EnTranslations = {
       "ignoringChat": "{name}의 채팅을 차단합니다.",
       "noLongerIgnoring": "{name}을 더 이상 차단하지 않습니다.",
       "playerNotNearby": "그 플레이어는 근처에 없습니다.",
+      "playerInfoNotFound": "해당 이름의 캐릭터를 찾을 수 없습니다.",
       "duelCountdown": "결투가 {seconds}초 후 시작됩니다...",
       "duelEndBanner": "{winner}님이 결투에서 {loser}님을 이겼습니다!",
       "duelEndLog": "{winner}님이 결투에서 {loser}님을 이겼습니다.",
@@ -4108,6 +4145,126 @@ export const ko_KR: EnTranslations = {
   },
   "entities": {
     "abilities": {
+      "chain_heal": {
+        "name": "연쇄 치유",
+        "description": "우호적인 대상을 크게 치유한 후, 최대 2명의 주변 아군에게 도약하며 도약할 때마다 치유량이 50%씩 감소합니다."
+      },
+      "crusader_strike": {
+        "name": "성전사의 일격",
+        "description": "대상에게 무기 피해와 추가로 신성 피해 24를 입힙니다."
+      },
+      "metamorphosis": {
+        "name": "공포의 상",
+        "description": "20초 동안 무시무시한 악마로 변신하여 주문 피해가 20%, 시전 속도가 20% 증가합니다. 당신의 악마는 피해 50%와 시전 속도 20%를 얻습니다."
+      },
+      "holy_shock": {
+        "name": "신성 충격",
+        "description": "신성한 기운으로 우호적인 대상을 충격하여 치유하거나, 적에게 신성 피해를 입힙니다."
+      },
+      "holy_shield": {
+        "name": "신성한 벽",
+        "description": "적에게 광휘의 방패를 던져 신성 피해를 입히고 주변의 적 2명에게 튕겨나갑니다."
+      },
+      "bestial_wrath": {
+        "name": "포효하는 분노",
+        "description": "15초 동안 야수의 분노에 빠져 공격력이 20%, 펫의 피해량이 100% 증가합니다."
+      },
+      "trueshot_aura": {
+        "name": "조준의 오라",
+        "description": "30분 동안 주변 아군을 격려하여 공격력을 10% 증가시킵니다."
+      },
+      "wyvern_sting": {
+        "name": "와이번의 독침",
+        "description": "원거리에서 적을 찔러 최대 4초 동안 무력화시킵니다. 피해를 입으면 효과가 해제됩니다."
+      },
+      "arcane_power": {
+        "name": "비전 쇄도",
+        "description": "10초 동안 주문 피해가 20%, 주문 가속이 10% 증가합니다."
+      },
+      "combustion": {
+        "name": "화염구동",
+        "description": "15초 동안 주문 치명타 확률이 50% 증가합니다."
+      },
+      "icy_veins": {
+        "name": "얼음 혈관",
+        "description": "10초 동안 주문 가속이 30% 증가하며 시전 차단과 시전 지연을 방지합니다."
+      },
+      "cold_blood": {
+        "name": "냉정한 살의",
+        "description": "살의를 집중시켜 다음 공격이 반드시 치명타가 됩니다."
+      },
+      "blade_flurry": {
+        "name": "칼날 회오리",
+        "description": "칼날의 소용돌이를 일으켜 12초 동안 공격 속도가 20% 증가합니다."
+      },
+      "hemorrhage": {
+        "name": "붉은 리본",
+        "description": "무기 피해와 출혈 효과로 적을 공격하여 12초 동안 출혈 피해를 입히고 출혈 피해를 40% 증가시킵니다. 연계 점수 1점을 획득합니다."
+      },
+      "power_infusion": {
+        "name": "축복 주입",
+        "description": "우호적인 대상에게 힘을 불어넣어 15초 동안 주문 가속을 20% 증가시킵니다."
+      },
+      "holy_nova": {
+        "name": "신성한 폭발",
+        "description": "신성한 광채의 폭발을 일으켜 주변 아군을 치유하고 주변 적에게 피해를 입힙니다."
+      },
+      "shadowform": {
+        "name": "황혼의 형상",
+        "description": "그림자 형상으로 변하여 그림자 피해가 15% 증가하며, 원래 모습으로 돌아갈 때까지 유지됩니다. 치유 주문을 시전하면 형상이 해제됩니다. 다시 시전하면 원래 모습으로 돌아갑니다."
+      },
+      "elemental_mastery": {
+        "name": "원시 지배",
+        "description": "폭풍의 힘을 불러와 다음 주문을 즉시 시전합니다."
+      },
+      "siphon_life": {
+        "name": "생명 착취",
+        "description": "적에게서 생명력을 흡수하여 30초 동안 그림자 피해를 입히고 입힌 피해만큼 자신을 치유합니다."
+      },
+      "conflagrate": {
+        "name": "점화",
+        "description": "적에게 걸린 제물을 소모하여 화염 피해를 입힙니다."
+      },
+      "moonkin_form": {
+        "name": "달빛날개 형상",
+        "description": "무시무시한 달빛수호자로 변신하여 주문 피해가 20%, 방어도가 50% 증가합니다. 원래 모습으로 돌아갈 때까지 유지됩니다. 다시 시전하면 시전자 형상으로 돌아갑니다."
+      },
+      "feral_charge": {
+        "name": "원시의 쇄도",
+        "description": "원시의 힘을 발산합니다. 표범 형상에서는 10초 동안 기력 재생이 100% 증가합니다. 곰 형상에서는 즉시 분노 50을 생성합니다."
+      },
+      "swiftmend": {
+        "name": "신속한 치유",
+        "description": "우호적인 대상에게 걸린 지속 치유 효과를 소모하여 치유합니다."
+      },
+      "pummel": {
+        "name": "턱관절 강타",
+        "description": "대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다."
+      },
+      "kick": {
+        "name": "발차기",
+        "description": "대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다."
+      },
+      "counterspell": {
+        "name": "주문 차단",
+        "description": "대상의 시전을 무효화하고 6초 동안 해당 계열 주문 시전을 막습니다."
+      },
+      "counter_shot": {
+        "name": "제압 사격",
+        "description": "즉각적인 사격으로 대상의 시전을 차단하고 해당 계열을 4초 동안 봉쇄합니다."
+      },
+      "rebuke": {
+        "name": "질책",
+        "description": "대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다."
+      },
+      "skull_bash": {
+        "name": "박치기",
+        "description": "돌진하여 박치기로 대상의 시전을 차단하고 해당 계열을 4초 동안 봉쇄합니다."
+      },
+      "spell_lock": {
+        "name": "주문 봉인",
+        "description": "시전 중인 대상을 침묵시키고 5초 동안 해당 계열 주문 시전을 막습니다."
+      },
       "heroic_strike": {
         "name": "영웅의 일격",
         "description": "강력한 공격으로 근접 피해가 {damage}만큼 증가합니다. 다음 무기 공격 시 발동됩니다."
@@ -5917,6 +6074,21 @@ export const ko_KR: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "선봉대 크롬"
+      },
+      "enchanting_dust": {
+        "name": "마법부여 가루"
+      },
+      "scroll_minor_might": {
+        "name": "소소한 힘의 두루마리"
+      },
+      "scroll_minor_vigor": {
+        "name": "소소한 활력의 두루마리"
+      },
+      "scroll_minor_focus": {
+        "name": "소소한 집중의 두루마리"
+      },
+      "scroll_minor_agility": {
+        "name": "소소한 민첩의 두루마리"
       }
     },
     "mobs": {
@@ -6234,6 +6406,15 @@ export const ko_KR: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "심재 거상"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "초록발의 꺾꽂이"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "초록발의 꺾꽂이"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "초록발의 꺾꽂이"
       }
     },
     "npcs": {
@@ -6460,6 +6641,22 @@ export const ko_KR: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "배울 가치가 있는 기술",
+        "text": "모든 기술은 손톱 밑의 흙에서 시작되지, {playerName}. 마을 동쪽 숲에서 거미 다리 2개를 모아 오게. 그런 다음 내 대장간에서 신병의 튜닉을 만들어 보게. 재료가 되는 뼛조각은 오는 길에 충분히 주울 수 있을 걸세. 그리고 분해해서 비전 가루로 만들 만한 것도 하나 가져오게. 채집하고, 제작하고, 분해할 수 있음을 보여주면 기술의 가치를 알려주지.",
+        "completion": "바로 그게 배울 가치가 있는 기술이지. 계속 대장간에 붙어 있게, {playerName}. 언젠가 자네는 말굽을 박으면서 동시에 검에 마법을 부여하게 될 걸세.",
+        "objectives": {
+          "0": {
+            "label": "거미 다리 채집"
+          },
+          "1": {
+            "label": "신병의 튜닉 제작"
+          },
+          "2": {
+            "label": "비전 가루"
+          }
+        }
+      },
       "q_wolves": {
         "title": "문 앞의 늑대들",
         "text": "숲늑대들이 북쪽 길의 여행자들을 물어뜯고 있습니다, {playerName}. 8마리를 처치해 이스트브룩이 숨 돌리게 해 주십시오.",
@@ -7602,6 +7799,20 @@ export const ko_KR: EnTranslations = {
         "name": "무너진 성물실",
         "enterText": "무너진 성물실로 내려갑니다.",
         "leaveText": "성물실 폐허의 브라더 할벤에게로 다시 올라갑니다."
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "소소한 힘"
+      },
+      "enchant_minor_vigor": {
+        "name": "소소한 활력"
+      },
+      "enchant_minor_focus": {
+        "name": "소소한 집중"
+      },
+      "enchant_minor_agility": {
+        "name": "소소한 민첩"
       }
     },
     "itemSets": {

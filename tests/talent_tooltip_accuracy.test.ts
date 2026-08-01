@@ -25,6 +25,16 @@ const PCT_FIELDS = new Set([
   'meleeDmgPct',
   'spellDmgPct',
   'healPct',
+  'dotDmgPct',
+  'hotHealPct',
+  'absorbPct',
+  'meleeHastePct',
+  'petDmgPct',
+  'petDmgSharePct',
+  'critDmgSpellPct',
+  'critDmgPhysPct',
+  'critDmgHealPct',
+  'spellHastePct',
   'threatPct',
   'dmgPct',
   'costPct',
@@ -241,10 +251,9 @@ describe('talent tooltip accuracy (all 9 classes x 3 specs)', () => {
     const arcane = render('mage', (e) => e.id === 'mag_school_focus.mag_school_arcane');
     expect(arcane).toContain('Intellect');
     expect(arcane).toContain('8%');
-    // Survival mastery promised "+10% Agility"; the effect now grants agiPct 0.10.
+    // Survival mastery (PHAA-715): now agiPct 0.15 + meleeDmgPct 0.15, no dodge component.
     const lr = render('hunter', (e) => e.id === 'survival.mastery');
     expect(lr).toContain('Agility');
-    expect(lr).toContain('10%');
-    expect(lr).toContain('dodge');
+    expect(lr).toContain('15%');
   });
 });
