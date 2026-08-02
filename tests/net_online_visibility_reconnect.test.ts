@@ -141,6 +141,45 @@ describe('ClientWorld visibilitychange reconnect (mobile background/foreground)'
     });
   });
 
+  it('foregrounding onto a socket killed DURING the initial handshake (before `hello`, so `connected` never became true) still drives a fresh reconnect', () => {
+    withDomStubs((doc) => {
+      const world = new ClientWorld('t', 1, PROBE_CLASS, 'http://localhost');
+      const first = StubWebSocket.instances[0];
+
+      // No `hello` has landed yet: `connected` is still false, exactly as it
+      // would be if the tab were backgrounded mid-handshake. The OS kills
+      // the transport without ever delivering onopen/onclose to the frozen
+      // page, so the only observable change is the socket's own readyState.
+      expect((world as unknown as { connected: boolean }).connected).toBe(false);
+      first.readyState = StubWebSocket.CLOSED;
+
+      doc.setVisible(false);
+      expect(StubWebSocket.instances.length).toBe(1); // hidden: no reconnect attempt
+
+      doc.setVisible(true);
+      // The old `connected`-gated check would no-op here forever (connected
+      // was already false, so nothing looked wrong). Keying off readyState
+      // must still schedule a reconnect.
+      expect((world as unknown as { reconnectTimer: unknown }).reconnectTimer).not.toBeUndefined();
+      world.close();
+    });
+  });
+
+  it('foregrounding while the handshake socket is still genuinely CONNECTING leaves it alone', () => {
+    withDomStubs((doc) => {
+      const world = new ClientWorld('t', 1, PROBE_CLASS, 'http://localhost');
+      const first = StubWebSocket.instances[0];
+      first.readyState = StubWebSocket.CONNECTING;
+
+      doc.setVisible(false);
+      doc.setVisible(true);
+      // Still legitimately in-flight: no forced reconnect, no second socket.
+      expect(StubWebSocket.instances.length).toBe(1);
+      expect((world as unknown as { reconnectTimer: unknown }).reconnectTimer).toBeUndefined();
+      world.close();
+    });
+  });
+
   it('foregrounding while a backoff timer is still pending retries immediately instead of waiting out the delay', () => {
     withDomStubs((doc) => {
       const world = new ClientWorld('t', 1, PROBE_CLASS, 'http://localhost');
@@ -168,6 +207,88 @@ describe('ClientWorld visibilitychange reconnect (mobile background/foreground)'
       doc.setVisible(false);
       doc.setVisible(true);
       expect(StubWebSocket.instances.length).toBe(1);
+      world.close();
+    });
+  });
+});
+
+// endSession() is shared by 3 call sites (close(), reconnect-attempts-exhausted,
+// and a fatal server rejection in onMessage) and each one must drop the
+// visibilitychange listener or ClientWorld leaks forever (document holds a live
+// reference to the bound handler). The suite above only ever exercises close().
+describe('ClientWorld endSession() teardown (all 3 call sites)', () => {
+  afterEach(() => {
+    StubWebSocket.instances = [];
+  });
+
+  it('close() removes the visibilitychange listener', () => {
+    withDomStubs((doc) => {
+      const world = new ClientWorld('t', 1, PROBE_CLASS, 'http://localhost');
+      expect(doc.listenerCount()).toBe(1);
+      world.close();
+      expect(doc.listenerCount()).toBe(0);
+      expect((world as unknown as { sessionEnded: boolean }).sessionEnded).toBe(true);
+    });
+  });
+
+  it('exhausting reconnect attempts removes the visibilitychange listener and fires onDisconnect', () => {
+    withDomStubs((doc) => {
+      const world = new ClientWorld('t', 1, PROBE_CLASS, 'http://localhost');
+      const first = StubWebSocket.instances[0];
+      expect(doc.listenerCount()).toBe(1);
+
+      let disconnectReason: string | null = null;
+      world.onDisconnect = (reason) => {
+        disconnectReason = reason;
+      };
+      // Fast-forward past RECONNECT_MAX_ATTEMPTS without actually driving 40
+      // real reconnect cycles: the exhaustion check only reads this counter.
+      (world as unknown as { reconnectAttempts: number }).reconnectAttempts = 1_000_000;
+      first.readyState = StubWebSocket.CLOSED;
+      first.onclose?.();
+
+      expect(doc.listenerCount()).toBe(0);
+      expect((world as unknown as { sessionEnded: boolean }).sessionEnded).toBe(true);
+      expect(disconnectReason).toBe('Connection to the server was lost.');
+      // No further reconnect was scheduled once the session ended for good.
+      expect((world as unknown as { reconnectTimer: unknown }).reconnectTimer).toBeUndefined();
+    });
+  });
+
+  it('a fatal (non-transient) server rejection removes the visibilitychange listener and fires onDisconnect', () => {
+    withDomStubs((doc) => {
+      const world = new ClientWorld('t', 1, PROBE_CLASS, 'http://localhost');
+      const first = StubWebSocket.instances[0];
+      expect(doc.listenerCount()).toBe(1);
+
+      let disconnectReason: string | null = null;
+      world.onDisconnect = (reason) => {
+        disconnectReason = reason;
+      };
+      // Any error other than the transient 'character already in world'
+      // conflict window ends the session outright (kick/moderation/takeover).
+      first.onmessage?.({ data: JSON.stringify({ t: 'error', error: 'banned' }) });
+
+      expect(doc.listenerCount()).toBe(0);
+      expect((world as unknown as { sessionEnded: boolean }).sessionEnded).toBe(true);
+      expect(disconnectReason).toBe('banned');
+      // A fatal rejection must not leave a reconnect scheduled either.
+      expect((world as unknown as { reconnectTimer: unknown }).reconnectTimer).toBeUndefined();
+    });
+  });
+
+  it('the transient reconnect-conflict rejection does NOT end the session (regression guard for the endSession fatal path)', () => {
+    withDomStubs((doc) => {
+      const world = new ClientWorld('t', 1, PROBE_CLASS, 'http://localhost');
+      const first = StubWebSocket.instances[0];
+      // Mid-reconnect (attempts > 0): the transient conflict window applies.
+      (world as unknown as { reconnectAttempts: number }).reconnectAttempts = 1;
+      first.onmessage?.({
+        data: JSON.stringify({ t: 'error', error: 'character already in world' }),
+      });
+
+      expect(doc.listenerCount()).toBe(1);
+      expect((world as unknown as { sessionEnded: boolean }).sessionEnded).toBe(false);
       world.close();
     });
   });

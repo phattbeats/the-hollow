@@ -1060,9 +1060,15 @@ export class ClientWorld implements IWorld {
       return;
     }
     // No reconnect scheduled yet but the socket is not open: onclose was
-    // never delivered while suspended (the zombie-socket case). Drive the
-    // same path a real close would have.
-    if (this.connected) this.socketClosed();
+    // never delivered while suspended. Key this off the socket's own
+    // readyState, not `connected` — a tab backgrounded DURING the initial
+    // handshake (before the first `hello` ever sets `connected`) hits this
+    // same branch with `connected` still false, and checking `connected`
+    // alone left that socket a zombie forever (neither branch above fires,
+    // and this one no-ops). CONNECTING may still resolve on its own
+    // (onopen/onclose will drive the normal paths); anything else
+    // (CLOSING/CLOSED) is dead and needs a fresh retry now.
+    if (this.ws.readyState !== WebSocket.CONNECTING) this.socketClosed();
   };
 
   private openSocket(): void {

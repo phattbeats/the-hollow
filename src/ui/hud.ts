@@ -142,6 +142,7 @@ import {
   parseChatTabs,
   serializeChatTabs,
 } from './chat_channels';
+import { attachChatPlayerNameActivation } from './chat_player_name_activation';
 import { type ChatClock, clampChatClock, formatChatTimestamp } from './chat_timestamp';
 import { type ChatBoxGeometry, clampChatBox, parseChatBox, serializeChatBox } from './chat_window';
 import { formatClockTime } from './clock';
@@ -262,6 +263,7 @@ import {
   publishCard,
 } from './player_card_share';
 import { chatPlayerContextActions } from './player_context_menu';
+import { buildPlayerInfoCardViewModel, type PublicCharacterSheet } from './player_info_card_view';
 import { hydratePortraits, portraitChipHtml } from './portrait_chip';
 import { maskProfanity } from './profanity';
 import { encodeQuestLink, parseChatSegments } from './quest_link';
@@ -347,17 +349,6 @@ export interface GamepadBindingsHooks {
 export interface ReportHooks {
   submit(targetPid: number, reason: string, details: string): Promise<void>;
   submitByName?(targetName: string, reason: string, details: string): Promise<void>;
-}
-
-// The safe subset GET /api/public/characters/:name/sheet returns (server/character_sheet.ts,
-// visibility 'public'): no gear, wallet, or position. Declared locally rather than imported
-// from server/ so the client bundle never pulls in server-only (Node/pg) code.
-interface PublicCharacterSheet {
-  name: string;
-  class: PlayerClass;
-  level: number;
-  skin: number;
-  guild: string | null;
 }
 
 export interface BugReportPayload {
@@ -6933,21 +6924,7 @@ export class Hud {
     sender.setAttribute('role', 'button');
     sender.setAttribute('aria-label', t('hud.chat.rightClickName', { name }));
     sender.tabIndex = 0;
-    sender.addEventListener('contextmenu', (ev) => {
-      ev.preventDefault();
-      this.openChatPlayerContextMenu(name, ev.clientX, ev.clientY);
-    });
-    // Left-click/tap opens the same menu as right-click: right-click alone is
-    // unreachable on mobile, where chat names were previously dead text.
-    sender.addEventListener('click', (ev) => {
-      this.openChatPlayerContextMenu(name, ev.clientX, ev.clientY);
-    });
-    sender.addEventListener('keydown', (ev) => {
-      if (ev.key !== 'Enter' && ev.key !== ' ') return;
-      ev.preventDefault();
-      const rect = sender.getBoundingClientRect();
-      this.openChatPlayerContextMenu(name, rect.left, rect.bottom);
-    });
+    attachChatPlayerNameActivation(sender, (x, y) => this.openChatPlayerContextMenu(name, x, y));
     const nameToken = '__WOC_CHAT_NAME__';
     const messageToken = '__WOC_CHAT_MESSAGE__';
     const rendered = t(templateKey, { name: nameToken, message: messageToken });
@@ -10822,26 +10799,22 @@ export class Hud {
   private renderPlayerInfoCard(sheet: PublicCharacterSheet): void {
     const el = $('#inspect-window');
     this.closeOtherWindows('#inspect-window');
-    const className = classDisplayName(sheet.class);
-    const metaLine = t('itemUi.equipment.levelClass', {
-      level: formatNumber(sheet.level, { maximumFractionDigits: 0 }),
-      className,
-    });
-    const guildHtml = sheet.guild
-      ? `<div class="inspect-holder-sub">${esc(sheet.guild)}</div>`
+    const vm = buildPlayerInfoCardViewModel(sheet);
+    const guildHtml = vm.guildLine
+      ? `<div class="inspect-holder-sub">${esc(vm.guildLine)}</div>`
       : '';
     el.innerHTML =
       `<div class="panel-title"><span>${esc(t('character.profile'))}</span>` +
       `<button type="button" class="x-btn" data-close aria-label="${esc(t('character.closeProfile'))}">${svgIcon('close')}</button></div>` +
       `<div class="inspect-card">` +
       portraitChipHtml({
-        cls: sheet.class,
-        skin: sheet.skin ?? 0,
-        name: sheet.name,
+        cls: vm.cls,
+        skin: vm.skin ?? 0,
+        name: vm.name,
         variant: 'lg',
       }) +
-      `<div class="inspect-name">${esc(sheet.name)}</div>` +
-      `<div class="inspect-meta">${esc(metaLine)}</div>` +
+      `<div class="inspect-name">${esc(vm.name)}</div>` +
+      `<div class="inspect-meta">${esc(vm.metaLine)}</div>` +
       guildHtml +
       `</div>`;
     hydratePortraits(el);
