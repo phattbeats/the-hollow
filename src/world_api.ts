@@ -9,7 +9,7 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 30 domain facets (each IWorld member assigned exactly once; 194
+// FACET MAP: the 32 domain facets (each IWorld member assigned exactly once; 198
 // total; this count was previously stale at 23/155, corrected alongside the
 // PHAA-482 feedGreenpaw command addition, again at 24/161 with the PHAA-511
 // guild-calendar-events addition, again at 25/162 with PHAA-504's gathering.ts
@@ -19,13 +19,13 @@
 // facet (2 members), again with PHAA-687's achievements.ts facet (2 members),
 // again with the PHAA-641 readyCheckRespond addition to the existing IWorldParty
 // facet, again at 30/190 with the PHAA-744 deeds.ts facet (5 members:
-// Book of Asphodelia deed/title read state + setActiveTitle), again at
-// 31/195 with the PHAA-649 enchanting.ts facet (3 members; the running count in
-// tests/world_api_parity.test.ts was already at 192 before this addition), and
-// now at 31/197 with the PHAA-748 per-pid title queries (activeTitleFor +
-// earnedTitlesFor) extending the existing IWorldDeeds facet. One interface per
-// file under ./world_api/; aux types travel with their facet. The authoritative
-// member-per-facet split is the W0c parity test (tests/world_api_parity.test.ts).
+// Book of Asphodelia deed/title read state + setActiveTitle), again with the
+// PHAA-649 enchanting.ts facet (3 members), reaching the verified 32/196
+// pinned by tests/world_api_parity.test.ts, and now at 32/198 with the
+// PHAA-748 per-pid title queries (activeTitleFor + earnedTitlesFor) extending
+// the existing IWorldDeeds facet. One interface per file under ./world_api/;
+// aux types travel with their facet. The authoritative member-per-facet split
+// is the W0c parity test (tests/world_api_parity.test.ts).
 // NOTE: this running count tracks only the facets registered in the W0c gate
 // (tests/world_api_parity.test.ts); IWorldReadables/IWorldDialog predate this
 // count and are pre-existing gaps in that gate, not tracked here.
