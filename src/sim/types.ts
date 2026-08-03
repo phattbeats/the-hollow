@@ -114,6 +114,7 @@ export interface HonorArenaDailyState {
   date: string;
   winsByOpponent: Record<string, number>;
   fiestaCompletionsByOpponent: Record<string, number>;
+  fiestaKillsByVictim: Record<string, number>;
   totalWins: number;
 }
 
@@ -2051,6 +2052,9 @@ export interface Entity {
   sitting: boolean;
   eating: Consuming | null;
   drinking: Consuming | null;
+  // Z-key cosmetic toggle: held weapons render sheathed on the back. Cleared by
+  // any deliberate combat action (auto-attack engage, ability cast), WoW-style.
+  weaponStowed: boolean;
   // mob AI
   aiState: AiState;
   tappedById: number | null; // first player to damage this mob owns loot/xp/quest credit

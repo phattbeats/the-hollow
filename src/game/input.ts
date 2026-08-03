@@ -59,7 +59,8 @@ export interface InputCallbacks {
       | 'social'
       | 'arena'
       | 'leaderboard'
-      | 'calendar',
+      | 'calendar'
+      | 'weaponStow',
   ): void;
   onEmoteWheel(open: boolean): void;
   onClickPick(x: number, y: number, button: number): void;
@@ -714,6 +715,9 @@ export class Input {
       case 'autorun':
         this.autorun = !this.autorun;
         this.noteIntent('move');
+        return;
+      case 'weaponStow':
+        this.cb.onUiKey('weaponStow');
         return;
       case 'target':
         this.cb.onTab();

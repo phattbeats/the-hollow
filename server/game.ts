@@ -599,6 +599,7 @@ function dynamicFields(e: Entity): Record<string, unknown> {
     if (e.channeling) out.chan = 1;
   }
   if (e.sitting || e.eating || e.drinking) out.sit = 1;
+  if (e.weaponStowed) out.ws = 1;
   if (e.aggroTargetId !== null) out.aggro = e.aggroTargetId;
   if (e.tappedById !== null) out.tap = e.tappedById;
   if (e.ownerId !== null) out.own = e.ownerId;
@@ -2705,6 +2706,9 @@ export class GameServer {
         break;
       case 'stopattack':
         sim.stopAutoAttack(pid);
+        break;
+      case 'stow_weapon':
+        sim.toggleWeaponStow(pid);
         break;
       case 'interact':
         sim.interact(pid);

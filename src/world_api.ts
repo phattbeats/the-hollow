@@ -344,6 +344,7 @@ export const COMMAND_NAMES = [
   'setTitle',
   'readyRespond',
   'readCollectible',
+  'stow_weapon',
   'disenchantItem',
   'applyEnchant',
 ] as const;

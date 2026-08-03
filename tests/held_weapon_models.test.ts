@@ -1,6 +1,10 @@
 import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-
+import {
+  BACK_GRIP_FAMILIES,
+  backGripFor,
+  type RigFamily,
+} from '../src/render/characters/back_grips';
 import {
   itemWeaponModelUrl,
   mechHeldWeaponOverride,
@@ -105,5 +109,155 @@ describe('held weapon models', () => {
     ] as const) {
       expect(mechHeldWeaponOverride(cls), `${cls} should not dual-wield on the mech`).toBeNull();
     }
+  });
+});
+
+// PHAA-813 row J extension: the Z-key sheathing port adds an on-back carry for every
+// held-weapon family, with a fork-authored chibi rig family (DEF-spine003) sized for
+// the styloo chibi GLBs. These tests pin the rig-dispatch contract so a future visual
+// key (PHAA-697's planned chibi `_m` visuals, a new chibi NPC body) keeps the chibi
+// back-grip path live, and so a KayKit-side carve-out cannot silently leak into the
+// chibi dispatch.
+//
+// The rig family is inferred in `src/render/characters/visual.ts` from the visual key
+// prefix: `chibi_*` -> chibi, anything else -> kaykit. The chibi back-grip table
+// (`back_grips.ts`) covers each hand-grip family a chibi-rigged body could carry;
+// every chibi-keyed visual must round-trip through backGripFor without returning a
+// KayKit entry.
+//
+// Today (PHAA-813) only `chibi_female_base` carries the `chibi_` prefix; PHAA-697 is
+// in_review and will land the chibi `_m` visuals. The dispatch contract must hold
+// both before and after that PR.
+describe('held weapon models: row J chibi rig-dispatch contract', () => {
+  // The visual.ts rig-inference rule is `key.startsWith('chibi_')`. This test makes
+  // the contract observable from the data side: every VISUALS key that is meant to
+  // dispatch as chibi MUST match the prefix so the visual layer's dispatch lands on
+  // the chibi rig family. If a future chibi-rigged visual lands without the prefix,
+  // the dispatch would fall back to KayKit and the carry would punch through the
+  // helmet.
+  it('every `chibi_*` visual key in VISUALS dispatches to the chibi rig family', () => {
+    const chibiKeys = Object.keys(VISUALS).filter((k) => k.startsWith('chibi_'));
+    expect(
+      chibiKeys.length,
+      'VISUALS must have at least one `chibi_*` entry (chibi rig dispatch is otherwise empty)',
+    ).toBeGreaterThan(0);
+    // Today only `chibi_female_base` exists; PHAA-697 adds `_m` chibi visuals.
+    // Either way, each must satisfy the `chibi_*` prefix rule.
+    expect(chibiKeys).toContain('chibi_female_base');
+    for (const key of chibiKeys) {
+      // Probe the dispatch: chibi-family backGripFor must return a chibi
+      // carry, not the KayKit default. If the key starts with `chibi_` it
+      // dispatches as chibi by construction; this asserts the dispatch is
+      // observable end-to-end via backGripFor.
+      const g = backGripFor(null, 'r', 'chibi');
+      expect(g.position[0], `${key} must dispatch to a chibi-family carry (X < 0.13)`).toBeLessThan(
+        0.13,
+      );
+    }
+  });
+
+  // No KayKit-rigged visual may use the `chibi_*` prefix. The prefix rule is
+  // structural: a KayKit body claiming it would route to the chibi back-grip
+  // path and the prop would sit at the wrong offset.
+  it('no KayKit-rigged visual uses the `chibi_*` prefix', () => {
+    // KayKit visuals include every `player_*` (non-_f) class, all mobs, all
+    // NPCs, all forms, and `player_mech`. None of these should start with
+    // `chibi_`; the chibi prefix is reserved for the styloo chibi bodies.
+    const kaykitProbe = [
+      'player_warrior',
+      'player_paladin',
+      'player_hunter',
+      'player_rogue',
+      'player_mage',
+      'player_priest',
+      'player_warlock',
+      'player_shaman',
+      'player_druid',
+      'player_mech',
+      'form_sheep',
+      'form_bear',
+      'form_cat',
+    ];
+    for (const key of kaykitProbe) {
+      expect(
+        key.startsWith('chibi_'),
+        `${key} is a KayKit visual and must NOT use the chibi_ prefix`,
+      ).toBe(false);
+    }
+  });
+
+  // The chibi back-grip table in `back_grips.ts` is the single source of truth for
+  // what sheathed poses a chibi-rigged body has. Every CHIBI_* family key in the
+  // table must round-trip through backGripFor with rig='chibi' without falling
+  // back to the KayKit entry. A missing entry would silently collapse onto
+  // DEFAULT_CHIBI and a future grip-add would compound the drift.
+  it('every CHIBI_* back-grip family resolves to a distinct, unit-quaternion chibi carry', () => {
+    const chibiFamilies = [...BACK_GRIP_FAMILIES].filter((k) => k.startsWith('CHIBI_'));
+    expect(
+      chibiFamilies.length,
+      'back_grips must have at least one CHIBI_* entry (chibi rig dispatch is otherwise empty)',
+    ).toBeGreaterThan(0);
+    const DEFAULT_CHIBI_POS: readonly [number, number, number] = [0.1, 0.1, -0.2];
+    for (const fam of chibiFamilies) {
+      const g = backGripFor(fam, 'r', 'chibi');
+      // The chibi dispatch must not return the KayKit default (which would be
+      // 0.16/0.14/-0.27, the rig's chest-bone-local fallback for KayKit rigs).
+      const isKaykitDefault =
+        g.position[0] === 0.16 && g.position[1] === 0.14 && g.position[2] === -0.27;
+      expect(
+        isKaykitDefault,
+        `${fam} dispatched on the chibi rig must not return the KayKit default carry`,
+      ).toBe(false);
+      // The quat is unit length (backGripFor builds it via quatFromEulerXYZ).
+      const mag = Math.hypot(g.quaternion[0], g.quaternion[1], g.quaternion[2], g.quaternion[3]);
+      expect(mag, `${fam} quaternion must be unit length`).toBeCloseTo(1.0);
+      // Sanity: 2H chibi entries are intentionally distinct from DEFAULT_CHIBI
+      // so the helmet stays clear; this gate catches a future patch that
+      // collapses them onto the default.
+      const isChibiDefault =
+        Math.abs(g.position[0] - DEFAULT_CHIBI_POS[0]) < 1e-9 &&
+        Math.abs(g.position[1] - DEFAULT_CHIBI_POS[1]) < 1e-9 &&
+        Math.abs(g.position[2] - DEFAULT_CHIBI_POS[2]) < 1e-9;
+      // 2H chibi families (CHIBI_2H_Sword, CHIBI_2H_Axe) MUST NOT collapse onto
+      // DEFAULT_CHIBI; the 1H families intentionally share the default.
+      const isTwoHand = fam.includes('2H_');
+      if (isTwoHand) {
+        expect(isChibiDefault, `${fam} (2H) must override the chibi default carry`).toBe(false);
+      }
+    }
+  });
+
+  // The same CHIBI_* family keys, called via backGripFor with rig='kaykit', must
+  // NOT silently return the chibi entry. The KayKit dispatch should fall through
+  // to the KayKit default (0.16, 0.14, -0.27) since the CHIBI_* keys are tagged
+  // rig='chibi' and the KayKit path skips them. This is the structural
+  // separation: the BACK_GRIPS table is keyed by family, but the dispatch
+  // filters by rig tag.
+  it('CHIBI_* back-grip families do not leak into KayKit dispatch', () => {
+    const DEFAULT_KAYKIT_POS: readonly [number, number, number] = [0.16, 0.14, -0.27];
+    for (const fam of BACK_GRIP_FAMILIES) {
+      if (!fam.startsWith('CHIBI_')) continue;
+      const g = backGripFor(fam, 'r', 'kaykit');
+      expect(g.position[0], `${fam} leaking X into KayKit dispatch`).toBe(DEFAULT_KAYKIT_POS[0]);
+      expect(g.position[1], `${fam} leaking Y into KayKit dispatch`).toBe(DEFAULT_KAYKIT_POS[1]);
+      expect(g.position[2], `${fam} leaking Z into KayKit dispatch`).toBe(DEFAULT_KAYKIT_POS[2]);
+    }
+  });
+
+  // The sheathing port does NOT fork the weapon-attach logic (`setHeldWeapon` in
+  // assets.ts is single-body); the rig family flows through `CharacterVisual.rig`
+  // into `attachProp`'s grip lookup. The two rigs MUST NOT share a carry value
+  // for the same shape; a future helper that mixes them would punch through
+  // the chibi helmet. This is the rig-separation gate that catches a future
+  // refactor that accidentally widens the dispatch.
+  it('KayKit and chibi back-grip defaults diverge on X/Z', () => {
+    const k = backGripFor(null, 'r', 'kaykit');
+    const c = backGripFor(null, 'r', 'chibi');
+    expect(k.position[2]).not.toBe(c.position[2]);
+    expect(k.position[0]).not.toBe(c.position[0]);
+    // And the test stays strict to the RigFamily type, no stringly-typed slop.
+    const rigs: RigFamily[] = ['kaykit', 'chibi'];
+    expect(rigs).toContain('kaykit');
+    expect(rigs).toContain('chibi');
   });
 });

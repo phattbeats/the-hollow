@@ -385,6 +385,7 @@ import {
   virtualLevel,
   xpToReachLevel,
 } from './types';
+import * as weaponStowMod from './weapon_stow';
 import { groundHeight, waterLevel, waterLevelAt } from './world';
 
 // TRIVIAL_LEVEL_GAP moved to mob/targeting.ts (used only by isTrivialTo).
@@ -2029,6 +2030,7 @@ export class Sim {
               date: meta.honorArenaDaily.date,
               winsByOpponent: { ...meta.honorArenaDaily.winsByOpponent },
               fiestaCompletionsByOpponent: { ...meta.honorArenaDaily.fiestaCompletionsByOpponent },
+              fiestaKillsByVictim: { ...meta.honorArenaDaily.fiestaKillsByVictim },
               totalWins: meta.honorArenaDaily.totalWins,
             },
           }
@@ -2112,6 +2114,15 @@ export class Sim {
   setPlayerGuild(pid: number, guild: string): void {
     const e = this.entities.get(pid);
     if (e) e.guild = guild;
+  }
+
+  /** Z-key sheathe toggle (IWorld.toggleWeaponStow; server `stow_weapon` command).
+   *  Cosmetic only: flips Entity.weaponStowed, which rides the entity wire and the
+   *  renderer maps to the on-back weapon pose. Refused while dead (like /sit). */
+  toggleWeaponStow(pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    weaponStowMod.toggleWeaponStow(r.e);
   }
 
   /** Cosmetic skin-select event: rolls a rarity rank (once) and emits the

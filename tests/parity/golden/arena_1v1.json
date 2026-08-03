@@ -73,7 +73,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 409,
-      "state": "d9620e24",
+      "state": "057d009c",
       "events": "d451ce7d",
       "rng": {
         "draws": 399,
@@ -84,7 +84,7 @@
       "tick": 142,
       "time": 7.1,
       "nextId": 409,
-      "state": "b70600e0",
+      "state": "d42be5b0",
       "events": "741638a5",
       "rng": {
         "draws": 507,
@@ -217,6 +217,7 @@
           "honor": 25,
           "honorArenaDaily": {
             "fiestaCompletionsByOpponent": {},
+            "fiestaKillsByVictim": {},
             "totalWins": 1,
             "winsByOpponent": {
               "1v1:[\"name:bet\"]": 1

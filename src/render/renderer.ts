@@ -4208,6 +4208,7 @@ export class Renderer {
         v.mainhandItemId = e.mainhandItemId;
         v.visual.setWeapon(e.mainhandItemId);
       }
+      v.visual.setWeaponStowed(e.weaponStowed);
 
       // live worn-armor swap. Full equippedItems set changed (self equip or a
       // peer's gear update). The diff is shallow: same reference means same
