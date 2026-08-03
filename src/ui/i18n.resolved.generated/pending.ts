@@ -640,7 +640,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "es_ES": [
     "abilityUi.tooltip.selfOnly",
@@ -1273,7 +1275,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "fr_FR": [
     "abilityUi.tooltip.selfOnly",
@@ -1906,7 +1910,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "fr_CA": [
     "abilityUi.tooltip.selfOnly",
@@ -2539,7 +2545,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "en_CA": [],
   "it_IT": [
@@ -3173,7 +3181,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "de_DE": [
     "abilityUi.tooltip.selfOnly",
@@ -3806,7 +3816,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "zh_CN": [
     "dailyRewardsUi.cell.itemCount",
@@ -4503,7 +4515,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "ru_RU": [
     "dailyRewardsUi.cell.itemCount",
@@ -5153,7 +5167,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "pl_PL": [
     "abilityUi.tooltip.selfOnly",
@@ -5787,7 +5803,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "id_ID": [
     "abilityUi.tooltip.selfOnly",
@@ -6421,7 +6439,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "tr_TR": [
     "abilityUi.tooltip.selfOnly",
@@ -7055,7 +7075,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "sv_SE": [
     "abilityUi.tooltip.selfOnly",
@@ -7689,7 +7711,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "vi_VN": [
     "abilityUi.tooltip.selfOnly",
@@ -8323,7 +8347,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "da_DK": [
     "abilityUi.tooltip.selfOnly",
@@ -8957,6 +8983,8 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ]
 };

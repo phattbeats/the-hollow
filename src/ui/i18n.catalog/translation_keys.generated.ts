@@ -4885,4 +4885,6 @@ export type TranslationKeyFlat =
   | 'worldContent.delveSurfaceExitInteract'
   | 'worldContent.dungeonExitName'
   | 'worldContent.dungeonInstanceBusy'
-  | 'worldContent.dungeonPartyWarning';
+  | 'worldContent.dungeonPartyWarning'
+  | 'yumi.log.welcome'
+  | 'yumi.queue.join';
