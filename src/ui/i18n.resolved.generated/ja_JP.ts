@@ -1042,6 +1042,18 @@ export const ja_JP: EnTranslations = {
     },
     "hitRating": {
       "ratingLabel": "命中レーティング"
+    },
+    "dungeonFinder": {
+      "title": "ダンジョンファインダー",
+      "close": "閉じる",
+      "offlineNote": "ダンジョンファインダーはオフラインでは利用できません。",
+      "roleTank": "タンク",
+      "roleHealer": "ヒーラー",
+      "roleDps": "ダメージ",
+      "queueButton": "参加する",
+      "leaveButton": "キューを離れる",
+      "idleHint": "{dungeon}に参加するロールを選んでください。",
+      "queuedStatus": "{role}として{dungeon}に登録中（{position}番目）"
     }
   },
   "mailUi": {
@@ -2456,6 +2468,19 @@ export const ja_JP: EnTranslations = {
       "nothingToTake": "もう取れるものは何も残っていない。",
       "wayOutNotOpen": "出口はまだ開いていない。",
       "moveCloserStairs": "階段にもっと近づけ。"
+    },
+    "dungeonFinder": {
+      "cannotQueueDead": "死亡中はダンジョンファインダーに参加登録できません。",
+      "dungeonUnavailable": "そのダンジョンはまだダンジョンファインダーで利用できません。",
+      "roleUnavailable": "あなたのクラスはそのロールで登録できません。",
+      "leaveParty": "ダンジョンファインダーに登録する前にパーティーを抜けてください。",
+      "cannotQueueDueling": "決闘中はダンジョンファインダーに登録できません。",
+      "finishTrade": "ダンジョンファインダーに登録する前に取引を終えてください。",
+      "cannotQueueInstance": "インスタンス内からはダンジョンファインダーに登録できません。",
+      "joined": "{role}としてダンジョンファインダーに登録しました。グループ結成をお待ちください...",
+      "left": "ダンジョンファインダーの登録を解除しました。",
+      "ready": "ダンジョンファインダーのグループが揃いました：{dungeon}！",
+      "removed": "ダンジョンファインダーの登録から外されました。"
     },
     "lockpick": {
       "lockYields": "錠が開いた! {tier}の戦利品だ。",

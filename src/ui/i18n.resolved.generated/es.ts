@@ -1042,6 +1042,18 @@ export const es: EnTranslations = {
     },
     "hitRating": {
       "ratingLabel": "Hit Rating"
+    },
+    "dungeonFinder": {
+      "title": "Dungeon Finder",
+      "close": "Close",
+      "offlineNote": "Dungeon Finder is unavailable offline.",
+      "roleTank": "Tank",
+      "roleHealer": "Healer",
+      "roleDps": "Damage",
+      "queueButton": "Queue",
+      "leaveButton": "Leave Queue",
+      "idleHint": "Choose a role to queue for {dungeon}.",
+      "queuedStatus": "Queued as {role} for {dungeon} (position {position})"
     }
   },
   "mailUi": {
@@ -2456,6 +2468,19 @@ export const es: EnTranslations = {
       "nothingToTake": "Ya no queda nada que llevarse.",
       "wayOutNotOpen": "La salida aún no está abierta.",
       "moveCloserStairs": "Acércate a las escaleras."
+    },
+    "dungeonFinder": {
+      "cannotQueueDead": "You cannot queue for the Dungeon Finder while dead.",
+      "dungeonUnavailable": "That dungeon is not available through the Dungeon Finder yet.",
+      "roleUnavailable": "Your class cannot queue for that role.",
+      "leaveParty": "Leave your party before queueing for the Dungeon Finder.",
+      "cannotQueueDueling": "You cannot queue for the Dungeon Finder while dueling.",
+      "finishTrade": "Finish your trade before queueing for the Dungeon Finder.",
+      "cannotQueueInstance": "You cannot queue for the Dungeon Finder from inside an instance.",
+      "joined": "You join the Dungeon Finder queue as {role}. Stand by for a group...",
+      "left": "You leave the Dungeon Finder queue.",
+      "ready": "Your Dungeon Finder group is ready: {dungeon}!",
+      "removed": "You were removed from the Dungeon Finder queue."
     },
     "lockpick": {
       "lockYields": "¡La cerradura cede! Botín {tier}.",
