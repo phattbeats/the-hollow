@@ -5877,6 +5877,18 @@ export const fr_CA: EnTranslations = {
         "name": "Éclat aux Marques de Compte",
         "flavorText": "...des marques par cinq, gravées profond, barrées chaque fois que le compte revenait. des centaines de cinq avant que les barres ne cessent, et la dernière rangée ne fut jamais finie..."
       },
+      "root_token_unbinding": {
+        "name": "Nœud de Racine Dénoué",
+        "flavorText": "...usé et lisse là où un pouce a pressé encore et encore, comme pour dénouer un nœud attaché autour de rien que l'on puisse voir. quelqu'un croyait que lâcher prise était une bonté. quelqu'un avait tort, ou trop tôt, ou les deux..."
+      },
+      "root_token_offering": {
+        "name": "Petite Pierre à Offrande",
+        "flavorText": "...un creux peu profond gravé dans la pierre, pas plus grand qu'une pièce, du genre où l'on laisserait une miette pour quelque chose qui ne pouvait pas demander. ce qui mangeait ici n'a pas cessé d'avoir faim. il a seulement cessé d'être vu..."
+      },
+      "root_token_verdict": {
+        "name": "Pierre du Jugement Marquée",
+        "flavorText": "...un compte marqué par trois, non par cinq, jugé et rejugé, pressé si fort que le troisième passage a fendu la pierre. quelqu'un n'arrêtait pas de changer d'avis sur la même question, encore et encore, dans le noir..."
+      },
       "reliquary_plate_chest": {
         "name": "Haubert de la garde du reliquaire"
       },

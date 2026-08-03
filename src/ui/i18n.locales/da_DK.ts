@@ -913,6 +913,15 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Skår med Tællemærker',
   'entities.items.tally_shard.flavorText':
     '...mærker i femmere, ridset dybt, streget over hver gang tællingen nåede rundt. hundredvis af femmere før overstregningerne hører op, og den sidste række blev aldrig gjort færdig...',
+  'entities.items.root_token_unbinding.name': 'Løsnet Rodknude',
+  'entities.items.root_token_unbinding.flavorText':
+    '...slidt glat, hvor en tommelfinger pressede igen og igen, som om den løsnede en knude bundet om intet, man kunne se. nogen troede, at give slip var en nådesgave. nogen tog fejl, eller var for tidligt ude, eller begge dele...',
+  'entities.items.root_token_offering.name': 'Lille Fodringssten',
+  'entities.items.root_token_offering.flavorText':
+    '...en lav skål ridset i sten, ikke større end en mønt, den slags man ville lægge en krumme i til noget, der ikke kunne bede om det. det, der spiste her, holdt ikke op med at være sultent. det holdt bare op med at blive set...',
+  'entities.items.root_token_verdict.name': 'Domsmærket Sten',
+  'entities.items.root_token_verdict.flavorText':
+    '...en optælling mærket i tretal, ikke femtal, dømt og gendømt, presset så hårdt at det tredje mærke splittede stenen. nogen blev ved med at skifte mening om det samme spørgsmål, igen og igen, i mørket...',
   'entities.items.linen_pouch.name': 'Lærredspose',
   'entities.items.travelers_knapsack.name': 'Rejsendes Rygsæk',
   'entities.items.wolfhide_satchel.name': 'Ulveskinds Taske',

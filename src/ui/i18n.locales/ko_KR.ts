@@ -5010,6 +5010,15 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': '눈금이 새겨진 파편',
   'entities.items.tally_shard.flavorText':
     '...다섯 개씩 한 묶음으로 깊이 새겨져, 셀 때마다 하나씩 그어 지워졌다. 지워진 다섯 묶음이 수백에 이르는데, 그 지움이 멈춘 마지막 줄만은 끝내 채워지지 않았다...',
+  'entities.items.root_token_unbinding.name': '풀린 뿌리 매듭',
+  'entities.items.root_token_unbinding.flavorText':
+    '...보이지 않는 무언가에 묶인 매듭을 풀듯, 엄지손가락에 계속 문질러져 매끄러워졌다. 누군가는 놓아주는 것이 친절이라 믿었다. 그 사람은 틀렸거나, 너무 일렀거나, 아니면 둘 다였을 것이다...',
+  'entities.items.root_token_offering.name': '작은 먹이돌',
+  'entities.items.root_token_offering.flavorText':
+    '...동전보다도 작은 얕은 그릇 모양이 돌에 새겨져 있다. 물어볼 수조차 없는 무언가에게 부스러기를 남겨주기 위한 것이었으리라. 이곳에서 먹던 무언가는 배고픔을 멈춘 것이 아니라, 그저 보이지 않게 되었을 뿐이다...',
+  'entities.items.root_token_verdict.name': '심판이 새겨진 돌',
+  'entities.items.root_token_verdict.flavorText':
+    '...다섯이 아니라 셋으로 새겨진 눈금이, 판결되고 또 뒤집히며, 세 번째에는 돌이 갈라질 만큼 세게 눌려 있다. 누군가 어둠 속에서 같은 질문을 두고 몇 번이고 마음을 바꾸었던 것 같다...',
   'entities.mobs.acolyte_tessa.name': '수련사제 테사',
   'entities.mobs.deacon_varric.name': '부제 바릭',
   'entities.mobs.reliquary_bonewalker.name': '되살아난 해골보행자',

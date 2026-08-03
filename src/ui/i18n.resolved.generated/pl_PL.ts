@@ -5877,6 +5877,18 @@ export const pl_PL: EnTranslations = {
         "name": "Odłamek z Karbami",
         "flavorText": "...karby piątkami, ryte głęboko, przekreślane za każdym razem, gdy rachunek się domykał. setki piątek, nim przekreślenia ustają, a ostatni rząd nigdy nie został dokończony..."
       },
+      "root_token_unbinding": {
+        "name": "Rozluźniony Węzeł Korzenia",
+        "flavorText": "...wygładzony tam, gdzie kciuk naciskał raz za razem, jakby rozluźniał węzeł zawiązany wokół czegoś niewidocznego. ktoś wierzył, że puszczenie było aktem łaski. ktoś się mylił, albo był zbyt wczesny, albo jedno i drugie..."
+      },
+      "root_token_offering": {
+        "name": "Mały Kamień Karmienia",
+        "flavorText": "...płytka miska wyryta w kamieniu, nie większa niż moneta, taka, w której zostawiłbyś okruch dla czegoś, co nie mogło o to poprosić. to, co tu jadło, nie przestało być głodne. po prostu przestało być widziane..."
+      },
+      "root_token_verdict": {
+        "name": "Kamień Naznaczony Wyrokiem",
+        "flavorText": "...rachunek znaczony trójkami, nie piątkami, osądzany i osądzany ponownie, dociskany tak mocno, że trzecie przejście rozłupało kamień. ktoś wciąż zmieniał zdanie w tej samej sprawie, raz za razem, w ciemności..."
+      },
       "reliquary_plate_chest": {
         "name": "Kolczuga strażnika relikwiarza"
       },

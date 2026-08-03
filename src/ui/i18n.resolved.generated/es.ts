@@ -5877,6 +5877,18 @@ export const es: EnTranslations = {
         "name": "Esquirla con Marcas de Cuenta",
         "flavorText": "...marcas de cinco en cinco, grabadas hondo, tachadas cada vez que la cuenta daba la vuelta. cientos de cincos antes de que el tachado se detenga, y la última fila nunca se terminó..."
       },
+      "root_token_unbinding": {
+        "name": "Nudo de Raíz Aflojado",
+        "flavorText": "...desgastado y suave donde un pulgar presionó una y otra vez, como si aflojara un nudo atado alrededor de nada que pudieras ver. alguien creyó que soltar era un acto de bondad. alguien se equivocó, o se adelantó, o ambas cosas..."
+      },
+      "root_token_offering": {
+        "name": "Pequeña Piedra de Alimentación",
+        "flavorText": "...un cuenco poco profundo tallado en piedra, no más grande que una moneda, del tipo en el que dejarías una migaja para algo que no podía pedirla. lo que comía aquí no dejó de tener hambre. solo dejó de ser visto..."
+      },
+      "root_token_verdict": {
+        "name": "Piedra Marcada de Juicio",
+        "flavorText": "...una cuenta marcada de tres en tres, no de cinco en cinco, juzgada y rejuzgada, presionada con tanta fuerza que la tercera marca partió la piedra. alguien seguía cambiando de opinión sobre la misma pregunta, una y otra vez, en la oscuridad..."
+      },
       "reliquary_plate_chest": {
         "name": "Loriga de la Guardia del Relicario"
       },

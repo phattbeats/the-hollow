@@ -5877,6 +5877,18 @@ export const nl_NL: EnTranslations = {
         "name": "Scherf met Telkerven",
         "flavorText": "...kerven in vijven, diep gekrast, doorgestreept telkens als de telling rondkwam. honderden vijven voor het doorstrepen stopt, en de laatste rij is nooit afgemaakt..."
       },
+      "root_token_unbinding": {
+        "name": "Losgemaakte Wortelknoop",
+        "flavorText": "...glad gesleten waar een duim keer op keer drukte, alsof hij een knoop losmaakte die om niets zichtbaars gebonden was. iemand geloofde dat loslaten een vorm van vriendelijkheid was. iemand had het mis, of was te vroeg, of allebei..."
+      },
+      "root_token_offering": {
+        "name": "Kleine Voedersteen",
+        "flavorText": "...een ondiepe kom, in steen gekrast, niet groter dan een munt, het soort waarin je een kruimel zou achterlaten voor iets dat niet kon vragen. wat hier at, hield niet op honger te hebben. het hield alleen op gezien te worden..."
+      },
+      "root_token_verdict": {
+        "name": "Oordeel-Getelde Steen",
+        "flavorText": "...een telling in drietallen, niet in vijven, geoordeeld en heroordeeld, zo hard gedrukt dat de derde keer de steen spleet. iemand bleef van gedachten veranderen over dezelfde vraag, keer op keer, in het donker..."
+      },
       "reliquary_plate_chest": {
         "name": "Reliekwacht-Maliënkolder"
       },

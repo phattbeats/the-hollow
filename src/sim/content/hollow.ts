@@ -1103,6 +1103,45 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
       'hundreds of fives before the crossing stops, and the last row was never ' +
       'finished...',
   },
+  // PHAA-599 (Under-Shrine v2, Board-approved room/puzzle expansion ahead of
+  // the three-descent Reckoning arc, PHAA-543): three found objects scattered
+  // through the Witness Chamber, same convention as shrine_diary_page /
+  // worn_prayer_token above. Each is an indirect echo of one of the three ways
+  // the lorebook's Witness-Root asks its question (free it, feed it, judge
+  // it); no answer is right, so these are texture for that beat, not a
+  // solvable riddle. The quest record that actually wires the Root's dialogue
+  // to this content lands separately (tests/progression.test.ts forbids a
+  // partially wired quest).
+  root_token_unbinding: {
+    id: 'root_token_unbinding',
+    name: 'Loosened Root-Knot',
+    kind: 'junk',
+    sellValue: 1,
+    flavorText:
+      '...worn smooth where a thumb pressed and pressed, like loosening a knot ' +
+      'tied around nothing you could see. someone believed letting go was a ' +
+      'kindness. someone was wrong, or early, or both...',
+  },
+  root_token_offering: {
+    id: 'root_token_offering',
+    name: 'Small Feeding Stone',
+    kind: 'junk',
+    sellValue: 1,
+    flavorText:
+      '...a shallow bowl scratched into stone no bigger than a coin, the kind ' +
+      "you'd leave a crumb in for something that couldn't ask. whatever ate " +
+      "here didn't stop being hungry. it just stopped being seen...",
+  },
+  root_token_verdict: {
+    id: 'root_token_verdict',
+    name: 'Judgment-Scored Stone',
+    kind: 'junk',
+    sellValue: 1,
+    flavorText:
+      '...a tally scored in threes, not fives, judged and rejudged, pressed so ' +
+      'hard the third pass split the stone. somebody kept changing their mind ' +
+      'about the same question, over and over, in the dark...',
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -1125,23 +1164,31 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
 // side walls sit at |x|=22; pillars run |x|=14 z 10..130, so spawns keep
 // clear of both) rather than a narrow x -5..5 lane. It reads as a steady
 // trickle down a real cave, never a pile, and the widened aggroRadius 8-9
-// pulls still never chain past two mobs at these spacings/x-offsets. The
-// boss sits on the room's own dais at the far end.
+// pulls still never chain past two mobs at these spacings/x-offsets.
+//
+// PHAA-599 (v2): the trash line and its density are UNCHANGED (still tuned to
+// the PHAA-433 solo-farm math above); only the boss moved. The Witness-Root
+// now sits in its own Witness Chamber (UNDER_SHRINE_LAYOUT z 39..89) on the
+// layout's dais, rather than the old far-room placement, so it anchors the
+// room the Board asked for as its actual test room. Gardener's Hollow
+// (z 89..148) is left trash-free, reserved for the Descent 2/3 content
+// (PHAA-543); thinning it further is a call for that quest-wiring PR, not
+// this one.
 const UNDER_SHRINE_SPAWNS: DungeonSpawn[] = [
   // First two spawns pushed south of z=20 so the entry (z=-2) sits outside
   // the aggro clamp; see dungeon_entry_clearance test.
   { mobId: 'palefeeder', x: -8, z: 22 },
   { mobId: 'rootmaw', x: 9, z: 22 },
   { mobId: 'palefeeder', x: -11, z: 32 },
-  { mobId: 'rootmaw', x: 6, z: 42 },
+  { mobId: 'rootmaw', x: 6, z: 45 }, // PHAA-854: nudged past the z=39 chamber-waist stub (blocks z 34.5..43.5 at this x), which the PHAA-599 room split introduced after this spawn was placed
   { mobId: 'palefeeder', x: -4, z: 52 },
   { mobId: 'rootmaw', x: 11, z: 62 },
+  { mobId: 'the_witness_root', x: 0, z: 78 }, // on UNDER_SHRINE_LAYOUT's dais, the Witness Chamber
   { mobId: 'palefeeder', x: 8, z: 72 },
   { mobId: 'rootmaw', x: -9, z: 82 },
   { mobId: 'palefeeder', x: -2, z: 92 },
   { mobId: 'rootmaw', x: 10, z: 102 },
   { mobId: 'palefeeder', x: -6, z: 112 },
-  { mobId: 'the_witness_root', x: 0, z: 132 }, // on UNDER_SHRINE_LAYOUT's dais
 ];
 
 // The Hollow hub itself. Per the constitution's Decision 19 (docs/plan-the-hollow.md
@@ -1223,6 +1270,13 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
       // same z as the diary page above (clear of the tomb row, which starts
       // at z 16) and clear of the pillars (which start at z 10).
       { itemId: 'worn_prayer_token', name: 'Worn Prayer Token', x: 17, z: 9 },
+      // PHAA-599 (Under-Shrine v2): three found objects scattered through the
+      // Witness Chamber (UNDER_SHRINE_LAYOUT z 39..89), clear of the pillar
+      // (|x|=14) and tomb (|x|=19) rows and of the Witness-Root's own spot
+      // (0, 78) on the chamber's dais.
+      { itemId: 'root_token_unbinding', name: 'Loosened Root-Knot', x: -6, z: 46 },
+      { itemId: 'root_token_offering', name: 'Small Feeding Stone', x: 7, z: 66 },
+      { itemId: 'root_token_verdict', name: 'Judgment-Scored Stone', x: -5, z: 84 },
     ],
     // PHAA-614: buried_root, the turn-in target for Shade's finale quest.
     // Placed at entry (0,4) + 2u so it is reachable straight off the door,

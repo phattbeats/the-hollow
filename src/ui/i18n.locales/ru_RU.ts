@@ -5102,6 +5102,15 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Осколок с зарубками',
   'entities.items.tally_shard.flavorText':
     '...зарубки по пять, глубокие, каждая вычеркнута по завершении счёта. сотни пятёрок вычеркнуты, прежде чем вычёркивание прекращается, а последний ряд так и остался незавершённым...',
+  'entities.items.root_token_unbinding.name': 'Развязанный корневой узел',
+  'entities.items.root_token_unbinding.flavorText':
+    '...отполирован с одной стороны большим пальцем, снова и снова, будто развязывая узел, привязанный неизвестно к чему. кто-то верил, что отпустить - это милосердие. этот кто-то ошибался, или поторопился, или и то и другое...',
+  'entities.items.root_token_offering.name': 'Маленький камень кормления',
+  'entities.items.root_token_offering.flavorText':
+    '...в камне выцарапана мелкая чаша, не больше монеты, оставить крошку тому, что не может попросить. то, что здесь ело, не перестало голодать. оно просто перестало быть видимым...',
+  'entities.items.root_token_verdict.name': 'Камень с зарубками приговора',
+  'entities.items.root_token_verdict.flavorText':
+    '...зарубки нанесены по три, а не по пять, приговор выносился и пересматривался снова, вдавлен так глубоко, что на третий раз камень треснул. будто кто-то во тьме снова и снова менял решение об одном и том же вопросе...',
   'entities.mobs.acolyte_tessa.name': 'Послушница Тесса',
   'entities.mobs.deacon_varric.name': 'Дьякон Варрик',
   'entities.mobs.reliquary_bonewalker.name': 'Поднятый костеход',

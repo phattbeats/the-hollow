@@ -920,6 +920,15 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Çetele İşaretli Parça',
   'entities.items.tally_shard.flavorText':
     '...beşerli işaretler, derin kazınmış, sayım her döndüğünde üstü çizilmiş. çizmeler durmadan önce yüzlerce beşli, ve son sıra hiç bitirilmemiş...',
+  'entities.items.root_token_unbinding.name': 'Gevşetilmiş Kök Düğümü',
+  'entities.items.root_token_unbinding.flavorText':
+    '...bir başparmağın defalarca bastırdığı yerde pürüzsüzleşmiş, görülemeyen bir şeyin etrafına bağlanmış bir düğümü çözermişçesine. birisi bırakmanın bir iyilik olduğuna inanıyordu. birisi yanılıyordu, ya da erkendi, ya da ikisi de...',
+  'entities.items.root_token_offering.name': 'Küçük Besleme Taşı',
+  'entities.items.root_token_offering.flavorText':
+    '...taşa kazınmış, bir bozuk paradan büyük olmayan sığ bir çukur, isteyemeyen bir şey için kırıntı bırakılacak türden. burada besleneni yemeyi bırakmadı. sadece görülmeyi bıraktı...',
+  'entities.items.root_token_verdict.name': 'Yargıyla İşaretlenmiş Taş',
+  'entities.items.root_token_verdict.flavorText':
+    '...beşerli değil, üçerli işaretlenmiş bir hesap, yargılanmış ve yeniden yargılanmış, üçüncü geçişte taşı çatlatacak kadar sert bastırılmış. biri karanlıkta aynı soru üzerinde defalarca fikrini değiştirip durdu...',
   'entities.items.linen_pouch.name': 'Keten Kese',
   'entities.items.travelers_knapsack.name': 'Gezginin Sırt Çantası',
   'entities.items.wolfhide_satchel.name': 'Kurt Derisi Heybe',

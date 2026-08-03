@@ -916,6 +916,15 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Skärva med Räknemärken',
   'entities.items.tally_shard.flavorText':
     '...märken i femtal, djupt ristade, överstrukna varje gång räkningen gick runt. hundratals femtal innan överstrykningarna upphör, och den sista raden blev aldrig färdig...',
+  'entities.items.root_token_unbinding.name': 'Lossad Rotknut',
+  'entities.items.root_token_unbinding.flavorText':
+    '...sliten blank där en tumme tryckte om och om igen, som att lossa en knut bunden runt ingenting man kunde se. någon trodde att släppa taget var en godhet. någon hade fel, eller var för tidig, eller båda delarna...',
+  'entities.items.root_token_offering.name': 'Liten Matningssten',
+  'entities.items.root_token_offering.flavorText':
+    '...en grund skål ristad i sten, inte större än ett mynt, den sortens man skulle lämna en smula i åt något som inte kunde be om det. det som åt här slutade inte vara hungrigt. det slutade bara synas...',
+  'entities.items.root_token_verdict.name': 'Domsmärkt Sten',
+  'entities.items.root_token_verdict.flavorText':
+    '...en räkning märkt i tretal, inte femtal, dömd och omdömd, tryckt så hårt att det tredje märket sprack stenen. någon fortsatte att ändra sig om samma fråga, om och om igen, i mörkret...',
   'entities.items.linen_pouch.name': 'Linnepåse',
   'entities.items.travelers_knapsack.name': 'Vandrarens Ryggsäck',
   'entities.items.wolfhide_satchel.name': 'Vargskinnsväska',

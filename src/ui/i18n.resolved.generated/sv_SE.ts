@@ -5877,6 +5877,18 @@ export const sv_SE: EnTranslations = {
         "name": "Skärva med Räknemärken",
         "flavorText": "...märken i femtal, djupt ristade, överstrukna varje gång räkningen gick runt. hundratals femtal innan överstrykningarna upphör, och den sista raden blev aldrig färdig..."
       },
+      "root_token_unbinding": {
+        "name": "Lossad Rotknut",
+        "flavorText": "...sliten blank där en tumme tryckte om och om igen, som att lossa en knut bunden runt ingenting man kunde se. någon trodde att släppa taget var en godhet. någon hade fel, eller var för tidig, eller båda delarna..."
+      },
+      "root_token_offering": {
+        "name": "Liten Matningssten",
+        "flavorText": "...en grund skål ristad i sten, inte större än ett mynt, den sortens man skulle lämna en smula i åt något som inte kunde be om det. det som åt här slutade inte vara hungrigt. det slutade bara synas..."
+      },
+      "root_token_verdict": {
+        "name": "Domsmärkt Sten",
+        "flavorText": "...en räkning märkt i tretal, inte femtal, dömd och omdömd, tryckt så hårt att det tredje märket sprack stenen. någon fortsatte att ändra sig om samma fråga, om och om igen, i mörkret..."
+      },
       "reliquary_plate_chest": {
         "name": "Relikvarievaktens ringbrynja"
       },

@@ -5877,6 +5877,18 @@ export const de_DE: EnTranslations = {
         "name": "Scherbe mit Zählkerben",
         "flavorText": "...Kerben in Fünfergruppen, tief geritzt, durchgestrichen, sooft die Zählung herumkam. hunderte Fünfer, bevor das Durchstreichen aufhört, und die letzte Reihe wurde nie vollendet..."
       },
+      "root_token_unbinding": {
+        "name": "Gelöster Wurzelknoten",
+        "flavorText": "...glattgerieben, wo ein Daumen immer wieder drückte, als löse er einen Knoten, der um nichts Sichtbares gebunden war. jemand glaubte, Loslassen sei eine Gnade. jemand irrte sich, oder war zu früh, oder beides..."
+      },
+      "root_token_offering": {
+        "name": "Kleiner Fütterstein",
+        "flavorText": "...eine flache Mulde, kaum größer als eine Münze, in Stein geritzt, der Art, in die man einen Krümel für etwas legt, das nicht bitten kann. was hier fraß, hörte nicht auf, hungrig zu sein. es hörte nur auf, gesehen zu werden..."
+      },
+      "root_token_verdict": {
+        "name": "Urteilsgezählter Stein",
+        "flavorText": "...eine Zählung in Dreiergruppen, nicht in Fünfern, gerichtet und neu gerichtet, so fest gedrückt, dass der dritte Durchgang den Stein spaltete. jemand änderte immer wieder seine Meinung zur selben Frage, wieder und wieder, im Dunkeln..."
+      },
       "reliquary_plate_chest": {
         "name": "Halsberge der Reliquiarwache"
       },

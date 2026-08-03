@@ -929,6 +929,15 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Mảnh Vỡ Khắc Vạch Đếm',
   'entities.items.tally_shard.flavorText':
     '...vạch khắc theo từng nhóm năm, khía sâu, gạch chéo mỗi lần đếm đủ vòng. hàng trăm nhóm năm trước khi những nét gạch dừng lại, và hàng cuối cùng chưa bao giờ được khắc xong...',
+  'entities.items.root_token_unbinding.name': 'Nút Rễ Đã Nới Lỏng',
+  'entities.items.root_token_unbinding.flavorText':
+    '...mòn nhẵn nơi một ngón tay cái ấn đi ấn lại, như đang nới lỏng một nút thắt quanh thứ gì đó không thể nhìn thấy. ai đó tin rằng buông tay là một lòng tốt. ai đó đã sai, hoặc đến sớm, hoặc cả hai...',
+  'entities.items.root_token_offering.name': 'Đá Cho Ăn Nhỏ',
+  'entities.items.root_token_offering.flavorText':
+    '...một cái bát nông khắc trong đá, không lớn hơn một đồng xu, loại mà người ta để lại một mẩu vụn cho thứ gì đó không thể lên tiếng xin. thứ ăn ở đây không ngừng đói. nó chỉ ngừng bị nhìn thấy...',
+  'entities.items.root_token_verdict.name': 'Đá Khắc Phán Quyết',
+  'entities.items.root_token_verdict.flavorText':
+    '...một bảng đếm khắc theo từng nhóm ba, không phải nhóm năm, bị phán xét rồi phán xét lại, ấn mạnh đến mức lần khắc thứ ba làm nứt đá. ai đó cứ mãi thay đổi ý kiến về cùng một câu hỏi, lặp đi lặp lại, trong bóng tối...',
   'entities.items.linen_pouch.name': 'Túi Vải Lanh',
   'entities.items.travelers_knapsack.name': 'Balô Lữ Khách',
   'entities.items.wolfhide_satchel.name': 'Túi Da Sói',

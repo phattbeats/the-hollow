@@ -5877,6 +5877,18 @@ export const da_DK: EnTranslations = {
         "name": "Skår med Tællemærker",
         "flavorText": "...mærker i femmere, ridset dybt, streget over hver gang tællingen nåede rundt. hundredvis af femmere før overstregningerne hører op, og den sidste række blev aldrig gjort færdig..."
       },
+      "root_token_unbinding": {
+        "name": "Løsnet Rodknude",
+        "flavorText": "...slidt glat, hvor en tommelfinger pressede igen og igen, som om den løsnede en knude bundet om intet, man kunne se. nogen troede, at give slip var en nådesgave. nogen tog fejl, eller var for tidligt ude, eller begge dele..."
+      },
+      "root_token_offering": {
+        "name": "Lille Fodringssten",
+        "flavorText": "...en lav skål ridset i sten, ikke større end en mønt, den slags man ville lægge en krumme i til noget, der ikke kunne bede om det. det, der spiste her, holdt ikke op med at være sultent. det holdt bare op med at blive set..."
+      },
+      "root_token_verdict": {
+        "name": "Domsmærket Sten",
+        "flavorText": "...en optælling mærket i tretal, ikke femtal, dømt og gendømt, presset så hårdt at det tredje mærke splittede stenen. nogen blev ved med at skifte mening om det samme spørgsmål, igen og igen, i mørket..."
+      },
       "reliquary_plate_chest": {
         "name": "Relikvievogterens Brynje"
       },

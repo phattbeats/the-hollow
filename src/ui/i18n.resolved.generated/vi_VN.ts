@@ -5877,6 +5877,18 @@ export const vi_VN: EnTranslations = {
         "name": "Mảnh Vỡ Khắc Vạch Đếm",
         "flavorText": "...vạch khắc theo từng nhóm năm, khía sâu, gạch chéo mỗi lần đếm đủ vòng. hàng trăm nhóm năm trước khi những nét gạch dừng lại, và hàng cuối cùng chưa bao giờ được khắc xong..."
       },
+      "root_token_unbinding": {
+        "name": "Nút Rễ Đã Nới Lỏng",
+        "flavorText": "...mòn nhẵn nơi một ngón tay cái ấn đi ấn lại, như đang nới lỏng một nút thắt quanh thứ gì đó không thể nhìn thấy. ai đó tin rằng buông tay là một lòng tốt. ai đó đã sai, hoặc đến sớm, hoặc cả hai..."
+      },
+      "root_token_offering": {
+        "name": "Đá Cho Ăn Nhỏ",
+        "flavorText": "...một cái bát nông khắc trong đá, không lớn hơn một đồng xu, loại mà người ta để lại một mẩu vụn cho thứ gì đó không thể lên tiếng xin. thứ ăn ở đây không ngừng đói. nó chỉ ngừng bị nhìn thấy..."
+      },
+      "root_token_verdict": {
+        "name": "Đá Khắc Phán Quyết",
+        "flavorText": "...một bảng đếm khắc theo từng nhóm ba, không phải nhóm năm, bị phán xét rồi phán xét lại, ấn mạnh đến mức lần khắc thứ ba làm nứt đá. ai đó cứ mãi thay đổi ý kiến về cùng một câu hỏi, lặp đi lặp lại, trong bóng tối..."
+      },
       "reliquary_plate_chest": {
         "name": "Áo Giáp Vệ Binh Thánh Tích"
       },

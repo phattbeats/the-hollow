@@ -4747,6 +4747,15 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': '刻痕碎片',
   'entities.items.tally_shard.flavorText':
     '……以五為一組刻得極深，每數完一輪便劃去一道。劃去的五連一組，累計上百組，最後一行卻始終沒有劃完……',
+  'entities.items.root_token_unbinding.name': '鬆開的根結',
+  'entities.items.root_token_unbinding.flavorText':
+    '……一面被拇指摩挲得光滑，彷彿在鬆開一個看不見繫在何處的結。有人相信放手是一種仁慈。那人要嘛錯了，要嘛為時過早，或兩者皆是……',
+  'entities.items.root_token_offering.name': '小餵食石',
+  'entities.items.root_token_offering.flavorText':
+    '……石頭上刻著一個淺淺的碗，比硬幣還小，彷彿是留給某個無法開口求食之物的一口殘渣。這裡吞食過的東西並未停止飢餓，只是不再被人看見……',
+  'entities.items.root_token_verdict.name': '刻痕裁決石',
+  'entities.items.root_token_verdict.flavorText':
+    '……刻痕以三為一組，而非五，反覆裁定又反覆推翻，壓得極深，第三遍時石頭都裂開了。彷彿有人在黑暗中，為同一個問題一次又一次地改變心意……',
   'entities.mobs.acolyte_tessa.name': '侍僧泰莎',
   'entities.mobs.deacon_varric.name': '執事瓦瑞克',
   'entities.mobs.reliquary_bonewalker.name': '復起的骨行者',

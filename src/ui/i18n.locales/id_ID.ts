@@ -944,6 +944,15 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Pecahan Bertanda Hitungan',
   'entities.items.tally_shard.flavorText':
     '...tanda dalam kelompok lima, digores dalam, dicoret tiap kali hitungan genap. ratusan kelompok lima sebelum coretan berhenti, dan baris terakhir tak pernah selesai...',
+  'entities.items.root_token_unbinding.name': 'Simpul Akar Terlepas',
+  'entities.items.root_token_unbinding.flavorText':
+    '...halus terkikis di tempat ibu jari menekan berulang kali, seolah melepaskan simpul yang terikat pada sesuatu yang tak terlihat. seseorang percaya bahwa melepaskan adalah kebaikan. seseorang salah, atau terlalu cepat, atau keduanya...',
+  'entities.items.root_token_offering.name': 'Batu Pemberi Makan Kecil',
+  'entities.items.root_token_offering.flavorText':
+    '...sebuah cekungan dangkal terukir di batu, tak lebih besar dari koin, jenis yang akan kau isi dengan remah untuk sesuatu yang tak bisa meminta. apa yang makan di sini tidak berhenti lapar. ia hanya berhenti terlihat...',
+  'entities.items.root_token_verdict.name': 'Batu Bertanda Vonis',
+  'entities.items.root_token_verdict.flavorText':
+    '...sebuah hitungan ditandai per tiga, bukan per lima, diadili dan diadili ulang, ditekan begitu keras hingga tanda ketiga meretakkan batu. seseorang terus berubah pikiran tentang pertanyaan yang sama, berulang kali, dalam gelap...',
   'entities.items.linen_pouch.name': 'Kantong Linen',
   'entities.items.travelers_knapsack.name': 'Ransel Pengembara',
   'entities.items.wolfhide_satchel.name': 'Tas Kulit Serigala',
