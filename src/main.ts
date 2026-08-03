@@ -1173,6 +1173,10 @@ async function startGame(
           case 'calendar':
             hud.toggleCalendar();
             break;
+          case 'weaponStow':
+            world.toggleWeaponStow();
+            audio.weaponStow(world.player.weaponStowed);
+            break;
           case 'chat':
             openChat();
             break;

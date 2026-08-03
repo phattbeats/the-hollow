@@ -944,6 +944,15 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Pecahan Bertanda Hitungan',
   'entities.items.tally_shard.flavorText':
     '...tanda dalam kelompok lima, digores dalam, dicoret tiap kali hitungan genap. ratusan kelompok lima sebelum coretan berhenti, dan baris terakhir tak pernah selesai...',
+  'entities.items.root_token_unbinding.name': 'Simpul Akar Terlepas',
+  'entities.items.root_token_unbinding.flavorText':
+    '...halus terkikis di tempat ibu jari menekan berulang kali, seolah melepaskan simpul yang terikat pada sesuatu yang tak terlihat. seseorang percaya bahwa melepaskan adalah kebaikan. seseorang salah, atau terlalu cepat, atau keduanya...',
+  'entities.items.root_token_offering.name': 'Batu Pemberi Makan Kecil',
+  'entities.items.root_token_offering.flavorText':
+    '...sebuah cekungan dangkal terukir di batu, tak lebih besar dari koin, jenis yang akan kau isi dengan remah untuk sesuatu yang tak bisa meminta. apa yang makan di sini tidak berhenti lapar. ia hanya berhenti terlihat...',
+  'entities.items.root_token_verdict.name': 'Batu Bertanda Vonis',
+  'entities.items.root_token_verdict.flavorText':
+    '...sebuah hitungan ditandai per tiga, bukan per lima, diadili dan diadili ulang, ditekan begitu keras hingga tanda ketiga meretakkan batu. seseorang terus berubah pikiran tentang pertanyaan yang sama, berulang kali, dalam gelap...',
   'entities.items.linen_pouch.name': 'Kantong Linen',
   'entities.items.travelers_knapsack.name': 'Ransel Pengembara',
   'entities.items.wolfhide_satchel.name': 'Tas Kulit Serigala',
@@ -1143,6 +1152,9 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.storm_core.name': 'Inti Badai',
   'entities.items.stormcallers_crown.name': 'Mahkota Pemanggil Badai',
   'entities.items.stormcallers_spaulders.name': 'Pelindung Bahu Pemanggil Badai',
+  'entities.items.deathless_greatblade.name': 'Pedang Besar Baka',
+  'entities.items.scepter_of_the_deathless_court.name': 'Tongkat Kerajaan Istana Baka',
+  'entities.items.stormcallers_focus.name': 'Fokus Pemanggil Badai',
   'entities.items.stormshard_leggings.name': 'Legging Serpihan Badai',
   'entities.items.sturdy_belt.name': 'Sabuk Pengembara Kokoh',
   'entities.items.supply_crate.name': 'Peti Pasokan Curian',
@@ -1258,6 +1270,9 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.nhalia_mourner.name': 'Pelayat Nhalia',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'Nythraxis, Bencana Thornpeak',
   'entities.mobs.nythraxis_skeleton_warrior.name': 'Pengawal Kerajaan Bangkit',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': 'Roh Aldren',
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'Roh Malric',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'Roh Voss',
   'entities.mobs.ogre_crusher.name': 'Penghancur Thornpeak',
   'entities.mobs.old_cragmaw.name': 'Cragmaw Tua',
   'entities.mobs.old_greyjaw.name': 'Greyjaw Tua',
@@ -2876,15 +2891,9 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'guide.language.label': 'Bahasa',
   'guide.language.select': 'Pilih bahasa',
   'guide.loading': 'Memuat...',
-  'guide.lore.aldricBody':
-    'Seorang pendeta desa yang rendah hati, yang pertama menyebut nama kultus itu di atas kuburan yang dinodai di Eastbrook, lalu mengikuti jejaknya secara langsung melewati rawa hingga ke tembok di Highwatch. Dia adalah jantung yang teguh dari seluruh kampanye ini.',
-  'guide.lore.aldricRole': 'Pendeta Lembah',
   'guide.lore.figuresBody':
     'Segelintir orang menempuh seluruh perjalanan bersamamu. Perhatikan nama-nama ini dari lembah hingga puncak.',
   'guide.lore.figuresTitle': 'Wajah-wajah yang akan kamu kenali',
-  'guide.lore.marenBody':
-    'Seorang pelacak bersuara pelan yang kamu temui di antara alang-alang Mirefen, dengan langkah senyap dan bilah pendek. Dia juga mengikuti jejak ke utara, dan telinganyalah yang menangkap kata-kata yang mengantarmu ke puncak.',
-  'guide.lore.marenRole': 'Pengintai sang Marshal',
   'guide.models.count': '{count} model',
   'guide.models.groupClasses': 'Kelas',
   'guide.models.groupCreatures': 'Makhluk',

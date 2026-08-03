@@ -46,4 +46,22 @@ describe('ensureSchema wires every schema module at boot', () => {
     // password_set is the column the unlink guard reads; it must be added at boot.
     expect(applied).toContain('password_set');
   });
+
+  it('applies additive idempotent Renown DDL under the same advisory lock', async () => {
+    await ensureSchema();
+    const applied = h.calls.join('\n');
+    const lock = h.calls.findIndex((sql) => sql.includes('pg_advisory_xact_lock'));
+    const schema = h.calls.findIndex((sql) =>
+      sql.includes('CREATE TABLE IF NOT EXISTS character_deeds'),
+    );
+
+    expect(lock).toBeGreaterThan(-1);
+    expect(schema).toBeGreaterThan(lock);
+    expect(applied).toContain('ALTER TABLE accounts ADD COLUMN IF NOT EXISTS deed_broadcasts');
+    expect(applied).toContain('realm TEXT NOT NULL');
+    expect(applied).toContain('UNIQUE (character_id, deed_id)');
+    expect(applied).toContain('CREATE INDEX IF NOT EXISTS character_deeds_deed');
+    expect(applied).toContain('CREATE INDEX IF NOT EXISTS character_deeds_account');
+    expect(applied).toContain('CREATE INDEX IF NOT EXISTS character_deeds_character_earned');
+  });
 });

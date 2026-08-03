@@ -1031,6 +1031,8 @@ export function returnFromArena(ctx: SimContext, match: ArenaMatch): void {
       if (meta) ctx.boarballRestoreChar(meta, e);
     }
     resetForArena(ctx, e);
+    const meta = ctx.players.get(pid);
+    if (meta) Object.assign(meta.moveInput, emptyMoveInput());
     // The bout is a parenthesis, not a rest stop: undo the clean-slate full
     // restore and hand back exactly the HP, resource, cooldowns, and CC DR the
     // fighter carried in, so an arena match can never be farmed as a free heal,

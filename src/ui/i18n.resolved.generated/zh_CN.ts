@@ -1681,6 +1681,8 @@ export const zh_CN: EnTranslations = {
       "typeGroupBody": "主线剧情的每个篇章都终结于一扇地下城之门。前置引导可单人完成，但对一个篇章反派的最后一击，是为五人小队准备的。",
       "sagaTitle": "循迹北行",
       "sagaBody": "主线剧情是一场漫长的追查。一个死亡邪教正在这片国度的坟墓间行动，你每揭开一个篇章，便又向北指明一个区域。你绝不会一次性面对整个阴谋；你抽出一根线头，它便引向握着下一头的那只手。",
+      "sagaReachesTitle": "原野：一盏灯与一本历法",
+      "sagaReachesBody": "在霍洛沃原野，布莱泽·绿爪用火绒灯守着那座神龛之瓶，教堂管事与掘墓人则按月令安排耕种。第一条线索很小：守好灯火，清除野狼，摸熟这片土地。等到前路开启，你自会知道那盏灯正握在谁的手里。",
       "sagaValeTitle": "谷地：印玺上的一个名字",
       "sagaValeBody": "在东溪，死者无法安息，而其背后的印记属于一个早被认为已然消亡的教派。循迹追查到一名在礼拜堂地穴中作业的唤墓者，他自己的文书又将你指向北方的湿地。",
       "sagaMarshTitle": "湿地：一笔灵魂的贡赋",
@@ -1698,10 +1700,10 @@ export const zh_CN: EnTranslations = {
     "lore": {
       "figuresTitle": "你将渐渐熟识的面孔",
       "figuresBody": "有那么几个人会与你同行整段旅途。从谷地到峰巅，留意这些名字。",
-      "aldricRole": "谷地的牧师",
-      "aldricBody": "一位谦逊的乡村牧师，他在东溪一座被玷污的坟墓前最先道出了邪教之名，随后亲自循着踪迹穿过湿地，一路追到高守哨站的城墙下。他是整场战役坚定的核心。",
-      "marenRole": "元帅的斥候",
-      "marenBody": "一位你在泥沼的芦苇丛中遇见的低声寡言的追踪者，脚步轻悄，配一柄短刃。她也一路向北循迹而行，正是她的耳朵捕捉到了那些话语，将你引向峰巅。"
+      "zebediahRole": "根谷的教堂管事",
+      "zebediahBody": "他是一位耐心的教堂管事，用这本历法守护着这片原野，双手常半埋在土里。他注视着瓶中的灯火，按月令安排耕种，是初来乍到者最先听到的声音。",
+      "faddickRole": "法洛畦场的掘墓人",
+      "faddickBody": "他手持长柄工具，比起剑更熟悉铲子。他扫除从林中渗入的阴翳，安葬亡者，记着自己照管的每一块地。当线索离开神龛之时，往往是他来指出前路。"
     },
     "dungeonsPage": {
       "heading": "地下城与团队副本",
@@ -4297,6 +4299,10 @@ export const zh_CN: EnTranslations = {
         "name": "嘲讽",
         "description": "嘲讽目标：你的威胁值提高到其最仇恨敌人的水平，并强迫其攻击你 3 秒。"
       },
+      "ironhold": {
+        "name": "坚守",
+        "description": "紧守盾牌，在 8 秒内使受到的所有伤害降低 40%。"
+      },
       "fireball": {
         "name": "火球术",
         "description": "投掷一团火球，造成 {damage} 点火焰伤害，并附加持续伤害。"
@@ -4488,6 +4494,10 @@ export const zh_CN: EnTranslations = {
       "retribution_aura": {
         "name": "惩戒光环",
         "description": "以神圣能量环绕自身，持续 30 分钟，对任何近战攻击你的敌人造成 5 点神圣伤害。"
+      },
+      "sacred_bulwark": {
+        "name": "神圣壁垒",
+        "description": "持续 10 秒，下一次本该致命的打击将被抵挡，并使你恢复到 35% 的生命值。"
       },
       "tame_beast": {
         "name": "驯服野兽",
@@ -4772,6 +4782,10 @@ export const zh_CN: EnTranslations = {
       "rip": {
         "name": "割裂",
         "description": "终结技，在 12 秒内造成流血伤害。消耗连击点。仅限狼形态。"
+      },
+      "primal_reflexes": {
+        "name": "原始反射",
+        "description": "你的本能变得敏锐，在 6 秒内使闪避几率提高 50%。"
       },
       "mortal_strike": {
         "name": "致死打击",
@@ -5865,6 +5879,18 @@ export const zh_CN: EnTranslations = {
         "name": "刻痕碎片",
         "flavorText": "……以五为一组刻得极深，每数完一轮便划去一道。划去的五连一组，累计上百组，最后一行却始终没有划完……"
       },
+      "root_token_unbinding": {
+        "name": "松开的根结",
+        "flavorText": "……一面被拇指摩挲得光滑，仿佛在松开一个看不见系在何处的结。有人相信放手是一种仁慈。那人要么错了，要么为时过早，或两者皆是……"
+      },
+      "root_token_offering": {
+        "name": "小喂食石",
+        "flavorText": "……石头上刻着一个浅浅的碗，比硬币还小，仿佛是留给某个无法开口求食之物的一口残渣。这里吞食过的东西并未停止饥饿，只是不再被人看见……"
+      },
+      "root_token_verdict": {
+        "name": "刻痕裁决石",
+        "flavorText": "……刻痕以三为一组，而非五，反复裁定又反复推翻，压得极深，第三遍时石头都裂开了。仿佛有人在黑暗中，为同一个问题一次又一次地改变心意……"
+      },
       "reliquary_plate_chest": {
         "name": "圣物库守卫锁甲"
       },
@@ -5991,6 +6017,15 @@ export const zh_CN: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "唤雷者肩甲"
+      },
+      "deathless_greatblade": {
+        "name": "不朽巨剑"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "不朽王庭权杖"
+      },
+      "stormcallers_focus": {
+        "name": "唤雷者的焦点"
       },
       "unknown_alien_weaponry": {
         "name": "未知异星武器"
@@ -6230,6 +6265,15 @@ export const zh_CN: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "尼思拉克西斯，荆峰之灾"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "奥德伦之魂"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "马尔里克之魂"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "沃斯之魂"
       },
       "reliquary_ledger_wraith": {
         "name": "名册幽魂"

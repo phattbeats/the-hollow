@@ -1746,6 +1746,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.taunt.name': '도발',
   'entities.abilities.taunt.description':
     '대상을 도발합니다. 자신의 위협 수준이 대상이 가장 증오하는 적과 같아지며, 3초 동안 자신을 공격하게 만듭니다.',
+  'entities.abilities.ironhold.name': '아이언홀드',
+  'entities.abilities.ironhold.description':
+    '방패 뒤에 웅크려 8초 동안 받는 모든 피해를 40% 감소시킵니다.',
   'entities.abilities.fireball.name': '화염구',
   'entities.abilities.fireball.description':
     '불덩이를 날려 {damage}의 화염 피해와 추가 지속 피해를 입힙니다.',
@@ -1882,6 +1885,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.retribution_aura.name': '응징의 오라',
   'entities.abilities.retribution_aura.description':
     '30분 동안 신성한 기운으로 자신을 감싸 근접 공격으로 자신을 타격하는 모든 적에게 5의 신성 피해를 입힙니다.',
+  'entities.abilities.sacred_bulwark.name': '신성한 보루',
+  'entities.abilities.sacred_bulwark.description':
+    '10초 동안, 당신을 죽일 다음 공격이 무효화되며 대신 체력을 35%로 회복시킵니다.',
   'entities.abilities.tame_beast.name': '야수 길들이기',
   'entities.abilities.tame_beast.description':
     '야수를 길들여 동료로 삼기 시작합니다. 야수는 자신의 레벨 이하이며 정예가 아니어야 합니다. 소환수는 주인을 따르고 적을 공격하며 자체 위협 수준을 유지합니다. 한 번에 하나의 소환수만 둘 수 있습니다.',
@@ -2082,6 +2088,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.rip.name': '찢기',
   'entities.abilities.rip.description':
     '12초에 걸쳐 출혈 피해를 입히는 결정타입니다. 연계 점수를 소모합니다. 늑대 변신 전용.',
+  'entities.abilities.primal_reflexes.name': '원시 반사신경',
+  'entities.abilities.primal_reflexes.description':
+    '본능이 예민해져 6초 동안 회피 확률이 50% 증가합니다.',
   'entities.abilities.mortal_strike.name': '죽음의 일격',
   'entities.abilities.mortal_strike.description':
     '잔혹한 일격으로 무기 피해에 {damage}의 피해를 더합니다. (무기 특화 대표 기술)',
@@ -3711,6 +3720,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hud.tutorial.returnBody':
     '타오르는 것을 지니고 있습니다. 브라더 초록발에게 돌아가 {interactKey} 키를 눌러 전달하세요.',
   'entities.mobs.nythraxis_skeleton_warrior.name': '되살아난 왕실 근위병',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': '알드렌의 영혼',
+  'entities.mobs.nythraxis_heroic_priest_add.name': '말릭의 영혼',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': '보스의 영혼',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': '나이트락시스, 손피크의 재앙',
   'itemUi.quality.legendary': '전설',
   'entities.items.deathless_heartwood.name': '죽지 않는 왕관의 심재',
@@ -3723,6 +3735,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': '영혼불꽃 어깨덮개',
   'entities.items.stormcallers_crown.name': '폭풍소환사의 관',
   'entities.items.stormcallers_spaulders.name': '폭풍소환사의 어깨갑옷',
+  'entities.items.deathless_greatblade.name': '죽지 않는 대검',
+  'entities.items.scepter_of_the_deathless_court.name': '죽지 않는 궁정의 홀',
+  'entities.items.stormcallers_focus.name': '폭풍소환사의 초점',
   'hud.chat.context.convertToRaid': '공격대로 전환',
   'hud.chat.context.convertToParty': '파티로 전환',
   'hudChrome.raidConvert.leaderOnly': '공격대장만 파티로 전환할 수 있습니다.',
@@ -4731,15 +4746,15 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     '낡은 부위를 새 업그레이드로 바꾸는 것이, 이미 자라난 몸에 맞지 않는 장비로 완벽하게 플레이하는 것보다 당신에게 더 큰 도움이 됩니다. 더 좋은 것이 떨어지거나 퀘스트가 내어 줄 때 받으세요. 좋은 물건을 나중을 위해 아껴 두지 마세요.',
   'guide.gear.upgradeTitle': '장비를 늘 최신으로',
-  'guide.lore.aldricBody':
-    '동부개울에서 더럽혀진 무덤 앞에 서서 교단의 이름을 처음 밝혀낸 다음, 직접 그 자취를 좇아 습지를 지나 하이워치의 성벽까지 오르는 소박한 마을 사제. 온 원정의 굳건한 심장입니다.',
-  'guide.lore.aldricRole': '골짜기의 사제',
+  'guide.lore.faddickBody':
+    '긴 자루의 도구를 들고, 칼보다 호미에 더 익숙한 조용한 섹스턴입니다. 숲에서 기어드는 것을 치우고, 죽은 자를 묻어 주며, 자기 땅의 모든 구획을 기억합니다. 자취가 성역을 떠날 때, 길을 알려 주는 것은 종종 그입니다.',
+  'guide.lore.faddickRole': '팰로 에이커스의 섹스턴',
   'guide.lore.figuresBody':
     '몇몇 사람들은 당신과 함께 이 길을 끝까지 걷습니다. 골짜기에서 봉우리까지, 이 이름들을 눈여겨보세요.',
   'guide.lore.figuresTitle': '차차 알게 될 얼굴들',
-  'guide.lore.marenBody':
-    '마이어펜의 갈대밭에서 만나는, 말수 적은 추적자. 조용한 발걸음과 짧은 칼이 전부입니다. 그녀 역시 북쪽으로 자취를 좇으며, 당신을 봉우리로 보내는 그 말을 알아챈 것도 바로 그녀의 귀입니다.',
-  'guide.lore.marenRole': '원수의 정찰병',
+  'guide.lore.zebediahBody':
+    '리치즈를 달력에 맞춰 지키는, 인내심 강한 버저이며, 손은 늘 반쯤 흙에 묻혀 있습니다. 화분의 등불을 살피고, 달을 따라 파종을 정하며, 새로 온 이에게 길이 가장 먼저 들려주는 목소리입니다.',
+  'guide.lore.zebediahRole': '루트 홀로우의 버저',
   'guide.models.count': '모델 {count}개',
   'guide.models.groupClasses': '직업',
   'guide.models.groupCreatures': '생명체',
@@ -4788,6 +4803,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '쏜피크에서 모든 계략이 환히 드러납니다. 골짜기 이래로 빼앗긴 영혼 하나하나가 산속 깊은 곳에서 벌어지는 교단의 음산한 작업에 부어진 십일조였습니다. 예배당 뜰에서 시작된 자취가 여기, 다섯 명이 함께 내려가 그 모든 일의 배후를 마주하는 곳에서 끝납니다. 그 밑바닥에 누가 기다리는지는 당신이 직접 알아내도록 남겨 두겠습니다.',
   'guide.questsPage.sagaPeaksTitle': '봉우리: 십일조가 향한 곳',
   'guide.questsPage.sagaTitle': '북쪽으로 자취를 좇으세요',
+  'guide.questsPage.sagaReachesBody':
+    '호울로 리치즈에서 브라더 그린포우가 잉버벌브로 성역의 화분을 살려 두고, 버저와 섹스턴이 달을 따라 파종을 정합니다. 첫 실마리는 작은 것입니다. 등불을 꺼뜨리지 말고, 이리저기 쫓기는 늑대를 물리치며, 이 땅을 익히십시오. 길이 트일 무렵이면 등불이 누구의 손에 있는지, 당신은 이미 알고 있을 것입니다.',
+  'guide.questsPage.sagaReachesTitle': '리치즈: 등불과 달력',
   'guide.questsPage.sagaValeBody':
     '동부개울에서는 죽은 자가 쉬지 못하고, 그 배후의 표식은 사라진 지 오래라 여겨지던 종파의 것입니다. 자취를 좇으면 예배당 묘실에서 일하는 무덤부름에 닿고, 그의 문서가 당신을 북쪽 습지로 가리킵니다.',
   'guide.questsPage.sagaValeTitle': '골짜기: 인장에 새겨진 이름',
@@ -4995,6 +5013,15 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': '눈금이 새겨진 파편',
   'entities.items.tally_shard.flavorText':
     '...다섯 개씩 한 묶음으로 깊이 새겨져, 셀 때마다 하나씩 그어 지워졌다. 지워진 다섯 묶음이 수백에 이르는데, 그 지움이 멈춘 마지막 줄만은 끝내 채워지지 않았다...',
+  'entities.items.root_token_unbinding.name': '풀린 뿌리 매듭',
+  'entities.items.root_token_unbinding.flavorText':
+    '...보이지 않는 무언가에 묶인 매듭을 풀듯, 엄지손가락에 계속 문질러져 매끄러워졌다. 누군가는 놓아주는 것이 친절이라 믿었다. 그 사람은 틀렸거나, 너무 일렀거나, 아니면 둘 다였을 것이다...',
+  'entities.items.root_token_offering.name': '작은 먹이돌',
+  'entities.items.root_token_offering.flavorText':
+    '...동전보다도 작은 얕은 그릇 모양이 돌에 새겨져 있다. 물어볼 수조차 없는 무언가에게 부스러기를 남겨주기 위한 것이었으리라. 이곳에서 먹던 무언가는 배고픔을 멈춘 것이 아니라, 그저 보이지 않게 되었을 뿐이다...',
+  'entities.items.root_token_verdict.name': '심판이 새겨진 돌',
+  'entities.items.root_token_verdict.flavorText':
+    '...다섯이 아니라 셋으로 새겨진 눈금이, 판결되고 또 뒤집히며, 세 번째에는 돌이 갈라질 만큼 세게 눌려 있다. 누군가 어둠 속에서 같은 질문을 두고 몇 번이고 마음을 바꾸었던 것 같다...',
   'entities.mobs.acolyte_tessa.name': '수련사제 테사',
   'entities.mobs.deacon_varric.name': '부제 바릭',
   'entities.mobs.reliquary_bonewalker.name': '되살아난 해골보행자',

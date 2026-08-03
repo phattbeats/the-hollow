@@ -36,6 +36,12 @@ export interface ClipMap {
   walkBack?: string;
   /** one-shot played on respawn (skeleton awaken / boss taunt) */
   flourish?: string;
+  /** Z-key weapon-sheathe gesture one-shot (PHAA-737 Row J, upstream #1765).
+   *  The windup's midpoint is when the held prop re-parents from the handslot
+   *  bone to the rig's back bone (see `weaponBackBone`). Optional: rigs without
+   *  a sheathe gesture snap the swap immediately (CharacterVisual.setWeaponStowed
+   *  falls through to `forceStow` when `clips.stow` is undefined). */
+  stow?: string;
   /** player-facing overhead emote one-shots; clips are sourced from the GLB. */
   emote?: Partial<Record<OverheadEmoteId, EmoteClipSpec>>;
 }
@@ -124,6 +130,13 @@ export interface VisualDef {
    *  rotation only works because it targets non-skinned prop meshes). Scale
    *  is uniform and applied before the translation (T * S). */
   skinnedMeshFix?: { node: string; position?: [number, number, number]; scale?: number }[];
+  /** Bone name that a sheathed held prop re-parents onto (PHAA-737 Row J,
+   *  upstream #1765 ADAPT). Defaults to 'chest' on KayKit rigs; chibi rigs
+   *  override to 'DEF-spine003'. Used only when `weaponSlots` is non-empty and
+   *  the entity has the sheathed bit on; otherwise the attach uses its
+   *  authored bone. GLTFLoader sanitizes node names (PropertyBinding strips
+   *  [].:/ chars), so the runtime resolver tries both spellings. */
+  weaponBackBone?: string;
 }
 
 /** The slice of a VisualDef that decides how held weapons attach (which bones, and
@@ -586,14 +599,15 @@ export const VISUALS: Record<string, VisualDef> = {
   // pass (scripts/phaa586_author_chibi_combat_clips.py) and baked into every
   // outfit GLB; the attack list varies per class for swing flavor.
   //
-  // No held-weapon attach: the grip system (assets.ts isHandslotBone /
-  // KAYKIT_HAND_GRIPS / VARIANT_GRIPS) resolves grips by pattern-matching
-  // the KayKit `handslot.r`/`handslot.l` bone names specifically; the chibi
-  // rig's `DEF-hand.R`/`DEF-hand.L` bones match none of that data, so an
-  // attach here would render a weapon at its raw unaligned transform in her
-  // hand. Shipping without visible held weapons is the accepted v1 fallback
-  // (per PHAA-587); a Blender-authored chibi grip table is follow-up work,
-  // flagged on PHAA-583.
+  // Held weapons (PHAA-697): each class mounts the same weapon GLBs its KayKit
+  // male sibling does, on the chibi rig's `DEF-hand.R`/`DEF-hand.L` bones. The
+  // KayKit `handslot.r`/`handslot.l` grip data (assets.ts KAYKIT_HAND_GRIPS /
+  // VARIANT_GRIPS) is authored for a different bone frame, so the chibi bones
+  // route to a parallel CHIBI_HAND_GRIPS / CHIBI_VARIANT_GRIPS table (see
+  // assets.ts isChibiHandBone / applyChibiHandGrip), tuned against the offscreen
+  // render rig. Layout mirrors the male roster exactly: hunter keeps its crossbow
+  // (attach, no weaponSlots), the rogue dual-wields ([0, 1]), the warlock keeps a
+  // fixed offhand spellbook while the wand mainhand swaps.
   player_warrior_f: {
     url: `${PLAYERS}/chibi_female_knight.glb`,
     height: 2.29,
@@ -607,6 +621,8 @@ export const VISUALS: Record<string, VisualDef> = {
       death: 'anim_dying',
       jump: 'anim_jump',
     },
+    attach: [{ url: `${WEAPONS}/sword_1handed.glb`, bone: 'DEF-hand.R' }],
+    weaponSlots: [0],
   },
   player_paladin_f: {
     url: `${PLAYERS}/chibi_female_knight.glb`,
@@ -623,6 +639,8 @@ export const VISUALS: Record<string, VisualDef> = {
     },
     tint: 0xe8c468, // gold/white
     tintStrength: 0.4,
+    attach: [{ url: `${WEAPONS}/axe_1handed.glb`, bone: 'DEF-hand.R' }],
+    weaponSlots: [0],
   },
   player_hunter_f: {
     url: `${PLAYERS}/chibi_female_archer.glb`,
@@ -637,6 +655,9 @@ export const VISUALS: Record<string, VisualDef> = {
       death: 'anim_dying',
       jump: 'anim_jump',
     },
+    // Mirrors player_hunter: the crossbow is fixed (no weaponSlots), so a melee
+    // weapon never replaces it.
+    attach: [{ url: `${WEAPONS}/crossbow_1handed.glb`, bone: 'DEF-hand.R' }],
   },
   player_druid_f: {
     url: `${PLAYERS}/chibi_female_archer.glb`,
@@ -653,6 +674,8 @@ export const VISUALS: Record<string, VisualDef> = {
     },
     tint: 0x6b7d3f, // moss/earth
     tintStrength: 0.4,
+    attach: [{ url: `${WEAPONS}/staff.glb`, bone: 'DEF-hand.R' }],
+    weaponSlots: [0],
   },
   player_rogue_f: {
     url: `${PLAYERS}/chibi_female_ninja.glb`,
@@ -667,6 +690,12 @@ export const VISUALS: Record<string, VisualDef> = {
       death: 'anim_dying',
       jump: 'anim_jump',
     },
+    // Mirrors player_rogue: dual-wield, the equipped weapon shows in BOTH hands.
+    attach: [
+      { url: `${WEAPONS}/dagger.glb`, bone: 'DEF-hand.R' },
+      { url: `${WEAPONS}/dagger.glb`, bone: 'DEF-hand.L' },
+    ],
+    weaponSlots: [0, 1],
   },
   player_mage_f: {
     url: `${PLAYERS}/chibi_female.glb`,
@@ -681,6 +710,8 @@ export const VISUALS: Record<string, VisualDef> = {
       death: 'anim_dying',
       jump: 'anim_jump',
     },
+    attach: [{ url: `${WEAPONS}/staff.glb`, bone: 'DEF-hand.R' }],
+    weaponSlots: [0],
   },
   player_priest_f: {
     url: `${PLAYERS}/chibi_female.glb`,
@@ -697,6 +728,8 @@ export const VISUALS: Record<string, VisualDef> = {
     },
     tint: 0xf0e9d6,
     tintStrength: 0.5,
+    attach: [{ url: `${WEAPONS}/staff.glb`, bone: 'DEF-hand.R' }],
+    weaponSlots: [0],
   },
   player_warlock_f: {
     url: `${PLAYERS}/chibi_female_merchant.glb`,
@@ -719,6 +752,20 @@ export const VISUALS: Record<string, VisualDef> = {
     // head; tuned empirically against the offscreen render rig, see
     // scripts/phaa633_witch_hat_shot.mjs.
     skinnedMeshFix: [{ node: 'hat', scale: 0.72, position: [0, 0.66, 0] }],
+    // Mirrors player_warlock: the wand mainhand swaps; the spellbook is a fixed
+    // offhand. The male def anchors the book with gripRef 'Spellbook_open' (a node
+    // that ships in the KayKit mage.glb); the chibi rig has no such node, so the
+    // book uses an explicit hand-local offset instead (tuned on the render rig).
+    attach: [
+      { url: `${WEAPONS}/wand.glb`, bone: 'DEF-hand.R' },
+      {
+        url: `${WEAPONS}/spellbook_open.glb`,
+        bone: 'DEF-hand.L',
+        position: [0.02, 0.14, 0.04],
+        rotationY: Math.PI,
+      },
+    ],
+    weaponSlots: [0], // mainhand (wand) swaps; spellbook offhand stays
   },
   player_shaman_f: {
     url: `${PLAYERS}/chibi_female_basemesh.glb`,
@@ -735,6 +782,8 @@ export const VISUALS: Record<string, VisualDef> = {
     },
     tint: 0x6f8fc9,
     tintStrength: 0.4,
+    attach: [{ url: `${WEAPONS}/axe_1handed.glb`, bone: 'DEF-hand.R' }],
+    weaponSlots: [0],
   },
 
   // -- forms ---------------------------------------------------------------

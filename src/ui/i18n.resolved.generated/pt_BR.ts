@@ -1180,7 +1180,7 @@ export const pt_BR: EnTranslations = {
         "levels": "Níveis {min} a {max}",
         "cta": "Veja o mundo",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Vale de Eastbrook",
         "valeBlurb": "Colinas verdes e bosques antigos onde toda aventura começa.",
         "marshName": "Pântano de Mirefen",
@@ -1681,6 +1681,8 @@ export const pt_BR: EnTranslations = {
       "typeGroupBody": "Cada capítulo da história principal termina numa porta de masmorra. A introdução pode ser feita sozinho, mas o golpe final contra o vilão de um capítulo é feito para um grupo de cinco.",
       "sagaTitle": "Siga a trilha ao norte",
       "sagaBody": "A história principal é uma longa perseguição. Um culto da morte está em ação nas sepulturas do reino, e cada capítulo que você fecha aponta uma zona mais adiante na estrada. Você nunca enfrenta a conspiração inteira de uma vez; você puxa um fio, e ele leva à próxima mão que o segura.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "O Vale: um nome num selo",
       "sagaValeBody": "Em Eastbrook os mortos não descansam, e a marca por trás disso pertence a uma seita há muito dada como extinta. Rastreie-a até um Chamador de Sepulturas trabalhando na cripta da capela, e os próprios papéis dele apontam você rumo ao brejo no norte.",
       "sagaMarshTitle": "O pântano: um dízimo de almas",
@@ -1698,10 +1700,10 @@ export const pt_BR: EnTranslations = {
     "lore": {
       "figuresTitle": "Rostos que você vai conhecer",
       "figuresBody": "Um punhado de pessoas percorre a estrada inteira com você. Fique atento a esses nomes, do vale aos cumes.",
-      "aldricRole": "Sacerdote do Vale",
-      "aldricBody": "Um humilde sacerdote de aldeia que primeiro dá nome ao culto sobre uma sepultura profanada em Eastbrook, e então segue sua trilha em pessoa pelo pântano e até a muralha em Highwatch. Ele é o coração firme de toda a campanha.",
-      "marenRole": "A Batedora do Marechal",
-      "marenBody": "Uma rastreadora de fala baixa que você conhece nos juncos de Mirefen, toda pés silenciosos e uma lâmina curta. Ela também segue a trilha ao norte, e é o ouvido dela que capta as palavras que enviam você aos cumes."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Masmorras e Raides",
@@ -4297,6 +4299,10 @@ export const pt_BR: EnTranslations = {
         "name": "Provocar",
         "description": "Provoca o alvo: sua ameaça sobe para igualar a do inimigo mais odiado por ele, que é forçado a atacar você por 3 s."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
       "fireball": {
         "name": "Bola de Fogo",
         "description": "Arremessa uma bola flamejante que causa {damage} de dano de Fogo e dano adicional ao longo do tempo."
@@ -4488,6 +4494,10 @@ export const pt_BR: EnTranslations = {
       "retribution_aura": {
         "name": "Aura de Retribuição",
         "description": "Envolve você em energia sagrada por 30 min, causando 5 de dano Sagrado a qualquer inimigo que o atinja corpo a corpo."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
       },
       "tame_beast": {
         "name": "Domar Fera",
@@ -4772,6 +4782,10 @@ export const pt_BR: EnTranslations = {
       "rip": {
         "name": "Rasgar",
         "description": "Golpe final que causa dano de sangramento ao longo de 12 s. Consome pontos de combo. Apenas Forma de Lobo."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
       },
       "mortal_strike": {
         "name": "Golpe Mortal",
@@ -5865,6 +5879,18 @@ export const pt_BR: EnTranslations = {
         "name": "Caco com Marcas de Contagem",
         "flavorText": "...marcas de cinco em cinco, riscadas fundo, cortadas cada vez que a conta fechava. centenas de cincos antes de os cortes pararem, e a última fileira nunca foi terminada..."
       },
+      "root_token_unbinding": {
+        "name": "Nó de Raiz Afrouxado",
+        "flavorText": "...desgastado e liso onde um polegar pressionou repetidas vezes, como se afrouxasse um nó amarrado ao redor de nada que se pudesse ver. alguém acreditava que soltar era um ato de bondade. alguém estava errado, ou adiantado, ou ambos..."
+      },
+      "root_token_offering": {
+        "name": "Pequena Pedra de Alimentação",
+        "flavorText": "...uma tigela rasa entalhada na pedra, não maior que uma moeda, do tipo em que se deixaria uma migalha para algo que não podia pedir. o que comia aqui não parou de sentir fome. apenas parou de ser visto..."
+      },
+      "root_token_verdict": {
+        "name": "Pedra Marcada de Julgamento",
+        "flavorText": "...uma contagem marcada de três em três, não de cinco em cinco, julgada e rejulgada, pressionada com tanta força que a terceira marca rachou a pedra. alguém não parava de mudar de ideia sobre a mesma pergunta, repetidas vezes, no escuro..."
+      },
       "reliquary_plate_chest": {
         "name": "Cota da Guarda do Relicário"
       },
@@ -5991,6 +6017,15 @@ export const pt_BR: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "Espaldares do Chamatormenta"
+      },
+      "deathless_greatblade": {
+        "name": "Grande Espada Imortal"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Cetro da Corte Imortal"
+      },
+      "stormcallers_focus": {
+        "name": "Foco do Chamatormenta"
       },
       "unknown_alien_weaponry": {
         "name": "Armamento alienígena desconhecido"
@@ -6230,6 +6265,15 @@ export const pt_BR: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Flagelo de Thornpeak"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Espírito de Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Espírito de Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Espírito de Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Espectro do Registro"

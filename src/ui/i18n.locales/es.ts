@@ -3355,6 +3355,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hudChrome.controller.help':
     'El stick izquierdo mueve, el derecho controla la cámara. Abre una ventana para usar el puntero en pantalla.',
   'entities.mobs.nythraxis_skeleton_warrior.name': 'Guardia real alzado',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': 'Espíritu de Aldren',
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'Espíritu de Malric',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'Espíritu de Voss',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'Nythraxis, Azote de Thornpeak',
   'entities.dungeons.nythraxis_boss_arena.name': 'Arena de banda de Nythraxis',
   'entities.dungeons.nythraxis_boss_arena.enterText': 'Cruzas la puerta real sellada.',
@@ -3370,6 +3373,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': 'Manto Llama de Alma',
   'entities.items.stormcallers_crown.name': 'Corona del Invocatormentas',
   'entities.items.stormcallers_spaulders.name': 'Bufas del Invocatormentas',
+  'entities.items.deathless_greatblade.name': 'Gran Espada Inmortal',
+  'entities.items.scepter_of_the_deathless_court.name': 'Cetro de la Corte Inmortal',
+  'entities.items.stormcallers_focus.name': 'Enfoque del Invocatormentas',
   'hud.chat.context.convertToRaid': 'Convertir en banda',
   'hud.chat.context.convertToParty': 'Convertir en grupo',
   'hudChrome.raidConvert.leaderOnly':
@@ -4299,15 +4305,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     'Reemplazar una pieza vieja por una mejora reciente te aporta más que jugar a la perfección con un equipo que ya se te ha quedado pequeño. Cuando caiga algo mejor o te lo ofrezca una misión, tómalo. No guardes tus buenos objetos para más adelante.',
   'guide.gear.upgradeTitle': 'Mantén tu equipo al día',
-  'guide.lore.aldricBody':
-    'Un humilde sacerdote de aldea que es el primero en nombrar al culto ante una tumba profanada en Eastbrook, y luego sigue su rastro en persona a través de la ciénaga y hasta el muro de Highwatch. Es el corazón firme de toda la campaña.',
-  'guide.lore.aldricRole': 'Sacerdote del Valle',
   'guide.lore.figuresBody':
     'Un puñado de personas recorren contigo el camino entero. Atento a estos nombres del valle a los picos.',
   'guide.lore.figuresTitle': 'Rostros que llegarás a conocer',
-  'guide.lore.marenBody':
-    'Una rastreadora de hablar quedo a la que conoces entre los juncos de Mirefen, pura sigilosa de pies ligeros y una hoja corta. También sigue el rastro hacia el norte, y es su oído el que capta las palabras que te envían a los picos.',
-  'guide.lore.marenRole': 'La exploradora del mariscal',
   'guide.models.count': '{count} modelos',
   'guide.models.groupClasses': 'Clases',
   'guide.models.groupCreatures': 'Criaturas',
@@ -4601,6 +4601,15 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Esquirla con Marcas de Cuenta',
   'entities.items.tally_shard.flavorText':
     '...marcas de cinco en cinco, grabadas hondo, tachadas cada vez que la cuenta daba la vuelta. cientos de cincos antes de que el tachado se detenga, y la última fila nunca se terminó...',
+  'entities.items.root_token_unbinding.name': 'Nudo de Raíz Aflojado',
+  'entities.items.root_token_unbinding.flavorText':
+    '...desgastado y suave donde un pulgar presionó una y otra vez, como si aflojara un nudo atado alrededor de nada que pudieras ver. alguien creyó que soltar era un acto de bondad. alguien se equivocó, o se adelantó, o ambas cosas...',
+  'entities.items.root_token_offering.name': 'Pequeña Piedra de Alimentación',
+  'entities.items.root_token_offering.flavorText':
+    '...un cuenco poco profundo tallado en piedra, no más grande que una moneda, del tipo en el que dejarías una migaja para algo que no podía pedirla. lo que comía aquí no dejó de tener hambre. solo dejó de ser visto...',
+  'entities.items.root_token_verdict.name': 'Piedra Marcada de Juicio',
+  'entities.items.root_token_verdict.flavorText':
+    '...una cuenta marcada de tres en tres, no de cinco en cinco, juzgada y rejuzgada, presionada con tanta fuerza que la tercera marca partió la piedra. alguien seguía cambiando de opinión sobre la misma pregunta, una y otra vez, en la oscuridad...',
   'entities.items.linen_pouch.name': 'Bolsa de Lino',
   'entities.items.travelers_knapsack.name': 'Mochila del Viajero',
   'entities.items.wolfhide_satchel.name': 'Morral de Piel de Lobo',

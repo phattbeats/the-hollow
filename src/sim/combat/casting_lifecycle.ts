@@ -47,6 +47,7 @@ import {
   MELEE_RANGE,
   normAngle,
 } from '../types';
+import { drawWeapon } from '../weapon_stow';
 import { isLockedOut, isSilenced, isStunned, tonguesMult } from './cc';
 import {
   hasCastShield,
@@ -289,7 +290,7 @@ export function castAbility(ctx: SimContext, abilityId: string, pid?: number): v
       ctx.error(p.id, `You must be in ${ability.requiresForm === 'bear' ? 'Bear' : 'Wolf'} Form.`);
       return;
     }
-  } else if (form && !isFormToggle(ability)) {
+  } else if (form && !isFormToggle(ability) && !ability.usableInForm) {
     ctx.error(p.id, "You can't do that while shapeshifted.");
     return;
   }
@@ -425,6 +426,7 @@ export function castAbility(ctx: SimContext, abilityId: string, pid?: number): v
     }
   }
   if (p.sitting) ctx.standUp(p);
+  if (p.weaponStowed) drawWeapon(p);
   if (ability.id !== 'ghost_wolf' && p.auras.some((a) => a.id === 'ghost_wolf')) {
     ctx.breakGhostWolf(p);
   }

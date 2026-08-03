@@ -68,6 +68,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'demoralizing_shout',
       'sunder_armor',
       'taunt',
+      'ironhold',
       'pummel',
     ],
     color: 0xc79c6e,
@@ -168,6 +169,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'consecration',
       'righteous_fury',
       'retribution_aura',
+      'sacred_bulwark',
       'rebuke',
     ],
     color: 0xf58cba,
@@ -336,6 +338,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'insect_swarm',
       'tigers_fury',
       'rip',
+      'primal_reflexes',
       'skull_bash',
     ],
     color: 0xff7d0a,
@@ -685,6 +688,25 @@ export const ABILITIES: Record<string, AbilityDef> = {
     effects: [{ type: 'selfBuff', kind: 'defensive_stance', value: 0.9, duration: 3600 }],
     description:
       'A defensive combat stance: you generate 30% more threat but deal and take 10% less damage. Cast again to leave the stance.',
+  },
+  // Warrior tank cooldown (v0.26.0, upstream #1912): a flat mitigation wall (the
+  // `shield_wall` aura, read in damage.ts). One of three distinct tank cooldowns
+  // (paladin Sacred Bulwark is a cheat-death, druid Primal Reflexes is
+  // dodge-based).
+  ironhold: {
+    id: 'ironhold',
+    name: 'Ironhold',
+    class: 'warrior',
+    learnLevel: 20,
+    cost: 10,
+    castTime: 0,
+    cooldown: 180,
+    range: 0,
+    school: 'physical',
+    requiresTarget: false,
+    offGcd: true,
+    effects: [{ type: 'selfBuff', kind: 'shield_wall', value: 0.4, duration: 8 }],
+    description: 'Brace behind your guard, reducing all damage taken by 40% for 8 sec.',
   },
   sunder_armor: {
     id: 'sunder_armor',
@@ -1719,6 +1741,26 @@ export const ABILITIES: Record<string, AbilityDef> = {
     effects: [{ type: 'selfBuff', kind: 'thorns', value: 5, duration: 1800 }],
     description:
       'Surrounds you with holy energy for 30 min, dealing 5 Holy damage to any enemy that strikes you in melee.',
+  },
+  // Paladin tank cooldown (v0.26.0, upstream #1912): a predictive divine
+  // cheat-death (the `guardian_ward` aura, consumed by an enemy lethal blow in
+  // damage.ts). Its short window and long cooldown make timing the defense the
+  // choice, rather than keeping it up.
+  sacred_bulwark: {
+    id: 'sacred_bulwark',
+    name: 'Sacred Bulwark',
+    class: 'paladin',
+    learnLevel: 20,
+    cost: 15,
+    castTime: 0,
+    cooldown: 180,
+    range: 0,
+    school: 'holy',
+    requiresTarget: false,
+    offGcd: true,
+    effects: [{ type: 'selfBuff', kind: 'guardian_ward', value: 0.35, duration: 10 }],
+    description:
+      'For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead.',
   },
 
   // ====================== HUNTER ======================
@@ -3323,6 +3365,26 @@ export const ABILITIES: Record<string, AbilityDef> = {
     offGcd: true,
     effects: [{ type: 'selfBuff', kind: 'buff_armor', value: 150, duration: 15 }],
     description: 'Your skin hardens like bark, increasing armor by 150 for 15 sec.',
+  },
+  // Druid tank cooldown (v0.26.0, upstream #1912): a dodge-based defensive
+  // (distinct from Oakhide's armor boost). Usable while shapeshifted so a bear
+  // tank pops it mid-fight; buff_dodge rides into dodgeChance in
+  // recalcPlayerStats.
+  primal_reflexes: {
+    id: 'primal_reflexes',
+    name: 'Primal Reflexes',
+    class: 'druid',
+    learnLevel: 20,
+    cost: 0,
+    castTime: 0,
+    cooldown: 60,
+    range: 0,
+    school: 'nature',
+    requiresTarget: false,
+    offGcd: true,
+    usableInForm: true,
+    effects: [{ type: 'selfBuff', kind: 'buff_dodge', value: 0.5, duration: 6 }],
+    description: 'Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec.',
   },
   starfire: {
     id: 'starfire',

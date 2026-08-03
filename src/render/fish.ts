@@ -1,22 +1,21 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import {
-  DUNGEON_X_THRESHOLD, WORLD_MAX_X, WORLD_MAX_Z, WORLD_MIN_Z,
-} from '../sim/data';
-import { terrainHeight, WATER_LEVEL } from '../sim/world';
+import { DUNGEON_X_THRESHOLD, WORLD_MAX_X, WORLD_MAX_Z, WORLD_MIN_Z } from '../sim/data';
+import { terrainHeight, waterLevel, waterLevelAt } from '../sim/world';
 import { GFX } from './gfx';
 
-// Ambient leaping fish — a RENDER-ONLY decoration, no sim/IWorld/server state.
+// Ambient leaping fish -- a RENDER-ONLY decoration, no sim/IWorld/server state.
 //
 // Mirrors the player-centred-pool contract that foliage's grass ring,
 // critters and motes use: a fixed pool of fish that recycle (we never grow
 // the pool), each idling beneath the surface until it arcs out of the water,
 // splashes, and re-enters. Fish only ever break water that is genuinely deep
-// enough — we sample the SAME deterministic `terrainHeight`/`WATER_LEVEL` the
+// enough -- we sample the SAME deterministic `terrainHeight`/`waterLevelAt` the
 // sim uses (the hard "terrain height = sim height" invariant), so a leap can
-// never appear over dry land or a shoreline puddle.
+// never appear over dry land or a shoreline puddle, even a sculpted feature
+// outside every declared lake (`waterLevelAt` there is -Infinity).
 //
-// Placement RNG is a local mulberry32 seeded from the world seed — the render
+// Placement RNG is a local mulberry32 seeded from the world seed -- the render
 // convention forbids Math.random so the ambient field is reproducible.
 
 const SPAWN_RADIUS = 72; // fish surface within this distance of the player
@@ -53,7 +52,11 @@ function mulberry32(seed: number): () => number {
 // fish `t` seconds into a leap of length `duration` and apex `height`. The
 // path is a parabola (0 at both ends, `height` at the midpoint); pitch tracks
 // the trajectory's slope so the fish noses up out of the water and dives back.
-export function fishLeapPose(t: number, duration: number, height: number): { y: number; pitch: number } {
+export function fishLeapPose(
+  t: number,
+  duration: number,
+  height: number,
+): { y: number; pitch: number } {
   const u = Math.max(0, Math.min(1, t / duration));
   const y = height * 4 * u * (1 - u);
   // vertical velocity ∝ d(y)/du = height*4*(1-2u); compare to forward travel
@@ -63,8 +66,13 @@ export function fishLeapPose(t: number, duration: number, height: number): { y: 
 }
 
 // PURE (unit-tested): is (x, z) deep, in-bounds open water fit for a leap?
-// `depthAt` returns WATER_LEVEL - terrainHeight at that spot (negative on land).
-export function isLeapableWater(x: number, z: number, depthAt: (x: number, z: number) => number): boolean {
+// `depthAt` returns waterLevelAt(x, z) - terrainHeight at that spot (negative
+// on land, and always negative outside every declared lake).
+export function isLeapableWater(
+  x: number,
+  z: number,
+  depthAt: (x: number, z: number) => number,
+): boolean {
   if (Math.abs(x) > WORLD_MAX_X - 8) return false;
   if (z < WORLD_MIN_Z + 8 || z > WORLD_MAX_Z - 8) return false;
   return depthAt(x, z) >= WATER_MARGIN;
@@ -116,14 +124,22 @@ export function buildFish(seed: number): FishView {
   const splashGeo = splashGeometry();
   const bodyMat = GFX.standardMaterials
     ? new THREE.MeshStandardMaterial({
-      color: 0x7f97a6, roughness: 0.4, metalness: 0.55, emissive: 0x12303d, emissiveIntensity: 0.18,
-    })
+        color: 0x7f97a6,
+        roughness: 0.4,
+        metalness: 0.55,
+        emissive: 0x12303d,
+        emissiveIntensity: 0.18,
+      })
     : new THREE.MeshLambertMaterial({ color: 0x95a9b6 });
   const splashMat = new THREE.MeshBasicMaterial({
-    color: 0xdff1ff, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide,
+    color: 0xdff1ff,
+    transparent: true,
+    opacity: 0,
+    depthWrite: false,
+    side: THREE.DoubleSide,
   });
 
-  const depthAt = (x: number, z: number): number => WATER_LEVEL - terrainHeight(x, z, seed);
+  const depthAt = (x: number, z: number): number => waterLevelAt(x, z) - terrainHeight(x, z, seed);
 
   const fish: Fish[] = [];
   for (let i = 0; i < count; i++) {
@@ -136,7 +152,7 @@ export function buildFish(seed: number): FishView {
       body,
       splash,
       phase: 'rest',
-      timer: REST_MIN + rng() * (REST_MAX - REST_MIN) * (i + 1) / count, // stagger the first wave
+      timer: REST_MIN + (rng() * (REST_MAX - REST_MIN) * (i + 1)) / count, // stagger the first wave
       ox: 0,
       oz: 0,
       heading: 0,
@@ -169,12 +185,19 @@ export function buildFish(seed: number): FishView {
   };
 
   const animateSplash = (f: Fish, dt: number): void => {
-    if (f.splashAt < 0) { f.splash.visible = false; return; }
+    if (f.splashAt < 0) {
+      f.splash.visible = false;
+      return;
+    }
     f.splashAt += dt;
     const u = f.splashAt / SPLASH_TIME;
-    if (u >= 1) { f.splashAt = -1; f.splash.visible = false; return; }
+    if (u >= 1) {
+      f.splashAt = -1;
+      f.splash.visible = false;
+      return;
+    }
     const s = 0.3 + u * SPLASH_MAX;
-    f.splash.position.set(f.splashX, WATER_LEVEL + 0.02, f.splashZ);
+    f.splash.position.set(f.splashX, waterLevel() + 0.02, f.splashZ);
     f.splash.scale.set(s, 1, s);
     (f.splash.material as THREE.MeshBasicMaterial).opacity = (1 - u) * 0.7;
     f.splash.visible = true;
@@ -183,7 +206,7 @@ export function buildFish(seed: number): FishView {
   return {
     group,
     update(px: number, pz: number, dt: number): void {
-      // no fish indoors — dungeon instances live far past the strip
+      // no fish indoors -- dungeon instances live far past the strip
       if (px > DUNGEON_X_THRESHOLD) {
         if (group.visible) group.visible = false;
         return;
@@ -199,7 +222,7 @@ export function buildFish(seed: number): FishView {
               f.timer = 0;
               startSplash(f, f.ox, f.oz); // surface break ripple
             } else {
-              f.timer = RETRY_REST; // no water nearby — try again shortly
+              f.timer = RETRY_REST; // no water nearby -- try again shortly
             }
           }
         } else {
@@ -208,7 +231,7 @@ export function buildFish(seed: number): FishView {
           const travel = (f.timer / LEAP_DURATION) * LEAP_TRAVEL;
           const x = f.ox + Math.sin(f.heading) * travel;
           const z = f.oz + Math.cos(f.heading) * travel;
-          f.body.position.set(x, WATER_LEVEL + y, z);
+          f.body.position.set(x, waterLevel() + y, z);
           f.body.rotation.set(0, 0, 0);
           f.body.rotateY(f.heading);
           f.body.rotateX(-pitch);

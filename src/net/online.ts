@@ -707,6 +707,8 @@ function blankEntity(id: number): Entity {
     level: 1,
     mendTimer: 0,
     wardTimer: 0,
+    channelTimer: 0,
+    channelRamp: 0,
     rallyTimer: 0,
     warcryTimer: 0,
     petPath: [],
@@ -788,6 +790,7 @@ function blankEntity(id: number): Entity {
     sitting: false,
     eating: null,
     drinking: null,
+    weaponStowed: false,
     aiState: 'idle',
     tappedById: null,
     pulseTimer: 0,
@@ -1539,6 +1542,7 @@ export class ClientWorld implements IWorld {
       e.castTotal = w.castTot ?? 0;
       e.channeling = !!w.chan;
       e.sitting = !!w.sit;
+      e.weaponStowed = !!w.ws;
       e.aggroTargetId = w.aggro ?? null;
       e.tappedById = w.tap ?? null;
       e.ownerId = w.own ?? null;
@@ -1930,6 +1934,9 @@ export class ClientWorld implements IWorld {
   }
   stopAutoAttack(): void {
     this.cmd({ cmd: 'stopattack' });
+  }
+  toggleWeaponStow(): void {
+    this.cmd({ cmd: 'stow_weapon' });
   }
   releaseSpirit(): void {
     this.cmd({ cmd: 'release' });

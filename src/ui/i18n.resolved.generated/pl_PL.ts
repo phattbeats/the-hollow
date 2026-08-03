@@ -1180,7 +1180,7 @@ export const pl_PL: EnTranslations = {
         "levels": "Poziomy od {min} do {max}",
         "cta": "Zobacz świat",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Dolina Wschodniego Strumienia",
         "valeBlurb": "Zielone wzgórza i stare lasy, gdzie zaczyna się każda przygoda.",
         "marshName": "Trzęsawisko Mokrzawia",
@@ -1681,6 +1681,8 @@ export const pl_PL: EnTranslations = {
       "typeGroupBody": "Każdy rozdział głównej opowieści kończy się u drzwi lochu. Wprowadzenie da się przejść samotnie, lecz ostateczny cios przeciwko złoczyńcy rozdziału jest przeznaczony dla pięcioosobowej drużyny.",
       "sagaTitle": "Podążaj śladem na północ",
       "sagaBody": "Główna opowieść to jeden długi pościg. Kult śmierci działa przy grobach królestwa, a każdy zamknięty rozdział wskazuje o jedną strefę dalej w głąb drogi. Nigdy nie walczysz z całym spiskiem naraz; pociągasz za jedną nić, a ona prowadzi do następnej dłoni, która ją trzyma.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "Dolina: imię na pieczęci",
       "sagaValeBody": "W Dolinie Wschodniego Strumienia zmarli nie zaznają spoczynku, a stojący za tym znak należy do sekty od dawna uważanej za wygasłą. Wytrop go do Grobowego Przyzywacza działającego w krypcie kaplicy, a jego własne papiery skierują cię ku trzęsawisku na północy.",
       "sagaMarshTitle": "Trzęsawisko: dziesięcina dusz",
@@ -1698,10 +1700,10 @@ export const pl_PL: EnTranslations = {
     "lore": {
       "figuresTitle": "Twarze, które poznasz",
       "figuresBody": "Garstka osób przemierza z tobą całą drogę. Wypatruj tych imion od doliny po szczyty.",
-      "aldricRole": "Kapłan Doliny",
-      "aldricBody": "Skromny wiejski kapłan, który jako pierwszy nazywa kult nad zbezczeszczonym grobem we Wschodnim Strumieniu, a potem osobiście podąża jego śladem przez bagna aż pod mur w Wysokiej Straży. To niewzruszone serce całej kampanii.",
-      "marenRole": "Zwiadowczyni Marszałka",
-      "marenBody": "Cicho mówiąca tropicielka, którą spotykasz w trzcinach Mokrzawia, sama cisza stóp i krótkie ostrze. Ona również podąża tropem na północ, a to jej ucho wyłapuje słowa, które wysyłają cię na szczyty."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Lochy i rajdy",
@@ -4297,6 +4299,10 @@ export const pl_PL: EnTranslations = {
         "name": "Prowokacja",
         "description": "Prowokuje cel: twoje zagrożenie wzrasta do poziomu jego najbardziej znienawidzonego wroga, a cel jest zmuszony atakować cię przez 3 sek."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
       "fireball": {
         "name": "Kula ognia",
         "description": "Ciska ognistą kulą, która zadaje {damage} obrażeń od ognia oraz dodatkowe obrażenia w czasie."
@@ -4488,6 +4494,10 @@ export const pl_PL: EnTranslations = {
       "retribution_aura": {
         "name": "Aura odpłaty",
         "description": "Otacza cię świętą energią na 30 min, zadając 5 obrażeń od Świętości każdemu wrogowi, który zaatakuje cię wręcz."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
       },
       "tame_beast": {
         "name": "Oswojenie bestii",
@@ -4772,6 +4782,10 @@ export const pl_PL: EnTranslations = {
       "rip": {
         "name": "Rozszarpanie",
         "description": "Cios kończący zadający obrażenia od Krwawienia w ciągu 12 sek. Zużywa punkty kombinacji. Tylko w Postaci wilka."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
       },
       "mortal_strike": {
         "name": "Śmiertelne uderzenie",
@@ -5865,6 +5879,18 @@ export const pl_PL: EnTranslations = {
         "name": "Odłamek z Karbami",
         "flavorText": "...karby piątkami, ryte głęboko, przekreślane za każdym razem, gdy rachunek się domykał. setki piątek, nim przekreślenia ustają, a ostatni rząd nigdy nie został dokończony..."
       },
+      "root_token_unbinding": {
+        "name": "Rozluźniony Węzeł Korzenia",
+        "flavorText": "...wygładzony tam, gdzie kciuk naciskał raz za razem, jakby rozluźniał węzeł zawiązany wokół czegoś niewidocznego. ktoś wierzył, że puszczenie było aktem łaski. ktoś się mylił, albo był zbyt wczesny, albo jedno i drugie..."
+      },
+      "root_token_offering": {
+        "name": "Mały Kamień Karmienia",
+        "flavorText": "...płytka miska wyryta w kamieniu, nie większa niż moneta, taka, w której zostawiłbyś okruch dla czegoś, co nie mogło o to poprosić. to, co tu jadło, nie przestało być głodne. po prostu przestało być widziane..."
+      },
+      "root_token_verdict": {
+        "name": "Kamień Naznaczony Wyrokiem",
+        "flavorText": "...rachunek znaczony trójkami, nie piątkami, osądzany i osądzany ponownie, dociskany tak mocno, że trzecie przejście rozłupało kamień. ktoś wciąż zmieniał zdanie w tej samej sprawie, raz za razem, w ciemności..."
+      },
       "reliquary_plate_chest": {
         "name": "Kolczuga strażnika relikwiarza"
       },
@@ -5991,6 +6017,15 @@ export const pl_PL: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "Naramienniki przywoływacza burz"
+      },
+      "deathless_greatblade": {
+        "name": "Nieśmiertelny Wielki Miecz"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Berło Nieśmiertelnego Dworu"
+      },
+      "stormcallers_focus": {
+        "name": "Skupienie przywoływacza burz"
       },
       "unknown_alien_weaponry": {
         "name": "Nieznana obca broń"
@@ -6230,6 +6265,15 @@ export const pl_PL: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Plaga Ciernistego Szczytu"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Duch Aldrena"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Duch Malrica"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Duch Vossa"
       },
       "reliquary_ledger_wraith": {
         "name": "Widmo Ksiąg"

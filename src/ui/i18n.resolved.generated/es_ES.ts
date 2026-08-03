@@ -1180,7 +1180,7 @@ export const es_ES: EnTranslations = {
         "levels": "Niveles {min} a {max}",
         "cta": "Conoce el mundo",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Valle de Eastbrook",
         "valeBlurb": "Verdes colinas y bosques antiguos donde comienza toda aventura.",
         "marshName": "Ciénaga de Mirefen",
@@ -1681,6 +1681,8 @@ export const es_ES: EnTranslations = {
       "typeGroupBody": "Cada capítulo de la historia principal termina en la puerta de una mazmorra. La fase previa se puede hacer en solitario, pero el golpe final contra el villano de un capítulo está pensado para un grupo de cinco.",
       "sagaTitle": "Sigue el rastro hacia el norte",
       "sagaBody": "La historia principal es una larga persecución. Un culto de la muerte está actuando sobre las tumbas del reino, y cada capítulo que cierras apunta una zona más arriba en el camino. Nunca te enfrentas a toda la conspiración a la vez; tiras de un hilo, y este conduce a la siguiente mano que lo sostiene.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "El Valle: un nombre en un sello",
       "sagaValeBody": "En Eastbrook los muertos no descansan, y la marca tras ello pertenece a una secta que se creía desaparecida hace mucho. Síguela hasta un Llamatumbas que trabaja en la cripta de la capilla, y sus propios papeles te señalan la ciénaga del norte.",
       "sagaMarshTitle": "La ciénaga: un diezmo de almas",
@@ -1698,10 +1700,10 @@ export const es_ES: EnTranslations = {
     "lore": {
       "figuresTitle": "Rostros que llegarás a conocer",
       "figuresBody": "Un puñado de personas recorren contigo el camino entero. Atento a estos nombres del valle a los picos.",
-      "aldricRole": "Sacerdote del Valle",
-      "aldricBody": "Un humilde sacerdote de aldea que es el primero en nombrar al culto ante una tumba profanada en Eastbrook, y luego sigue su rastro en persona a través de la ciénaga y hasta el muro de Highwatch. Es el corazón firme de toda la campaña.",
-      "marenRole": "La exploradora del mariscal",
-      "marenBody": "Una rastreadora de hablar quedo a la que conoces entre los juncos de Mirefen, pura sigilosa de pies ligeros y una hoja corta. También sigue el rastro hacia el norte, y es su oído el que capta las palabras que te envían a los picos."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Mazmorras y bandas",
@@ -4297,6 +4299,10 @@ export const es_ES: EnTranslations = {
         "name": "Provocar",
         "description": "Provoca al objetivo: tu amenaza sube hasta igualar la de su enemigo más odiado y queda obligado a atacarte durante 3 s."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
       "fireball": {
         "name": "Bola de Fuego",
         "description": "Lanza una bola ígnea que causa {damage} de daño de Fuego y daño adicional en el tiempo."
@@ -4488,6 +4494,10 @@ export const es_ES: EnTranslations = {
       "retribution_aura": {
         "name": "Aura de represalia",
         "description": "Te rodea de energía sagrada durante 30 min y causa 5 de daño Sagrado a cualquier enemigo que te golpee cuerpo a cuerpo."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
       },
       "tame_beast": {
         "name": "Domesticar bestia",
@@ -4772,6 +4782,10 @@ export const es_ES: EnTranslations = {
       "rip": {
         "name": "Desgarrar",
         "description": "Remate que causa daño de sangrado durante 12 s. Consume puntos de combo. Solo en Forma de lobo."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
       },
       "mortal_strike": {
         "name": "Golpe mortal",
@@ -5865,6 +5879,18 @@ export const es_ES: EnTranslations = {
         "name": "Esquirla con Marcas de Cuenta",
         "flavorText": "...marcas de cinco en cinco, grabadas hondo, tachadas cada vez que la cuenta daba la vuelta. cientos de cincos antes de que el tachado se detenga, y la última fila nunca se terminó..."
       },
+      "root_token_unbinding": {
+        "name": "Nudo de Raíz Aflojado",
+        "flavorText": "...desgastado y suave donde un pulgar presionó una y otra vez, como si aflojara un nudo atado alrededor de nada que pudieras ver. alguien creyó que soltar era un acto de bondad. alguien se equivocó, o se adelantó, o ambas cosas..."
+      },
+      "root_token_offering": {
+        "name": "Pequeña Piedra de Alimentación",
+        "flavorText": "...un cuenco poco profundo tallado en piedra, no más grande que una moneda, del tipo en el que dejarías una migaja para algo que no podía pedirla. lo que comía aquí no dejó de tener hambre. solo dejó de ser visto..."
+      },
+      "root_token_verdict": {
+        "name": "Piedra Marcada de Juicio",
+        "flavorText": "...una cuenta marcada de tres en tres, no de cinco en cinco, juzgada y rejuzgada, presionada con tanta fuerza que la tercera marca partió la piedra. alguien seguía cambiando de opinión sobre la misma pregunta, una y otra vez, en la oscuridad..."
+      },
       "reliquary_plate_chest": {
         "name": "Loriga de la Guardia del Relicario"
       },
@@ -5991,6 +6017,15 @@ export const es_ES: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "Bufas del Invocatormentas"
+      },
+      "deathless_greatblade": {
+        "name": "Espadón de los Eternos"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Cetro de la Corte Eterna"
+      },
+      "stormcallers_focus": {
+        "name": "Foco del Invocatormentas"
       },
       "unknown_alien_weaponry": {
         "name": "Armamento alienígena desconocido"
@@ -6230,6 +6265,15 @@ export const es_ES: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Azote de Thornpeak"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Alma de Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Alma de Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Alma de Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Espectro del registro"

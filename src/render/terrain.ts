@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { WORLD_MAX_X, WORLD_MAX_Z, WORLD_MIN_Z, ZONES } from '../sim/data';
 import type { BiomeId } from '../sim/types';
-import { roadDistance, terrainHeight, WATER_LEVEL, zoneBiomeAt } from '../sim/world';
+import { biomeAt, roadDistance, terrainHeight, waterLevel, zoneBiomeAt } from '../sim/world';
 import { loadTexture } from './assets/loader';
 import { registerPreload } from './assets/preload';
 import { GFX } from './gfx';
@@ -108,9 +108,10 @@ const NORMAL_TEX_STRENGTH = 1.35;
 // Ground colors per biome; boundaries blend across the same window as the
 // heightfield's shape blend. This is the tint layer the splat albedo
 // multiplies into (splat textures are authored near mid-gray).
-// beach/desert/volcano/cave are paint-only biomes (see render/foliage.ts),
-// unreachable until the render-load-in editor slice; values match the
-// upstream reference port.
+// beach/desert/volcano/cave are paint-only biomes: reachable only where a
+// custom map's biomePaint overrides biomeAt(x, z) (see sampleVertex below),
+// never the built-in world's zone-band biome. Values match the upstream
+// reference port.
 const BIOME_PALETTE: Record<
   BiomeId,
   { grass: number; grassDark: number; grassYellow: number; dirt: number; sand: number }
@@ -217,7 +218,22 @@ const zonePalettes = ZONES.map((zn) => {
   };
 });
 
-function paletteAt(z: number): void {
+// `biome` is the cell's ACTIVE biome (biomeAt(x, z): a paint-grid override
+// where painted, else the same z-band biome zoneBiomeAt(z) would give). A
+// painted cell takes its biome's palette FLAT (no z-band blend: the paint
+// grid is the author's explicit choice, not a gradient to feather), so the
+// map editor's beach/desert/volcano/cave paint reads as ground, not a
+// recolored vale/marsh/peaks tint riding the same blend windows.
+function paletteAt(z: number, biome: BiomeId): void {
+  if (biome !== zoneBiomeAt(z)) {
+    const p = BIOME_PALETTE[biome];
+    grassC.set(p.grass);
+    grassDarkC.set(p.grassDark);
+    grassYellowC.set(p.grassYellow);
+    dirtC.set(p.dirt);
+    sandC.set(p.sand);
+    return;
+  }
   grassC.copy(zonePalettes[0].grass);
   grassDarkC.copy(zonePalettes[0].grassDark);
   grassYellowC.copy(zonePalettes[0].grassYellow);
@@ -274,10 +290,11 @@ function sampleVertex(x: number, z: number, seed: number): VertexSample {
     -(hz / (2 * SLOPE_EPS)) * invLen,
   ];
 
-  paletteAt(z);
-  const biome = zoneBiomeAt(z);
+  const biome = biomeAt(x, z);
+  paletteAt(z, biome);
   const w: [number, number, number, number] = [1, 0, 0, 0];
   const impact = impactCraterTerrainBlend(x, z);
+  const wl = waterLevel();
 
   // base grass with patchy variation
   const v = (Math.sin(x * 0.21) * Math.cos(z * 0.17) + 1) / 2;
@@ -290,7 +307,7 @@ function sampleVertex(x: number, z: number, seed: number): VertexSample {
   // the shore blends out instead of cutting a razor-hard edge. Peaks gets a
   // dark wet-rock tint instead of the default sandy beach; everywhere else
   // keeps the classic sandy bank.
-  const shore = clamp01((WATER_LEVEL + 1.6 - h) / 1.6);
+  const shore = clamp01((wl + 1.6 - h) / 1.6);
   if (biome === 'peaks') {
     cTmp.lerp(wetRockC, shore);
     lerpSplat(w, 2, shore);
@@ -356,7 +373,7 @@ function sampleVertex(x: number, z: number, seed: number): VertexSample {
   const mud = marshWeightAt(z);
   if (GFX.lowPlus && !GFX.terrainSplat) {
     const ridge = clamp01((slope - 0.22) * 1.6);
-    const lowland = clamp01((WATER_LEVEL + 7 - h) / 12);
+    const lowland = clamp01((wl + 7 - h) / 12);
     const upland = clamp01((h - 8) / 22);
     cTmp.lerp(lowShadeC, 0.07 * ridge + 0.05 * lowland * mud);
     cTmp.lerp(lowSunC, 0.035 * (1 - shore) + 0.045 * upland);

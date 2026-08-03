@@ -1674,6 +1674,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.taunt.name': '嘲諷',
   'entities.abilities.taunt.description':
     '嘲諷目標：你的威脅值提高到其最仇恨敵人的水平，並強迫其攻擊你 3 秒。',
+  'entities.abilities.ironhold.name': '堅守',
+  'entities.abilities.ironhold.description': '緊守盾牌，在 8 秒內使受到的所有傷害降低 40%。',
   'entities.abilities.fireball.name': '火球術',
   'entities.abilities.fireball.description':
     '投擲一團火球，造成 {damage} 點火焰傷害，並附加持續傷害。',
@@ -1804,6 +1806,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.retribution_aura.name': '懲戒光環',
   'entities.abilities.retribution_aura.description':
     '以神聖能量環繞自身，持續 30 分鐘，對任何近戰攻擊你的敵人造成 5 點神聖傷害。',
+  'entities.abilities.sacred_bulwark.name': '神聖壁壘',
+  'entities.abilities.sacred_bulwark.description':
+    '持續 10 秒，下一次本該致命的打擊將被抵擋，並使你恢復到 35% 的生命值。',
   'entities.abilities.tame_beast.name': '馴服野獸',
   'entities.abilities.tame_beast.description':
     '開始馴服一隻野獸作為你的夥伴。牠必須不高於你的等級，且不能是精英。你的寵物會跟隨你、攻擊敵人，並保持自己的威脅值。同一時間只能擁有一隻寵物。',
@@ -1979,6 +1984,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.tigers_fury.description': '使攻擊強度提高 40，持續 6 秒。僅限狼形態。',
   'entities.abilities.rip.name': '割裂',
   'entities.abilities.rip.description': '終結技，在 12 秒內造成流血傷害。消耗連擊點。僅限狼形態。',
+  'entities.abilities.primal_reflexes.name': '原始反射',
+  'entities.abilities.primal_reflexes.description':
+    '你的本能變得敏銳，在 6 秒內使閃避機率提高 50%。',
   'entities.abilities.mortal_strike.name': '致死打擊',
   'entities.abilities.mortal_strike.description':
     '凶狠打擊，造成武器傷害外加 {damage} 點傷害。（武器專精標誌技能）',
@@ -3548,6 +3556,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hud.tutorial.returnTitle': '餵養爐火',
   'hud.tutorial.returnBody': '你帶著會燃燒之物。返回綠掌修士處，按 {interactKey} 交付。',
   'entities.mobs.nythraxis_skeleton_warrior.name': '復甦王室衛兵',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': '奧德倫之魂',
+  'entities.mobs.nythraxis_heroic_priest_add.name': '馬爾里克之魂',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': '沃斯之魂',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': '尼思拉克西斯，荊峰之災',
   'itemUi.quality.legendary': '傳說',
   'entities.items.deathless_heartwood.name': '不朽王冠之心木',
@@ -3560,6 +3571,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': '魂焰披肩',
   'entities.items.stormcallers_crown.name': '喚雷者之冠',
   'entities.items.stormcallers_spaulders.name': '喚雷者肩甲',
+  'entities.items.deathless_greatblade.name': '不朽巨劍',
+  'entities.items.scepter_of_the_deathless_court.name': '不朽王庭權杖',
+  'entities.items.stormcallers_focus.name': '喚雷者的焦點',
   'hud.chat.context.convertToRaid': '轉換為團隊',
   'hud.chat.context.convertToParty': '轉換為隊伍',
   'hudChrome.raidConvert.leaderOnly': '只有團隊領袖可以轉換為隊伍。',
@@ -4481,14 +4495,14 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     '用一件全新的升級品換下舊裝備，對你的助益遠勝於穿著早已過時的裝備打得再完美。當有更好的東西掉落，或任務提供升級時，就收下吧。別把你的好物品留到以後。',
   'guide.gear.upgradeTitle': '保持裝備更新',
-  'guide.lore.aldricBody':
-    '一位謙卑的鄉村牧師，他最先在東溪一座被玷污的墳前指出邪教的名號，隨後親自循著線索穿過沼澤，一路向上來到高守哨站的城牆。他是整場戰役中堅定不移的核心。',
-  'guide.lore.aldricRole': '谷地的牧師',
+  'guide.lore.faddickBody':
+    '他手持長柄工具，比起劍更熟悉鏟子。他掃除從林中滲入的陰翳，安葬亡者，記著自己照管的每一塊地。當線索離開神龛之時，往往是他來指出前路。',
+  'guide.lore.faddickRole': '法洛畦場的掘墓人',
   'guide.lore.figuresBody': '有少數幾個人會與你一同走過這整條路。從谷地到群峰，請記住這些名字。',
   'guide.lore.figuresTitle': '你將會熟識的面孔',
-  'guide.lore.marenBody':
-    '你在泥沼的蘆葦叢中遇見的一位寡言追蹤者，腳步輕巧無聲，配著一把短刃。她也一路向北追查線索，正是她的耳朵捕捉到了那幾句話，把你送往群峰。',
-  'guide.lore.marenRole': '元帥的斥候',
+  'guide.lore.zebediahBody':
+    '他是一位耐心的教堂管事，用這本曆法守護著這片原野，雙手常半埋在土裡。他注視著瓶中的燈火，按月令安排耕種，是初來乍到者最先聽到的聲音。',
+  'guide.lore.zebediahRole': '根谷的教堂管事',
   'guide.models.count': '{count} 個模型',
   'guide.models.groupClasses': '職業',
   'guide.models.groupCreatures': '生物',
@@ -4534,6 +4548,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '在 Thornpeak，整場圖謀變得清晰。自 Vale 以來被竊取的每一個靈魂，都是傾注於那個邪教在山脈心臟地帶之陰森勾當的貢品。始於一座禮拜堂庭院的線索，終結於此：一場五人的深入探索，去面對這一切背後的黑手。至於在最深處等候的是誰，就留給你自己去揭曉了。',
   'guide.questsPage.sagaPeaksTitle': '群峰：貢品所為何來',
   'guide.questsPage.sagaTitle': '循線北行',
+  'guide.questsPage.sagaReachesBody':
+    '在霍洛沃原野，布雷澤·綠爪以火絨燈守護著神龛之瓶，而教堂管事與掘墓人則按月令安排耕種。第一條線索很小：守好燈火，清除野狼，摸熟這片土地。等到前路開啟，你自會知道那盞燈正握在誰的手中。',
+  'guide.questsPage.sagaReachesTitle': '原野：一盞燈與一本曆法',
   'guide.questsPage.sagaValeBody':
     '在東溪，亡者不得安息，而其背後的印記屬於一個早被認為消亡已久的教派。將它追溯到一名在禮拜堂地穴中作祟的喚墓者身上，而他自己的文件又把你指向北方的沼澤。',
   'guide.questsPage.sagaValeTitle': '谷地：印記上的一個名字',
@@ -4733,6 +4750,15 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': '刻痕碎片',
   'entities.items.tally_shard.flavorText':
     '……以五為一組刻得極深，每數完一輪便劃去一道。劃去的五連一組，累計上百組，最後一行卻始終沒有劃完……',
+  'entities.items.root_token_unbinding.name': '鬆開的根結',
+  'entities.items.root_token_unbinding.flavorText':
+    '……一面被拇指摩挲得光滑，彷彿在鬆開一個看不見繫在何處的結。有人相信放手是一種仁慈。那人要嘛錯了，要嘛為時過早，或兩者皆是……',
+  'entities.items.root_token_offering.name': '小餵食石',
+  'entities.items.root_token_offering.flavorText':
+    '……石頭上刻著一個淺淺的碗，比硬幣還小，彷彿是留給某個無法開口求食之物的一口殘渣。這裡吞食過的東西並未停止飢餓，只是不再被人看見……',
+  'entities.items.root_token_verdict.name': '刻痕裁決石',
+  'entities.items.root_token_verdict.flavorText':
+    '……刻痕以三為一組，而非五，反覆裁定又反覆推翻，壓得極深，第三遍時石頭都裂開了。彷彿有人在黑暗中，為同一個問題一次又一次地改變心意……',
   'entities.mobs.acolyte_tessa.name': '侍僧泰莎',
   'entities.mobs.deacon_varric.name': '執事瓦瑞克',
   'entities.mobs.reliquary_bonewalker.name': '復起的骨行者',

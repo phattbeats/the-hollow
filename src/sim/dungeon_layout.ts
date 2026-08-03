@@ -86,6 +86,18 @@ export const CRYPT_LAYOUT: DungeonLayout = {
 // its OWN layout picked by dungeon id in colliders.ts/renderer.ts rather than
 // widening the shared DungeonDef.interior union or CRYPT_LAYOUT itself, which
 // would also resize Hollow Crypt and Sunken Bastion.
+//
+// PHAA-599 (v2, Board-approved room/puzzle expansion ahead of the three-descent
+// Reckoning arc, PHAA-543): the one straight nave now reads as three chambers,
+// same shared-crypt-family stub grammar as SANCTUM_LAYOUT's waists, no new
+// layout fields.
+//   - Entry Hall (z -19..39): unchanged, the first descent's trash line.
+//   - Witness Chamber (z 39..89): the Witness-Root's actual test room, so the
+//     dais (and the boss spawn in content/hollow.ts) moved here from the old
+//     far-room placement.
+//   - Gardener's Hollow (z 89..148): reserved for the Descent 2/3 space (the
+//     Gardener's memory-reveal and the graft/Gravecaller-ambush scene); left
+//     undecorated for now, its own dais/dressing lands with that quest content.
 export const UNDER_SHRINE_LAYOUT: DungeonLayout = {
   zMin: -19,
   zMax: 148,
@@ -93,8 +105,13 @@ export const UNDER_SHRINE_LAYOUT: DungeonLayout = {
   sideWallHd: 84,
   pillars: grid(10, 130, 15, [-14, 14]),
   tombs: grid(16, 111, 19, [-19, 19]),
-  stubs: [],
-  dais: { x: 0, z: 132, r: 9.5 },
+  stubs: [
+    { x: -14, z: 39, hw: 9, hd: 4 },
+    { x: 14, z: 39, hw: 9, hd: 4 },
+    { x: -14, z: 89, hw: 9, hd: 4 },
+    { x: 14, z: 89, hw: 9, hd: 4 },
+  ],
+  dais: { x: 0, z: 78, r: 9.5 },
 };
 
 // Gravewyrm Sanctum: a stretched three-chamber crypt (z -19..158) with

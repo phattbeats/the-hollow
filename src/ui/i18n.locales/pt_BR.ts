@@ -3335,6 +3335,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.controller.help':
     'O analógico esquerdo move, o direito controla a câmera. Abra uma janela para usar o ponteiro na tela.',
   'entities.mobs.nythraxis_skeleton_warrior.name': 'Guarda real reerguido',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': 'Espírito de Aldren',
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'Espírito de Malric',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'Espírito de Voss',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'Nythraxis, Flagelo de Thornpeak',
   'itemUi.quality.legendary': 'Lendário',
   'entities.items.deathless_heartwood.name': 'Cerne da Coroa Imortal',
@@ -3347,6 +3350,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': "Manto Chama d'Alma",
   'entities.items.stormcallers_crown.name': 'Coroa do Chamatormenta',
   'entities.items.stormcallers_spaulders.name': 'Espaldares do Chamatormenta',
+  'entities.items.deathless_greatblade.name': 'Grande Espada Imortal',
+  'entities.items.scepter_of_the_deathless_court.name': 'Cetro da Corte Imortal',
+  'entities.items.stormcallers_focus.name': 'Foco do Chamatormenta',
   'hud.chat.context.convertToRaid': 'Converter em raide',
   'hud.chat.context.convertToParty': 'Converter em grupo',
   'hudChrome.raidConvert.leaderOnly': 'Só o líder da raide pode converter em um grupo.',
@@ -4274,15 +4280,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     'Trocar uma peça antiga por uma melhoria nova faz mais por você do que jogar de forma impecável com um equipamento que você já superou. Quando algo melhor cair ou uma missão oferecer, pegue. Não guarde seus bons itens para depois.',
   'guide.gear.upgradeTitle': 'Mantenha seu equipamento atualizado',
-  'guide.lore.aldricBody':
-    'Um humilde sacerdote de aldeia que primeiro dá nome ao culto sobre uma sepultura profanada em Eastbrook, e então segue sua trilha em pessoa pelo pântano e até a muralha em Highwatch. Ele é o coração firme de toda a campanha.',
-  'guide.lore.aldricRole': 'Sacerdote do Vale',
   'guide.lore.figuresBody':
     'Um punhado de pessoas percorre a estrada inteira com você. Fique atento a esses nomes, do vale aos cumes.',
   'guide.lore.figuresTitle': 'Rostos que você vai conhecer',
-  'guide.lore.marenBody':
-    'Uma rastreadora de fala baixa que você conhece nos juncos de Mirefen, toda pés silenciosos e uma lâmina curta. Ela também segue a trilha ao norte, e é o ouvido dela que capta as palavras que enviam você aos cumes.',
-  'guide.lore.marenRole': 'A Batedora do Marechal',
   'guide.models.count': '{count} modelos',
   'guide.models.groupClasses': 'Classes',
   'guide.models.groupCreatures': 'Criaturas',
@@ -4576,6 +4576,15 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Caco com Marcas de Contagem',
   'entities.items.tally_shard.flavorText':
     '...marcas de cinco em cinco, riscadas fundo, cortadas cada vez que a conta fechava. centenas de cincos antes de os cortes pararem, e a última fileira nunca foi terminada...',
+  'entities.items.root_token_unbinding.name': 'Nó de Raiz Afrouxado',
+  'entities.items.root_token_unbinding.flavorText':
+    '...desgastado e liso onde um polegar pressionou repetidas vezes, como se afrouxasse um nó amarrado ao redor de nada que se pudesse ver. alguém acreditava que soltar era um ato de bondade. alguém estava errado, ou adiantado, ou ambos...',
+  'entities.items.root_token_offering.name': 'Pequena Pedra de Alimentação',
+  'entities.items.root_token_offering.flavorText':
+    '...uma tigela rasa entalhada na pedra, não maior que uma moeda, do tipo em que se deixaria uma migalha para algo que não podia pedir. o que comia aqui não parou de sentir fome. apenas parou de ser visto...',
+  'entities.items.root_token_verdict.name': 'Pedra Marcada de Julgamento',
+  'entities.items.root_token_verdict.flavorText':
+    '...uma contagem marcada de três em três, não de cinco em cinco, julgada e rejulgada, pressionada com tanta força que a terceira marca rachou a pedra. alguém não parava de mudar de ideia sobre a mesma pergunta, repetidas vezes, no escuro...',
   'entities.items.linen_pouch.name': 'Bolsa de Linho',
   'entities.items.travelers_knapsack.name': 'Mochila do Viajante',
   'entities.items.wolfhide_satchel.name': 'Bolsa de Pele de Lobo',

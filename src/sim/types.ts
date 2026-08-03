@@ -114,6 +114,7 @@ export interface HonorArenaDailyState {
   date: string;
   winsByOpponent: Record<string, number>;
   fiestaCompletionsByOpponent: Record<string, number>;
+  fiestaKillsByVictim: Record<string, number>;
   totalWins: number;
 }
 
@@ -235,6 +236,13 @@ export type AuraKind =
   | 'heal_absorb'
   | 'critvuln'
   | 'buff_spi'
+  // Warrior Ironhold: a big, short, all-school damage-taken reduction (value =
+  // fraction less, e.g. 0.4 = 40% less), applied in damage.ts.
+  | 'shield_wall'
+  // Paladin Sacred Bulwark: a divine cheat-death ward. While it holds, a lethal
+  // enemy hit is denied in damage.ts and the wearer is restored by value (a
+  // fraction of max health, e.g. 0.35 = 35%) before the ward is consumed.
+  | 'guardian_ward'
   // 2v2 Fiesta power-up buffs: `buff_scale` value = body-size multiplier (also
   // boosts max-hp when >1); `buff_jump` value = jump-height multiplier.
   | 'buff_scale'
@@ -649,6 +657,16 @@ export interface MobTemplate {
   // location live in src/sim/world_boss.ts; the loot roll runs through
   // ctx.rollWorldBossLoot.
   worldBoss?: boolean;
+  // Upstream #1707 (Thunzharr quiet-mechanics): suppresses the per-mechanic
+  // combat-log barks ("<Name> unleashes <Mechanic>!" and "<Name> becomes
+  // enraged!") for a mob whose only voice should be its periodic battle cry (a
+  // world boss). The mechanics still fire, with their spellfx and damage: only
+  // the noisy log line is silenced. Also suppresses the "{name} channels
+  // {mechanic}." chat line a support/channel mechanic would otherwise emit
+  // (Heroic Nythraxis's Spirit of Malric): the heal beam + floating combat text
+  // already telegraph it, so a per-tick chat line would just be noise for a
+  // squishy add meant to die fast.
+  quietMechanics?: boolean;
   // Elite scaling, vanilla-style: ~2.3x health, ~1.5x damage, double XP.
   elite?: boolean;
   // Rare/miniboss controls.
@@ -659,6 +677,11 @@ export interface MobTemplate {
   // leaves snares landing so most elites can still be kited; a raid boss sets both
   // (upstream #1502).
   slowImmune?: boolean;
+  // Ignores taunt/growl forced-target windows. Heroic Nythraxis's Spirit of Voss
+  // add: the raid cannot tank-lock it onto a target with taunt, only peel it off
+  // healers with CC. Taunt still registers threat (it shows on meters); see the
+  // ignoreTaunt guard in Sim.applyTaunt.
+  ignoreTaunt?: boolean;
   // Upstream #1643 (Thunzharr unkitable-movespeed fix): every movement step (chase,
   // flee, wander, leash return) takes moveToward's ignoreObstacles branch, a straight
   // line that ignores prop colliders, the waterline, and the steep-wall gate. For a
@@ -763,6 +786,24 @@ export interface MobTemplate {
     every: number;
     hasteMult: number;
     duration: number;
+    name: string;
+    school?: Aura['school'];
+  };
+  // Channeled ESCALATING heal ("Malric's Mending", Heroic Nythraxis): every
+  // `every`s the caster heals the highest-max-hp friendly mob in `radius` (its
+  // protectee, e.g. the raid boss) for `baseHeal` plus a ramp that GROWS by
+  // `rampAdd` each uninterrupted tick, capped so a tick never exceeds `maxHeal`.
+  // Any stun/incapacitate/silence or a matching school lockout breaks the
+  // channel and RESETS the ramp, so a raid that fails to lock the caster down
+  // watches the boss heal for more and more. The caster must be CC-able
+  // (template `ccImmune: false`) for the reset to matter. Rides applyHeal; no
+  // new aura kind. Resets on evade/respawn like mendAlly.
+  channelHeal?: {
+    radius: number;
+    every: number;
+    baseHeal: number;
+    rampAdd: number;
+    maxHeal: number;
     name: string;
     school?: Aura['school'];
   };
@@ -1389,8 +1430,10 @@ export interface AbilityDef {
   // multiplier on the damage-threat (both scale with stance/form modifiers).
   threat?: { flat?: number; mult?: number };
   requiresForm?: 'bear' | 'cat'; // druid form kit (maul/growl/swipe/claw/bite)
-  // Castable while shapeshifted without requiring a SPECIFIC form (Feral Instinct works in
-  // both Cat and Bear Form). Exempts the ability from the "can't act while shapeshifted" lock.
+  // Castable while shapeshifted (druid bear/cat/travel) without requiring a SPECIFIC form,
+  // so it works in both Cat and Bear Form. Exempts the ability from the "can't act while
+  // shapeshifted" lock. Default false: shapeshifted druids normally can't cast class-kit
+  // spells; tank cooldowns like Primal Reflexes opt IN so a bear tank pops them mid-fight.
   usableInForm?: boolean;
   // Mutually exclusive self-buff group: casting one ability in the group cancels
   // any active buff from a sibling in the same group (e.g. hunter aspects, where
@@ -2051,6 +2094,9 @@ export interface Entity {
   sitting: boolean;
   eating: Consuming | null;
   drinking: Consuming | null;
+  // Z-key cosmetic toggle: held weapons render sheathed on the back. Cleared by
+  // any deliberate combat action (auto-attack engage, ability cast), WoW-style.
+  weaponStowed: boolean;
   // mob AI
   aiState: AiState;
   tappedById: number | null; // first player to damage this mob owns loot/xp/quest credit
@@ -2078,6 +2124,9 @@ export interface Entity {
   detonateTimer: number; // Death Throes fuse on a volatile corpse; Infinity = no pending detonation
   mendTimer: number; // mendAlly support-heal cast countdown
   wardTimer: number; // wardAllies support-shield cast countdown
+  channelTimer: number; // channelHeal escalating-heal tick countdown
+  channelRamp: number; // channelHeal accumulated bonus heal; reset to 0 on interrupt (CC)
+  healProtecteeId?: number | null; // channelHeal: cached protectee (the ally healed), re-scanned lazily
   rallyTimer: number; // rally commander-buff cast countdown
   warcryTimer: number; // warcry ally-haste pulse countdown
   firedSummons: number; // summonAdds thresholds already triggered
@@ -2189,6 +2238,12 @@ export interface NythraxisEncounterState {
   deathlessTimer: number;
   deathlessCastRemaining: number;
   deathlessStunRemaining: number;
+  // Heroic-only: the Deathless Court re-summon channel (Aldren/Malric/Voss) and
+  // the Dread Curse tank-swap debuff. See encounters/nythraxis.ts.
+  heroicSummonChannelRemaining?: number;
+  dreadCurseTimer?: number;
+  dreadCurseTargetId?: number | null;
+  dreadCurseStacks?: number;
   wardChannels: NythraxisWardChannel[];
   finalStand: boolean;
   deathSpoken: boolean;

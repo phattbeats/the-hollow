@@ -1180,7 +1180,7 @@ export const tr_TR: EnTranslations = {
         "levels": "Seviye {min} - {max}",
         "cta": "Dünyayı gör",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Doğudere Vadisi",
         "valeBlurb": "Her maceranın başladığı yeşil tepeler ve eski ormanlar.",
         "marshName": "Mirefen Bataklığı",
@@ -1681,6 +1681,8 @@ export const tr_TR: EnTranslations = {
       "typeGroupBody": "Ana hikayenin her bölümü bir zindan kapısında sona erer. Giriş kısmı tek başına yapılabilir, ama bir bölümün kötü adamına vurulacak son darbe beş kişilik bir grup içindir.",
       "sagaTitle": "İzi kuzeye doğru takip et",
       "sagaBody": "Ana hikaye tek bir uzun kovalamacadır. Bir ölüm tarikatı diyarın mezarları üzerinde çalışıyor ve kapattığın her bölüm seni yolda bir bölge daha yukarı işaret eder. Komployla bir anda baştan başa savaşmazsın; bir ipliği çekersin, o da seni onu tutan bir sonraki ele götürür.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "Vadi: bir mühürdeki isim",
       "sagaValeBody": "Doğudere'de ölüler huzur bulmuyor ve bunun ardındaki damga, çoktan yok olduğu sanılan bir mezhebe ait. İzi şapel mahzeninde çalışan bir Mezar Çağırıcı'ya kadar sür, onun kendi evrakları seni kuzeydeki bataklığa yönlendirir.",
       "sagaMarshTitle": "Bataklık: ruhlardan bir öşür",
@@ -1698,10 +1700,10 @@ export const tr_TR: EnTranslations = {
     "lore": {
       "figuresTitle": "Tanışacağın yüzler",
       "figuresBody": "Bir avuç insan tüm yolu seninle birlikte yürür. Vadiden zirvelere bu adlara dikkat et.",
-      "aldricRole": "Vadi'nin Rahibi",
-      "aldricBody": "Önce Doğudere'de kirletilmiş bir mezar başında tarikatı adlandıran, sonra onun izini bizzat bataklık boyunca ve Yüksetnöbet'teki surlara dek süren mütevazı bir köy rahibi. Tüm seferin sağlam yüreğidir.",
-      "marenRole": "Mareşal'in İzcisi",
-      "marenBody": "Mirefen'in sazlıklarında karşılaştığın, az konuşan bir iz sürücü; tamamı sessiz adımlar ve kısa bir bıçak. O da izi kuzeye doğru takip eder ve seni zirvelere gönderen sözleri yakalayan onun kulağıdır."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Zindanlar ve Akınlar",
@@ -4297,6 +4299,10 @@ export const tr_TR: EnTranslations = {
         "name": "Kışkırtma",
         "description": "Hedefi kışkırtır: tehdidin onun en nefret ettiği düşmana eşit hale gelir ve 3 saniye boyunca sana saldırmaya zorlanır."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
       "fireball": {
         "name": "Ateş Topu",
         "description": "Ateşli bir top fırlatarak {damage} Ateş hasarı ve ek olarak zamana yayılı hasar verir."
@@ -4488,6 +4494,10 @@ export const tr_TR: EnTranslations = {
       "retribution_aura": {
         "name": "İntikam Aurası",
         "description": "Seni 30 dakika boyunca kutsal enerjiyle sarar; yakın dövüşte sana vuran her düşmana 5 Kutsal hasar verir."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
       },
       "tame_beast": {
         "name": "Canavar Evcilleştirme",
@@ -4772,6 +4782,10 @@ export const tr_TR: EnTranslations = {
       "rip": {
         "name": "Parçalama",
         "description": "12 saniye boyunca kanama hasarı veren bitirici hamle. Kombo puanlarını tüketir. Yalnızca Kurt Formu."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
       },
       "mortal_strike": {
         "name": "Ölümcül Darbe",
@@ -5865,6 +5879,18 @@ export const tr_TR: EnTranslations = {
         "name": "Çetele İşaretli Parça",
         "flavorText": "...beşerli işaretler, derin kazınmış, sayım her döndüğünde üstü çizilmiş. çizmeler durmadan önce yüzlerce beşli, ve son sıra hiç bitirilmemiş..."
       },
+      "root_token_unbinding": {
+        "name": "Gevşetilmiş Kök Düğümü",
+        "flavorText": "...bir başparmağın defalarca bastırdığı yerde pürüzsüzleşmiş, görülemeyen bir şeyin etrafına bağlanmış bir düğümü çözermişçesine. birisi bırakmanın bir iyilik olduğuna inanıyordu. birisi yanılıyordu, ya da erkendi, ya da ikisi de..."
+      },
+      "root_token_offering": {
+        "name": "Küçük Besleme Taşı",
+        "flavorText": "...taşa kazınmış, bir bozuk paradan büyük olmayan sığ bir çukur, isteyemeyen bir şey için kırıntı bırakılacak türden. burada besleneni yemeyi bırakmadı. sadece görülmeyi bıraktı..."
+      },
+      "root_token_verdict": {
+        "name": "Yargıyla İşaretlenmiş Taş",
+        "flavorText": "...beşerli değil, üçerli işaretlenmiş bir hesap, yargılanmış ve yeniden yargılanmış, üçüncü geçişte taşı çatlatacak kadar sert bastırılmış. biri karanlıkta aynı soru üzerinde defalarca fikrini değiştirip durdu..."
+      },
       "reliquary_plate_chest": {
         "name": "Emanetlik Muhafızı Zırhı"
       },
@@ -5991,6 +6017,15 @@ export const tr_TR: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "Fırtınaçağıranın Omuzlukları"
+      },
+      "deathless_greatblade": {
+        "name": "Ölümsüz Büyük Kılıç"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Ölümsüz Sarayın Asası"
+      },
+      "stormcallers_focus": {
+        "name": "Fırtınaçağıranın Odağı"
       },
       "unknown_alien_weaponry": {
         "name": "Bilinmeyen Uzaylı Silahı"
@@ -6230,6 +6265,15 @@ export const tr_TR: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Dikenzirve Belası"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Aldren'in Ruhu"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Malric'in Ruhu"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Voss'un Ruhu"
       },
       "reliquary_ledger_wraith": {
         "name": "Defter Hayaleti"
