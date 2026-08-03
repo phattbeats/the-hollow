@@ -1061,7 +1061,7 @@ export class ClientWorld implements IWorld {
     }
     // No reconnect scheduled yet but the socket is not open: onclose was
     // never delivered while suspended. Key this off the socket's own
-    // readyState, not `connected` — a tab backgrounded DURING the initial
+    // readyState, not `connected` -- a tab backgrounded DURING the initial
     // handshake (before the first `hello` ever sets `connected`) hits this
     // same branch with `connected` still false, and checking `connected`
     // alone left that socket a zombie forever (neither branch above fires,
