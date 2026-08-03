@@ -6307,6 +6307,9 @@ export const tr_TR: EnTranslations = {
       "boarball_ball": {
         "name": "Boarball"
       },
+      "yumi_cat": {
+        "name": "Yumi"
+      },
       "ironvein_foreman": {
         "name": "Demirdamar Ustabaşı"
       },

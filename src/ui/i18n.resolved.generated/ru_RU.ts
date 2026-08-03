@@ -6307,6 +6307,9 @@ export const ru_RU: EnTranslations = {
       "boarball_ball": {
         "name": "Боарбол"
       },
+      "yumi_cat": {
+        "name": "Yumi"
+      },
       "ironvein_foreman": {
         "name": "Прораб Железной жилы"
       },

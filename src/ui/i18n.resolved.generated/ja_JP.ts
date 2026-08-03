@@ -6307,6 +6307,9 @@ export const ja_JP: EnTranslations = {
       "boarball_ball": {
         "name": "ボアボール"
       },
+      "yumi_cat": {
+        "name": "Yumi"
+      },
       "ironvein_foreman": {
         "name": "鉄脈の現場監督"
       },

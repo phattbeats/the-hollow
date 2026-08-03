@@ -6307,6 +6307,9 @@ export const ko_KR: EnTranslations = {
       "boarball_ball": {
         "name": "보어볼"
       },
+      "yumi_cat": {
+        "name": "Yumi"
+      },
       "ironvein_foreman": {
         "name": "철맥 감독관"
       },

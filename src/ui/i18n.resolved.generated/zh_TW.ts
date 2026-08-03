@@ -6307,6 +6307,9 @@ export const zh_TW: EnTranslations = {
       "boarball_ball": {
         "name": "野豬球"
       },
+      "yumi_cat": {
+        "name": "Yumi"
+      },
       "ironvein_foreman": {
         "name": "鐵脈工頭"
       },

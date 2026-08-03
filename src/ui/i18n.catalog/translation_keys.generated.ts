@@ -1302,6 +1302,7 @@ export type TranslationKeyFlat =
   | 'entities.mobs.wyrmcult_necromancer.name'
   | 'entities.mobs.wyrmcult_zealot.name'
   | 'entities.mobs.ysolei.name'
+  | 'entities.mobs.yumi_cat.name'
   | 'entities.npcs.apothecary_lin.greeting'
   | 'entities.npcs.apothecary_lin.name'
   | 'entities.npcs.apothecary_lin.title'

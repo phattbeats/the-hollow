@@ -6307,6 +6307,9 @@ export const en_XA: EnTranslations = {
       "boarball_ball": {
         "name": "[Ɓóáŕƀáļļ]"
       },
+      "yumi_cat": {
+        "name": "[Ýúɱí]"
+      },
       "ironvein_foreman": {
         "name": "[Íŕóñʋéíñ Ƒóŕéɱáñ]"
       },
