@@ -718,8 +718,18 @@ function applyAbility(ctx: SimContext, p: Entity, meta: PlayerMeta, res: Resolve
     // takes nothing (the drain fizzles the projectile). Spells never "miss" like a
     // physical attack; a target can only fully RESIST them (classic-era semantics),
     // so the on-impact roll uses isSpellResisted and emits a 'resist', not a 'miss'.
+    //
+    // PHAA-739 row D / #1913 Taunts never miss: hate-forcing abilities (e.g.
+    // paladin Sacred Goad, the only current spell-school taunt) always land,
+    // regardless of the caster/target level gap. A resisted taunt silently
+    // breaks tanking, so the resist roll is skipped entirely for taunt abilities
+    // (physical taunts like Goad / Menace already skip it because they resolve
+    // instantly without a projectile). No rng draw is taken on the skipped path,
+    // so the shared-rng draw order for every other downstream call site stays
+    // unchanged and the parity goldens hold.
+    const isTaunt = ability.effects.some((e) => e.type === 'taunt');
     scheduleProjectile(ctx, p, target, (src, tgt) => {
-      if (isSpellResisted(ctx.rng, src.level, tgt.level, src.hitBonus)) {
+      if (!isTaunt && isSpellResisted(ctx.rng, src.level, tgt.level, src.hitBonus)) {
         ctx.emit({
           type: 'damage',
           sourceId: src.id,
