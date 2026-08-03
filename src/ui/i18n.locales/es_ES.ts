@@ -183,8 +183,14 @@ export const es_ES: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.title': 'Profundidad',
   'entities.delves.collapsed_reliquary.leaveText':
     'Trepas de vuelta hasta el Hermano Halven, en la ruina del relicario.',
+  'entities.items.deathless_greatblade.name': 'Espadón de los Eternos',
+  'entities.items.scepter_of_the_deathless_court.name': 'Cetro de la Corte Eterna',
+  'entities.items.stormcallers_focus.name': 'Foco del Invocatormentas',
   'entities.mobs.reliquary_bonewalker.name': 'Caminahuesos alzado',
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Acólito invocasepulcros',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': 'Alma de Aldren',
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'Alma de Malric',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'Alma de Voss',
   'entities.npcs.brother_halven.greeting': 'El relicario de abajo ha vuelto a moverse.',
   'sim.delve.alreadyInDelve': 'Ya estás en una Profundidad.',
   'sim.delve.bossChest':

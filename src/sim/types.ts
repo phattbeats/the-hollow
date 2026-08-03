@@ -673,6 +673,16 @@ export interface MobTemplate {
   // leaves snares landing so most elites can still be kited; a raid boss sets both
   // (upstream #1502).
   slowImmune?: boolean;
+  // Ignores taunt/growl forced-target windows. Heroic Nythraxis's Spirit of Voss
+  // add: the raid cannot tank-lock it onto a target with taunt, only peel it off
+  // healers with CC. Taunt still registers threat (it shows on meters); see the
+  // ignoreTaunt guard in Sim.applyTaunt.
+  ignoreTaunt?: boolean;
+  // Suppresses the "{name} channels {mechanic}." chat line a support/channel
+  // mechanic would otherwise emit (Heroic Nythraxis's Spirit of Malric): the
+  // heal beam + floating combat text already telegraph it, so a per-tick chat
+  // line would just be noise for a squishy add meant to die fast.
+  quietMechanics?: boolean;
   // Upstream #1643 (Thunzharr unkitable-movespeed fix): every movement step (chase,
   // flee, wander, leash return) takes moveToward's ignoreObstacles branch, a straight
   // line that ignores prop colliders, the waterline, and the steep-wall gate. For a
@@ -777,6 +787,24 @@ export interface MobTemplate {
     every: number;
     hasteMult: number;
     duration: number;
+    name: string;
+    school?: Aura['school'];
+  };
+  // Channeled ESCALATING heal ("Malric's Mending", Heroic Nythraxis): every
+  // `every`s the caster heals the highest-max-hp friendly mob in `radius` (its
+  // protectee, e.g. the raid boss) for `baseHeal` plus a ramp that GROWS by
+  // `rampAdd` each uninterrupted tick, capped so a tick never exceeds `maxHeal`.
+  // Any stun/incapacitate/silence or a matching school lockout breaks the
+  // channel and RESETS the ramp, so a raid that fails to lock the caster down
+  // watches the boss heal for more and more. The caster must be CC-able
+  // (template `ccImmune: false`) for the reset to matter. Rides applyHeal; no
+  // new aura kind. Resets on evade/respawn like mendAlly.
+  channelHeal?: {
+    radius: number;
+    every: number;
+    baseHeal: number;
+    rampAdd: number;
+    maxHeal: number;
     name: string;
     school?: Aura['school'];
   };
@@ -2097,6 +2125,9 @@ export interface Entity {
   detonateTimer: number; // Death Throes fuse on a volatile corpse; Infinity = no pending detonation
   mendTimer: number; // mendAlly support-heal cast countdown
   wardTimer: number; // wardAllies support-shield cast countdown
+  channelTimer: number; // channelHeal escalating-heal tick countdown
+  channelRamp: number; // channelHeal accumulated bonus heal; reset to 0 on interrupt (CC)
+  healProtecteeId?: number | null; // channelHeal: cached protectee (the ally healed), re-scanned lazily
   rallyTimer: number; // rally commander-buff cast countdown
   warcryTimer: number; // warcry ally-haste pulse countdown
   firedSummons: number; // summonAdds thresholds already triggered
@@ -2208,6 +2239,12 @@ export interface NythraxisEncounterState {
   deathlessTimer: number;
   deathlessCastRemaining: number;
   deathlessStunRemaining: number;
+  // Heroic-only: the Deathless Court re-summon channel (Aldren/Malric/Voss) and
+  // the Dread Curse tank-swap debuff. See encounters/nythraxis.ts.
+  heroicSummonChannelRemaining?: number;
+  dreadCurseTimer?: number;
+  dreadCurseTargetId?: number | null;
+  dreadCurseStacks?: number;
   wardChannels: NythraxisWardChannel[];
   finalStand: boolean;
   deathSpoken: boolean;

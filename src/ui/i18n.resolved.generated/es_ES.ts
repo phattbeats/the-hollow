@@ -6004,6 +6004,15 @@ export const es_ES: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "Bufas del Invocatormentas"
       },
+      "deathless_greatblade": {
+        "name": "Espadón de los Eternos"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Cetro de la Corte Eterna"
+      },
+      "stormcallers_focus": {
+        "name": "Foco del Invocatormentas"
+      },
       "unknown_alien_weaponry": {
         "name": "Armamento alienígena desconocido"
       },
@@ -6242,6 +6251,15 @@ export const es_ES: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Azote de Thornpeak"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Alma de Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Alma de Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Alma de Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Espectro del registro"

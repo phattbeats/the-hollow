@@ -6004,6 +6004,15 @@ export const ko_KR: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "폭풍소환사의 어깨갑옷"
       },
+      "deathless_greatblade": {
+        "name": "죽지 않는 대검"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "죽지 않는 궁정의 홀"
+      },
+      "stormcallers_focus": {
+        "name": "폭풍소환사의 초점"
+      },
       "unknown_alien_weaponry": {
         "name": "알 수 없는 외계 무기"
       },
@@ -6242,6 +6251,15 @@ export const ko_KR: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "나이트락시스, 손피크의 재앙"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "알드렌의 영혼"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "말릭의 영혼"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "보스의 영혼"
       },
       "reliquary_ledger_wraith": {
         "name": "명부의 망령"

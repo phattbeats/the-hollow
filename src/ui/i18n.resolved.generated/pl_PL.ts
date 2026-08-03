@@ -6004,6 +6004,15 @@ export const pl_PL: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "Naramienniki przywoływacza burz"
       },
+      "deathless_greatblade": {
+        "name": "Nieśmiertelny Wielki Miecz"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Berło Nieśmiertelnego Dworu"
+      },
+      "stormcallers_focus": {
+        "name": "Skupienie przywoływacza burz"
+      },
       "unknown_alien_weaponry": {
         "name": "Nieznana obca broń"
       },
@@ -6242,6 +6251,15 @@ export const pl_PL: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Plaga Ciernistego Szczytu"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Duch Aldrena"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Duch Malrica"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Duch Vossa"
       },
       "reliquary_ledger_wraith": {
         "name": "Widmo Ksiąg"

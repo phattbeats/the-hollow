@@ -92,3 +92,74 @@ export const HEROIC_DELVE_BOSS_LOOT: Record<string, LootEntry[]> = {
 // (src/sim/loot/loot_roll.ts), not here. This module's role is just to define
 // the content records (the Mark item id + its loot-table sentinel) that the
 // swap and the fan-out at grantDelveClearTo both reach for.
+
+// ---------------------------------------------------------------------------
+// Heroic Nythraxis (the 10-player raid, PHAA-714). Distinct from the delve
+// heroic tier above: the claim comes from the raid's OWN instance difficulty
+// (instances/dungeons.ts InstanceSlot.difficulty), not a delve run's tierId,
+// and the raid is one tier ABOVE the delve heroic bump.
+// ---------------------------------------------------------------------------
+
+export const NYTHRAXIS_RAID_BOSS_ID = 'nythraxis_scourge_of_thornpeak';
+// One tier above the delve heroic bump (HEROIC_VARIANT_SOURCE_LEVEL, the
+// level-20 delve content one tier up): the 10-player raid's own epics land at
+// item level 33 (27 + the epic bump of 6) and legendaries at 37 (27 + 10).
+export const NYTHRAXIS_RAID_LOOT_SOURCE_LEVEL = 27;
+
+// The three heroic-only raid weapons: one drops per heroic kill (chances sum
+// to 1.0), on top of the free heroic-variant upgrade of the boss's own normal
+// set pieces and legendaries (heroic_variants.ts). Item level 33, budget-exact
+// (item_level.ts registers NYTHRAXIS_RAID_LOOT_SOURCE_LEVEL for this table).
+export const HEROIC_NYTHRAXIS_ITEMS: Record<string, ItemDef> = {
+  deathless_greatblade: {
+    id: 'deathless_greatblade',
+    name: 'Deathless Greatblade',
+    kind: 'weapon',
+    slot: 'mainhand',
+    quality: 'epic',
+    requiredLevel: 20,
+    weapon: { min: 45, max: 68, speed: 3.4 },
+    stats: { str: 14, sta: 9 },
+    sellValue: 16000,
+    requiredClass: ['warrior', 'paladin'],
+  },
+  scepter_of_the_deathless_court: {
+    id: 'scepter_of_the_deathless_court',
+    name: 'Scepter of the Deathless Court',
+    kind: 'weapon',
+    slot: 'mainhand',
+    quality: 'epic',
+    requiredLevel: 20,
+    weapon: { min: 29, max: 51, speed: 2.4 },
+    stats: { int: 13, spi: 10 },
+    sellValue: 16000,
+    requiredClass: ['mage', 'priest', 'warlock'],
+  },
+  stormcallers_focus: {
+    id: 'stormcallers_focus',
+    name: "Stormcaller's Focus",
+    kind: 'weapon',
+    slot: 'mainhand',
+    quality: 'epic',
+    requiredLevel: 20,
+    weapon: { min: 31, max: 52, speed: 2.5 },
+    stats: { int: 14, spi: 9 },
+    sellValue: 16000,
+    requiredClass: ['shaman', 'paladin'],
+  },
+};
+
+// The raid boss's normal set pieces and legendaries auto-upgrade to their
+// raid-tier heroic variants on a heroic claim (heroic_variants.ts); this table
+// adds only the heroic-ONLY extras the normal table never carries.
+export const HEROIC_RAID_BOSS_LOOT: Record<string, LootEntry[]> = {
+  nythraxis_scourge_of_thornpeak: [
+    { itemId: 'deathless_greatblade', chance: 0.34, rollGroup: 'nythraxis_heroic_weapon' },
+    {
+      itemId: 'scepter_of_the_deathless_court',
+      chance: 0.33,
+      rollGroup: 'nythraxis_heroic_weapon',
+    },
+    { itemId: 'stormcallers_focus', chance: 0.33, rollGroup: 'nythraxis_heroic_weapon' },
+  ],
+};

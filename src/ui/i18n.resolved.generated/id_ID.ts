@@ -6004,6 +6004,15 @@ export const id_ID: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "Pelindung Bahu Pemanggil Badai"
       },
+      "deathless_greatblade": {
+        "name": "Pedang Besar Baka"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Tongkat Kerajaan Istana Baka"
+      },
+      "stormcallers_focus": {
+        "name": "Fokus Pemanggil Badai"
+      },
       "unknown_alien_weaponry": {
         "name": "Persenjataan Alien Tak Dikenal"
       },
@@ -6242,6 +6251,15 @@ export const id_ID: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Bencana Thornpeak"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Roh Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Roh Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Roh Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Arwah Buku Catatan"

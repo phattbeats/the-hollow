@@ -6004,6 +6004,15 @@ export const vi_VN: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "Giáp Vai của Triệu Bão Sư"
       },
+      "deathless_greatblade": {
+        "name": "Đại Kiếm Bất Tử"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Quyền Trượng Của Triều Đình Bất Tử"
+      },
+      "stormcallers_focus": {
+        "name": "Tiêu Điểm Của Triệu Bão Sư"
+      },
       "unknown_alien_weaponry": {
         "name": "Vũ Khí Ngoài Hành Tinh Bí Ẩn"
       },
@@ -6242,6 +6251,15 @@ export const vi_VN: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Tai Họa Đỉnh Gai"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Linh Hồn Của Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Linh Hồn Của Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Linh Hồn Của Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Oan Hồn Sổ Sách"

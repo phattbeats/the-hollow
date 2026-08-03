@@ -6004,6 +6004,15 @@ export const ru_RU: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "Наплечники призывателя бурь"
       },
+      "deathless_greatblade": {
+        "name": "Бессмертный большой меч"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Скипетр бессмертного двора"
+      },
+      "stormcallers_focus": {
+        "name": "Фокус призывателя бурь"
+      },
       "unknown_alien_weaponry": {
         "name": "Неизвестное инопланетное вооружение"
       },
@@ -6242,6 +6251,15 @@ export const ru_RU: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Нитраксис, Бич Торнпика"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Дух Алдрена"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Дух Малрика"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Дух Восса"
       },
       "reliquary_ledger_wraith": {
         "name": "Книжный призрак"

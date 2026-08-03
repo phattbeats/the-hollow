@@ -130,7 +130,13 @@ export const fr_CA: Partial<Record<TranslationKey, string>> = {
   'delveUi.summary.title': 'Excavation terminée',
   'delveUi.tracker.marks': "Marques d'excavation : {count}",
   'delveUi.tracker.title': 'Excavation',
+  'entities.items.deathless_greatblade.name': 'Grande Lame des sans-mort',
+  'entities.items.scepter_of_the_deathless_court.name': 'Sceptre de la Cour des sans-mort',
+  'entities.items.stormcallers_focus.name': "Foyer de l'Appel-tempête",
   'entities.mobs.reliquary_gravecall_acolyte.name': "Acolyte de l'appel des tombes",
+  'entities.mobs.nythraxis_heroic_warrior_add.name': "Âme d'Aldren",
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'Âme de Malric',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'Âme de Voss',
   'entities.npcs.brother_halven.greeting': "Le reliquaire en bas s'est encore déplacé.",
   'sim.delve.alreadyInDelve': 'Vous êtes déjà dans une excavation.',
   'sim.delve.bossChest':

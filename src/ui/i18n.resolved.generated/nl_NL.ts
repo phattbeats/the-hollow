@@ -6004,6 +6004,15 @@ export const nl_NL: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "Schouderstukken van de Stormroeper"
       },
+      "deathless_greatblade": {
+        "name": "Dodeloos Grootzwaard"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Scepter van het Dodeloze Hof"
+      },
+      "stormcallers_focus": {
+        "name": "Focus van de Stormroeper"
+      },
       "unknown_alien_weaponry": {
         "name": "Onbekende Buitenaardse Wapens"
       },
@@ -6242,6 +6251,15 @@ export const nl_NL: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Gesel van Doorntop"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Geest van Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Geest van Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Geest van Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Grootboek-Schim"

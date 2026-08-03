@@ -6004,6 +6004,15 @@ export const de_DE: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "Schulterplatten des Sturmrufers"
       },
+      "deathless_greatblade": {
+        "name": "Todloses Großschwert"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Zepter des todlosen Hofes"
+      },
+      "stormcallers_focus": {
+        "name": "Fokus des Sturmrufers"
+      },
       "unknown_alien_weaponry": {
         "name": "Unbekannte Alien-Waffen"
       },
@@ -6242,6 +6251,15 @@ export const de_DE: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Geißel von Thornpeak"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Geist von Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Geist von Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Geist von Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Verzeichnisgespenst"

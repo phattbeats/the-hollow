@@ -6004,6 +6004,15 @@ export const en: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "Stormcaller's Spaulders"
       },
+      "deathless_greatblade": {
+        "name": "Deathless Greatblade"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Scepter of the Deathless Court"
+      },
+      "stormcallers_focus": {
+        "name": "Stormcaller's Focus"
+      },
       "unknown_alien_weaponry": {
         "name": "Unknown Alien Weaponry"
       },
@@ -6242,6 +6251,15 @@ export const en: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Scourge of Thornpeak"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Spirit of Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Spirit of Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Spirit of Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Ledger Wraith"

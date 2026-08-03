@@ -41,7 +41,7 @@ import {
   spendResource as spendResourceImpl,
   updateCasting as updateCastingImpl,
 } from './combat/casting_lifecycle';
-import { isRooted, isStunned } from './combat/cc';
+import { isLockedOut, isRooted, isSilenced, isStunned } from './combat/cc';
 import {
   dealDamage as dealDamageImpl,
   grantXp as grantXpImpl,
@@ -197,6 +197,7 @@ import {
 } from './loot/loot_roll';
 import { type MailSave, PostOffice } from './mail/post_office';
 import { Market, type MarketListing, type MarketSave } from './market';
+import { NYTHRAXIS_SPIRIT_MENDING_CAST_ID } from './mob/healer_channel';
 import * as lifecycle from './mob/lifecycle';
 import { resetEvadingMob as resetEvadingMobFn, updateMob as updateMobFn } from './mob/locomotion';
 import { runMobSwingAffixes } from './mob/mob_swing';
@@ -546,6 +547,10 @@ export interface Party {
   raid: boolean;
   raidGroups: Map<number, 1 | 2>; // pid -> raid subgroup
   lootStrategies: LootStrategies;
+  // Heroic Nythraxis difficulty selection (leader-set, see setRaidDifficulty in
+  // social/party.ts). Read at the raid's next fresh instance claim; a claimed
+  // instance's difficulty is then fixed for its life regardless of a later flip.
+  raidDifficulty: 'normal' | 'heroic';
 }
 
 export interface TradeSession {
@@ -681,6 +686,10 @@ export interface InstanceSlot {
   objectIds: number[];
   exitId: number | null;
   emptyFor: number;
+  // Claimed difficulty (Heroic Nythraxis only; every other dungeon stays
+  // 'normal'). Set from the claiming raid's raidDifficulty at claim time and
+  // fixed for the instance's life; reset to 'normal' when the instance frees.
+  difficulty: 'normal' | 'heroic';
 }
 
 export interface ResolvedAbility {
@@ -1393,6 +1402,7 @@ export class Sim {
             objectIds: [],
             exitId: null,
             emptyFor: 0,
+            difficulty: 'normal',
           });
         }
         continue;
@@ -1418,6 +1428,7 @@ export class Sim {
           objectIds: [],
           exitId: null,
           emptyFor: 0,
+          difficulty: 'normal',
         });
       }
     }
@@ -2694,6 +2705,7 @@ export class Sim {
       canAddItem: sim.canAddItem.bind(sim),
       partyOf: sim.partyOf.bind(sim),
       removeFromParty: (pid: number, verb: string) => sim.party.removeFromParty(pid, verb),
+      setRaidDifficulty: sim.setRaidDifficulty.bind(sim),
       // /ready chat command routes through the seam to social/ready_check.ts (the
       // leader-gated start; readyCheckRespond is a direct Sim delegate below, not on
       // the seam, since nothing inside sim internals calls it).
@@ -3748,6 +3760,7 @@ export class Sim {
     if (target.kind === 'npc' && isRejectedFriendlyNpcAura(aura)) return;
     if (
       this.isNythraxisRaidEnemy(target) &&
+      !nythraxis.isNythraxisControllableAdd(target) && // Malric + Voss are meant to be CC'd
       this.isNythraxisControlAura(aura.kind) &&
       aura.sourceId !== target.id &&
       !this.isNythraxisScriptedControl(target, aura)
@@ -3919,6 +3932,14 @@ export class Sim {
     const top = topThreatValue(mob);
     const mine = mob.threat.get(p.id) ?? 0;
     mob.threat.set(p.id, Math.max(mine, top, 1));
+    // A mob flagged ignoreTaunt (Heroic Nythraxis's untauntable Spirit of Voss)
+    // or a training dummy takes the threat (it shows on meters) but never
+    // turns, forces, or fights: without this guard a taunt permanently
+    // force-aggroed it and pinned the attacker in combat forever.
+    if (MOBS[mob.templateId]?.ignoreTaunt || MOBS[mob.templateId]?.dummy) {
+      this.enterCombat(p, mob);
+      return;
+    }
     if (p.ownerId !== null && MOBS[mob.templateId]?.boss) {
       this.enterCombat(p, mob);
       return;
@@ -4604,6 +4625,7 @@ export class Sim {
         !tmpl.desperateHeal &&
         !tmpl.mendAlly &&
         !tmpl.wardAllies &&
+        !tmpl.channelHeal &&
         !tmpl.rally &&
         !tmpl.warcry)
     )
@@ -4733,6 +4755,76 @@ export class Sim {
               school,
             });
           }
+        }
+      }
+    }
+
+    // Channeled ESCALATING heal ("Malric's Mending", Heroic Nythraxis): heal the
+    // strongest friendly mob in range (its protectee, the raid boss) for a base
+    // amount plus a ramp that grows each uninterrupted tick. Any stun/incapacitate/
+    // silence, OR a real interrupt (a school lockout landing on the channel's
+    // school), breaks the channel and RESETS the ramp, so a raid that fails to
+    // lock the caster down watches the boss heal for more and more. The caster is
+    // CC-able by design (ccImmune: false).
+    if (tmpl.channelHeal) {
+      const ch = tmpl.channelHeal;
+      const interrupted =
+        isStunned(mob) || isSilenced(mob) || isLockedOut(mob, ch.school ?? 'shadow');
+      if (interrupted) {
+        // Clear the (scripted) channel bar so a stunned/interrupted healer is not
+        // left rendering a frozen cast; updateChannelHealerHold re-arms it once free.
+        if (mob.castingAbility === NYTHRAXIS_SPIRIT_MENDING_CAST_ID) {
+          mob.castingAbility = null;
+          mob.castTotal = 0;
+          mob.castRemaining = 0;
+          mob.channeling = false;
+        }
+        if (mob.channelRamp > 0) {
+          mob.channelRamp = 0;
+          if (!tmpl.quietMechanics)
+            this.emit({
+              type: 'log',
+              text: `${ch.name} is interrupted!`,
+              color: '#ffcc66',
+              entityId: mob.id,
+            });
+        }
+        mob.channelTimer = ch.every;
+      } else {
+        mob.channelTimer -= DT;
+        if (mob.channelTimer <= 0) {
+          mob.channelTimer = ch.every;
+          let protectee: Entity | null = null;
+          for (const ally of this.entities.values()) {
+            if (ally.kind !== 'mob' || ally.dead || ally.ownerId !== null) continue; // skip players, pets, corpses
+            if (ally.hostile !== mob.hostile || ally.id === mob.id) continue; // same-faction, not self
+            if (dist2d(ally.pos, mob.pos) > ch.radius) continue;
+            if (!protectee || ally.maxHp > protectee.maxHp) protectee = ally; // the boss = biggest pool
+          }
+          if (protectee && protectee.hp < protectee.maxHp) {
+            const amount = Math.round(Math.min(ch.maxHeal, ch.baseHeal + mob.channelRamp));
+            const school = ch.school ?? 'shadow';
+            this.emit({
+              type: 'spellfx',
+              sourceId: mob.id,
+              targetId: protectee.id,
+              school,
+              fx: 'beam',
+            });
+            // quietMechanics healers (the Nythraxis spirit adds) stay silent: the
+            // beam + heal event are enough, no per-tick chat line.
+            if (!tmpl.quietMechanics)
+              this.emit({
+                type: 'log',
+                text: `${mob.name} channels ${ch.name}.`,
+                color: '#66ff99',
+                entityId: mob.id,
+              });
+            this.applyHeal(mob, protectee, amount, ch.name);
+          }
+          // The ramp grows each uninterrupted tick (capped so base+ramp never
+          // exceeds maxHeal), so an ignored channel heals more and more over time.
+          mob.channelRamp = Math.min(ch.maxHeal - ch.baseHeal, mob.channelRamp + ch.rampAdd);
         }
       }
     }
@@ -5600,6 +5692,10 @@ export class Sim {
 
   moveRaidMember(targetPid: number, group: 1 | 2, pid?: number): void {
     this.party.moveRaidMember(targetPid, group, pid);
+  }
+
+  setRaidDifficulty(difficulty: 'normal' | 'heroic', pid?: number): void {
+    this.party.setRaidDifficulty(difficulty, pid);
   }
   // nextRaidGroupFor / normalizeRaidGroups / removeFromParty moved to the
   // PartyMachine (src/sim/social/party.ts, A1). removeFromParty is reachable by
