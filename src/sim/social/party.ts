@@ -333,6 +333,7 @@ export class PartyMachine {
       raid: false,
       raidGroups: new Map(pids.map((pid, i) => [pid, (i < RAID_GROUP_MAX ? 1 : 2) as 1 | 2])),
       lootStrategies: { ...DEFAULT_PARTY_LOOT_STRATEGIES },
+      raidDifficulty: 'normal',
     };
     this.parties.set(party.id, party);
     for (const pid of pids) this.partyByPid.set(pid, party.id);
