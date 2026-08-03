@@ -657,6 +657,12 @@ export interface MobTemplate {
   // location live in src/sim/world_boss.ts; the loot roll runs through
   // ctx.rollWorldBossLoot.
   worldBoss?: boolean;
+  // Upstream #1707 (Thunzharr quiet-mechanics): suppresses the per-mechanic
+  // combat-log barks ("<Name> unleashes <Mechanic>!" and "<Name> becomes
+  // enraged!") for a mob whose only voice should be its periodic battle cry (a
+  // world boss). The mechanics still fire, with their spellfx and damage: only
+  // the noisy log line is silenced.
+  quietMechanics?: boolean;
   // Elite scaling, vanilla-style: ~2.3x health, ~1.5x damage, double XP.
   elite?: boolean;
   // Rare/miniboss controls.

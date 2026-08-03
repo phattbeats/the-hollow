@@ -214,6 +214,11 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     // walks the straight line through fences, buildings, and the waterline, so he can
     // always go directly at his target and never wedges on a collider (upstream #1643).
     phasesThroughObstacles: true,
+    // His only periodic voice is the battle cry below (upstream #1707). The
+    // per-mechanic log barks ("unleashes Timberfall Heave/Barkshell/Heartwood
+    // Eruption!") are silenced so an overworld pull does not spam the combat
+    // log; the mechanics still fire with their spellfx and damage.
+    quietMechanics: true,
     hpBase: 40000,
     hpPerLevel: 0,
     dmgBase: 62,
@@ -251,7 +256,10 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
       school: 'nature',
       yell: 'The heartwood splits!',
     },
-    // A loud boss: battle cries carry across Root Hollow, not just melee range.
+    // A loud boss: battle cries carry across Root Hollow, not just melee range,
+    // and (with quietMechanics) they are his ONLY periodic voice. The fork keeps
+    // its own Plant-World tuning (every 20s, 60yd for Root Hollow's camp scale)
+    // rather than upstream #1707's 45s/350yd zone-wide bellow.
     battleYells: {
       lines: [
         'The grove remembers every root that was ever cut.',
