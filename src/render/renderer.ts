@@ -16,6 +16,7 @@ import {
   delveOrigin,
   delveSlotAt,
   dungeonAt,
+  getActiveWorldContent,
   INSTANCE_SLOT_COUNT,
   instanceOrigin,
   isArenaPos,
@@ -30,7 +31,7 @@ import type { DelveModuleId } from '../sim/delve_layout';
 import { type DungeonLayout, UNDER_SHRINE_LAYOUT } from '../sim/dungeon_layout';
 import type { BiomeId, EquipSlot } from '../sim/types';
 import { ALL_CLASSES, type Entity, type SimEvent } from '../sim/types';
-import { groundHeight, WATER_LEVEL, zoneBiomeAt } from '../sim/world';
+import { biomeAt, groundHeight, waterLevelAt, zoneBiomeAt } from '../sim/world';
 import { tEntity } from '../ui/entity_i18n';
 import type { IWorld } from '../world_api';
 import { isVisuallyDead } from './anim_state';
@@ -99,6 +100,7 @@ import {
   nameplateScreenTransform,
 } from './nameplate_projection';
 import { resolveDirectPickEntityId } from './pick_resolution';
+import { buildPlacedAssets } from './placed_assets';
 import { buildComposer, type PostPipeline } from './post';
 import { buildPropMaterialPrewarmGroup, buildProps } from './props';
 import { buildGroundQuestObject } from './quest_objects';
@@ -1252,8 +1254,10 @@ export class Renderer {
     this.impactSite = buildImpactSite(this.sim.cfg.seed);
     this.scene.add(this.impactSite.group);
     this.scene.add(this.impactSite.light);
-    const props = buildProps(this.sim.cfg.seed, (delveId) =>
-      tEntity({ kind: 'delve', id: delveId, field: 'name' }),
+    const props = buildProps(
+      this.sim.cfg.seed,
+      (delveId) => tEntity({ kind: 'delve', id: delveId, field: 'name' }),
+      getActiveWorldContent().props,
     );
     setRenderCategory(props.group, 'props');
     this.scene.add(props.group);
@@ -1269,6 +1273,18 @@ export class Renderer {
     // numPointLights -> materials never recompile for a light-count change).
     this.fireLights.push(this.impactSite.light);
     this.propsView = props;
+
+    // Map editor freely-placed GLB assets (WorldContent.placements): cosmetic
+    // and play-test-only, absent for the built-in world. Loads are async and
+    // pop in via the boot preload gate; matrixAutoUpdate stays on (default)
+    // since a placement's transform is set once when its GLB resolves, not
+    // every frame, so it never needs the props/foliage static-matrix freeze.
+    const placedAssets = buildPlacedAssets(
+      getActiveWorldContent().placements ?? [],
+      this.sim.cfg.seed,
+    );
+    setRenderCategory(placedAssets, 'props');
+    this.scene.add(placedAssets);
 
     const gatherNodes = buildGatherNodes(this.sim.cfg.seed);
     setRenderCategory(gatherNodes.group, 'props');
@@ -1504,12 +1520,12 @@ export class Renderer {
   // Surface under (x,z) for footstep timbre. Sampled only at a footfall (cheap).
   private surfaceAt(x: number, z: number, y: number): Surface {
     if (x > DUNGEON_X_THRESHOLD) return 'stone'; // dungeon interiors are stone halls
-    if (groundHeight(x, z, this.sim.cfg.seed) < WATER_LEVEL && y <= WATER_LEVEL + 0.3)
-      return 'water';
-    const biome = zoneBiomeAt(z);
-    if (biome === 'vale') return 'grass';
-    if (biome === 'marsh') return 'dirt';
-    return this.weatherOn ? 'snow' : 'stone'; // peaks: snowy when weather is on
+    const wl = waterLevelAt(x, z);
+    if (groundHeight(x, z, this.sim.cfg.seed) < wl && y <= wl + 0.3) return 'water';
+    const biome = biomeAt(x, z);
+    if (biome === 'vale' || biome === 'beach') return 'grass';
+    if (biome === 'marsh' || biome === 'desert') return 'dirt';
+    return this.weatherOn ? 'snow' : 'stone'; // peaks/volcano/cave: snowy when weather is on
   }
 
   /** Vertical camera field of view in degrees (55..100, default 60). */
@@ -3567,9 +3583,11 @@ export class Renderer {
   // player crosses zone bands; low keeps the legacy vale fog everywhere).
   // peaks near/far trimmed so a zone's own mountain crags fade into haze
   // instead of standing out crisp when viewed from the zone's hub.
-  // beach/desert/volcano/cave are paint-only biomes (see render/foliage.ts),
-  // unreachable until the render-load-in editor slice; values match the
-  // upstream reference port.
+  // beach/desert/volcano/cave are paint-only biomes (see render/foliage.ts).
+  // Fog is one global color/near/far per frame, keyed by the player's 1D
+  // z-band biome (see the accessor below), never a 2D biomePaint cell — a
+  // painted patch stays whatever fog its zone band already has. Values match
+  // the upstream reference port.
   private static BIOME_FOG: Record<BiomeId, { color: number; near: number; far: number }> = {
     vale: { color: 0xa6c6e0, near: 130, far: 470 },
     marsh: { color: 0xa3b294, near: 80, far: 330 },
@@ -3709,7 +3727,7 @@ export class Renderer {
             ? 'nythraxis'
             : inside
               ? 'dungeon'
-              : camY < WATER_LEVEL - 0.05
+              : camY < waterLevelAt(px, this.sim.player.pos.z) - 0.05
                 ? 'underwater'
                 : 'outdoor';
     // the vase smoke: on while the player is in the hub, reactive to
@@ -4234,10 +4252,11 @@ export class Renderer {
       // The cheap feet-depth test gates the expensive terrain-noise sample: an
       // entity whose feet are above the swim line can't be swimming, so the vast
       // majority (everyone on land) skip groundHeight() entirely each frame.
+      const entityWaterLevel = waterLevelAt(e.pos.x, e.pos.z);
       const swimming =
         !e.dead &&
-        e.pos.y <= WATER_LEVEL - 0.5 &&
-        groundHeight(e.pos.x, e.pos.z, this.sim.cfg.seed) < WATER_LEVEL - 0.8;
+        e.pos.y <= entityWaterLevel - 0.5 &&
+        groundHeight(e.pos.x, e.pos.z, this.sim.cfg.seed) < entityWaterLevel - 0.8;
 
       // lazy form visuals, swapped by visibility like the old sheep/bear rigs
       if (polyed && !v.sheepVisual) {
@@ -4735,7 +4754,7 @@ export class Renderer {
         y: roundMs(p.pos.y),
         z: roundMs(p.pos.z),
       },
-      biome: zoneBiomeAt(p.pos.z),
+      biome: biomeAt(p.pos.x, p.pos.z),
       lastQualityChange: qualityChange,
       createdViews,
       createdViewTypes,
@@ -5033,7 +5052,7 @@ export class Renderer {
       const fl = Math.hypot(fx, fy, fz) || 1;
       sink.setListener(cpx, cpy, cpz, fx / fl, fy / fl, fz / fl);
       const inDungeon = px > DUNGEON_X_THRESHOLD;
-      const biome = zoneBiomeAt(pz);
+      const biome = biomeAt(px, pz);
       const precip =
         !this.weatherOn || inDungeon
           ? null
@@ -5044,7 +5063,7 @@ export class Renderer {
               : null;
       // Only at the water's edge / in it — sampled at the player, so a loose
       // threshold made the loop bleed across the low marsh from far off.
-      const nearWater = !inDungeon && groundHeight(px, pz, seed) < WATER_LEVEL + 0.4;
+      const nearWater = !inDungeon && groundHeight(px, pz, seed) < waterLevelAt(px, pz) + 0.4;
       sink.ambience(biome, inDungeon, precip, nearWater);
     }
   }
