@@ -85,6 +85,10 @@ export interface CharWindowDeps extends PainterHostPresentation {
   beginUnequipDrag(slot: EquipSlot): void;
   /** End a drag-to-unequip: clear the HUD slot and the bags drop-target hint. */
   endUnequipDrag(): void;
+  /** The bag item currently being dragged, or null outside a gear drag. */
+  draggedEquipItemId(): string | null;
+  /** Repaint the bags after an accepted drop removes the worn item from inventory. */
+  renderBags(): void;
   /** Mount the shared 3D turntable into the model panel (HUD-owned lifecycle). */
   renderPreview(): void;
   /** Paint the cosmetic skin picker into the skin row (HUD-owned cosmetics). */
@@ -225,6 +229,8 @@ export class CharWindow {
     // back to this slot (the rebuilt row may be empty, with no x to focus).
     row.id = `equip-slot-${slot}`;
     row.tabIndex = -1;
+    row.dataset.equipSlot = slot;
+    this.bindEquipDropTarget(row, slot);
     const qColor = !item
       ? SLOT_EMPTY_TEXT_COLOR
       : (QUALITY_COLOR[item.quality ?? 'common'] ?? QUALITY_DEFAULT_COLOR);
@@ -272,6 +278,36 @@ export class CharWindow {
       row.addEventListener('contextmenu', (ev) => ev.preventDefault());
     }
     return row;
+  }
+
+  dropOnEquipSlot(itemId: string, slot: EquipSlot): void {
+    const item = ITEMS[itemId];
+    if (!item || item.slot !== slot) return;
+    const world = this.deps.world();
+    world.equipItemToSlot(itemId, slot);
+    audio.click();
+    this.deps.hideTooltip();
+    this.deps.renderBags();
+    this.renderIfOpen();
+  }
+
+  private bindEquipDropTarget(row: HTMLElement, slot: EquipSlot): void {
+    row.addEventListener('dragover', (e) => {
+      const itemId = this.deps.draggedEquipItemId();
+      const item = itemId ? ITEMS[itemId] : undefined;
+      if (!item || item.slot !== slot) return;
+      e.preventDefault();
+      row.classList.add('drop-target');
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+    });
+    row.addEventListener('dragleave', () => row.classList.remove('drop-target'));
+    row.addEventListener('drop', (e) => {
+      const itemId = this.deps.draggedEquipItemId();
+      row.classList.remove('drop-target');
+      if (!itemId) return;
+      e.preventDefault();
+      this.dropOnEquipSlot(itemId, slot);
+    });
   }
 
   // `keepFocus` hands focus back to the now-empty slot row after the unequip

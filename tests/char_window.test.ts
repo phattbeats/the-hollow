@@ -63,6 +63,13 @@ describe('char_window: paperdoll core + HUD-owned preview boundary', () => {
     expect(painter).toContain("row.addEventListener('contextmenu'");
   });
 
+  it('accepts a dragged bag item on the exact paperdoll slot', () => {
+    expect(painter).toContain('dropOnEquipSlot(itemId: string, slot: EquipSlot)');
+    expect(painter).toContain('world.equipItemToSlot(itemId, slot)');
+    expect(painter).toContain("row.addEventListener('dragover'");
+    expect(painter).toContain("row.addEventListener('drop'");
+  });
+
   it('triggers the 3D preview + skin picker by callback, never building them here', () => {
     expect(painter).toContain('this.deps.renderPreview()');
     expect(painter).toContain('this.deps.renderSkinPicker()');
