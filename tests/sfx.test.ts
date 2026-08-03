@@ -62,6 +62,10 @@ beforeEach(() => {
   // Inject decoded buffers directly (skip async fetch/decode in preload).
   const buffers = (sfx as unknown as { buffers: Map<string, { duration: number }> }).buffers;
   buffers.set('foot_grass', { duration: 0.48 });
+  buffers.set('amb_wind_vale', { duration: 8 });
+  buffers.set('amb_birds', { duration: 8 });
+  buffers.set('amb_wind_marsh', { duration: 8 });
+  buffers.set('amb_wind_peaks', { duration: 8 });
 });
 
 describe('footstep audio', () => {
@@ -106,5 +110,43 @@ describe('footstep toggle', () => {
     sfx.footstep(0, 0, 0, 'grass', true, true);
     expect(sources.length).toBe(muted + 1);
     expect(sources.at(-1)!.started).toBe(true);
+  });
+});
+
+// Paint-only biomes (custom maps, PHAA-679) have no dedicated ambience bed, so
+// ambience() borrows the closest shipped wind loop — same fallback mapping
+// music.ts already uses for musicZoneForLocation: beach->vale, cave->marsh,
+// desert/volcano->peaks. amb_birds stays vale-only (a vale-specific bed, not a
+// general wind bed) so it must NOT fire for any of the fallback biomes.
+describe('ambience biome fallback', () => {
+  it('borrows the vale wind bed for beach', () => {
+    sfx.ambience('beach', false, null, false);
+    expect(sfx.hasLoop('amb_wind_vale')).toBe(true);
+    expect(sfx.hasLoop('amb_birds')).toBe(false);
+  });
+
+  it('borrows the marsh wind bed for cave', () => {
+    sfx.ambience('cave', false, null, false);
+    expect(sfx.hasLoop('amb_wind_marsh')).toBe(true);
+  });
+
+  it('borrows the peaks wind bed for desert', () => {
+    sfx.ambience('desert', false, null, false);
+    expect(sfx.hasLoop('amb_wind_peaks')).toBe(true);
+  });
+
+  it('borrows the peaks wind bed for volcano', () => {
+    sfx.ambience('volcano', false, null, false);
+    expect(sfx.hasLoop('amb_wind_peaks')).toBe(true);
+  });
+
+  it('still plays birds only for vale, not its beach fallback', () => {
+    sfx.ambience('vale', false, null, false);
+    expect(sfx.hasLoop('amb_birds')).toBe(true);
+  });
+
+  it('mutes all wind beds in a dungeon regardless of biome', () => {
+    sfx.ambience('beach', true, null, false);
+    expect(sfx.hasLoop('amb_wind_vale')).toBe(false);
   });
 });
