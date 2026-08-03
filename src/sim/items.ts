@@ -76,7 +76,7 @@ export function equipItem(
   // (slotAcceptsItem) for its hover feedback, so the client never promises an
   // equip the server will refuse.
   if (targetSlot && !slotAcceptsItem(def, targetSlot)) {
-    ctx.error(meta.entityId, 'That does not go in that slot.');
+    ctx.error(meta.entityId, 'You cannot equip that.');
     return;
   }
   if (!canEquipItem(meta.cls, def)) {
