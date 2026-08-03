@@ -1187,6 +1187,7 @@ export class GameServer {
             this.enforceJailStates();
             this.routeEvents(this.interceptPlantUtterances(events));
             this.detectActivity(events);
+            this.grantBoarballWinDailyBonus(events);
             lap('events');
             this.runAntibotTick();
             lap('antibot');
@@ -3999,6 +4000,38 @@ export class GameServer {
           now,
         );
       }
+    }
+  }
+
+  // PHAA-701: a boarball win auto-claims today's daily-reward slot for the
+  // winner's account, if they haven't claimed it yet today. This reuses the
+  // exact same account-scoped, atomically-guarded claim path as the explicit
+  // `daily_rewards_claim` command (PHAA-660) rather than inventing a second
+  // grant primitive: a win just saves the player an extra menu click, it never
+  // grants MORE than the one slot/day the account is already entitled to, so
+  // farming repeated boarball wins in a day cannot stack extra rewards.
+  private grantBoarballWinDailyBonus(events: SimEvent[]): void {
+    const today = this.sim.utcDay;
+    if (!today) return;
+    for (const ev of events) {
+      if (ev.type !== 'arenaEnd' || ev.format !== 'boarball' || !ev.won || ev.pid === undefined) {
+        continue;
+      }
+      const pid = ev.pid;
+      const session = this.clients.get(pid);
+      if (!session) continue;
+      if (session.accountDailyRewards.locked) continue;
+      if (session.accountDailyRewards.lastClaimUtcDay === today) continue;
+      void claimAccountDailyReward(session.accountId, today, DAILY_REWARD_CYCLE.length)
+        .then((result) => {
+          if (!result) return;
+          this.sim.grantDailyRewardCycleSlot(result.grantedCycleIndex, pid);
+          session.accountDailyRewards = { ...result.next, locked: false };
+          session.selfHeavyDirty = true;
+        })
+        .catch((err) =>
+          console.error(`boarball win daily reward grant failed for ${session.name}:`, err),
+        );
     }
   }
 
