@@ -2891,15 +2891,9 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'guide.language.label': 'Bahasa',
   'guide.language.select': 'Pilih bahasa',
   'guide.loading': 'Memuat...',
-  'guide.lore.aldricBody':
-    'Seorang pendeta desa yang rendah hati, yang pertama menyebut nama kultus itu di atas kuburan yang dinodai di Eastbrook, lalu mengikuti jejaknya secara langsung melewati rawa hingga ke tembok di Highwatch. Dia adalah jantung yang teguh dari seluruh kampanye ini.',
-  'guide.lore.aldricRole': 'Pendeta Lembah',
   'guide.lore.figuresBody':
     'Segelintir orang menempuh seluruh perjalanan bersamamu. Perhatikan nama-nama ini dari lembah hingga puncak.',
   'guide.lore.figuresTitle': 'Wajah-wajah yang akan kamu kenali',
-  'guide.lore.marenBody':
-    'Seorang pelacak bersuara pelan yang kamu temui di antara alang-alang Mirefen, dengan langkah senyap dan bilah pendek. Dia juga mengikuti jejak ke utara, dan telinganyalah yang menangkap kata-kata yang mengantarmu ke puncak.',
-  'guide.lore.marenRole': 'Pengintai sang Marshal',
   'guide.models.count': '{count} model',
   'guide.models.groupClasses': 'Kelas',
   'guide.models.groupCreatures': 'Makhluk',

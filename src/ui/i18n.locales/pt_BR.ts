@@ -4280,15 +4280,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     'Trocar uma peça antiga por uma melhoria nova faz mais por você do que jogar de forma impecável com um equipamento que você já superou. Quando algo melhor cair ou uma missão oferecer, pegue. Não guarde seus bons itens para depois.',
   'guide.gear.upgradeTitle': 'Mantenha seu equipamento atualizado',
-  'guide.lore.aldricBody':
-    'Um humilde sacerdote de aldeia que primeiro dá nome ao culto sobre uma sepultura profanada em Eastbrook, e então segue sua trilha em pessoa pelo pântano e até a muralha em Highwatch. Ele é o coração firme de toda a campanha.',
-  'guide.lore.aldricRole': 'Sacerdote do Vale',
   'guide.lore.figuresBody':
     'Um punhado de pessoas percorre a estrada inteira com você. Fique atento a esses nomes, do vale aos cumes.',
   'guide.lore.figuresTitle': 'Rostos que você vai conhecer',
-  'guide.lore.marenBody':
-    'Uma rastreadora de fala baixa que você conhece nos juncos de Mirefen, toda pés silenciosos e uma lâmina curta. Ela também segue a trilha ao norte, e é o ouvido dela que capta as palavras que enviam você aos cumes.',
-  'guide.lore.marenRole': 'A Batedora do Marechal',
   'guide.models.count': '{count} modelos',
   'guide.models.groupClasses': 'Classes',
   'guide.models.groupCreatures': 'Criaturas',

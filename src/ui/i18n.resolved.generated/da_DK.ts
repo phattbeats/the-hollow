@@ -1180,7 +1180,7 @@ export const da_DK: EnTranslations = {
         "levels": "Niveau {min} til {max}",
         "cta": "Se verden",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Østbæk Dal",
         "valeBlurb": "Grønne bakker og gamle skove, hvor ethvert eventyr begynder.",
         "marshName": "Mosekær Sump",
@@ -1681,6 +1681,8 @@ export const da_DK: EnTranslations = {
       "typeGroupBody": "Hvert kapitel af hovedhistorien ender ved en fangekælderdør. Optakten kan klares solo, men det sidste slag mod et kapitels skurk er ment for en følgesvende-gruppe på fem.",
       "sagaTitle": "Følg sporet mod nord",
       "sagaBody": "Hovedhistorien er én lang jagt. En dødskult er på spil ved rigets grave, og hvert kapitel du lukker, peger en zone længere op ad vejen. Du bekæmper aldrig hele sammensværgelsen på én gang; du trækker i én tråd, og den fører til den næste hånd der holder den.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "Dalen: et navn på et segl",
       "sagaValeBody": "I Eastbrook vil de døde ikke hvile, og mærket bag det tilhører en sekt man længe troede borte. Spor det til en Gravkalder der arbejder i kapelkrypten, og hans egne papirer peger dig mod mosen i nord.",
       "sagaMarshTitle": "Sumpen: en tiende af sjæle",
@@ -1698,10 +1700,10 @@ export const da_DK: EnTranslations = {
     "lore": {
       "figuresTitle": "Ansigter, du vil komme til at kende",
       "figuresBody": "En håndfuld mennesker går hele vejen sammen med dig. Hold øje med disse navne fra dalen til tinderne.",
-      "aldricRole": "Dalens Præst",
-      "aldricBody": "En ydmyg landsbypræst, der først navngiver kulten over en vanhelliget grav i Østbæk, og derefter følger dens spor personligt gennem sumpen og op til muren ved Højvagt. Han er det stødige hjerte i hele felttoget.",
-      "marenRole": "Marskalens Spejder",
-      "marenBody": "En lavmælt sporer, du møder i sivene i Mosekær, kun stille fødder og en kort klinge. Hun følger også sporet mod nord, og det er hendes øre, der opfanger de ord, der sender dig til tinderne."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Fangehuller og Raids",

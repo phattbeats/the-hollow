@@ -2835,15 +2835,9 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'guide.language.label': 'Dil',
   'guide.language.select': 'Bir dil seç',
   'guide.loading': 'Yükleniyor...',
-  'guide.lore.aldricBody':
-    "Önce Doğudere'de kirletilmiş bir mezar başında tarikatı adlandıran, sonra onun izini bizzat bataklık boyunca ve Yüksetnöbet'teki surlara dek süren mütevazı bir köy rahibi. Tüm seferin sağlam yüreğidir.",
-  'guide.lore.aldricRole': "Vadi'nin Rahibi",
   'guide.lore.figuresBody':
     'Bir avuç insan tüm yolu seninle birlikte yürür. Vadiden zirvelere bu adlara dikkat et.',
   'guide.lore.figuresTitle': 'Tanışacağın yüzler',
-  'guide.lore.marenBody':
-    "Mirefen'in sazlıklarında karşılaştığın, az konuşan bir iz sürücü; tamamı sessiz adımlar ve kısa bir bıçak. O da izi kuzeye doğru takip eder ve seni zirvelere gönderen sözleri yakalayan onun kulağıdır.",
-  'guide.lore.marenRole': "Mareşal'in İzcisi",
   'guide.models.count': '{count} model',
   'guide.models.groupClasses': 'Sınıflar',
   'guide.models.groupCreatures': 'Yaratıklar',

@@ -2873,15 +2873,9 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'guide.language.label': 'Ngôn ngữ',
   'guide.language.select': 'Chọn một ngôn ngữ',
   'guide.loading': 'Đang tải...',
-  'guide.lore.aldricBody':
-    'Một tu sĩ làng quê khiêm nhường, người đầu tiên gọi đích danh giáo phái bên một nấm mồ bị báng bổ ở Đông Khê, rồi đích thân lần theo dấu vết của nó qua đầm lầy và lên tới bức tường thành ở Highwatch. Ông là trái tim vững vàng của toàn bộ chiến dịch.',
-  'guide.lore.aldricRole': 'Tu Sĩ của Thung Lũng',
   'guide.lore.figuresBody':
     'Một số ít người sẽ đi cùng bạn suốt cả chặng đường. Hãy để mắt đến những cái tên này từ thung lũng đến các đỉnh núi.',
   'guide.lore.figuresTitle': 'Những gương mặt bạn sẽ dần quen biết',
-  'guide.lore.marenBody':
-    'Một người dò đường ít nói mà bạn gặp giữa đám lau sậy ở Đầm Lầy Bùn Sâu, bước chân lặng lẽ và một lưỡi dao ngắn. Cô cũng lần theo dấu vết về phương bắc, và chính đôi tai của cô đã bắt được những lời đẩy bạn lên tới các đỉnh núi.',
-  'guide.lore.marenRole': 'Trinh Sát của Thống Soái',
   'guide.models.count': '{count} mô hình',
   'guide.models.groupClasses': 'Lớp nhân vật',
   'guide.models.groupCreatures': 'Sinh vật',

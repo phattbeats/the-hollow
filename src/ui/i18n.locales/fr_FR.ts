@@ -4384,15 +4384,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     "Remplacer une vieille pièce par une amélioration toute fraîche vous sert davantage que de jouer à la perfection dans un équipement que vous avez dépassé. Quand quelque chose de meilleur tombe ou qu'une quête vous le propose, prenez-le. Ne gardez pas vos bons objets pour plus tard.",
   'guide.gear.upgradeTitle': 'Gardez votre équipement à jour',
-  'guide.lore.aldricBody':
-    "Un humble prêtre de village qui, le premier, nomme le culte au-dessus d'une tombe profanée à Eastbrook, puis suit sa piste en personne à travers le marais jusqu'au rempart de Highwatch. Il est le cœur constant de toute la campagne.",
-  'guide.lore.aldricRole': 'Prêtre du Val',
   'guide.lore.figuresBody':
     "Une poignée de gens parcourent toute la route à vos côtés. Guettez ces noms, de la vallée jusqu'aux sommets.",
   'guide.lore.figuresTitle': 'Des visages que vous apprendrez à connaître',
-  'guide.lore.marenBody':
-    "Une traqueuse à la voix basse que vous croisez dans les roseaux de Mirefen, tout en pas feutrés et en lame courte. Elle suit la piste vers le nord, elle aussi, et c'est son oreille qui saisit les mots qui vous envoient vers les sommets.",
-  'guide.lore.marenRole': "L'éclaireuse du maréchal",
   'guide.models.count': '{count} modèles',
   'guide.models.groupClasses': 'Classes',
   'guide.models.groupCreatures': 'Créatures',

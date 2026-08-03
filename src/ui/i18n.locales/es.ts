@@ -4305,15 +4305,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     'Reemplazar una pieza vieja por una mejora reciente te aporta más que jugar a la perfección con un equipo que ya se te ha quedado pequeño. Cuando caiga algo mejor o te lo ofrezca una misión, tómalo. No guardes tus buenos objetos para más adelante.',
   'guide.gear.upgradeTitle': 'Mantén tu equipo al día',
-  'guide.lore.aldricBody':
-    'Un humilde sacerdote de aldea que es el primero en nombrar al culto ante una tumba profanada en Eastbrook, y luego sigue su rastro en persona a través de la ciénaga y hasta el muro de Highwatch. Es el corazón firme de toda la campaña.',
-  'guide.lore.aldricRole': 'Sacerdote del Valle',
   'guide.lore.figuresBody':
     'Un puñado de personas recorren contigo el camino entero. Atento a estos nombres del valle a los picos.',
   'guide.lore.figuresTitle': 'Rostros que llegarás a conocer',
-  'guide.lore.marenBody':
-    'Una rastreadora de hablar quedo a la que conoces entre los juncos de Mirefen, pura sigilosa de pies ligeros y una hoja corta. También sigue el rastro hacia el norte, y es su oído el que capta las palabras que te envían a los picos.',
-  'guide.lore.marenRole': 'La exploradora del mariscal',
   'guide.models.count': '{count} modelos',
   'guide.models.groupClasses': 'Clases',
   'guide.models.groupCreatures': 'Criaturas',
