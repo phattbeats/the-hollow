@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1087,6 +1086,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': '{name}のチャットを無視します。',
   'hud.system.noLongerIgnoring': '{name}の無視を解除しました。',
   'hud.system.playerNotNearby': 'そのプレイヤーは近くにいません。',
+  'hud.system.playerInfoNotFound': 'その名前のキャラクターは見つかりませんでした。',
   'hud.system.duelCountdown': '決闘開始まで{seconds}秒...',
   'hud.system.duelEndBanner': '{winner}が決闘で{loser}を倒しました！',
   'hud.system.duelEndLog': '{winner}が決闘で{loser}を倒しました。',
@@ -1626,6 +1626,91 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '{item}を強欲',
   'itemUi.lootRoll.passAria': '{item}をパス',
   'itemUi.lootRoll.everyonePassed': '全員が{item}をパスしました。',
+  'entities.abilities.chain_heal.name': 'チェインヒール',
+  'entities.abilities.chain_heal.description':
+    '友好的な対象を大きく回復し、最大2体の近くの味方に連鎖します。連鎖するたびに回復量が50%減少します。',
+  'entities.abilities.crusader_strike.name': 'クルセイダーストライク',
+  'entities.abilities.crusader_strike.description':
+    '対象に武器ダメージに加えて24の聖なるダメージを与えます。',
+  'entities.abilities.metamorphosis.name': 'ドレッドアスペクト',
+  'entities.abilities.metamorphosis.description':
+    '20秒間恐ろしい悪魔に変身し、呪文ダメージが20%、詠唱速度が20%増加します。あなたの悪魔はダメージ50%、詠唱速度20%を得ます。',
+  'entities.abilities.holy_shock.name': 'ホーリーショック',
+  'entities.abilities.holy_shock.description':
+    '友好的な対象を神聖なエネルギーで癒すか、敵に神聖ダメージを与えます。',
+  'entities.abilities.holy_shield.name': '聖なる壁',
+  'entities.abilities.holy_shield.description':
+    '敵に光り輝く盾を投げつけ、神聖ダメージを与えて近くの敵2体に跳ね返ります。',
+  'entities.abilities.bestial_wrath.name': '猛る咆哮',
+  'entities.abilities.bestial_wrath.description':
+    '15秒間野獣の怒りに入り、攻撃力が20%、ペットのダメージが100%増加します。',
+  'entities.abilities.trueshot_aura.name': '精密照準のオーラ',
+  'entities.abilities.trueshot_aura.description':
+    '近くの味方を鼓舞し、30分間攻撃力を10%増加させます。',
+  'entities.abilities.wyvern_sting.name': 'ワイバーンの毒針',
+  'entities.abilities.wyvern_sting.description':
+    '遠距離から敵を刺し、最大4秒間無力化します。ダメージを受けると効果が解除されます。',
+  'entities.abilities.arcane_power.name': 'エーテルサージ',
+  'entities.abilities.arcane_power.description':
+    '10秒間、呪文ダメージが20%、呪文の速さが10%増加します。',
+  'entities.abilities.combustion.name': 'フラッシュファイア',
+  'entities.abilities.combustion.description': '15秒間、呪文クリティカル率が50%増加します。',
+  'entities.abilities.icy_veins.name': 'アイシーヴェイン',
+  'entities.abilities.icy_veins.description':
+    '10秒間、呪文の速さが30%増加し、詠唱の中断とノックバックを防ぎます。',
+  'entities.abilities.cold_blood.name': '冷徹な殺意',
+  'entities.abilities.cold_blood.description':
+    '殺意を集中させ、次の攻撃を必ずクリティカルにします。',
+  'entities.abilities.blade_flurry.name': 'ミラードブレード',
+  'entities.abilities.blade_flurry.description':
+    '剣閃の乱舞を放ち、12秒間攻撃速度が20%増加します。',
+  'entities.abilities.hemorrhage.name': 'レッドリボン',
+  'entities.abilities.hemorrhage.description':
+    '武器ダメージに加え出血効果で敵を攻撃し、12秒間出血ダメージを与え、出血ダメージを40%増加させます。コンボポイントを1得ます。',
+  'entities.abilities.power_infusion.name': '祝福の注入',
+  'entities.abilities.power_infusion.description':
+    '友好的な対象に力を注ぎ、15秒間呪文の速さを20%増加させます。',
+  'entities.abilities.holy_nova.name': 'ホーリーノヴァ',
+  'entities.abilities.holy_nova.description':
+    '神聖な輝きの爆発を起こし、近くの味方を回復し近くの敵にダメージを与えます。',
+  'entities.abilities.shadowform.name': 'グルームヴェイルフォーム',
+  'entities.abilities.shadowform.description':
+    'シャドウフォームになり、元の姿に戻るまで暗影ダメージが15%増加します。回復呪文を唱えるとフォームが解除されます。再度詠唱すると元の姿に戻ります。',
+  'entities.abilities.elemental_mastery.name': 'プライマルマスタリー',
+  'entities.abilities.elemental_mastery.description': '嵐の力を呼び、次の呪文を即時発動にします。',
+  'entities.abilities.siphon_life.name': 'ヴェインリーチ',
+  'entities.abilities.siphon_life.description':
+    '敵から生命力を吸収し、30秒間暗影ダメージを与え、与えたダメージ分自分を回復します。',
+  'entities.abilities.conflagrate.name': 'コンフラグレイト',
+  'entities.abilities.conflagrate.description':
+    '敵にかけたイモレイトを消費し、炎のダメージで発火させます。',
+  'entities.abilities.moonkin_form.name': 'ムーンウィングフォーム',
+  'entities.abilities.moonkin_form.description':
+    '恐ろしいムーンキンに変身し、呪文ダメージが20%、防御力が50%増加します。元の姿に戻るまで持続します。再度詠唱すると詠唱者フォームに戻ります。',
+  'entities.abilities.feral_charge.name': 'プライマルサージ',
+  'entities.abilities.feral_charge.description':
+    '原始の力を解き放ちます。ワイルドキャットフォームではエネルギー回復が10秒間100%増加します。ベアフォームでは即座に怒りを50得ます。',
+  'entities.abilities.swiftmend.name': 'スイフトメンド',
+  'entities.abilities.swiftmend.description':
+    '友好的な対象にかかった継続回復効果を消費して回復します。',
+  'entities.abilities.pummel.name': 'ジョークラック',
+  'entities.abilities.pummel.description': '対象の詠唱を中断し、4秒間その系統の詠唱を防ぎます。',
+  'entities.abilities.kick.name': 'ブート',
+  'entities.abilities.kick.description': '対象の詠唱を中断し、4秒間その系統の詠唱を防ぎます。',
+  'entities.abilities.counterspell.name': 'スペルブレイク',
+  'entities.abilities.counterspell.description':
+    '対象の詠唱を妨害し、6秒間その系統の詠唱を防ぎます。',
+  'entities.abilities.counter_shot.name': 'ハッシングショット',
+  'entities.abilities.counter_shot.description':
+    '咄嗟の射撃で対象の詠唱を中断し、その系統を4秒間封じます。',
+  'entities.abilities.rebuke.name': 'リプローチ',
+  'entities.abilities.rebuke.description': '対象の詠唱を中断し、4秒間その系統の詠唱を防ぎます。',
+  'entities.abilities.skull_bash.name': 'ヘッドバット',
+  'entities.abilities.skull_bash.description':
+    '突進頭突きで対象の詠唱を中断し、その系統を4秒間封じます。',
+  'entities.abilities.spell_lock.name': 'ギャグオーダー',
+  'entities.abilities.spell_lock.description':
+    '詠唱中の対象を沈黙させ、5秒間その系統の詠唱を防ぎます。',
   'itemUi.lootRoll.winnerOffline': '{item}の勝者がオフラインだったため、死体に返却されました。',
   'entities.abilities.heroic_strike.name': '英雄の一撃',
   'entities.abilities.heroic_strike.description':
@@ -1672,6 +1757,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.taunt.name': '挑発',
   'entities.abilities.taunt.description':
     '対象を挑発します。あなたの脅威が対象の最も憎む敵と同じ値まで上がり、3秒間あなたを攻撃させます。',
+  'entities.abilities.ironhold.name': 'アイアンホールド',
+  'entities.abilities.ironhold.description': '盾の陰に身を潜め、8秒間受けるダメージを40%軽減する。',
   'entities.abilities.fireball.name': 'ファイアボール',
   'entities.abilities.fireball.description':
     '炎の球を放ち、{damage} の火炎ダメージと追加の継続ダメージを与えます。',
@@ -1807,6 +1894,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.retribution_aura.name': 'リトリビューションオーラ',
   'entities.abilities.retribution_aura.description':
     '30分間、聖なる力で身を包み、近接攻撃をしてきた敵に5の神聖ダメージを与えます。',
+  'entities.abilities.sacred_bulwark.name': '聖なる防壁',
+  'entities.abilities.sacred_bulwark.description':
+    '10秒間、致命的な一撃を無効化し、代わりに体力を35%まで回復する。',
   'entities.abilities.tame_beast.name': '獣の調教',
   'entities.abilities.tame_beast.description':
     '獣を仲間にするための調教を始めます。獣はあなたのレベル以下で、エリートであってはなりません。ペットはあなたに従い、敵を攻撃し、独自の脅威を保ちます。同時に連れられるペットは1体だけです。',
@@ -1999,6 +2089,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.rip.name': 'リップ',
   'entities.abilities.rip.description':
     '12秒かけて出血ダメージを与えるフィニッシュムーブです。コンボポイントを消費します。ウルフフォーム専用。',
+  'entities.abilities.primal_reflexes.name': '原始反射',
+  'entities.abilities.primal_reflexes.description':
+    '本能が研ぎ澄まされ、6秒間回避率が50%上昇する。',
   'entities.abilities.mortal_strike.name': '致死打撃',
   'entities.abilities.mortal_strike.description':
     '凶悪な一撃で武器ダメージに加えて {damage} のダメージを与えます。（武器シグネチャー）',
@@ -2155,6 +2248,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': 'インペリアルゴールド',
   'entities.items.vanguard_azure_armor_plate.name': 'ヴァンガードアズール',
   'entities.items.vanguard_chrome_armor_plate.name': 'ヴァンガードクローム',
+  'entities.items.enchanting_dust.name': '付呪の粉塵',
+  'entities.items.scroll_minor_might.name': '小さな力の巻物',
+  'entities.items.scroll_minor_vigor.name': '小さな活力の巻物',
+  'entities.items.scroll_minor_focus.name': '小さな集中の巻物',
+  'entities.items.scroll_minor_agility.name': '小さな俊敏の巻物',
+  'entities.enchants.enchant_minor_might.name': '小さな力',
+  'entities.enchants.enchant_minor_vigor.name': '小さな活力',
+  'entities.enchants.enchant_minor_focus.name': '小さな集中',
+  'entities.enchants.enchant_minor_agility.name': '小さな俊敏',
   'entities.items.deacons_cleaver.name': '助祭の肉切り',
   'entities.items.staff_of_drowned_prayers.name': '溺れた祈りの杖',
   'entities.items.mistbinder_kris.name': '霧縛りのクリス',
@@ -2479,6 +2581,14 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.tidewatcher_ondrel.title': '潮見の番人',
   'entities.npcs.tidewatcher_ondrel.greeting':
     'この沼は月光を飲み干し、{className}よ、溺れし者を吐き返すのだ。私はあの門を三十夜も見張ってきた——そして今宵、門は開いている。',
+  'entities.quests.q_prof_intro.title': '学ぶ価値のある手仕事',
+  'entities.quests.q_prof_intro.text':
+    'どんな手仕事も爪の間の泥から始まるものだ、{playerName}。町の東の茂みでクモの脚を2本集めてこい。それから鍛冶場で新兵の上着を作るんだ。材料の骨片は道中で拾えば十分だろう。ついでに、分解して魔力の粉塵になりそうな物も持ってきてくれ。集め、作り、そして分解できることを見せてくれたら、手仕事の値打ちを教えてやろう。',
+  'entities.quests.q_prof_intro.completion':
+    'それでこそ学ぶ価値のある手仕事だ。鍛冶場に通い続ければ、{playerName}、いつか蹄鉄を打つのと剣にエンチャントをかけるのを息もつかせず両方こなせるようになるだろう。',
+  'entities.quests.q_prof_intro.objectives.0.label': 'クモの脚を採集',
+  'entities.quests.q_prof_intro.objectives.1.label': '新兵の上着を製作',
+  'entities.quests.q_prof_intro.objectives.2.label': '魔力の粉塵',
   'entities.quests.q_wolves.title': '戸口の狼',
   'entities.quests.q_wolves.text':
     '森の狼が北の道で旅人に牙をむけています、{playerName}。8頭を討ち、イーストブルックに息をつかせてください。',
@@ -3335,6 +3445,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.bramblehide_jerkin.name': '茨革のジャーキン',
   'entities.items.monarch_crown_helm.name': '君主の王冠',
   'entities.mobs.nythraxis_skeleton_warrior.name': '蘇った王家の衛兵',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': 'オルドレンの霊',
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'マルリックの霊',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'ヴォスの霊',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'ナイスラクシス、ソーンピークの災厄',
   // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': 'チャットチャンネルを追加',
@@ -3527,7 +3640,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/秒',
   'hudChrome.meters.perSecondRow': '{total}（{rate}）',
   'hudChrome.meters.seconds': '{s}秒',
-  'hudChrome.mobile.autorun': 'オートラン',
   'hudChrome.mobile.haptics': '振動',
   'hudChrome.mobile.hapticsOff': '振動オフ',
   'hudChrome.mobile.jump': 'ジャンプ',
@@ -3613,6 +3725,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': '魂炎のマント',
   'entities.items.stormcallers_crown.name': '嵐呼びの冠',
   'entities.items.stormcallers_spaulders.name': '嵐呼びの肩当て',
+  'entities.items.deathless_greatblade.name': '不死の大剣',
+  'entities.items.scepter_of_the_deathless_court.name': '不死の宮廷の笏',
+  'entities.items.stormcallers_focus.name': '嵐呼びの焦点',
   'hud.chat.context.convertToRaid': 'レイドに変換',
   'hud.chat.context.convertToParty': 'パーティに変換',
   'hudChrome.raidConvert.leaderOnly': 'パーティに変換できるのはレイドリーダーだけです。',
@@ -4617,15 +4732,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     '古い一品を新たなアップグレードに替えるほうが、もう手に余る装備で完璧に立ち回るより効果があります。より良いものがドロップしたり、クエストで提示されたりしたら、受け取りましょう。良いアイテムを後のために取っておいてはいけません。',
   'guide.gear.upgradeTitle': 'ギアは常に最新に',
-  'guide.lore.aldricBody':
-    'つつましい村の司祭。イーストブルックの汚された墓の前で初めてカルトの名を口にし、その足取りを自ら湿地を抜け、ハイウォッチの壁まで追っていきます。彼はこの遠征全体の揺るがぬ心です。',
-  'guide.lore.aldricRole': '渓谷の司祭',
+  'guide.lore.faddickBody':
+    '長柄の道具を持ち、剣よりも鋤に馴染む静かなセクスン。彼は森から忍び寄るものを掃き清め、死者を弔い、その土地のすべての区画を覚えています。街道が聖域を離れるとき、指し示すのはたいてい彼です。',
+  'guide.lore.faddickRole': 'ファロー・エイカーズのセクスン',
   'guide.lore.figuresBody':
     'ひと握りの人々が、あなたと共にこの道のりを最後まで歩みます。渓谷から高地まで、これらの名前に心を留めておきましょう。',
   'guide.lore.figuresTitle': 'やがて知ることになる顔ぶれ',
-  'guide.lore.marenBody':
-    'マイアフェンの葦の中で出会う、声を潜めた追跡者。静かな足取りと短い刃の持ち主です。彼女もまた北へと足取りを追い、あなたを高地へ送り出す言葉を聞き取るのは、彼女の耳です。',
-  'guide.lore.marenRole': '元帥の斥候',
+  'guide.lore.zebediahBody':
+    'リーチズを暦に添えて保つ、辛抱強いヴァージャーで、その手はいつも半ば土に埋まっています。壺の灯を見守り、月合图に作付けを整え、新たなる訪れに街道が最初に語りかける声です。',
+  'guide.lore.zebediahRole': 'ルート・ホロウのヴァージャー',
   'guide.models.count': '{count}体のモデル',
   'guide.models.groupClasses': 'クラス',
   'guide.models.groupCreatures': 'クリーチャー',
@@ -4674,6 +4789,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'Thornpeakで企ての全貌が明らかになります。Vale以来盗まれてきたすべての魂は、山の中心で進むカルトの陰惨な企てに注がれた貢ぎ物でした。礼拝堂の前庭で始まった足取りは、すべての黒幕と対峙する五人での降下となって、ここで終わります。その奥に誰が待つのかは、あなた自身に見届けてもらいましょう。',
   'guide.questsPage.sagaPeaksTitle': '峰々：貢ぎは何のためだったのか',
   'guide.questsPage.sagaTitle': '北へ続く足取りを追え',
+  'guide.questsPage.sagaReachesBody':
+    'ホロウ・リーチズでは、ブラザー・グリーンポーが聖域の壺をエンバーバルブの灯で生かし、ヴァージャーとセクストンが月合图に作付けを整えています。最初の糸は小さなものです。灯を絶やさず、狼を払い、この土地を知る。街道が開くころには、灯を誰が手にしているかを、きっとあなたは知っているでしょう。',
+  'guide.questsPage.sagaReachesTitle': 'リーチズ：灯と暦',
   'guide.questsPage.sagaValeBody':
     'イーストブルックでは死者が安らがず、その背後の印は、とうに滅んだと思われていた一派のものです。それを礼拝堂の地下墓所で働くグレイブコーラーまでたどれば、彼自身の書き物が北の沼へとあなたを導きます。',
   'guide.questsPage.sagaValeTitle': '渓谷：印に刻まれた名',
@@ -4880,6 +4998,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': '刻み跡の欠片',
   'entities.items.tally_shard.flavorText':
     '……五本ひと組で深く刻まれ、数え終えるたびに線で消されている。消された五本組が幾百とあり、それが途絶える、最後の一列だけは最後まで消されずに終わっている……',
+  'entities.items.root_token_unbinding.name': '緩んだ根の結び目',
+  'entities.items.root_token_unbinding.flavorText':
+    '……親指で何度も擦られて滑らかになっている。見えない何かに結ばれた結び目を緩めるかのように。誰かは手放すことが優しさだと信じていた。その人は間違っていたか、早すぎたか、その両方だったのだろう……',
+  'entities.items.root_token_offering.name': '小さな給餌石',
+  'entities.items.root_token_offering.flavorText':
+    '……硬貨よりも小さな、浅い窪みが石に刻まれている。求めることさえできない何かに、ひとかけらを残すためのものだったのだろう。ここで食べていた何かは、飢えをやめたわけではない。ただ、見られなくなっただけだ……',
+  'entities.items.root_token_verdict.name': '裁きの刻み石',
+  'entities.items.root_token_verdict.flavorText':
+    '……刻み目は五つでなく三つひと組で刻まれ、裁かれては覆され、三度目には石が割れるほど強く押し付けられている。誰かが暗闇の中で、同じ問いについて何度も何度も心を変え続けていたかのようだ……',
   'entities.mobs.acolyte_tessa.name': '侍祭テッサ',
   'entities.mobs.deacon_varric.name': '助祭ヴァリック',
   'entities.mobs.reliquary_bonewalker.name': '蘇りし骨歩き',
@@ -4926,6 +5053,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.palefeeder.name': '蒼白喰らい',
   'entities.mobs.rootmaw.name': '根顎獣',
   'entities.mobs.the_witness_root.name': '証しの根',
+  'entities.mobs.greenpaw_cutting_dawn.name': '緑掌の挿し木',
+  'entities.mobs.greenpaw_cutting_moss.name': '緑掌の挿し木',
+  'entities.mobs.greenpaw_cutting_ash.name': '緑掌の挿し木',
   'entities.npcs.brother_halven.greeting': '下の聖遺物庫がまた動いた。',
   'entities.npcs.brother_halven.name': 'ハルヴェン修道士',
   'entities.npcs.brother_halven.title': '聖遺物庫の番人',
@@ -5135,6 +5265,12 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'sim.collections.notFound': 'それは存在しない。',
   'sim.collections.tooFar': '遠すぎる。',
   'sim.gathering.nothingToHarvest': 'その死骸には採集できるものが何もない。',
+  'sim.greenpawCutting.alreadyPlanted': '挿し木はもう植えた。育つのを待て。',
+  'sim.greenpawCutting.needHomestead': 'これを植えるには、まず開拓地が必要だ。',
+  'sim.greenpawCutting.tooFar': 'これを植えるには自分の開拓地にいなければならない。',
+  'sim.greenpawCutting.planted': '開拓地に挿し木を植えた。時が満ちるのを待とう。',
+  'sim.greenpawCutting.grown': '挿し木が育ち、伴侶となった。今はお前について歩く。',
+  'sim.dailyRewards.claimed': 'デイリー報酬を受け取った。',
   'sim.hearth.emberbulb1': 'こいつぁ上物の燃料だ……見ろ、あの子が息をしとる、なあ……',
   'sim.hearth.emberbulb2': '炉はゆっくり、きれいに食うのが好きなんじゃ、あの子はな……',
   'sim.hearth.emberbulb3': '焚べて、煙も立った……もう波長が開きかけとる、感じるわい。',
@@ -5490,6 +5626,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.npcJournal.next': '次のページ',
   'hudChrome.npcJournal.close': '日記を閉じる',
   'hudChrome.npcJournal.title': '{name}の日記',
+  'dailyRewardsUi.menuButton': 'デイリー報酬',
+  'dailyRewardsUi.window.title': 'デイリー報酬',
+  'dailyRewardsUi.window.close': 'デイリー報酬を閉じる',
+  'dailyRewardsUi.window.claim': '受け取る',
+  'dailyRewardsUi.window.claimAria': '今日の報酬を受け取る',
+  'dailyRewardsUi.window.claimed': '受け取り済み。また明日。',
+  'dailyRewardsUi.window.locked': 'このアカウントでは現在デイリー報酬を利用できません。',
+  'dailyRewardsUi.window.hint': '1日1回受け取れます。逃した日があっても損はありません。',
+  'dailyRewardsUi.cell.today': '今日',
   'housingUi.claimedBanner': 'あなたはこの区画を住居として登録した。',
   'housingUi.ownerBanner': 'ここは{name}の住居です。',
   'housingUi.prompt.claim': 'この区画を登録する',
@@ -5640,6 +5785,27 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.gathering.spore': '胞子',
   'hudChrome.gathering.toolTier': 'ティア{tier}の道具',
   'hudChrome.gathering.toolNone': '道具なし',
+  'hudChrome.crafting.title': '製作',
+  'hudChrome.crafting.close': '製作を閉じる',
+  'hudChrome.crafting.tabRecipes': 'レシピ',
+  'hudChrome.crafting.tabEnchants': 'エンチャント',
+  'hudChrome.crafting.craftButton': '製作',
+  'hudChrome.crafting.craftAria': '{item}を製作',
+  'hudChrome.crafting.disenchantSectionTitle': '分解',
+  'hudChrome.crafting.disenchantButton': '分解',
+  'hudChrome.crafting.disenchantAria': '{item}を分解',
+  'hudChrome.crafting.disenchantEmpty': '分解できるアイテムがありません。',
+  'hudChrome.crafting.applyButton': '付与',
+  'hudChrome.crafting.applyAria': '{slot}に{enchant}を付与',
+  'hudChrome.crafting.activeTag': '有効',
+  'hudChrome.crafting.needScroll': '{scroll}が必要',
+  'hudChrome.crafting.craftType.weaponcrafting': '武器鍛冶',
+  'hudChrome.crafting.craftType.armorcrafting': '防具鍛冶',
+  'hudChrome.crafting.craftType.tailoring': '裁縫',
+  'hudChrome.crafting.craftType.leatherworking': '皮革加工',
+  'hudChrome.crafting.craftType.cooking': '料理',
+  'hudChrome.crafting.craftType.alchemy': '錬金術',
+  'hudChrome.crafting.craftType.enchanting': 'エンチャント',
   'hudChrome.warfare.ratingLabel': '戦意',
   'hudChrome.warfare.balance': '名誉：{amount}',
   'hudChrome.warfare.honorAmount': '名誉 {amount}',
@@ -5650,6 +5816,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaKill': 'フィエスタ撃破',
   'hudChrome.warfare.reasons.fiestaComplete': 'フィエスタ試合',
   'hudChrome.warfare.reasons.fiestaWin': 'フィエスタ勝利',
+  'hudChrome.hitRating.ratingLabel': '命中レーティング',
   'entities.npcs.bramble.name': 'ブランブル',
   'entities.npcs.bramble.title': '名誉調達官',
   'entities.npcs.bramble.greeting':

@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1586,7 +1585,8 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Gier für {item}',
   'itemUi.lootRoll.passAria': 'Bei {item} passen',
   'itemUi.lootRoll.everyonePassed': 'Alle passen bei {item}.',
-  'itemUi.lootRoll.winnerOffline': 'Der Gewinner von {item} war offline; es wurde zur Leiche zurückgebracht.',
+  'itemUi.lootRoll.winnerOffline':
+    'Der Gewinner von {item} war offline; es wurde zur Leiche zurückgebracht.',
   'entities.abilities.heroic_strike.name': 'Heldenhafter Stoß',
   'entities.abilities.heroic_strike.description':
     'Ein mächtiger Angriff, der den Nahkampfschaden um {damage} erhöht. Wird bei eurem nächsten Schwung ausgelöst.',
@@ -2129,6 +2129,11 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': 'Imperiales Gold',
   'entities.items.vanguard_azure_armor_plate.name': 'Vorhut-Azur',
   'entities.items.vanguard_chrome_armor_plate.name': 'Vorhut-Chrom',
+  'entities.items.enchanting_dust.name': 'Verzauberungsstaub',
+  'entities.items.scroll_minor_might.name': 'Schriftrolle der geringen Macht',
+  'entities.items.scroll_minor_vigor.name': 'Schriftrolle der geringen Vitalität',
+  'entities.items.scroll_minor_focus.name': 'Schriftrolle der geringen Konzentration',
+  'entities.items.scroll_minor_agility.name': 'Schriftrolle der geringen Beweglichkeit',
   'entities.items.deacons_cleaver.name': 'Beil des Diakons',
   'entities.items.staff_of_drowned_prayers.name': 'Stab ertrunkener Gebete',
   'entities.items.mistbinder_kris.name': 'Nebelbinder-Kris',
@@ -2974,6 +2979,15 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Scherbe mit Zählkerben',
   'entities.items.tally_shard.flavorText':
     '...Kerben in Fünfergruppen, tief geritzt, durchgestrichen, sooft die Zählung herumkam. hunderte Fünfer, bevor das Durchstreichen aufhört, und die letzte Reihe wurde nie vollendet...',
+  'entities.items.root_token_unbinding.name': 'Gelöster Wurzelknoten',
+  'entities.items.root_token_unbinding.flavorText':
+    '...glattgerieben, wo ein Daumen immer wieder drückte, als löse er einen Knoten, der um nichts Sichtbares gebunden war. jemand glaubte, Loslassen sei eine Gnade. jemand irrte sich, oder war zu früh, oder beides...',
+  'entities.items.root_token_offering.name': 'Kleiner Fütterstein',
+  'entities.items.root_token_offering.flavorText':
+    '...eine flache Mulde, kaum größer als eine Münze, in Stein geritzt, der Art, in die man einen Krümel für etwas legt, das nicht bitten kann. was hier fraß, hörte nicht auf, hungrig zu sein. es hörte nur auf, gesehen zu werden...',
+  'entities.items.root_token_verdict.name': 'Urteilsgezählter Stein',
+  'entities.items.root_token_verdict.flavorText':
+    '...eine Zählung in Dreiergruppen, nicht in Fünfern, gerichtet und neu gerichtet, so fest gedrückt, dass der dritte Durchgang den Stein spaltete. jemand änderte immer wieder seine Meinung zur selben Frage, wieder und wieder, im Dunkeln...',
   'entities.items.heartwood_splinter.name': 'Herzholzsplitter',
   'entities.items.heartwood_splinter.flavorText':
     'Warm anzufassen, lange nachdem der Baum, aus dem es stammt, aufgehört hat, sich zu bewegen.',
@@ -3356,7 +3370,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s} Sek.',
-  'hudChrome.mobile.autorun': 'Auto-Laufen',
   'hudChrome.mobile.haptics': 'Haptik',
   'hudChrome.mobile.hapticsOff': 'Haptik aus',
   'hudChrome.mobile.jump': 'Springen',
@@ -3399,6 +3412,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.controller.help':
     'Linker Stick bewegt, rechter Stick steuert die Kamera. Öffne ein Fenster, um den Bildschirmzeiger zu verwenden.',
   'entities.mobs.nythraxis_skeleton_warrior.name': 'Auferstandene Königswache',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': 'Geist von Aldren',
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'Geist von Malric',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'Geist von Voss',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'Nythraxis, Geißel von Thornpeak',
   'itemUi.quality.legendary': 'Legendär',
   'entities.items.deathless_heartwood.name': 'Herzholz der todlosen Krone',
@@ -3411,6 +3427,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': 'Seelenflammenmantel',
   'entities.items.stormcallers_crown.name': 'Krone des Sturmrufers',
   'entities.items.stormcallers_spaulders.name': 'Schulterplatten des Sturmrufers',
+  'entities.items.deathless_greatblade.name': 'Todloses Großschwert',
+  'entities.items.scepter_of_the_deathless_court.name': 'Zepter des todlosen Hofes',
+  'entities.items.stormcallers_focus.name': 'Fokus des Sturmrufers',
   'hud.chat.context.convertToRaid': 'In Schlachtzug umwandeln',
   'hud.chat.context.convertToParty': 'In Gruppe umwandeln',
   'hudChrome.raidConvert.leaderOnly': 'Nur der Schlachtzugsleiter darf in eine Gruppe umwandeln.',
@@ -4348,15 +4367,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     'Ein altes Stück durch eine frische Verbesserung zu ersetzen, bringt dir mehr, als in Ausrüstung, der du entwachsen bist, perfekt zu spielen. Wenn etwas Besseres fällt oder eine Quest es anbietet, nimm es. Spare deine guten Gegenstände nicht für später auf.',
   'guide.gear.upgradeTitle': 'Halte deine Ausrüstung aktuell',
-  'guide.lore.aldricBody':
-    'Ein bescheidener Dorfpriester, der den Kult zuerst über einem geschändeten Grab in Eastbrook beim Namen nennt und dann seiner Spur höchstpersönlich durch das Moor und hinauf zur Mauer von Highwatch folgt. Er ist das ruhige Herz des ganzen Feldzugs.',
-  'guide.lore.aldricRole': 'Priester des Tals',
   'guide.lore.figuresBody':
     'Eine Handvoll Leute gehen den ganzen Weg mit dir. Halte vom Tal bis zu den Gipfeln nach diesen Namen Ausschau.',
   'guide.lore.figuresTitle': 'Gesichter, die du kennenlernen wirst',
-  'guide.lore.marenBody':
-    'Eine wortkarge Fährtenleserin, der du im Schilf von Mirefen begegnest, lauter leise Füße und eine kurze Klinge. Auch sie folgt der Spur nach Norden, und es ist ihr Ohr, das die Worte auffängt, die dich zu den Gipfeln schicken.',
-  'guide.lore.marenRole': 'Die Späherin des Marschalls',
   'guide.models.count': '{count} Modelle',
   'guide.models.groupClasses': 'Klassen',
   'guide.models.groupCreatures': 'Kreaturen',

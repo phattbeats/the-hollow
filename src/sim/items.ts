@@ -97,7 +97,7 @@ export function equipItem(
   ctx.removeItem(itemId, 1, meta.entityId);
   if (old) addItemSilent(old, 1, meta);
   meta.equipment[slot] = itemId;
-  recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta));
+  recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
   ctx.emit({ type: 'log', text: `Equipped ${def.name}.`, color: '#8f8', pid: meta.entityId });
 }
 
@@ -120,7 +120,7 @@ export function unequipItem(ctx: SimContext, slot: EquipSlot, pid?: number): boo
   // not a fresh acquisition, so it must not fire collect-quest credit. No quest
   // today keys on an unequip, so there is nothing to award here regardless.
   addItemSilent(itemId, 1, meta);
-  recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta));
+  recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
   const def = ITEMS[itemId];
   ctx.emit({
     type: 'log',
@@ -150,6 +150,10 @@ export function useItem(ctx: SimContext, itemId: string, pid?: number): ItemUseR
   }
   if (def.use?.type === 'skinSelect') {
     ctx.openSkinSelect(meta, def.use.catalog ?? 'class', itemId);
+    return;
+  }
+  if (def.use?.type === 'plant') {
+    ctx.plantGreenpawCutting(meta.entityId);
     return;
   }
   if (p.castingAbility === FISHING_CAST_ID) {

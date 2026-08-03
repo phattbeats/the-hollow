@@ -141,6 +141,7 @@ const UI_PURE_CORES = [
   'src/ui/item_set_tooltip_view.ts',
   'src/ui/options_view.ts',
   'src/ui/vendor_view.ts',
+  'src/ui/daily_rewards_view.ts',
   'src/ui/housing_view.ts',
   'src/ui/housing_prompt_view.ts',
   'src/ui/readable_prompt_view.ts',
@@ -166,6 +167,7 @@ const UI_PURE_CORES = [
   'src/ui/auras_view.ts',
   'src/ui/minimap_markers.ts',
   'src/ui/gathering_view.ts',
+  'src/ui/crafting_view.ts',
   'src/ui/fct_core.ts',
   'src/ui/fct_event.ts',
   'src/ui/focus_order.ts',
@@ -193,6 +195,14 @@ const RENDER_PURE_CORES = [
   // Reaches camps). Three-free and deterministic; the Three consumer is
   // hollow_flora.ts.
   'src/render/hollow_flora_core.ts',
+  // PHAA-675: the water shore-depth sample (waterLevel() - terrainHeight),
+  // shared by water.ts's per-vertex bake so both the build-time and any
+  // future rebuild path use one definition.
+  'src/render/water_core.ts',
+  // PHAA-675: region-selection math for the map editor's partial terrain
+  // rebuilds (which chunks/normal-texels a sculpt region invalidates).
+  // Three-free and deterministic; the Three consumer is terrain.ts.
+  'src/render/terrain_region_core.ts',
 ].map((rel) => join(repoRoot, rel));
 
 // Bare-named pure cores: registered cores (from UI_PURE_CORES + RENDER_PURE_CORES)

@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1034,6 +1033,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': '已屏蔽来自 {name} 的聊天。',
   'hud.system.noLongerIgnoring': '不再屏蔽 {name}。',
   'hud.system.playerNotNearby': '该玩家不在附近。',
+  'hud.system.playerInfoNotFound': '未找到该名称的角色。',
   'hud.system.duelCountdown': '决斗将在 {seconds} 秒后开始...',
   'hud.system.duelEndBanner': '{winner} 在决斗中击败了 {loser}！',
   'hud.system.duelEndLog': '{winner} 在决斗中击败了 {loser}。',
@@ -1553,6 +1553,82 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '贪婪 {item}',
   'itemUi.lootRoll.passAria': '放弃 {item}',
   'itemUi.lootRoll.everyonePassed': '所有人都放弃了 {item}。',
+  'entities.abilities.chain_heal.name': '治疗链',
+  'entities.abilities.chain_heal.description':
+    '对一名友方目标进行大量治疗，然后跳跃至最多2名附近的盟友，每次跳跃治疗量降低50%。',
+  'entities.abilities.crusader_strike.name': '十字军打击',
+  'entities.abilities.crusader_strike.description': '对目标造成武器伤害加24点神圣伤害。',
+  'entities.abilities.metamorphosis.name': '恐惧之相',
+  'entities.abilities.metamorphosis.description':
+    '变身为可怕的恶魔，持续20秒，法术伤害提高20%，施法速度提高20%。你的恶魔获得50%伤害提高和20%施法速度提高。',
+  'entities.abilities.holy_shock.name': '神圣震击',
+  'entities.abilities.holy_shock.description':
+    '用神圣能量震击友方目标进行治疗，或对敌人造成神圣伤害。',
+  'entities.abilities.holy_shield.name': '圣墙',
+  'entities.abilities.holy_shield.description':
+    '向敌人投掷神圣圣盾，造成神圣伤害并弹射至2个附近的敌人。',
+  'entities.abilities.bestial_wrath.name': '咆哮怒火',
+  'entities.abilities.bestial_wrath.description':
+    '使你陷入野兽狂怒，持续15秒，攻击强度提高20%，宠物伤害提高100%。',
+  'entities.abilities.trueshot_aura.name': '稳射光环',
+  'entities.abilities.trueshot_aura.description': '激励附近的盟友，攻击强度提高10%，持续30分钟。',
+  'entities.abilities.wyvern_sting.name': '翼龙钉刺',
+  'entities.abilities.wyvern_sting.description':
+    '从远处刺向敌人，使其失能最多4秒。受到伤害将解除该效果。',
+  'entities.abilities.arcane_power.name': '以太涌动',
+  'entities.abilities.arcane_power.description': '法术伤害提高20%，法术急速提高10%，持续10秒。',
+  'entities.abilities.combustion.name': '闪焰',
+  'entities.abilities.combustion.description': '法术暴击几率提高50%，持续15秒。',
+  'entities.abilities.icy_veins.name': '冰脉',
+  'entities.abilities.icy_veins.description':
+    '法术急速提高30%，并防止施法被打断或产生施法后仰，持续10秒。',
+  'entities.abilities.cold_blood.name': '杀意冷静',
+  'entities.abilities.cold_blood.description': '凝聚你的杀意，使你的下一次攻击必定暴击。',
+  'entities.abilities.blade_flurry.name': '剑刃乱舞',
+  'entities.abilities.blade_flurry.description': '释放一连串剑刃攻击，攻击速度提高20%，持续12秒。',
+  'entities.abilities.hemorrhage.name': '红丝带',
+  'entities.abilities.hemorrhage.description':
+    '以武器伤害加流血效果击中敌人，造成持续12秒的流血伤害，并使流血伤害提高40%。获得1点连击点数。',
+  'entities.abilities.power_infusion.name': '恩泽',
+  'entities.abilities.power_infusion.description':
+    '为友方目标注入力量，使其法术急速提高20%，持续15秒。',
+  'entities.abilities.holy_nova.name': '神圣新星',
+  'entities.abilities.holy_nova.description':
+    '引发神圣光辉的爆发，治疗附近的盟友并伤害附近的敌人。',
+  'entities.abilities.shadowform.name': '暮蔼形态',
+  'entities.abilities.shadowform.description':
+    '化身暗影形态，使暗影伤害提高15%，直至你变回原形。施放治疗法术会解除该形态。再次施放可变回原形。',
+  'entities.abilities.elemental_mastery.name': '元素掌控',
+  'entities.abilities.elemental_mastery.description': '召唤风暴之力，使你的下一个法术瞬发。',
+  'entities.abilities.siphon_life.name': '汲取生命',
+  'entities.abilities.siphon_life.description':
+    '从敌人身上汲取生命，造成持续30秒的暗影伤害并治疗你等同于造成的伤害。',
+  'entities.abilities.conflagrate.name': '燃烧',
+  'entities.abilities.conflagrate.description': '引燃你施放在敌人身上的献祭效果，造成火焰伤害。',
+  'entities.abilities.moonkin_form.name': '月翼形态',
+  'entities.abilities.moonkin_form.description':
+    '变身为可怕的枭兽，法术伤害提高20%，护甲提高50%。直至你变回原形。再次施放可变回施法者形态。',
+  'entities.abilities.feral_charge.name': '原始冲能',
+  'entities.abilities.feral_charge.description':
+    '释放原始冲能。在猎豹形态下，能量回复速度提高100%，持续10秒。在熊形态下，立即产生50点怒气。',
+  'entities.abilities.swiftmend.name': '迅捷治疗',
+  'entities.abilities.swiftmend.description':
+    '消耗友方目标身上的一个持续治疗效果，为其恢复生命值。',
+  'entities.abilities.pummel.name': '碎颚',
+  'entities.abilities.pummel.description': '打断目标的施法，并使其在4秒内无法施放该系法术。',
+  'entities.abilities.kick.name': '重踢',
+  'entities.abilities.kick.description': '打断目标的施法，并使其在4秒内无法施放该系法术。',
+  'entities.abilities.counterspell.name': '法术反制',
+  'entities.abilities.counterspell.description': '反制目标的施法，并使其在6秒内无法施放该系法术。',
+  'entities.abilities.counter_shot.name': '静默射击',
+  'entities.abilities.counter_shot.description': '快速射击，打断目标的施法并封锁该系法术4秒。',
+  'entities.abilities.rebuke.name': '谴责',
+  'entities.abilities.rebuke.description': '打断目标的施法，并使其在4秒内无法施放该系法术。',
+  'entities.abilities.skull_bash.name': '头槌',
+  'entities.abilities.skull_bash.description': '猛冲头槌，打断目标的施法并封锁该系法术4秒。',
+  'entities.abilities.spell_lock.name': '咒缚',
+  'entities.abilities.spell_lock.description':
+    '使目标在施法中沉默，并使其在5秒内无法施放该系法术。',
   'itemUi.lootRoll.winnerOffline': '{item}的获胜者已离线；战利品已归还尸体。',
   'entities.abilities.heroic_strike.name': '英勇打击',
   'entities.abilities.heroic_strike.description':
@@ -1596,6 +1672,8 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.taunt.name': '嘲讽',
   'entities.abilities.taunt.description':
     '嘲讽目标：你的威胁值提高到其最仇恨敌人的水平，并强迫其攻击你 3 秒。',
+  'entities.abilities.ironhold.name': '坚守',
+  'entities.abilities.ironhold.description': '紧守盾牌，在 8 秒内使受到的所有伤害降低 40%。',
   'entities.abilities.fireball.name': '火球术',
   'entities.abilities.fireball.description':
     '投掷一团火球，造成 {damage} 点火焰伤害，并附加持续伤害。',
@@ -1726,6 +1804,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.retribution_aura.name': '惩戒光环',
   'entities.abilities.retribution_aura.description':
     '以神圣能量环绕自身，持续 30 分钟，对任何近战攻击你的敌人造成 5 点神圣伤害。',
+  'entities.abilities.sacred_bulwark.name': '神圣壁垒',
+  'entities.abilities.sacred_bulwark.description':
+    '持续 10 秒，下一次本该致命的打击将被抵挡，并使你恢复到 35% 的生命值。',
   'entities.abilities.tame_beast.name': '驯服野兽',
   'entities.abilities.tame_beast.description':
     '开始驯服一只野兽作为你的伙伴。它必须不高于你的等级，且不能是精英。你的宠物会跟随你、攻击敌人，并保持自己的威胁值。同一时间只能拥有一只宠物。',
@@ -1901,6 +1982,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.tigers_fury.description': '使攻击强度提高 40，持续 6 秒。仅限狼形态。',
   'entities.abilities.rip.name': '割裂',
   'entities.abilities.rip.description': '终结技，在 12 秒内造成流血伤害。消耗连击点。仅限狼形态。',
+  'entities.abilities.primal_reflexes.name': '原始反射',
+  'entities.abilities.primal_reflexes.description':
+    '你的本能变得敏锐，在 6 秒内使闪避几率提高 50%。',
   'entities.abilities.mortal_strike.name': '致死打击',
   'entities.abilities.mortal_strike.description':
     '凶狠打击，造成武器伤害外加 {damage} 点伤害。（武器专精标志技能）',
@@ -2056,6 +2140,15 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': '帝王金',
   'entities.items.vanguard_azure_armor_plate.name': '先锋蔚蓝',
   'entities.items.vanguard_chrome_armor_plate.name': '先锋铬银',
+  'entities.items.enchanting_dust.name': '附魔尘',
+  'entities.items.scroll_minor_might.name': '微弱力量卷轴',
+  'entities.items.scroll_minor_vigor.name': '微弱活力卷轴',
+  'entities.items.scroll_minor_focus.name': '微弱专注卷轴',
+  'entities.items.scroll_minor_agility.name': '微弱敏捷卷轴',
+  'entities.enchants.enchant_minor_might.name': '微弱力量',
+  'entities.enchants.enchant_minor_vigor.name': '微弱活力',
+  'entities.enchants.enchant_minor_focus.name': '微弱专注',
+  'entities.enchants.enchant_minor_agility.name': '微弱敏捷',
   'entities.items.deacons_cleaver.name': '执事劈刀',
   'entities.items.staff_of_drowned_prayers.name': '溺亡祈祷法杖',
   'entities.items.mistbinder_kris.name': '缚雾短剑',
@@ -2372,6 +2465,14 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.tidewatcher_ondrel.title': '守潮者',
   'entities.npcs.tidewatcher_ondrel.greeting':
     '潭水饮尽月光，{className}，又将溺者吐还。我守望那道门户已有三十夜——而今夜，它开了。',
+  'entities.quests.q_prof_intro.title': '值得学习的手艺',
+  'entities.quests.q_prof_intro.text':
+    '每门手艺都从指甲缝里的泥土开始，{playerName}。去镇东的林地里采集2条蜘蛛腿，然后到我的锻炉前打一件新兵束衣；打造它所需的骨骼碎片沿途很容易找到。再给我带些值得分解出奥术尘埃的东西。让我看看你能采集、能打造、也能分解，我就让你见识手艺的价值。',
+  'entities.quests.q_prof_intro.completion':
+    '这才是值得学习的手艺。多在锻炉边下功夫，{playerName}，总有一天你能一口气钉马掌又附魔利刃。',
+  'entities.quests.q_prof_intro.objectives.0.label': '采集蜘蛛腿',
+  'entities.quests.q_prof_intro.objectives.1.label': '打造新兵束衣',
+  'entities.quests.q_prof_intro.objectives.2.label': '附魔尘埃',
   'entities.quests.q_wolves.title': '门前群狼',
   'entities.quests.q_wolves.text':
     '森林狼已经敢扑咬北路旅人，{playerName}。击败8只森林狼，让东溪能松一口气。',
@@ -3384,7 +3485,6 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/秒',
   'hudChrome.meters.perSecondRow': '{total}（{rate}）',
   'hudChrome.meters.seconds': '{s}秒',
-  'hudChrome.mobile.autorun': '自动奔跑',
   'hudChrome.mobile.haptics': '震动反馈',
   'hudChrome.mobile.hapticsOff': '震动反馈：关',
   'hudChrome.mobile.jump': '跳跃',
@@ -3455,6 +3555,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hud.tutorial.returnTitle': '喂养炉火',
   'hud.tutorial.returnBody': '你带着会燃烧之物。返回绿掌修士处，按 {interactKey} 交付。',
   'entities.mobs.nythraxis_skeleton_warrior.name': '复苏王室卫兵',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': '奥德伦之魂',
+  'entities.mobs.nythraxis_heroic_priest_add.name': '马尔里克之魂',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': '沃斯之魂',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': '尼思拉克西斯，荆峰之灾',
   'itemUi.quality.legendary': '传说',
   'entities.items.deathless_heartwood.name': '不朽王冠之心木',
@@ -3467,6 +3570,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': '魂焰披肩',
   'entities.items.stormcallers_crown.name': '唤雷者之冠',
   'entities.items.stormcallers_spaulders.name': '唤雷者肩甲',
+  'entities.items.deathless_greatblade.name': '不朽巨剑',
+  'entities.items.scepter_of_the_deathless_court.name': '不朽王庭权杖',
+  'entities.items.stormcallers_focus.name': '唤雷者的焦点',
   'hud.chat.context.convertToRaid': '转换为团队',
   'hud.chat.context.convertToParty': '转换为队伍',
   'hudChrome.raidConvert.leaderOnly': '只有团队领袖可以转换为队伍。',
@@ -4389,14 +4495,14 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     '用一件全新的升级换下旧装备，比你穿着已经过时的行头打得再完美都更有意义。当有更好的东西掉落或任务给予时，拿下它。别把好物品留到以后。',
   'guide.gear.upgradeTitle': '让装备保持更新',
-  'guide.lore.aldricBody':
-    '一位谦逊的乡村牧师，他在东溪一座被玷污的坟墓前最先道出了邪教之名，随后亲自循着踪迹穿过湿地，一路追到高守哨站的城墙下。他是整场战役坚定的核心。',
-  'guide.lore.aldricRole': '谷地的牧师',
+  'guide.lore.faddickBody':
+    '他手持长柄工具，比起剑更熟悉铲子。他扫除从林中渗入的阴翳，安葬亡者，记着自己照管的每一块地。当线索离开神龛之时，往往是他来指出前路。',
+  'guide.lore.faddickRole': '法洛畦场的掘墓人',
   'guide.lore.figuresBody': '有那么几个人会与你同行整段旅途。从谷地到峰巅，留意这些名字。',
   'guide.lore.figuresTitle': '你将渐渐熟识的面孔',
-  'guide.lore.marenBody':
-    '一位你在泥沼的芦苇丛中遇见的低声寡言的追踪者，脚步轻悄，配一柄短刃。她也一路向北循迹而行，正是她的耳朵捕捉到了那些话语，将你引向峰巅。',
-  'guide.lore.marenRole': '元帅的斥候',
+  'guide.lore.zebediahBody':
+    '他是一位耐心的教堂管事，用这本历法守护着这片原野，双手常半埋在土里。他注视着瓶中的灯火，按月令安排耕种，是初来乍到者最先听到的声音。',
+  'guide.lore.zebediahRole': '根谷的教堂管事',
   'guide.models.count': '{count} 个模型',
   'guide.models.groupClasses': '职业',
   'guide.models.groupCreatures': '生物',
@@ -4443,6 +4549,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '在 Thornpeak，整个图谋终于水落石出。自 the Vale 以来被窃走的每一个灵魂，都是为这座山岳腹心深处邪教的阴森勾当而倾注的贡赋。始于一座礼拜堂院落的踪迹在此终结，化作一场五人的深入，去直面这一切背后的黑手。至于谁在尽头等候，我们就留给你自己去揭晓吧。',
   'guide.questsPage.sagaPeaksTitle': '峰巅：贡赋所为何来',
   'guide.questsPage.sagaTitle': '循迹北行',
+  'guide.questsPage.sagaReachesBody':
+    '在霍洛沃原野，布莱泽·绿爪用火绒灯守着那座神龛之瓶，教堂管事与掘墓人则按月令安排耕种。第一条线索很小：守好灯火，清除野狼，摸熟这片土地。等到前路开启，你自会知道那盏灯正握在谁的手里。',
+  'guide.questsPage.sagaReachesTitle': '原野：一盏灯与一本历法',
   'guide.questsPage.sagaValeBody':
     '在东溪，死者无法安息，而其背后的印记属于一个早被认为已然消亡的教派。循迹追查到一名在礼拜堂地穴中作业的唤墓者，他自己的文书又将你指向北方的湿地。',
   'guide.questsPage.sagaValeTitle': '谷地：印玺上的一个名字',
@@ -4641,6 +4750,15 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': '刻痕碎片',
   'entities.items.tally_shard.flavorText':
     '……以五为一组刻得极深，每数完一轮便划去一道。划去的五连一组，累计上百组，最后一行却始终没有划完……',
+  'entities.items.root_token_unbinding.name': '松开的根结',
+  'entities.items.root_token_unbinding.flavorText':
+    '……一面被拇指摩挲得光滑，仿佛在松开一个看不见系在何处的结。有人相信放手是一种仁慈。那人要么错了，要么为时过早，或两者皆是……',
+  'entities.items.root_token_offering.name': '小喂食石',
+  'entities.items.root_token_offering.flavorText':
+    '……石头上刻着一个浅浅的碗，比硬币还小，仿佛是留给某个无法开口求食之物的一口残渣。这里吞食过的东西并未停止饥饿，只是不再被人看见……',
+  'entities.items.root_token_verdict.name': '刻痕裁决石',
+  'entities.items.root_token_verdict.flavorText':
+    '……刻痕以三为一组，而非五，反复裁定又反复推翻，压得极深，第三遍时石头都裂开了。仿佛有人在黑暗中，为同一个问题一次又一次地改变心意……',
   'entities.mobs.acolyte_tessa.name': '侍僧泰莎',
   'entities.mobs.deacon_varric.name': '执事瓦里克',
   'entities.mobs.reliquary_bonewalker.name': '复生的骨行者',
@@ -4686,6 +4804,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.palefeeder.name': '苍白噬光者',
   'entities.mobs.rootmaw.name': '根颚兽',
   'entities.mobs.the_witness_root.name': '见证之根',
+  'entities.mobs.greenpaw_cutting_dawn.name': '绿掌的插枝',
+  'entities.mobs.greenpaw_cutting_moss.name': '绿掌的插枝',
+  'entities.mobs.greenpaw_cutting_ash.name': '绿掌的插枝',
   'entities.npcs.brother_halven.greeting': '下方的圣物库又移位了。',
   'entities.npcs.brother_halven.name': '哈尔文修士',
   'entities.npcs.brother_halven.title': '圣物库守护人',
@@ -4879,6 +5000,12 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'sim.collections.notFound': '那个东西不存在。',
   'sim.collections.tooFar': '太远了。',
   'sim.gathering.nothingToHarvest': '这具尸体没有什么可以采集的。',
+  'sim.greenpawCutting.alreadyPlanted': '你已经种下了插枝。给它一些时间成长。',
+  'sim.greenpawCutting.needHomestead': '你需要先拥有一块宅地才能种下它。',
+  'sim.greenpawCutting.tooFar': '你必须在自己的宅地才能种下它。',
+  'sim.greenpawCutting.planted': '你在自己的宅地种下了插枝。耐心等待吧。',
+  'sim.greenpawCutting.grown': '你的插枝已经长成了一只伙伴。它现在会跟随你。',
+  'sim.dailyRewards.claimed': '你领取了每日奖励。',
   'sim.hearth.emberbulb1': '这才叫柴火……瞧瞧她喘气的样子，伙计……',
   'sim.hearth.emberbulb2': '炉子慢慢地、干干净净地吃下去，她就爱这样……',
   'sim.hearth.emberbulb3': '添了柴，冒了烟……那个波长已经开始松动了，我能感觉到。',
@@ -5223,6 +5350,15 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.npcJournal.next': '下一页',
   'hudChrome.npcJournal.close': '关闭日记',
   'hudChrome.npcJournal.title': '{name}的日记',
+  'dailyRewardsUi.menuButton': '每日奖励',
+  'dailyRewardsUi.window.title': '每日奖励',
+  'dailyRewardsUi.window.close': '关闭每日奖励',
+  'dailyRewardsUi.window.claim': '领取',
+  'dailyRewardsUi.window.claimAria': '领取今日奖励',
+  'dailyRewardsUi.window.claimed': '已领取，明天再来。',
+  'dailyRewardsUi.window.locked': '此账号暂时无法领取每日奖励。',
+  'dailyRewardsUi.window.hint': '每天可领取一次。错过一天不会有任何损失。',
+  'dailyRewardsUi.cell.today': '今天',
   'housingUi.claimedBanner': '你将这块地认领为家园。',
   'housingUi.ownerBanner': '这是{name}的家园。',
   'housingUi.prompt.claim': '认领这块地',
@@ -5369,6 +5505,27 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.gathering.spore': '孢子',
   'hudChrome.gathering.toolTier': '{tier}级工具',
   'hudChrome.gathering.toolNone': '无工具',
+  'hudChrome.crafting.title': '制作',
+  'hudChrome.crafting.close': '关闭制作',
+  'hudChrome.crafting.tabRecipes': '配方',
+  'hudChrome.crafting.tabEnchants': '附魔',
+  'hudChrome.crafting.craftButton': '制作',
+  'hudChrome.crafting.craftAria': '制作{item}',
+  'hudChrome.crafting.disenchantSectionTitle': '分解',
+  'hudChrome.crafting.disenchantButton': '分解',
+  'hudChrome.crafting.disenchantAria': '分解{item}',
+  'hudChrome.crafting.disenchantEmpty': '没有可分解的物品。',
+  'hudChrome.crafting.applyButton': '施加',
+  'hudChrome.crafting.applyAria': '将{enchant}施加到{slot}',
+  'hudChrome.crafting.activeTag': '已生效',
+  'hudChrome.crafting.needScroll': '需要{scroll}',
+  'hudChrome.crafting.craftType.weaponcrafting': '武器锻造',
+  'hudChrome.crafting.craftType.armorcrafting': '护甲锻造',
+  'hudChrome.crafting.craftType.tailoring': '裁缝',
+  'hudChrome.crafting.craftType.leatherworking': '制皮',
+  'hudChrome.crafting.craftType.cooking': '烹饪',
+  'hudChrome.crafting.craftType.alchemy': '炼金',
+  'hudChrome.crafting.craftType.enchanting': '附魔',
   'hudChrome.warfare.ratingLabel': '战意',
   'hudChrome.warfare.balance': '荣誉：{amount}',
   'hudChrome.warfare.honorAmount': '{amount} 荣誉',
@@ -5379,6 +5536,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaKill': '狂欢击倒',
   'hudChrome.warfare.reasons.fiestaComplete': '狂欢比赛',
   'hudChrome.warfare.reasons.fiestaWin': '狂欢胜利',
+  'hudChrome.hitRating.ratingLabel': '命中等级',
   'entities.npcs.bramble.name': '布兰博',
   'entities.npcs.bramble.title': '荣誉军需官',
   'entities.npcs.bramble.greeting': '沙场记得每一场胜利。好好花你的荣誉吧。',

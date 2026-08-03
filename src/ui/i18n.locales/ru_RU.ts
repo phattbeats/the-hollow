@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1108,6 +1107,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': 'Чат от {name} игнорируется.',
   'hud.system.noLongerIgnoring': '{name} больше не игнорируется.',
   'hud.system.playerNotNearby': 'Этого игрока нет рядом.',
+  'hud.system.playerInfoNotFound': 'Персонаж с таким именем не найден.',
   'hud.system.duelCountdown': 'Дуэль начнется через {seconds}...',
   'hud.system.duelEndBanner': '{winner} победил {loser} в дуэли!',
   'hud.system.duelEndLog': '{winner} победил {loser} в дуэли.',
@@ -1646,6 +1646,96 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Жадность: {item}',
   'itemUi.lootRoll.passAria': 'Пас: {item}',
   'itemUi.lootRoll.everyonePassed': 'Все отказались от {item}.',
+  'entities.abilities.chain_heal.name': 'Цепное исцеление',
+  'entities.abilities.chain_heal.description':
+    'Исцеляет дружественную цель на большое количество здоровья, затем перескакивает на до 2 ближайших союзников, с уменьшением исцеления на 50% с каждым скачком.',
+  'entities.abilities.crusader_strike.name': 'Удар крестоносца',
+  'entities.abilities.crusader_strike.description':
+    'Наносит цели урон оружием плюс 24 урона Светом.',
+  'entities.abilities.metamorphosis.name': 'Устрашающий облик',
+  'entities.abilities.metamorphosis.description':
+    'Превращает вас в чудовищного демона на 20 сек, увеличивая урон от заклинаний на 20% и скорость сотворения на 20%. Ваш демон получает 50% урона и 20% скорости сотворения.',
+  'entities.abilities.holy_shock.name': 'Священный шок',
+  'entities.abilities.holy_shock.description':
+    'Поражает дружественную цель Священной энергией, исцеляя её, или врага, нанося урон Светом.',
+  'entities.abilities.holy_shield.name': 'Освящённая стена',
+  'entities.abilities.holy_shield.description':
+    'Метает сияющий щит во врага, нанося урон Светом и рикошетируя на 2 ближайших врагов.',
+  'entities.abilities.bestial_wrath.name': 'Рёв ярости',
+  'entities.abilities.bestial_wrath.description':
+    'Погружает вас в звериную ярость на 15 сек, увеличивая силу атаки на 20% и урон питомца на 100%.',
+  'entities.abilities.trueshot_aura.name': 'Аура меткого выстрела',
+  'entities.abilities.trueshot_aura.description':
+    'Воодушевляет находящихся рядом союзников, увеличивая силу атаки на 10% на 30 мин.',
+  'entities.abilities.wyvern_sting.name': 'Укус виверны',
+  'entities.abilities.wyvern_sting.description':
+    'Жалит врага издалека, обездвиживая его на срок до 4 сек. Любой урон снимает эффект.',
+  'entities.abilities.arcane_power.name': 'Всплеск эфира',
+  'entities.abilities.arcane_power.description':
+    'Увеличивает урон от заклинаний на 20% и ускорение заклинаний на 10% на 10 сек.',
+  'entities.abilities.combustion.name': 'Мгновенное возгорание',
+  'entities.abilities.combustion.description':
+    'Увеличивает шанс критического удара заклинаниями на 50% на 15 сек.',
+  'entities.abilities.icy_veins.name': 'Ледяные вены',
+  'entities.abilities.icy_veins.description':
+    'Увеличивает ускорение заклинаний на 30% и предотвращает прерывание и отбрасывание сотворения на 10 сек.',
+  'entities.abilities.cold_blood.name': 'Холодная ярость',
+  'entities.abilities.cold_blood.description':
+    'Сосредотачивает вашу жажду убийства, гарантируя, что следующая атака станет критическим ударом.',
+  'entities.abilities.blade_flurry.name': 'Зеркальные клинки',
+  'entities.abilities.blade_flurry.description':
+    'Обрушивает шквал клинков, увеличивая скорость атаки на 20% на 12 сек.',
+  'entities.abilities.hemorrhage.name': 'Алая лента',
+  'entities.abilities.hemorrhage.description':
+    'Поражает врага уроном оружием и эффектом кровотечения, нанося урон от кровотечения на протяжении 12 сек и увеличивая получаемый урон от кровотечения на 40%. Дает 1 очко комбо.',
+  'entities.abilities.power_infusion.name': 'Помазание',
+  'entities.abilities.power_infusion.description':
+    'Наполняет дружественную цель силой, увеличивая ускорение заклинаний на 20% на 15 сек.',
+  'entities.abilities.holy_nova.name': 'Священная нова',
+  'entities.abilities.holy_nova.description':
+    'Вызывает взрыв священного сияния, исцеляя находящихся рядом союзников и нанося урон находящимся рядом врагам.',
+  'entities.abilities.shadowform.name': 'Сумеречный облик',
+  'entities.abilities.shadowform.description':
+    'Принимает облик Тьмы, увеличивая урон Тьмой на 15% до тех пор, пока вы не вернётесь в обычный облик. Применение лечащего заклинания снимает облик. Повторное применение возвращает обычный облик.',
+  'entities.abilities.elemental_mastery.name': 'Стихийное мастерство',
+  'entities.abilities.elemental_mastery.description':
+    'Призывает силу шторма, делая ваше следующее заклинание мгновенным.',
+  'entities.abilities.siphon_life.name': 'Похититель жизни',
+  'entities.abilities.siphon_life.description':
+    'Похищает жизнь у врага, нанося урон Тьмой на протяжении 30 сек и исцеляя вас на количество нанесённого урона.',
+  'entities.abilities.conflagrate.name': 'Воспламенение',
+  'entities.abilities.conflagrate.description':
+    'Расходует наложенное на врага Воспламенение, поджигая его и нанося урон Огнём.',
+  'entities.abilities.moonkin_form.name': 'Облик совухи',
+  'entities.abilities.moonkin_form.description':
+    'Превращает вас в грозного лунного стража, увеличивая урон от заклинаний на 20% и броню на 50%. Действует, пока вы не вернётесь в обычный облик. Повторное применение возвращает облик заклинателя.',
+  'entities.abilities.feral_charge.name': 'Первобытный всплеск',
+  'entities.abilities.feral_charge.description':
+    'Высвобождает первобытную силу. В облике пантеры восстановление энергии увеличивается на 100% на 10 сек. В облике медведя мгновенно создаёт 50 ярости.',
+  'entities.abilities.swiftmend.name': 'Быстрое исцеление',
+  'entities.abilities.swiftmend.description':
+    'Расходует эффект исцеления с течением времени на дружественной цели, исцеляя её.',
+  'entities.abilities.pummel.name': 'Хрустнуть челюстью',
+  'entities.abilities.pummel.description':
+    'Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 4 сек.',
+  'entities.abilities.kick.name': 'Удар ногой',
+  'entities.abilities.kick.description':
+    'Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 4 сек.',
+  'entities.abilities.counterspell.name': 'Развеивание заклинания',
+  'entities.abilities.counterspell.description':
+    'Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 6 сек.',
+  'entities.abilities.counter_shot.name': 'Заглушающий выстрел',
+  'entities.abilities.counter_shot.description':
+    'Молниеносный выстрел, прерывающий применяемое целью заклинание и запрещающий эту школу на 4 сек.',
+  'entities.abilities.rebuke.name': 'Упрёк',
+  'entities.abilities.rebuke.description':
+    'Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 4 сек.',
+  'entities.abilities.skull_bash.name': 'Удар головой',
+  'entities.abilities.skull_bash.description':
+    'Стремительный удар головой, прерывающий применяемое целью заклинание и запрещающий эту школу на 4 сек.',
+  'entities.abilities.spell_lock.name': 'Кляп',
+  'entities.abilities.spell_lock.description':
+    'Заставляет цель замолчать во время сотворения заклинания и запрещает применение заклинаний этой школы на 5 сек.',
   'itemUi.lootRoll.winnerOffline': 'Победитель {item} был офлайн; предмет вернулся к трупу.',
   'entities.abilities.heroic_strike.name': 'Удар героя',
   'entities.abilities.heroic_strike.description':
@@ -1691,6 +1781,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.taunt.name': 'Провокация',
   'entities.abilities.taunt.description':
     'Провоцирует цель: ваша угроза повышается до уровня самого ненавистного ей врага, и она вынуждена атаковать вас 3 сек.',
+  'entities.abilities.ironhold.name': 'Железная защита',
+  'entities.abilities.ironhold.description':
+    'Вы укрываетесь за щитом, снижая весь получаемый урон на 40% в течение 8 сек.',
   'entities.abilities.fireball.name': 'Огненный шар',
   'entities.abilities.fireball.description':
     'Бросает огненный шар, наносящий {damage} ед. урона от огня и дополнительный периодический урон.',
@@ -1829,6 +1922,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.retribution_aura.name': 'Аура воздаяния',
   'entities.abilities.retribution_aura.description':
     'Окружает вас священной энергией на 30 мин и наносит 5 ед. урона светлой магией любому врагу, атакующему вас в ближнем бою.',
+  'entities.abilities.sacred_bulwark.name': 'Священный бастион',
+  'entities.abilities.sacred_bulwark.description':
+    'В течение 10 сек. следующий смертельный удар по вам будет отменен, а здоровье восстановлено до 35%.',
   'entities.abilities.tame_beast.name': 'Приручение зверя',
   'entities.abilities.tame_beast.description':
     'Начинает приручать зверя в качестве спутника. Он должен быть не выше вашего уровня и не элитным. Ваш питомец следует за вами, атакует врагов и удерживает собственную угрозу. Одновременно можно иметь одного питомца.',
@@ -2031,6 +2127,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.rip.name': 'Разрывание',
   'entities.abilities.rip.description':
     'Завершающий прием, наносящий урон от кровотечения в течение 12 сек. Расходует приемы серии. Только в облике волка.',
+  'entities.abilities.primal_reflexes.name': 'Первобытные рефлексы',
+  'entities.abilities.primal_reflexes.description':
+    'Ваши инстинкты обостряются, повышая шанс уклонения на 50% в течение 6 сек.',
   'entities.abilities.mortal_strike.name': 'Смертельный удар',
   'entities.abilities.mortal_strike.description':
     'Жестокий удар, наносящий урон оружием плюс {damage}. (ключевая способность ветки «Оружие»)',
@@ -2188,6 +2287,15 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': 'Имперский золотой',
   'entities.items.vanguard_azure_armor_plate.name': 'Лазурный авангард',
   'entities.items.vanguard_chrome_armor_plate.name': 'Хромированный авангард',
+  'entities.items.enchanting_dust.name': 'Пыль зачарования',
+  'entities.items.scroll_minor_might.name': 'Свиток малой мощи',
+  'entities.items.scroll_minor_vigor.name': 'Свиток малой стойкости',
+  'entities.items.scroll_minor_focus.name': 'Свиток малой концентрации',
+  'entities.items.scroll_minor_agility.name': 'Свиток малой ловкости',
+  'entities.enchants.enchant_minor_might.name': 'Малая мощь',
+  'entities.enchants.enchant_minor_vigor.name': 'Малая стойкость',
+  'entities.enchants.enchant_minor_focus.name': 'Малая концентрация',
+  'entities.enchants.enchant_minor_agility.name': 'Малая ловкость',
   'entities.items.deacons_cleaver.name': 'Тесак дьякона',
   'entities.items.staff_of_drowned_prayers.name': 'Посох утонувших молитв',
   'entities.items.mistbinder_kris.name': 'Крис Туманной Связи',
@@ -2511,6 +2619,14 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.tidewatcher_ondrel.title': 'Страж приливов',
   'entities.npcs.tidewatcher_ondrel.greeting':
     'Омут пьёт лунный свет, {className}, и возвращает утопленников. Тридцать ночей я наблюдаю за теми вратами — и нынче ночью они открыты.',
+  'entities.quests.q_prof_intro.title': 'Ремесло, которое стоит освоить',
+  'entities.quests.q_prof_intro.text':
+    'Любое ремесло начинается с грязи под ногтями, {playerName}. Собери 2 паучьи лапки в рощах к востоку от города, а затем поработай у моего горна над Туникой новобранца; костяные обломки для нее легко найти по пути. И принеси мне что-нибудь, что стоит разобрать ради тайной пыли. Покажи, что умеешь собирать, изготавливать и разбирать, и я покажу тебе, чего стоит ремесло.',
+  'entities.quests.q_prof_intro.completion':
+    'Вот это ремесло стоит освоить. Держись горна, {playerName}, и однажды ты будешь подковывать лошадей и накладывать чары на клинки одним и тем же вечером.',
+  'entities.quests.q_prof_intro.objectives.0.label': 'Собраны паучьи лапки',
+  'entities.quests.q_prof_intro.objectives.1.label': 'Изготовлена туника новобранца',
+  'entities.quests.q_prof_intro.objectives.2.label': 'Пыль зачарования',
   'entities.quests.q_wolves.title': 'Волки у дверей',
   'entities.quests.q_wolves.text':
     'Лесные волки осмелели и бросаются на путников у северной дороги, {playerName}. Убейте 8, чтобы Истврук вздохнул свободнее.',
@@ -3575,7 +3691,6 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/с',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s} сек.',
-  'hudChrome.mobile.autorun': 'Автобег',
   'hudChrome.mobile.haptics': 'Вибрация',
   'hudChrome.mobile.hapticsOff': 'Вибрация выкл.',
   'hudChrome.mobile.jump': 'Прыжок',
@@ -3651,6 +3766,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hud.tutorial.returnBody':
     'Вы несете то, что горит. Вернитесь к Брату Зеленолапу и нажмите {interactKey}, чтобы сдать его.',
   'entities.mobs.nythraxis_skeleton_warrior.name': 'Восставший королевский страж',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': 'Дух Алдрена',
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'Дух Малрика',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'Дух Восса',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'Нитраксис, Бич Торнпика',
   'itemUi.quality.legendary': 'Легендарное',
   'entities.items.deathless_heartwood.name': 'Сердцевина бессмертной короны',
@@ -3663,6 +3781,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': 'Оплечье Пламени души',
   'entities.items.stormcallers_crown.name': 'Корона призывателя бурь',
   'entities.items.stormcallers_spaulders.name': 'Наплечники призывателя бурь',
+  'entities.items.deathless_greatblade.name': 'Бессмертный большой меч',
+  'entities.items.scepter_of_the_deathless_court.name': 'Скипетр бессмертного двора',
+  'entities.items.stormcallers_focus.name': 'Фокус призывателя бурь',
   'hud.chat.context.convertToRaid': 'Преобразовать в рейд',
   'hud.chat.context.convertToParty': 'Преобразовать в группу',
   'hudChrome.raidConvert.leaderOnly': 'Только лидер рейда может преобразовать рейд в группу.',
@@ -4717,15 +4838,15 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     'Заменить старую вещь свежим улучшением даст вам больше, чем безупречная игра в снаряжении, из которого вы выросли. Когда выпадает что-то получше или это предлагает задание, берите. Не приберегайте хорошие вещи на потом.',
   'guide.gear.upgradeTitle': 'Держите снаряжение свежим',
-  'guide.lore.aldricBody':
-    'Скромный деревенский жрец, что первым называет культ над осквернённой могилой в Иствруке, а затем лично идёт по его следу через топь и до самой стены в Хайвотче. Он, незыблемое сердце всей кампании.',
-  'guide.lore.aldricRole': 'Жрец Долины',
+  'guide.lore.faddickBody':
+    'Тихий секстон с длинным инструментом в руках, которому лопата ближе меча. Он вычищает то, что подбирается из леса, предаёт мёртвых земле и помнит каждый надел на своей земле. Когда след уходит от святилища, чаще всего дорогу указывает он.',
+  'guide.lore.faddickRole': 'Секстон Фаллоу-Эйкерс',
   'guide.lore.figuresBody':
     'Горстка людей пройдёт с вами всю дорогу. Запоминайте эти имена от долины до самых вершин.',
   'guide.lore.figuresTitle': 'Лица, что станут вам знакомы',
-  'guide.lore.marenBody':
-    'Немногословная следопытка, которую вы встречаете в камышах Мирефена, вся тихий шаг и короткий клинок. Она тоже идёт по следу на север, и именно её слух улавливает слова, что отправляют вас к вершинам.',
-  'guide.lore.marenRole': 'Разведчица маршала',
+  'guide.lore.zebediahBody':
+    'Терпеливый вергер, что держит Ричес по своему календарю, его руки всегда наполовину в земле. Он следит за лампадой у сосуда, правит посев по луне и оказывается первым голосом, которым дорога заговаривает с новоприбывшим.',
+  'guide.lore.zebediahRole': 'Вергер Рут-Холлоу',
   'guide.models.count': 'Моделей: {count}',
   'guide.models.groupClasses': 'Классы',
   'guide.models.groupCreatures': 'Существа',
@@ -4774,6 +4895,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'На Thornpeak весь замысел проясняется. Каждая душа, украденная ещё со времён Vale, была податью, что лилась на мрачное дело культа в сердце горы. След, что начался во дворе часовни, кончается здесь — в спуске на пятерых игроков навстречу той руке, что стоит за всем этим. А кто ждёт на самом дне, мы дадим вам узнать самим.',
   'guide.questsPage.sagaPeaksTitle': 'Пики: для чего была подать',
   'guide.questsPage.sagaTitle': 'Следуйте по следу на север',
+  'guide.questsPage.sagaReachesBody':
+    'В Холлоу-Ричес Брат Гринпоу поддерживает живую лампаду у святилищного сосуда, а вергер и секстон правят посев по луне. Первая нить здесь невелика: не дать лампаде погаснуть, вычистить волков, узнать эту землю. Когда дорога наконец откроется, вы уже будете знать, в чьих руках лампада.',
+  'guide.questsPage.sagaReachesTitle': 'Ричес: лампада и календарь',
   'guide.questsPage.sagaValeBody':
     'В Иствруке мёртвым нет покоя, а печать за этим принадлежит секте, что давно считалась сгинувшей. Проследите её до Зовущего Могилу, трудящегося в крипте часовни, и его собственные бумаги укажут вам путь к топи на севере.',
   'guide.questsPage.sagaValeTitle': 'Долина: имя на печати',
@@ -4981,6 +5105,15 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Осколок с зарубками',
   'entities.items.tally_shard.flavorText':
     '...зарубки по пять, глубокие, каждая вычеркнута по завершении счёта. сотни пятёрок вычеркнуты, прежде чем вычёркивание прекращается, а последний ряд так и остался незавершённым...',
+  'entities.items.root_token_unbinding.name': 'Развязанный корневой узел',
+  'entities.items.root_token_unbinding.flavorText':
+    '...отполирован с одной стороны большим пальцем, снова и снова, будто развязывая узел, привязанный неизвестно к чему. кто-то верил, что отпустить - это милосердие. этот кто-то ошибался, или поторопился, или и то и другое...',
+  'entities.items.root_token_offering.name': 'Маленький камень кормления',
+  'entities.items.root_token_offering.flavorText':
+    '...в камне выцарапана мелкая чаша, не больше монеты, оставить крошку тому, что не может попросить. то, что здесь ело, не перестало голодать. оно просто перестало быть видимым...',
+  'entities.items.root_token_verdict.name': 'Камень с зарубками приговора',
+  'entities.items.root_token_verdict.flavorText':
+    '...зарубки нанесены по три, а не по пять, приговор выносился и пересматривался снова, вдавлен так глубоко, что на третий раз камень треснул. будто кто-то во тьме снова и снова менял решение об одном и том же вопросе...',
   'entities.mobs.acolyte_tessa.name': 'Послушница Тесса',
   'entities.mobs.deacon_varric.name': 'Дьякон Варрик',
   'entities.mobs.reliquary_bonewalker.name': 'Поднятый костеход',
@@ -5027,6 +5160,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.palefeeder.name': 'Бледнопитающийся',
   'entities.mobs.rootmaw.name': 'Корнепасть',
   'entities.mobs.the_witness_root.name': 'Корень-Свидетель',
+  'entities.mobs.greenpaw_cutting_dawn.name': 'Черенок Зеленолапа',
+  'entities.mobs.greenpaw_cutting_moss.name': 'Черенок Зеленолапа',
+  'entities.mobs.greenpaw_cutting_ash.name': 'Черенок Зеленолапа',
   'entities.npcs.brother_halven.greeting': 'Реликварий внизу снова сдвинулся.',
   'entities.npcs.brother_halven.name': 'Брат Хальвен',
   'entities.npcs.brother_halven.title': 'Хранитель Реликвария',
@@ -5240,6 +5376,12 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'sim.collections.notFound': 'Этого не существует.',
   'sim.collections.tooFar': 'Слишком далеко.',
   'sim.gathering.nothingToHarvest': 'С этого трупа нечего собирать.',
+  'sim.greenpawCutting.alreadyPlanted': 'Ты уже посадил свой черенок. Дай ему время вырасти.',
+  'sim.greenpawCutting.needHomestead': 'Чтобы посадить это, тебе сначала нужен участок.',
+  'sim.greenpawCutting.tooFar': 'Чтобы посадить это, ты должен быть на своем участке.',
+  'sim.greenpawCutting.planted': 'Ты сажаешь черенок на своем участке. Дай ему время.',
+  'sim.greenpawCutting.grown': 'Твой черенок вырос в спутника. Теперь он следует за тобой.',
+  'sim.dailyRewards.claimed': 'Вы получаете ежедневную награду.',
   'sim.hearth.emberbulb1': 'вот это дровишки… гляди, как она задышала, дружище…',
   'sim.hearth.emberbulb2': 'печь берёт своё медленно и чисто, ей так по нраву…',
   'sim.hearth.emberbulb3': 'растопили, задымило… уже чую, как открывается волна.',
@@ -5616,6 +5758,15 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.npcJournal.next': 'Следующая страница',
   'hudChrome.npcJournal.close': 'Закрыть дневник',
   'hudChrome.npcJournal.title': 'Дневник {name}',
+  'dailyRewardsUi.menuButton': 'Ежедневные награды',
+  'dailyRewardsUi.window.title': 'Ежедневные награды',
+  'dailyRewardsUi.window.close': 'Закрыть ежедневные награды',
+  'dailyRewardsUi.window.claim': 'Забрать',
+  'dailyRewardsUi.window.claimAria': 'Забрать сегодняшнюю награду',
+  'dailyRewardsUi.window.claimed': 'Получено. Возвращайтесь завтра.',
+  'dailyRewardsUi.window.locked': 'Ежедневные награды сейчас недоступны для этого аккаунта.',
+  'dailyRewardsUi.window.hint': 'Одна награда в день. Пропущенный день ничего не стоит.',
+  'dailyRewardsUi.cell.today': 'Сегодня',
   'housingUi.claimedBanner': 'Вы объявили этот участок своим домом.',
   'housingUi.ownerBanner': 'Это усадьба {name}.',
   'housingUi.prompt.claim': 'Заявить права на этот участок',
@@ -5771,6 +5922,27 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.gathering.spore': 'Спора',
   'hudChrome.gathering.toolTier': 'Инструмент {tier} ур.',
   'hudChrome.gathering.toolNone': 'Нет инструмента',
+  'hudChrome.crafting.title': 'Изготовление',
+  'hudChrome.crafting.close': 'Закрыть изготовление',
+  'hudChrome.crafting.tabRecipes': 'Рецепты',
+  'hudChrome.crafting.tabEnchants': 'Чары',
+  'hudChrome.crafting.craftButton': 'Изготовить',
+  'hudChrome.crafting.craftAria': 'Изготовить {item}',
+  'hudChrome.crafting.disenchantSectionTitle': 'Распыление',
+  'hudChrome.crafting.disenchantButton': 'Распылить',
+  'hudChrome.crafting.disenchantAria': 'Распылить {item}',
+  'hudChrome.crafting.disenchantEmpty': 'Нет предметов для распыления.',
+  'hudChrome.crafting.applyButton': 'Применить',
+  'hudChrome.crafting.applyAria': 'Применить чары {enchant} на {slot}',
+  'hudChrome.crafting.activeTag': 'Активно',
+  'hudChrome.crafting.needScroll': 'Требуется {scroll}',
+  'hudChrome.crafting.craftType.weaponcrafting': 'Оружейное дело',
+  'hudChrome.crafting.craftType.armorcrafting': 'Кузнечное дело',
+  'hudChrome.crafting.craftType.tailoring': 'Портняжное дело',
+  'hudChrome.crafting.craftType.leatherworking': 'Кожевничество',
+  'hudChrome.crafting.craftType.cooking': 'Кулинария',
+  'hudChrome.crafting.craftType.alchemy': 'Алхимия',
+  'hudChrome.crafting.craftType.enchanting': 'Наложение чар',
   'hudChrome.warfare.ratingLabel': 'Воинственность',
   'hudChrome.warfare.balance': 'Честь: {amount}',
   'hudChrome.warfare.honorAmount': '{amount} чести',
@@ -5781,6 +5953,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaKill': 'Повержение на фиесте',
   'hudChrome.warfare.reasons.fiestaComplete': 'Матч фиесты',
   'hudChrome.warfare.reasons.fiestaWin': 'Победа на фиесте',
+  'hudChrome.hitRating.ratingLabel': 'Рейтинг меткости',
   'entities.npcs.bramble.name': 'Брэмбл',
   'entities.npcs.bramble.title': 'Квартирмейстер чести',
   'entities.npcs.bramble.greeting': 'Пески помнят каждую победу. Трать свою честь с умом.',

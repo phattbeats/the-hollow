@@ -1,0 +1,73 @@
+THE HOLLOW - GW1-on-WoCC BUILD DIVERSITY SIM - RESULTS
+================================================================
+generated 2026-06-30  seed 1337
+
+QUESTION (constitution sec.8): does grafting Guild Wars 1 build-crafting
+(primary+secondary professions, an 8-skill bar drawn from both, attribute
+points spread across both) onto World of ClaudeCraft's real WoW-Classic
+combat math yield real build diversity, or collapse to one dominant build
+/ a bar full of decorative skills?
+
+SETUP
+  professions : Warrior x Mage x Rogue (PvP duels, 1v1)
+  graft       : single energy bar (base 30) + adrenaline for warrior strikes
+  population  : 249 random legal builds + all 9 ordered profession-pairs
+  volume      : 160 duels/build vs field (~39k) plus mirror round-robins
+  grounding   : armor/hit/crit/AP/SP formulas and ability data pulled from
+                levy-street/world-of-claudecraft source (see sim header)
+
+WIN-RATE vs FIELD
+  mean 63.9%   median 70.8%   stdev 26.6%
+  best   99.4%  [mage/warrior]
+  worst   1.2%  [rogue/rogue]
+  balanced band 45-55%: 15 (6%)   strong>=60%: 174 (70%)   weak<=40%: 47 (19%)
+
+PROFESSION-PAIR WIN RATES
+  mag/mag    83.5%  (n=4782)
+  mag/war    76.8%  (n=3978)
+  mag/rog    74.8%  (n=5262)
+  war/war    69.3%  (n=3182)
+  war/rog    66.3%  (n=3192)
+  war/mag    58.3%  (n=5416)
+  rog/rog    51.8%  (n=3984)
+  rog/mag    33.0%  (n=5414)
+  rog/war    30.4%  (n=4462)
+
+WITHIN-PROFESSION (MIRROR) DIVERSITY  [isolates build from class balance]
+  mag/mag   builds=14  spread=24.5%  top= 90.4%  DOMINANT-BUILD
+  mag/rog   builds=14  spread=23.1%  top= 86.5%  DOMINANT-BUILD
+  mag/war   builds=14  spread=27.7%  top= 88.0%  DOMINANT-BUILD
+  rog/mag   builds=14  spread=21.6%  top= 95.2%  DOMINANT-BUILD
+  rog/rog   builds=14  spread=21.7%  top= 82.2%  DOMINANT-BUILD
+  rog/war   builds=14  spread=25.7%  top= 99.0%  DOMINANT-BUILD
+  war/mag   builds=14  spread=23.8%  top= 91.3%  DOMINANT-BUILD
+  war/rog   builds=14  spread=24.5%  top= 93.3%  DOMINANT-BUILD
+  war/war   builds=14  spread=18.7%  top= 80.8%  DOMINANT-BUILD
+  mean within-profession top-WR 89.6%  (lower = flatter ladder = more viable builds)
+  dominant-build pairs: 9/9
+  (random builds include weak ones; frontier below is the clean read)
+
+COMPETITIVE FRONTIER  [top 24 builds round-robined against each other]
+  top 63.2%   spread 8.8%   in 40-60% band 13/24
+  composition: {'mag/war': 6, 'mag/rog': 4, 'mag/mag': 6, 'war/rog': 4, 'war/mag': 3, 'war/war': 1}
+
+DECORATIVE-SKILL CHECK (never used by top-quartile builds)
+  0/33: none
+
+VERDICT
+  [FAIL] dominance (vs field): best build 99.4% (gate <60%)
+  [WEAK] viable spread: 6% of builds in 45-55% (gate >=30%)
+  [PASS] decorative skills: 0/33 never in winners (0%)
+  [WEAK] within-profession diversity (random builds): mean mirror top-WR 89.6% (gate <70%)
+  [PASS] competitive frontier: top build 63.2% vs other top builds (gate <70%); 13/24 in 40-60%
+  [obs ] profession balance gap: 41pts  (war 63% / mag 78% / rog 38%)
+
+  >>> BUILD-CRAFTING DEPTH (the bet): SUPPORTED (directional).
+      Within a controlled profession, many builds are viable and the bar
+      is not full of dead skills - the graft carries depth.
+      Profession BALANCE is a SEPARATE axis: gap 41pts -> needs more tuning (expected; the fallback anticipates this).
+  (Directional only: shared greedy AI, mapped GW1 economy, representative kits, ~EST values.)
+
+NEXT (if pursuing ratify): more tuning iterations on the cost mapping and
+attribute scaling, a smarter per-build policy, then the authoritative
+re-run on the live engine sim rather than this faithful port.

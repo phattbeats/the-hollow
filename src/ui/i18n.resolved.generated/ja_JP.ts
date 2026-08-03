@@ -246,7 +246,6 @@ export const ja_JP: EnTranslations = {
       "chat": "チャットへスキップ"
     },
     "mobile": {
-      "autorun": "オートラン",
       "jump": "ジャンプ",
       "leaderboard": "ランキング",
       "nameplates": "ネームプレート",
@@ -999,6 +998,33 @@ export const ja_JP: EnTranslations = {
       "toolTier": "ティア{tier}の道具",
       "toolNone": "道具なし"
     },
+    "crafting": {
+      "title": "製作",
+      "close": "製作を閉じる",
+      "tabRecipes": "レシピ",
+      "tabEnchants": "エンチャント",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "製作",
+      "craftAria": "{item}を製作",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "分解",
+      "disenchantButton": "分解",
+      "disenchantAria": "{item}を分解",
+      "disenchantEmpty": "分解できるアイテムがありません。",
+      "applyButton": "付与",
+      "applyAria": "{slot}に{enchant}を付与",
+      "activeTag": "有効",
+      "needScroll": "{scroll}が必要",
+      "craftType": {
+        "weaponcrafting": "武器鍛冶",
+        "armorcrafting": "防具鍛冶",
+        "tailoring": "裁縫",
+        "leatherworking": "皮革加工",
+        "cooking": "料理",
+        "alchemy": "錬金術",
+        "enchanting": "エンチャント"
+      }
+    },
     "warfare": {
       "ratingLabel": "戦意",
       "balance": "名誉：{amount}",
@@ -1013,6 +1039,9 @@ export const ja_JP: EnTranslations = {
         "fiestaComplete": "フィエスタ試合",
         "fiestaWin": "フィエスタ勝利"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "命中レーティング"
     }
   },
   "mailUi": {
@@ -1652,6 +1681,8 @@ export const ja_JP: EnTranslations = {
       "typeGroupBody": "メインストーリーの各章は、ダンジョンの扉で終わります。導入はソロでこなせますが、章の悪役への最後の一撃は五人パーティ向けに作られています。",
       "sagaTitle": "北へ続く足取りを追え",
       "sagaBody": "メインストーリーは一つの長い追跡劇です。死のカルトが王国の墓に手を出しており、一章を閉じるごとに、道はさらにゾーン一つ分先を指し示します。陰謀の全体を一度に相手取ることはありません。一本の糸を引けば、それが次にその糸を握る手へと導いてくれます。",
+      "sagaReachesTitle": "リーチズ：灯と暦",
+      "sagaReachesBody": "ホロウ・リーチズでは、ブラザー・グリーンポーが聖域の壺をエンバーバルブの灯で生かし、ヴァージャーとセクストンが月合图に作付けを整えています。最初の糸は小さなものです。灯を絶やさず、狼を払い、この土地を知る。街道が開くころには、灯を誰が手にしているかを、きっとあなたは知っているでしょう。",
       "sagaValeTitle": "渓谷：印に刻まれた名",
       "sagaValeBody": "イーストブルックでは死者が安らがず、その背後の印は、とうに滅んだと思われていた一派のものです。それを礼拝堂の地下墓所で働くグレイブコーラーまでたどれば、彼自身の書き物が北の沼へとあなたを導きます。",
       "sagaMarshTitle": "湿地：魂の貢ぎ",
@@ -1669,10 +1700,10 @@ export const ja_JP: EnTranslations = {
     "lore": {
       "figuresTitle": "やがて知ることになる顔ぶれ",
       "figuresBody": "ひと握りの人々が、あなたと共にこの道のりを最後まで歩みます。渓谷から高地まで、これらの名前に心を留めておきましょう。",
-      "aldricRole": "渓谷の司祭",
-      "aldricBody": "つつましい村の司祭。イーストブルックの汚された墓の前で初めてカルトの名を口にし、その足取りを自ら湿地を抜け、ハイウォッチの壁まで追っていきます。彼はこの遠征全体の揺るがぬ心です。",
-      "marenRole": "元帥の斥候",
-      "marenBody": "マイアフェンの葦の中で出会う、声を潜めた追跡者。静かな足取りと短い刃の持ち主です。彼女もまた北へと足取りを追い、あなたを高地へ送り出す言葉を聞き取るのは、彼女の耳です。"
+      "zebediahRole": "ルート・ホロウのヴァージャー",
+      "zebediahBody": "リーチズを暦に添えて保つ、辛抱強いヴァージャーで、その手はいつも半ば土に埋まっています。壺の灯を見守り、月合图に作付けを整え、新たなる訪れに街道が最初に語りかける声です。",
+      "faddickRole": "ファロー・エイカーズのセクスン",
+      "faddickBody": "長柄の道具を持ち、剣よりも鋤に馴染む静かなセクスン。彼は森から忍び寄るものを掃き清め、死者を弔い、その土地のすべての区画を覚えています。街道が聖域を離れるとき、指し示すのはたいてい彼です。"
     },
     "dungeonsPage": {
       "heading": "ダンジョンとレイド",
@@ -2444,6 +2475,9 @@ export const ja_JP: EnTranslations = {
       "nothingToHarvest": "その死骸には採集できるものが何もない。",
       "alreadyHarvested": "この死骸はすでに採集済みだ。"
     },
+    "dailyRewards": {
+      "claimed": "デイリー報酬を受け取った。"
+    },
     "collections": {
       "notFound": "それは存在しない。",
       "tooFar": "遠すぎる。"
@@ -2508,6 +2542,13 @@ export const ja_JP: EnTranslations = {
       "readoutNoHomesteadQuest": "お前は開拓地を持っていない。緑掌修道士の用事をすべて終えれば手に入る。",
       "readoutNoHomesteadHint": "お前は開拓地を持っていない。ホロウ低地の適した場所に立ち、/homestead claim と入力しろ。",
       "helpLine": "開拓地：/homestead、/homestead claim。"
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "挿し木はもう植えた。育つのを待て。",
+      "needHomestead": "これを植えるには、まず開拓地が必要だ。",
+      "tooFar": "これを植えるには自分の開拓地にいなければならない。",
+      "planted": "開拓地に挿し木を植えた。時が満ちるのを待とう。",
+      "grown": "挿し木が育ち、伴侶となった。今はお前について歩く。"
     },
     "readyCheck": {
       "mustBeInParty": "準備確認を開始するにはパーティに入っている必要があります。",
@@ -3386,6 +3427,7 @@ export const ja_JP: EnTranslations = {
       "ignoringChat": "{name}のチャットを無視します。",
       "noLongerIgnoring": "{name}の無視を解除しました。",
       "playerNotNearby": "そのプレイヤーは近くにいません。",
+      "playerInfoNotFound": "その名前のキャラクターは見つかりませんでした。",
       "duelCountdown": "決闘開始まで{seconds}秒...",
       "duelEndBanner": "{winner}が決闘で{loser}を倒しました！",
       "duelEndLog": "{winner}が決闘で{loser}を倒しました。",
@@ -3831,6 +3873,22 @@ export const ja_JP: EnTranslations = {
       "stool": "スツール"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "デイリー報酬",
+    "window": {
+      "title": "デイリー報酬",
+      "close": "デイリー報酬を閉じる",
+      "claim": "受け取る",
+      "claimAria": "今日の報酬を受け取る",
+      "claimed": "受け取り済み。また明日。",
+      "locked": "このアカウントでは現在デイリー報酬を利用できません。",
+      "hint": "1日1回受け取れます。逃した日があっても損はありません。"
+    },
+    "cell": {
+      "today": "今日",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "金",
@@ -4057,6 +4115,126 @@ export const ja_JP: EnTranslations = {
   },
   "entities": {
     "abilities": {
+      "chain_heal": {
+        "name": "チェインヒール",
+        "description": "友好的な対象を大きく回復し、最大2体の近くの味方に連鎖します。連鎖するたびに回復量が50%減少します。"
+      },
+      "crusader_strike": {
+        "name": "クルセイダーストライク",
+        "description": "対象に武器ダメージに加えて24の聖なるダメージを与えます。"
+      },
+      "metamorphosis": {
+        "name": "ドレッドアスペクト",
+        "description": "20秒間恐ろしい悪魔に変身し、呪文ダメージが20%、詠唱速度が20%増加します。あなたの悪魔はダメージ50%、詠唱速度20%を得ます。"
+      },
+      "holy_shock": {
+        "name": "ホーリーショック",
+        "description": "友好的な対象を神聖なエネルギーで癒すか、敵に神聖ダメージを与えます。"
+      },
+      "holy_shield": {
+        "name": "聖なる壁",
+        "description": "敵に光り輝く盾を投げつけ、神聖ダメージを与えて近くの敵2体に跳ね返ります。"
+      },
+      "bestial_wrath": {
+        "name": "猛る咆哮",
+        "description": "15秒間野獣の怒りに入り、攻撃力が20%、ペットのダメージが100%増加します。"
+      },
+      "trueshot_aura": {
+        "name": "精密照準のオーラ",
+        "description": "近くの味方を鼓舞し、30分間攻撃力を10%増加させます。"
+      },
+      "wyvern_sting": {
+        "name": "ワイバーンの毒針",
+        "description": "遠距離から敵を刺し、最大4秒間無力化します。ダメージを受けると効果が解除されます。"
+      },
+      "arcane_power": {
+        "name": "エーテルサージ",
+        "description": "10秒間、呪文ダメージが20%、呪文の速さが10%増加します。"
+      },
+      "combustion": {
+        "name": "フラッシュファイア",
+        "description": "15秒間、呪文クリティカル率が50%増加します。"
+      },
+      "icy_veins": {
+        "name": "アイシーヴェイン",
+        "description": "10秒間、呪文の速さが30%増加し、詠唱の中断とノックバックを防ぎます。"
+      },
+      "cold_blood": {
+        "name": "冷徹な殺意",
+        "description": "殺意を集中させ、次の攻撃を必ずクリティカルにします。"
+      },
+      "blade_flurry": {
+        "name": "ミラードブレード",
+        "description": "剣閃の乱舞を放ち、12秒間攻撃速度が20%増加します。"
+      },
+      "hemorrhage": {
+        "name": "レッドリボン",
+        "description": "武器ダメージに加え出血効果で敵を攻撃し、12秒間出血ダメージを与え、出血ダメージを40%増加させます。コンボポイントを1得ます。"
+      },
+      "power_infusion": {
+        "name": "祝福の注入",
+        "description": "友好的な対象に力を注ぎ、15秒間呪文の速さを20%増加させます。"
+      },
+      "holy_nova": {
+        "name": "ホーリーノヴァ",
+        "description": "神聖な輝きの爆発を起こし、近くの味方を回復し近くの敵にダメージを与えます。"
+      },
+      "shadowform": {
+        "name": "グルームヴェイルフォーム",
+        "description": "シャドウフォームになり、元の姿に戻るまで暗影ダメージが15%増加します。回復呪文を唱えるとフォームが解除されます。再度詠唱すると元の姿に戻ります。"
+      },
+      "elemental_mastery": {
+        "name": "プライマルマスタリー",
+        "description": "嵐の力を呼び、次の呪文を即時発動にします。"
+      },
+      "siphon_life": {
+        "name": "ヴェインリーチ",
+        "description": "敵から生命力を吸収し、30秒間暗影ダメージを与え、与えたダメージ分自分を回復します。"
+      },
+      "conflagrate": {
+        "name": "コンフラグレイト",
+        "description": "敵にかけたイモレイトを消費し、炎のダメージで発火させます。"
+      },
+      "moonkin_form": {
+        "name": "ムーンウィングフォーム",
+        "description": "恐ろしいムーンキンに変身し、呪文ダメージが20%、防御力が50%増加します。元の姿に戻るまで持続します。再度詠唱すると詠唱者フォームに戻ります。"
+      },
+      "feral_charge": {
+        "name": "プライマルサージ",
+        "description": "原始の力を解き放ちます。ワイルドキャットフォームではエネルギー回復が10秒間100%増加します。ベアフォームでは即座に怒りを50得ます。"
+      },
+      "swiftmend": {
+        "name": "スイフトメンド",
+        "description": "友好的な対象にかかった継続回復効果を消費して回復します。"
+      },
+      "pummel": {
+        "name": "ジョークラック",
+        "description": "対象の詠唱を中断し、4秒間その系統の詠唱を防ぎます。"
+      },
+      "kick": {
+        "name": "ブート",
+        "description": "対象の詠唱を中断し、4秒間その系統の詠唱を防ぎます。"
+      },
+      "counterspell": {
+        "name": "スペルブレイク",
+        "description": "対象の詠唱を妨害し、6秒間その系統の詠唱を防ぎます。"
+      },
+      "counter_shot": {
+        "name": "ハッシングショット",
+        "description": "咄嗟の射撃で対象の詠唱を中断し、その系統を4秒間封じます。"
+      },
+      "rebuke": {
+        "name": "リプローチ",
+        "description": "対象の詠唱を中断し、4秒間その系統の詠唱を防ぎます。"
+      },
+      "skull_bash": {
+        "name": "ヘッドバット",
+        "description": "突進頭突きで対象の詠唱を中断し、その系統を4秒間封じます。"
+      },
+      "spell_lock": {
+        "name": "ギャグオーダー",
+        "description": "詠唱中の対象を沈黙させ、5秒間その系統の詠唱を防ぎます。"
+      },
       "heroic_strike": {
         "name": "英雄の一撃",
         "description": "強力な攻撃で近接ダメージが {damage} 増加します。次のスイングで発動します。"
@@ -4120,6 +4298,10 @@ export const ja_JP: EnTranslations = {
       "taunt": {
         "name": "挑発",
         "description": "対象を挑発します。あなたの脅威が対象の最も憎む敵と同じ値まで上がり、3秒間あなたを攻撃させます。"
+      },
+      "ironhold": {
+        "name": "アイアンホールド",
+        "description": "盾の陰に身を潜め、8秒間受けるダメージを40%軽減する。"
       },
       "fireball": {
         "name": "ファイアボール",
@@ -4312,6 +4494,10 @@ export const ja_JP: EnTranslations = {
       "retribution_aura": {
         "name": "リトリビューションオーラ",
         "description": "30分間、聖なる力で身を包み、近接攻撃をしてきた敵に5の神聖ダメージを与えます。"
+      },
+      "sacred_bulwark": {
+        "name": "聖なる防壁",
+        "description": "10秒間、致命的な一撃を無効化し、代わりに体力を35%まで回復する。"
       },
       "tame_beast": {
         "name": "獣の調教",
@@ -4596,6 +4782,10 @@ export const ja_JP: EnTranslations = {
       "rip": {
         "name": "リップ",
         "description": "12秒かけて出血ダメージを与えるフィニッシュムーブです。コンボポイントを消費します。ウルフフォーム専用。"
+      },
+      "primal_reflexes": {
+        "name": "原始反射",
+        "description": "本能が研ぎ澄まされ、6秒間回避率が50%上昇する。"
       },
       "mortal_strike": {
         "name": "致死打撃",
@@ -5689,6 +5879,18 @@ export const ja_JP: EnTranslations = {
         "name": "刻み跡の欠片",
         "flavorText": "……五本ひと組で深く刻まれ、数え終えるたびに線で消されている。消された五本組が幾百とあり、それが途絶える、最後の一列だけは最後まで消されずに終わっている……"
       },
+      "root_token_unbinding": {
+        "name": "緩んだ根の結び目",
+        "flavorText": "……親指で何度も擦られて滑らかになっている。見えない何かに結ばれた結び目を緩めるかのように。誰かは手放すことが優しさだと信じていた。その人は間違っていたか、早すぎたか、その両方だったのだろう……"
+      },
+      "root_token_offering": {
+        "name": "小さな給餌石",
+        "flavorText": "……硬貨よりも小さな、浅い窪みが石に刻まれている。求めることさえできない何かに、ひとかけらを残すためのものだったのだろう。ここで食べていた何かは、飢えをやめたわけではない。ただ、見られなくなっただけだ……"
+      },
+      "root_token_verdict": {
+        "name": "裁きの刻み石",
+        "flavorText": "……刻み目は五つでなく三つひと組で刻まれ、裁かれては覆され、三度目には石が割れるほど強く押し付けられている。誰かが暗闇の中で、同じ問いについて何度も何度も心を変え続けていたかのようだ……"
+      },
       "reliquary_plate_chest": {
         "name": "聖遺物庫衛兵のホーバーク"
       },
@@ -5816,6 +6018,15 @@ export const ja_JP: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "嵐呼びの肩当て"
       },
+      "deathless_greatblade": {
+        "name": "不死の大剣"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "不死の宮廷の笏"
+      },
+      "stormcallers_focus": {
+        "name": "嵐呼びの焦点"
+      },
       "unknown_alien_weaponry": {
         "name": "未知の異星武装"
       },
@@ -5866,6 +6077,21 @@ export const ja_JP: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "ヴァンガードクローム"
+      },
+      "enchanting_dust": {
+        "name": "付呪の粉塵"
+      },
+      "scroll_minor_might": {
+        "name": "小さな力の巻物"
+      },
+      "scroll_minor_vigor": {
+        "name": "小さな活力の巻物"
+      },
+      "scroll_minor_focus": {
+        "name": "小さな集中の巻物"
+      },
+      "scroll_minor_agility": {
+        "name": "小さな俊敏の巻物"
       }
     },
     "mobs": {
@@ -6040,6 +6266,15 @@ export const ja_JP: EnTranslations = {
       "nythraxis_scourge_of_thornpeak": {
         "name": "ナイスラクシス、ソーンピークの災厄"
       },
+      "nythraxis_heroic_warrior_add": {
+        "name": "オルドレンの霊"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "マルリックの霊"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "ヴォスの霊"
+      },
       "reliquary_ledger_wraith": {
         "name": "台帳の亡霊"
       },
@@ -6183,6 +6418,15 @@ export const ja_JP: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "心材の巨像"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "緑掌の挿し木"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "緑掌の挿し木"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "緑掌の挿し木"
       }
     },
     "npcs": {
@@ -6409,6 +6653,22 @@ export const ja_JP: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "学ぶ価値のある手仕事",
+        "text": "どんな手仕事も爪の間の泥から始まるものだ、{playerName}。町の東の茂みでクモの脚を2本集めてこい。それから鍛冶場で新兵の上着を作るんだ。材料の骨片は道中で拾えば十分だろう。ついでに、分解して魔力の粉塵になりそうな物も持ってきてくれ。集め、作り、そして分解できることを見せてくれたら、手仕事の値打ちを教えてやろう。",
+        "completion": "それでこそ学ぶ価値のある手仕事だ。鍛冶場に通い続ければ、{playerName}、いつか蹄鉄を打つのと剣にエンチャントをかけるのを息もつかせず両方こなせるようになるだろう。",
+        "objectives": {
+          "0": {
+            "label": "クモの脚を採集"
+          },
+          "1": {
+            "label": "新兵の上着を製作"
+          },
+          "2": {
+            "label": "魔力の粉塵"
+          }
+        }
+      },
       "q_wolves": {
         "title": "戸口の狼",
         "text": "森の狼が北の道で旅人に牙をむけています、{playerName}。8頭を討ち、イーストブルックに息をつかせてください。",
@@ -7551,6 +7811,20 @@ export const ja_JP: EnTranslations = {
         "name": "崩れた聖遺物庫",
         "enterText": "あなたは崩れた聖遺物庫へと降りていく。",
         "leaveText": "あなたは聖遺物庫の廃墟にいるハルヴェン修道士のもとへ登り戻る。"
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "小さな力"
+      },
+      "enchant_minor_vigor": {
+        "name": "小さな活力"
+      },
+      "enchant_minor_focus": {
+        "name": "小さな集中"
+      },
+      "enchant_minor_agility": {
+        "name": "小さな俊敏"
       }
     },
     "itemSets": {

@@ -111,6 +111,13 @@ export const BIND_ACTIONS: BindAction[] = [
     kind: 'edge',
     defaults: ['KeyR'],
   },
+  {
+    id: 'weaponStow',
+    label: 'Sheathe Weapon',
+    category: 'Movement',
+    kind: 'edge',
+    defaults: ['KeyZ'],
+  },
   // Targeting / interaction
   {
     id: 'target',
@@ -156,6 +163,7 @@ export const BIND_ACTIONS: BindAction[] = [
   { id: 'questlog', label: 'Quest Log', category: 'Interface', kind: 'edge', defaults: ['KeyL'] },
   { id: 'map', label: 'World Map', category: 'Interface', kind: 'edge', defaults: ['KeyM'] },
   { id: 'bags', label: 'Bags', category: 'Interface', kind: 'edge', defaults: ['KeyB'] },
+  { id: 'crafting', label: 'Crafting', category: 'Interface', kind: 'edge', defaults: ['KeyT'] },
   {
     id: 'nameplates',
     label: 'Toggle Nameplates',

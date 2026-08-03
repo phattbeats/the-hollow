@@ -246,7 +246,6 @@ export const ko_KR: EnTranslations = {
       "chat": "채팅으로 건너뛰기"
     },
     "mobile": {
-      "autorun": "자동 달리기",
       "jump": "점프",
       "leaderboard": "순위",
       "nameplates": "이름표",
@@ -999,6 +998,33 @@ export const ko_KR: EnTranslations = {
       "toolTier": "{tier}단계 도구",
       "toolNone": "도구 없음"
     },
+    "crafting": {
+      "title": "제작",
+      "close": "제작 닫기",
+      "tabRecipes": "제조법",
+      "tabEnchants": "마법부여",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "제작",
+      "craftAria": "{item} 제작",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "마법 해제",
+      "disenchantButton": "마법 해제",
+      "disenchantAria": "{item} 마법 해제",
+      "disenchantEmpty": "마법을 해제할 수 있는 아이템이 없습니다.",
+      "applyButton": "적용",
+      "applyAria": "{slot}에 {enchant} 적용",
+      "activeTag": "활성",
+      "needScroll": "{scroll} 필요",
+      "craftType": {
+        "weaponcrafting": "무기 제작",
+        "armorcrafting": "방어구 제작",
+        "tailoring": "재봉",
+        "leatherworking": "가죽 세공",
+        "cooking": "요리",
+        "alchemy": "연금술",
+        "enchanting": "마법부여"
+      }
+    },
     "warfare": {
       "ratingLabel": "전의",
       "balance": "명예: {amount}",
@@ -1013,6 +1039,9 @@ export const ko_KR: EnTranslations = {
         "fiestaComplete": "피에스타 경기",
         "fiestaWin": "피에스타 승리"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "적중 레이팅"
     }
   },
   "mailUi": {
@@ -1652,6 +1681,8 @@ export const ko_KR: EnTranslations = {
       "typeGroupBody": "주된 이야기의 모든 장은 던전 문에서 끝납니다. 도입부는 혼자 진행할 수 있지만, 그 장의 악당에게 마지막 일격을 가하는 일은 5인 파티를 위한 것입니다.",
       "sagaTitle": "북쪽으로 자취를 좇으세요",
       "sagaBody": "주된 이야기는 하나의 긴 추격입니다. 죽음교단이 왕국의 무덤들에서 암약하고 있으며, 한 장을 매듭지을 때마다 그 자취는 한 지역씩 북쪽으로 이어집니다. 음모 전체를 한꺼번에 상대하는 일은 결코 없습니다. 실 한 가닥을 당기면, 그것이 그 가닥을 쥔 다음 손으로 이어집니다.",
+      "sagaReachesTitle": "리치즈: 등불과 달력",
+      "sagaReachesBody": "호울로 리치즈에서 브라더 그린포우가 잉버벌브로 성역의 화분을 살려 두고, 버저와 섹스턴이 달을 따라 파종을 정합니다. 첫 실마리는 작은 것입니다. 등불을 꺼뜨리지 말고, 이리저기 쫓기는 늑대를 물리치며, 이 땅을 익히십시오. 길이 트일 무렵이면 등불이 누구의 손에 있는지, 당신은 이미 알고 있을 것입니다.",
       "sagaValeTitle": "골짜기: 인장에 새겨진 이름",
       "sagaValeBody": "동부개울에서는 죽은 자가 쉬지 못하고, 그 배후의 표식은 사라진 지 오래라 여겨지던 종파의 것입니다. 자취를 좇으면 예배당 묘실에서 일하는 무덤부름에 닿고, 그의 문서가 당신을 북쪽 습지로 가리킵니다.",
       "sagaMarshTitle": "습지: 영혼의 십일조",
@@ -1669,10 +1700,10 @@ export const ko_KR: EnTranslations = {
     "lore": {
       "figuresTitle": "차차 알게 될 얼굴들",
       "figuresBody": "몇몇 사람들은 당신과 함께 이 길을 끝까지 걷습니다. 골짜기에서 봉우리까지, 이 이름들을 눈여겨보세요.",
-      "aldricRole": "골짜기의 사제",
-      "aldricBody": "동부개울에서 더럽혀진 무덤 앞에 서서 교단의 이름을 처음 밝혀낸 다음, 직접 그 자취를 좇아 습지를 지나 하이워치의 성벽까지 오르는 소박한 마을 사제. 온 원정의 굳건한 심장입니다.",
-      "marenRole": "원수의 정찰병",
-      "marenBody": "마이어펜의 갈대밭에서 만나는, 말수 적은 추적자. 조용한 발걸음과 짧은 칼이 전부입니다. 그녀 역시 북쪽으로 자취를 좇으며, 당신을 봉우리로 보내는 그 말을 알아챈 것도 바로 그녀의 귀입니다."
+      "zebediahRole": "루트 홀로우의 버저",
+      "zebediahBody": "리치즈를 달력에 맞춰 지키는, 인내심 강한 버저이며, 손은 늘 반쯤 흙에 묻혀 있습니다. 화분의 등불을 살피고, 달을 따라 파종을 정하며, 새로 온 이에게 길이 가장 먼저 들려주는 목소리입니다.",
+      "faddickRole": "팰로 에이커스의 섹스턴",
+      "faddickBody": "긴 자루의 도구를 들고, 칼보다 호미에 더 익숙한 조용한 섹스턴입니다. 숲에서 기어드는 것을 치우고, 죽은 자를 묻어 주며, 자기 땅의 모든 구획을 기억합니다. 자취가 성역을 떠날 때, 길을 알려 주는 것은 종종 그입니다."
     },
     "dungeonsPage": {
       "heading": "던전과 공격대",
@@ -2444,6 +2475,9 @@ export const ko_KR: EnTranslations = {
       "nothingToHarvest": "그 시체에서는 채집할 것이 없습니다.",
       "alreadyHarvested": "이 시체는 이미 채집되었습니다."
     },
+    "dailyRewards": {
+      "claimed": "일일 보상을 받았습니다."
+    },
     "collections": {
       "notFound": "그것은 존재하지 않습니다.",
       "tooFar": "너무 멀리 떨어져 있습니다."
@@ -2508,6 +2542,13 @@ export const ko_KR: EnTranslations = {
       "readoutNoHomesteadQuest": "당신은 정착지가 없다. 브라더 초록발의 용무를 모두 마쳐야 하나를 얻을 수 있다.",
       "readoutNoHomesteadHint": "당신은 정착지가 없다. 우묵골 지대의 적당한 곳에 서서 /homestead claim이라고 입력하라.",
       "helpLine": "정착지: /homestead, /homestead claim."
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "이미 꺾꽂이를 심었다. 자랄 때까지 기다려라.",
+      "needHomestead": "이것을 심으려면 먼저 개척지가 있어야 한다.",
+      "tooFar": "이것을 심으려면 자신의 개척지에 있어야 한다.",
+      "planted": "개척지에 꺾꽂이를 심었다. 시간을 두고 기다려라.",
+      "grown": "꺾꽂이가 자라 동반자가 되었다. 이제 너를 따라다닌다."
     },
     "readyCheck": {
       "mustBeInParty": "준비 확인을 시작하려면 파티에 있어야 합니다.",
@@ -3386,6 +3427,7 @@ export const ko_KR: EnTranslations = {
       "ignoringChat": "{name}의 채팅을 차단합니다.",
       "noLongerIgnoring": "{name}을 더 이상 차단하지 않습니다.",
       "playerNotNearby": "그 플레이어는 근처에 없습니다.",
+      "playerInfoNotFound": "해당 이름의 캐릭터를 찾을 수 없습니다.",
       "duelCountdown": "결투가 {seconds}초 후 시작됩니다...",
       "duelEndBanner": "{winner}님이 결투에서 {loser}님을 이겼습니다!",
       "duelEndLog": "{winner}님이 결투에서 {loser}님을 이겼습니다.",
@@ -3831,6 +3873,22 @@ export const ko_KR: EnTranslations = {
       "stool": "스툴"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "일일 보상",
+    "window": {
+      "title": "일일 보상",
+      "close": "일일 보상 닫기",
+      "claim": "받기",
+      "claimAria": "오늘의 보상 받기",
+      "claimed": "받았습니다. 내일 다시 오세요.",
+      "locked": "현재 이 계정에서는 일일 보상을 사용할 수 없습니다.",
+      "hint": "하루에 한 번 받을 수 있습니다. 하루를 놓쳐도 손해는 없습니다."
+    },
+    "cell": {
+      "today": "오늘",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "금",
@@ -4057,6 +4115,126 @@ export const ko_KR: EnTranslations = {
   },
   "entities": {
     "abilities": {
+      "chain_heal": {
+        "name": "연쇄 치유",
+        "description": "우호적인 대상을 크게 치유한 후, 최대 2명의 주변 아군에게 도약하며 도약할 때마다 치유량이 50%씩 감소합니다."
+      },
+      "crusader_strike": {
+        "name": "성전사의 일격",
+        "description": "대상에게 무기 피해와 추가로 신성 피해 24를 입힙니다."
+      },
+      "metamorphosis": {
+        "name": "공포의 상",
+        "description": "20초 동안 무시무시한 악마로 변신하여 주문 피해가 20%, 시전 속도가 20% 증가합니다. 당신의 악마는 피해 50%와 시전 속도 20%를 얻습니다."
+      },
+      "holy_shock": {
+        "name": "신성 충격",
+        "description": "신성한 기운으로 우호적인 대상을 충격하여 치유하거나, 적에게 신성 피해를 입힙니다."
+      },
+      "holy_shield": {
+        "name": "신성한 벽",
+        "description": "적에게 광휘의 방패를 던져 신성 피해를 입히고 주변의 적 2명에게 튕겨나갑니다."
+      },
+      "bestial_wrath": {
+        "name": "포효하는 분노",
+        "description": "15초 동안 야수의 분노에 빠져 공격력이 20%, 펫의 피해량이 100% 증가합니다."
+      },
+      "trueshot_aura": {
+        "name": "조준의 오라",
+        "description": "30분 동안 주변 아군을 격려하여 공격력을 10% 증가시킵니다."
+      },
+      "wyvern_sting": {
+        "name": "와이번의 독침",
+        "description": "원거리에서 적을 찔러 최대 4초 동안 무력화시킵니다. 피해를 입으면 효과가 해제됩니다."
+      },
+      "arcane_power": {
+        "name": "비전 쇄도",
+        "description": "10초 동안 주문 피해가 20%, 주문 가속이 10% 증가합니다."
+      },
+      "combustion": {
+        "name": "화염구동",
+        "description": "15초 동안 주문 치명타 확률이 50% 증가합니다."
+      },
+      "icy_veins": {
+        "name": "얼음 혈관",
+        "description": "10초 동안 주문 가속이 30% 증가하며 시전 차단과 시전 지연을 방지합니다."
+      },
+      "cold_blood": {
+        "name": "냉정한 살의",
+        "description": "살의를 집중시켜 다음 공격이 반드시 치명타가 됩니다."
+      },
+      "blade_flurry": {
+        "name": "칼날 회오리",
+        "description": "칼날의 소용돌이를 일으켜 12초 동안 공격 속도가 20% 증가합니다."
+      },
+      "hemorrhage": {
+        "name": "붉은 리본",
+        "description": "무기 피해와 출혈 효과로 적을 공격하여 12초 동안 출혈 피해를 입히고 출혈 피해를 40% 증가시킵니다. 연계 점수 1점을 획득합니다."
+      },
+      "power_infusion": {
+        "name": "축복 주입",
+        "description": "우호적인 대상에게 힘을 불어넣어 15초 동안 주문 가속을 20% 증가시킵니다."
+      },
+      "holy_nova": {
+        "name": "신성한 폭발",
+        "description": "신성한 광채의 폭발을 일으켜 주변 아군을 치유하고 주변 적에게 피해를 입힙니다."
+      },
+      "shadowform": {
+        "name": "황혼의 형상",
+        "description": "그림자 형상으로 변하여 그림자 피해가 15% 증가하며, 원래 모습으로 돌아갈 때까지 유지됩니다. 치유 주문을 시전하면 형상이 해제됩니다. 다시 시전하면 원래 모습으로 돌아갑니다."
+      },
+      "elemental_mastery": {
+        "name": "원시 지배",
+        "description": "폭풍의 힘을 불러와 다음 주문을 즉시 시전합니다."
+      },
+      "siphon_life": {
+        "name": "생명 착취",
+        "description": "적에게서 생명력을 흡수하여 30초 동안 그림자 피해를 입히고 입힌 피해만큼 자신을 치유합니다."
+      },
+      "conflagrate": {
+        "name": "점화",
+        "description": "적에게 걸린 제물을 소모하여 화염 피해를 입힙니다."
+      },
+      "moonkin_form": {
+        "name": "달빛날개 형상",
+        "description": "무시무시한 달빛수호자로 변신하여 주문 피해가 20%, 방어도가 50% 증가합니다. 원래 모습으로 돌아갈 때까지 유지됩니다. 다시 시전하면 시전자 형상으로 돌아갑니다."
+      },
+      "feral_charge": {
+        "name": "원시의 쇄도",
+        "description": "원시의 힘을 발산합니다. 표범 형상에서는 10초 동안 기력 재생이 100% 증가합니다. 곰 형상에서는 즉시 분노 50을 생성합니다."
+      },
+      "swiftmend": {
+        "name": "신속한 치유",
+        "description": "우호적인 대상에게 걸린 지속 치유 효과를 소모하여 치유합니다."
+      },
+      "pummel": {
+        "name": "턱관절 강타",
+        "description": "대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다."
+      },
+      "kick": {
+        "name": "발차기",
+        "description": "대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다."
+      },
+      "counterspell": {
+        "name": "주문 차단",
+        "description": "대상의 시전을 무효화하고 6초 동안 해당 계열 주문 시전을 막습니다."
+      },
+      "counter_shot": {
+        "name": "제압 사격",
+        "description": "즉각적인 사격으로 대상의 시전을 차단하고 해당 계열을 4초 동안 봉쇄합니다."
+      },
+      "rebuke": {
+        "name": "질책",
+        "description": "대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다."
+      },
+      "skull_bash": {
+        "name": "박치기",
+        "description": "돌진하여 박치기로 대상의 시전을 차단하고 해당 계열을 4초 동안 봉쇄합니다."
+      },
+      "spell_lock": {
+        "name": "주문 봉인",
+        "description": "시전 중인 대상을 침묵시키고 5초 동안 해당 계열 주문 시전을 막습니다."
+      },
       "heroic_strike": {
         "name": "영웅의 일격",
         "description": "강력한 공격으로 근접 피해가 {damage}만큼 증가합니다. 다음 무기 공격 시 발동됩니다."
@@ -4120,6 +4298,10 @@ export const ko_KR: EnTranslations = {
       "taunt": {
         "name": "도발",
         "description": "대상을 도발합니다. 자신의 위협 수준이 대상이 가장 증오하는 적과 같아지며, 3초 동안 자신을 공격하게 만듭니다."
+      },
+      "ironhold": {
+        "name": "아이언홀드",
+        "description": "방패 뒤에 웅크려 8초 동안 받는 모든 피해를 40% 감소시킵니다."
       },
       "fireball": {
         "name": "화염구",
@@ -4312,6 +4494,10 @@ export const ko_KR: EnTranslations = {
       "retribution_aura": {
         "name": "응징의 오라",
         "description": "30분 동안 신성한 기운으로 자신을 감싸 근접 공격으로 자신을 타격하는 모든 적에게 5의 신성 피해를 입힙니다."
+      },
+      "sacred_bulwark": {
+        "name": "신성한 보루",
+        "description": "10초 동안, 당신을 죽일 다음 공격이 무효화되며 대신 체력을 35%로 회복시킵니다."
       },
       "tame_beast": {
         "name": "야수 길들이기",
@@ -4596,6 +4782,10 @@ export const ko_KR: EnTranslations = {
       "rip": {
         "name": "찢기",
         "description": "12초에 걸쳐 출혈 피해를 입히는 결정타입니다. 연계 점수를 소모합니다. 늑대 변신 전용."
+      },
+      "primal_reflexes": {
+        "name": "원시 반사신경",
+        "description": "본능이 예민해져 6초 동안 회피 확률이 50% 증가합니다."
       },
       "mortal_strike": {
         "name": "죽음의 일격",
@@ -5689,6 +5879,18 @@ export const ko_KR: EnTranslations = {
         "name": "눈금이 새겨진 파편",
         "flavorText": "...다섯 개씩 한 묶음으로 깊이 새겨져, 셀 때마다 하나씩 그어 지워졌다. 지워진 다섯 묶음이 수백에 이르는데, 그 지움이 멈춘 마지막 줄만은 끝내 채워지지 않았다..."
       },
+      "root_token_unbinding": {
+        "name": "풀린 뿌리 매듭",
+        "flavorText": "...보이지 않는 무언가에 묶인 매듭을 풀듯, 엄지손가락에 계속 문질러져 매끄러워졌다. 누군가는 놓아주는 것이 친절이라 믿었다. 그 사람은 틀렸거나, 너무 일렀거나, 아니면 둘 다였을 것이다..."
+      },
+      "root_token_offering": {
+        "name": "작은 먹이돌",
+        "flavorText": "...동전보다도 작은 얕은 그릇 모양이 돌에 새겨져 있다. 물어볼 수조차 없는 무언가에게 부스러기를 남겨주기 위한 것이었으리라. 이곳에서 먹던 무언가는 배고픔을 멈춘 것이 아니라, 그저 보이지 않게 되었을 뿐이다..."
+      },
+      "root_token_verdict": {
+        "name": "심판이 새겨진 돌",
+        "flavorText": "...다섯이 아니라 셋으로 새겨진 눈금이, 판결되고 또 뒤집히며, 세 번째에는 돌이 갈라질 만큼 세게 눌려 있다. 누군가 어둠 속에서 같은 질문을 두고 몇 번이고 마음을 바꾸었던 것 같다..."
+      },
       "reliquary_plate_chest": {
         "name": "성물실 수호 갑옷"
       },
@@ -5816,6 +6018,15 @@ export const ko_KR: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "폭풍소환사의 어깨갑옷"
       },
+      "deathless_greatblade": {
+        "name": "죽지 않는 대검"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "죽지 않는 궁정의 홀"
+      },
+      "stormcallers_focus": {
+        "name": "폭풍소환사의 초점"
+      },
       "unknown_alien_weaponry": {
         "name": "알 수 없는 외계 무기"
       },
@@ -5866,6 +6077,21 @@ export const ko_KR: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "선봉대 크롬"
+      },
+      "enchanting_dust": {
+        "name": "마법부여 가루"
+      },
+      "scroll_minor_might": {
+        "name": "소소한 힘의 두루마리"
+      },
+      "scroll_minor_vigor": {
+        "name": "소소한 활력의 두루마리"
+      },
+      "scroll_minor_focus": {
+        "name": "소소한 집중의 두루마리"
+      },
+      "scroll_minor_agility": {
+        "name": "소소한 민첩의 두루마리"
       }
     },
     "mobs": {
@@ -6040,6 +6266,15 @@ export const ko_KR: EnTranslations = {
       "nythraxis_scourge_of_thornpeak": {
         "name": "나이트락시스, 손피크의 재앙"
       },
+      "nythraxis_heroic_warrior_add": {
+        "name": "알드렌의 영혼"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "말릭의 영혼"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "보스의 영혼"
+      },
       "reliquary_ledger_wraith": {
         "name": "명부의 망령"
       },
@@ -6183,6 +6418,15 @@ export const ko_KR: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "심재 거상"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "초록발의 꺾꽂이"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "초록발의 꺾꽂이"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "초록발의 꺾꽂이"
       }
     },
     "npcs": {
@@ -6409,6 +6653,22 @@ export const ko_KR: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "배울 가치가 있는 기술",
+        "text": "모든 기술은 손톱 밑의 흙에서 시작되지, {playerName}. 마을 동쪽 숲에서 거미 다리 2개를 모아 오게. 그런 다음 내 대장간에서 신병의 튜닉을 만들어 보게. 재료가 되는 뼛조각은 오는 길에 충분히 주울 수 있을 걸세. 그리고 분해해서 비전 가루로 만들 만한 것도 하나 가져오게. 채집하고, 제작하고, 분해할 수 있음을 보여주면 기술의 가치를 알려주지.",
+        "completion": "바로 그게 배울 가치가 있는 기술이지. 계속 대장간에 붙어 있게, {playerName}. 언젠가 자네는 말굽을 박으면서 동시에 검에 마법을 부여하게 될 걸세.",
+        "objectives": {
+          "0": {
+            "label": "거미 다리 채집"
+          },
+          "1": {
+            "label": "신병의 튜닉 제작"
+          },
+          "2": {
+            "label": "비전 가루"
+          }
+        }
+      },
       "q_wolves": {
         "title": "문 앞의 늑대들",
         "text": "숲늑대들이 북쪽 길의 여행자들을 물어뜯고 있습니다, {playerName}. 8마리를 처치해 이스트브룩이 숨 돌리게 해 주십시오.",
@@ -7551,6 +7811,20 @@ export const ko_KR: EnTranslations = {
         "name": "무너진 성물실",
         "enterText": "무너진 성물실로 내려갑니다.",
         "leaveText": "성물실 폐허의 브라더 할벤에게로 다시 올라갑니다."
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "소소한 힘"
+      },
+      "enchant_minor_vigor": {
+        "name": "소소한 활력"
+      },
+      "enchant_minor_focus": {
+        "name": "소소한 집중"
+      },
+      "enchant_minor_agility": {
+        "name": "소소한 민첩"
       }
     },
     "itemSets": {

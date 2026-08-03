@@ -14,6 +14,7 @@ import type { EquipSlot } from '../../sim/types';
 import { loadGltf, loadTexture } from '../assets/loader';
 import { registerPreload } from '../assets/preload';
 import { addRimGlow, GFX } from '../gfx';
+import { backGripFor, type RigFamily } from './back_grips';
 import {
   CHIBI_VARIANT_TINT_STRENGTH,
   chibiMaterialTint,
@@ -166,6 +167,86 @@ function handSide(bone: string): 'r' | 'l' {
   return bone.replace(/[[\].:/]/g, '').endsWith('l') ? 'l' : 'r';
 }
 
+// PHAA-697: the female player bodies (player_<cls>_f) use the styloo chibi rig,
+// which grips weapons on `DEF-hand.R`/`DEF-hand.L` bones and ships NO KayKit
+// `handslot.r/.l` nodes and no in-model grip reference nodes (verified against
+// every chibi_female*.glb). The KayKit grips above are authored for a different
+// hand frame, so the chibi bones route to this parallel table.
+//
+// A chibi grip carries an Euler (degrees, XYZ order) rather than a raw quaternion.
+// The chibi DEF-hand bone rests with local +Y running DOWN the hand, so a weapon
+// authored blade-up hangs straight at the ground (Brandon's first-pass note:
+// "facing towards the ground ... going to clip with most terrain"). The tuned
+// Euler swings the blade "up and out": local +Z rotates it off the down axis
+// toward the weapon side, so ~110deg reads as up-and-out for a 1H weapon and
+// ~175deg stands a 2H staff upright. The right hand adds the 180deg Y flip; the
+// left (offhand) omits it but keeps the SAME +Z sign, so a dual-wield mirror
+// points out on both sides. Scales are the chibi hand's much smaller frame (also
+// Brandon: "much smaller, so that they actually fit in her hands"), tuned against
+// the offscreen render rig. Keyed by the same KAYKIT_WEAPON_ACCESSORY family so a
+// swapped-in equipped weapon (setHeldWeapon) resolves identically.
+type ChibiGrip = {
+  position: [number, number, number];
+  euler: [number, number, number]; // degrees, XYZ order
+  scale: number;
+};
+const CHIBI_HAND_GRIPS: Record<string, { r: ChibiGrip; l?: ChibiGrip }> = {
+  '1H_Sword': {
+    r: { position: [0, 0.16, 0.02], euler: [0, 180, 110], scale: 0.58 },
+    l: { position: [0, 0.16, 0.02], euler: [0, 0, 110], scale: 0.58 },
+  },
+  '1H_Axe': {
+    r: { position: [0.02, 0.14, 0.02], euler: [0, 180, 110], scale: 0.55 },
+    l: { position: [-0.02, 0.14, 0.02], euler: [0, 0, 110], scale: 0.55 },
+  },
+  '1H_Crossbow': {
+    r: { position: [0.04, 0.12, 0.02], euler: [-12, 90, 0], scale: 0.5 },
+  },
+  '2H_Staff': {
+    r: { position: [-0.01, 0.18, 0.02], euler: [0, 180, 175], scale: 0.5 },
+  },
+  Knife: {
+    r: { position: [0, 0.13, 0.02], euler: [0, 180, 110], scale: 0.5 },
+    l: { position: [0, 0.13, 0.02], euler: [0, 0, 110], scale: 0.5 },
+  },
+  '1H_Wand': {
+    r: { position: [0, 0.12, 0.02], euler: [0, 180, 110], scale: 0.48 },
+  },
+};
+
+// Chibi sibling of VARIANT_GRIPS (origin-at-grip item-variant weapons): same
+// bbox-clamp convention, chibi-tuned clamp heights so an equipped variant weapon
+// (ITEM_WEAPON_VARIANTS) mounts at a sensible size on the smaller chibi hand, plus
+// the same "up and out" Euler as CHIBI_HAND_GRIPS so a variant drop equipped on a
+// female body reads the same way as her class default (not hanging at the ground).
+interface ChibiVariantGrip extends VariantGrip {
+  euler: [number, number, number]; // degrees, XYZ order; Y flip is added per side
+}
+const CHIBI_VARIANT_GRIPS: Record<string, ChibiVariantGrip> = {
+  VAR_SWORD: { lift: 0.05, maxHeight: 2.1, euler: [0, 0, 110] },
+  VAR_DAGGER: { lift: 0.05, maxHeight: 1.4, euler: [0, 0, 110] },
+  VAR_STAFF: { lift: 0.2, maxHeight: 2.5, euler: [0, 0, 175] },
+  VAR_AXE: { lift: 0.05, maxHeight: 1.6, euler: [0, 0, 110] },
+  VAR_POLEARM: { lift: 0.2, maxHeight: 2.6, euler: [0, 0, 175] },
+  VAR_WAND: { lift: 0.05, maxHeight: 1.2, euler: [0, 0, 110] },
+};
+
+function isChibiHandBone(name: string): boolean {
+  const n = name.replace(/[[\].:/]/g, '').toLowerCase();
+  return n === 'def-handr' || n === 'def-handl';
+}
+
+// The chibi bones are `DEF-hand.R`/`DEF-hand.L` (uppercase side), so handSide's
+// lowercase `endsWith('l')` never matches L: resolve the side case-insensitively.
+function chibiHandSide(bone: string): 'r' | 'l' {
+  return bone
+    .replace(/[[\].:/]/g, '')
+    .toLowerCase()
+    .endsWith('l')
+    ? 'l'
+    : 'r';
+}
+
 function kaykitAccessoryFor(url: string): string | null {
   const base =
     url
@@ -245,13 +326,63 @@ function variantGripFor(url: string): VariantGrip | null {
   const accessory = kaykitAccessoryFor(url);
   return accessory ? (VARIANT_GRIPS[accessory] ?? null) : null;
 }
-function applyVariantGrip(payload: THREE.Object3D, bone: string, grip: VariantGrip): void {
+function chibiVariantGripFor(url: string): ChibiVariantGrip | null {
+  const accessory = kaykitAccessoryFor(url);
+  return accessory ? (CHIBI_VARIANT_GRIPS[accessory] ?? null) : null;
+}
+function applyVariantGrip(payload: THREE.Object3D, side: 'r' | 'l', grip: VariantGrip): void {
   variantBox.setFromObject(payload);
   const height = variantBox.max.y - variantBox.min.y;
   const scale = height > 1e-3 ? Math.min(1, grip.maxHeight / height) : 1;
-  const left = handSide(bone) === 'l';
+  const left = side === 'l';
   payload.position.set(0, grip.lift, 0);
   payload.quaternion.set(0, left ? 0 : 1, 0, left ? 1 : 0);
+  payload.scale.setScalar(scale);
+}
+
+// Scratch Euler for the chibi grips (degrees in the table -> radians here). XYZ
+// order matches the offscreen render rig the values were tuned against.
+const chibiEuler = new THREE.Euler();
+const DEG = Math.PI / 180;
+function setChibiOrientation(
+  payload: THREE.Object3D,
+  euler: [number, number, number],
+  side: 'r' | 'l',
+): void {
+  // The offhand omits the 180deg Y flip the right hand carries; both keep the
+  // authored +Z so the dual-wield mirror points out on the correct side.
+  const yaw = side === 'l' ? 0 : euler[1];
+  chibiEuler.set(euler[0] * DEG, yaw * DEG, euler[2] * DEG, 'XYZ');
+  payload.quaternion.setFromEuler(chibiEuler);
+}
+
+// PHAA-697: chibi sibling of applyHandGrip. No in-model grip ref nodes exist on
+// the chibi rig, so this always uses the CHIBI_HAND_GRIPS fallback table.
+function applyChibiHandGrip(payload: THREE.Object3D, bone: string, url: string): void {
+  const accessory = kaykitAccessoryFor(url);
+  if (!accessory) return;
+  const side = chibiHandSide(bone);
+  const grips = CHIBI_HAND_GRIPS[accessory];
+  if (!grips) return;
+  const grip = side === 'l' ? (grips.l ?? grips.r) : grips.r;
+  payload.position.set(...grip.position);
+  setChibiOrientation(payload, grip.euler, side);
+  payload.scale.setScalar(grip.scale);
+}
+
+// PHAA-697: chibi sibling of applyVariantGrip for origin-at-grip variant weapons.
+// Same bbox clamp, but the "up and out" chibi Euler replaces the bare Y flip so an
+// equipped variant drop on a female body matches her class-default orientation.
+function applyChibiVariantGrip(
+  payload: THREE.Object3D,
+  side: 'r' | 'l',
+  grip: ChibiVariantGrip,
+): void {
+  variantBox.setFromObject(payload);
+  const height = variantBox.max.y - variantBox.min.y;
+  const scale = height > 1e-3 ? Math.min(1, grip.maxHeight / height) : 1;
+  payload.position.set(0, grip.lift, 0);
+  setChibiOrientation(payload, [grip.euler[0], 180, grip.euler[2]], side);
   payload.scale.setScalar(scale);
 }
 
@@ -260,6 +391,8 @@ function attachProp(
   bone: THREE.Object3D,
   att: AttachDef,
   markTags: string | readonly string[] | false = false,
+  stowed: boolean = false,
+  rig: RigFamily = 'kaykit',
 ): void {
   const payload = flattenWeaponScene(cloneSkinned(resolvedGltf(att.url).scene));
   payload.traverse((o) => {
@@ -269,9 +402,12 @@ function attachProp(
     const tags = Array.isArray(markTags) ? markTags : [markTags];
     for (const t of tags) payload.userData[t] = true;
   }
-  const variantGrip = isHandslotBone(att.bone) ? variantGripFor(att.url) : null;
-  if (variantGrip) {
-    applyVariantGrip(payload, att.bone, variantGrip);
+  const handslotVariant = isHandslotBone(att.bone) ? variantGripFor(att.url) : null;
+  const chibiVariant = isChibiHandBone(att.bone) ? chibiVariantGripFor(att.url) : null;
+  if (handslotVariant) {
+    applyVariantGrip(payload, handSide(att.bone), handslotVariant);
+  } else if (chibiVariant) {
+    applyChibiVariantGrip(payload, chibiHandSide(att.bone), chibiVariant);
   } else if (att.position || att.rotationY !== undefined) {
     if (att.position) payload.position.set(...att.position);
     if (att.rotationY !== undefined) payload.rotation.y = att.rotationY;
@@ -280,6 +416,19 @@ function attachProp(
     if (ref) copyAccessoryTransform(payload, ref);
   } else if (isHandslotBone(att.bone)) {
     applyHandGrip(payload, root, att.bone, att.url);
+  } else if (isChibiHandBone(att.bone)) {
+    applyChibiHandGrip(payload, att.bone, att.url);
+  }
+  // Sheathed: override where the prop SITS (on-back position/lean, torso-bone
+  // local space; the caller resolved the torso bone) but keep the SCALE the
+  // normal grip pass just computed, so variant-pack size clamps carry over.
+  // Ported from upstream #1765; the fork targets two rig families via `rig`,
+  // KayKit (chest bone) and chibi (DEF-spine003 bone). See `back_grips.ts` for
+  // the per-rig-family tuning and the chibi entries authored in this commit.
+  if (stowed && isHandslotBone(att.bone)) {
+    const grip = backGripFor(kaykitAccessoryFor(att.url), handSide(att.bone), rig);
+    payload.position.set(...grip.position);
+    payload.quaternion.set(...grip.quaternion);
   }
   bone.add(payload);
 }
@@ -628,10 +777,29 @@ export function assembleModel(
  *  both hands update). The caller must re-apply materials and re-snapshot the
  *  original-material map afterwards (see CharacterVisual.setWeapon), since the new
  *  weapon meshes start on the source GLB's raw materials. */
+// Sheathed props re-parent onto the rig's torso bone (KayKit Rig_Medium:
+// `chest`; chibi Mixamo rigs: `DEF-spine003`). GLTFLoader sanitizes node names
+// (PropertyBinding strips [].:/ chars), so the resolver tries both spellings.
+// The visual layer picks the right bone per `weaponBackBone` override, falling
+// back to `chest` (the KayKit default) when the def carries no override.
+const DEFAULT_STOW_BONE = 'chest';
+
+function attachTargetBone(
+  root: THREE.Object3D,
+  att: AttachDef,
+  stowed: boolean,
+  backBone: string,
+): THREE.Object3D | null {
+  const boneName = stowed && isHandslotBone(att.bone) ? backBone : att.bone;
+  return resolveBone(root, boneName);
+}
+
 export function setHeldWeapon(
   root: THREE.Object3D,
   def: VisualDef,
   weaponItemId: string | null,
+  stowed: boolean = false,
+  rig: RigFamily = 'kaykit',
 ): void {
   if (!def.weaponSlots?.length) return;
   const stale: THREE.Object3D[] = [];
@@ -639,13 +807,14 @@ export function setHeldWeapon(
     if (o.userData[SWAP_WEAPON_TAG]) stale.push(o);
   });
   for (const o of stale) o.removeFromParent();
+  const backBone = def.weaponBackBone ?? DEFAULT_STOW_BONE;
   for (const i of def.weaponSlots) {
     const base = def.attach?.[i];
     if (!base) continue;
     const att = swapAttachDef(base, weaponItemId);
-    const bone = resolveBone(root, att.bone);
+    const bone = attachTargetBone(root, att, stowed, backBone);
     if (!bone) continue;
-    attachProp(root, bone, att, SWAP_WEAPON_TAG);
+    attachProp(root, bone, att, SWAP_WEAPON_TAG, stowed, rig);
   }
 }
 

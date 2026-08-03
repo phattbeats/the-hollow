@@ -107,7 +107,7 @@ jobs:
       # regenerate). status.json is gitignored, so only the committed artifacts are
       # diffed; the test suite also enforces this, this just surfaces it sooner.
       - name: Verify committed i18n artifacts are fresh
-        run: git diff --exit-code -- src/ui/i18n.resolved.generated src/admin/i18n.resolved.generated src/ui/i18n.status.summary.json
+        run: git diff --exit-code -- src/ui/i18n.resolved.generated src/admin/i18n.resolved.generated src/ui/i18n.status.summary.json src/ui/i18n.catalog/translation_keys.generated.ts
 
       # Release-gate malicious-code scan. The flagger is high-recall (most hits are
       # expected dev-tooling false positives), so this uses --gate: it fails only on
@@ -163,7 +163,7 @@ jobs:
       # regenerate). status.json is gitignored, so only the committed artifacts are
       # diffed; the test suite also enforces this, this just surfaces it sooner.
       - name: Verify committed i18n artifacts are fresh
-        run: git diff --exit-code -- src/ui/i18n.resolved.generated src/admin/i18n.resolved.generated src/ui/i18n.status.summary.json
+        run: git diff --exit-code -- src/ui/i18n.resolved.generated src/admin/i18n.resolved.generated src/ui/i18n.status.summary.json src/ui/i18n.catalog/translation_keys.generated.ts
 
       # Release-gate malicious-code scan (see the PR-gate job for the rationale).
       # --gate fails only on a HIGH-severity signature surviving the path-aware

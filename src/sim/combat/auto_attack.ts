@@ -43,6 +43,7 @@ import {
   normAngle,
   swingMissChance,
 } from '../types';
+import { drawWeapon } from '../weapon_stow';
 import { spendResource } from './casting_lifecycle';
 import { blindMissBonus, isDisarmed, isStunned } from './cc';
 import { baseSwingSpeed } from './form_swing';
@@ -59,6 +60,7 @@ export function startAutoAttack(ctx: SimContext, pid?: number): void {
     return;
   }
   if (p.sitting) ctx.standUp(p);
+  if (p.weaponStowed) drawWeapon(p);
   p.autoAttack = true;
   r.meta.lastActiveTick = ctx.tickCount; // starting auto-attack is a deliberate action
   const d = dist2d(p.pos, t.pos);
@@ -180,7 +182,7 @@ export function rangedSwing(
     // ranged white hits suffer the same higher-level crit suppression as melee
     const critChance = Math.max(0.005, atk.critChance - Math.max(0, tgt.level - atk.level) * 0.002);
     const crit = ctx.rng.chance(critChance);
-    if (crit) dmg *= 2;
+    if (crit) dmg *= 2 + atk.critDmgPhysBonus;
     // wand bolts are magic — armor doesn't apply; physical auto shot is mitigated
     if (!ranged.wand) dmg *= 1 - armorReduction(ctx.effectiveArmor(tgt), atk.level);
     ctx.dealDamage(atk, tgt, Math.max(1, Math.round(dmg)), crit, school, label, 'hit');
@@ -256,7 +258,7 @@ export function meleeSwing(
     attacker.critChance - Math.max(0, target.level - attacker.level) * 0.002,
   );
   const crit = ctx.rng.chance(critChance);
-  if (crit) dmg *= 2;
+  if (crit) dmg *= 2 + attacker.critDmgPhysBonus;
   dmg *= 1 - armorReduction(ctx.effectiveArmor(target), attacker.level);
   ctx.dealDamage(
     attacker,

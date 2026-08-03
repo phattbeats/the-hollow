@@ -23,7 +23,7 @@ import type { EquipSlot, GatherNodeType } from '../sim/types';
 import type { IWorld } from '../world_api';
 import { buildPaperdollView, type PaperdollSlot } from './char_view';
 import { markDialogRoot } from './dialog_root';
-import { classPairLabel, itemDisplayName } from './entity_i18n';
+import { classPairLabel, enchantDisplayName, itemDisplayName } from './entity_i18n';
 import { esc } from './esc';
 import { buildGatheringProficiencyRows, buildGatheringToolRows } from './gathering_view';
 import { formatNumber, t } from './i18n';
@@ -176,7 +176,7 @@ export class CharWindow {
       this.deps.openPlayerCard();
     });
 
-    const view = buildPaperdollView(world.equipment, ITEMS);
+    const view = buildPaperdollView(world.equipment, ITEMS, world.enchants);
     const leftCol = el.querySelector('#equip-col-left');
     const rightCol = el.querySelector('#equip-col-right');
     for (const cell of view.left) leftCol?.appendChild(this.buildSlotRow(cell));
@@ -222,7 +222,7 @@ export class CharWindow {
   }
 
   private buildSlotRow(cell: PaperdollSlot): HTMLElement {
-    const { slot, item } = cell;
+    const { slot, item, enchant } = cell;
     const row = document.createElement('div');
     row.className = 'equip-slot';
     // Stable id + programmatic focusability so the corner-x rebuild can hand focus
@@ -237,13 +237,19 @@ export class CharWindow {
     const icon = item
       ? this.deps.itemIcon(item)
       : `<img class="item-icon" style="border-color:${SLOT_EMPTY_BORDER_COLOR}" src="${iconDataUrl('item', 'slot_empty')}" alt="" draggable="false">`;
+    // Active enchant (PHAA-818, IWorldEnchanting#enchants): a slot the player
+    // reacts to (their own gear), so it is always shown, never gated by a
+    // graphics tier (docs/design/graphics-settings-fairness.md).
+    const enchantLine = enchant
+      ? `<div class="slot-enchant">${esc(enchantDisplayName(enchant))}</div>`
+      : '';
     row.innerHTML = `${icon}
-        <div><div class="slot-name">${esc(this.deps.slotName(slot))}</div><div class="slot-item" style="color:${qColor}">${item ? esc(itemDisplayName(item)) : esc(t('itemUi.equipment.empty'))}</div></div>`;
+        <div><div class="slot-name">${esc(this.deps.slotName(slot))}</div><div class="slot-item" style="color:${qColor}">${item ? esc(itemDisplayName(item)) : esc(t('itemUi.equipment.empty'))}</div>${enchantLine}</div>`;
     if (item) {
       this.deps.attachTooltip(
         row,
         () =>
-          `${this.deps.itemTooltip(item)}<div class="tt-sub">${esc(t('hudChrome.paperdoll.unequipHint'))}</div>`,
+          `${this.deps.itemTooltip(item)}${enchant ? `<div class="tt-sub">${esc(enchantDisplayName(enchant))}</div>` : ''}<div class="tt-sub">${esc(t('hudChrome.paperdoll.unequipHint'))}</div>`,
       );
       // Corner x: a styled glyph control (not an in-game icon), revealed on
       // hover/focus and always shown on touch where right-click is unavailable.

@@ -855,7 +855,7 @@ export function readyArenaFighter(ctx: SimContext, e: Entity, opts: { clearPrep:
   }
   const meta = ctx.players.get(e.id);
   if (meta) {
-    recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta));
+    recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
     // A movement key held when the fighter died (or when the bout started) must not
     // carry over into the reset body, or it ghost-walks with no input held (upstream
     // #1723, same class as the death/respawn sites; in-place to keep the reference).
@@ -1031,6 +1031,8 @@ export function returnFromArena(ctx: SimContext, match: ArenaMatch): void {
       if (meta) ctx.boarballRestoreChar(meta, e);
     }
     resetForArena(ctx, e);
+    const meta = ctx.players.get(pid);
+    if (meta) Object.assign(meta.moveInput, emptyMoveInput());
     // The bout is a parenthesis, not a rest stop: undo the clean-slate full
     // restore and hand back exactly the HP, resource, cooldowns, and CC DR the
     // fighter carried in, so an arena match can never be farmed as a free heal,

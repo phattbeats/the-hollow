@@ -6,7 +6,7 @@
 // one command at a time, so there is no interleaving to race).
 
 import { beforeEach, describe, expect, it } from 'vitest';
-import { GATHER_NODES, MOBS } from '../src/sim/data';
+import { GATHER_NODES, MOBS, zoneById } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
 import {
   HARVEST_COMPONENT_ITEMS,
@@ -14,7 +14,7 @@ import {
   NODE_HARVEST_TABLE,
 } from '../src/sim/gathering';
 import { Sim } from '../src/sim/sim';
-import type { Entity } from '../src/sim/types';
+import { type Entity, MAX_LEVEL, mobXpValue } from '../src/sim/types';
 
 function makeCorpse(id: number, templateId: keyof typeof MOBS): Entity {
   const template = MOBS[templateId];
@@ -204,6 +204,27 @@ describe('gather node harvest (PHAA-505): per-player, everyone gets their own', 
     const before = sim.gatheringProficiencyFor(pid)[NODE_TYPE];
     sim.harvestNode(NODE_ID, pid);
     expect(sim.gatheringProficiencyFor(pid)[NODE_TYPE]).toBe(before + 1);
+  });
+
+  it('a harvest grants character XP with the same green-to-gray level-diff falloff as kill XP (PHAA-712)', () => {
+    const meta = sim.players.get(pid)!;
+    const zone = zoneById(GATHER_NODES[0].zoneId)!;
+    const expectedXp = mobXpValue(zone.levelRange[0], sim.entities.get(pid)!.level);
+    expect(expectedXp).toBeGreaterThan(0); // a fresh level-1 character is well within the zone's band
+    const before = meta.lifetimeXp;
+    sim.harvestNode(NODE_ID, pid);
+    expect(meta.lifetimeXp).toBe(before + expectedXp);
+  });
+
+  it('grants zero XP once the node is trivial (gray) for the player level (PHAA-712)', () => {
+    const p = sim.entities.get(pid)!;
+    p.level = MAX_LEVEL;
+    const meta = sim.players.get(pid)!;
+    const before = meta.lifetimeXp;
+    sim.harvestNode(NODE_ID, pid);
+    // The item and proficiency still grant; only the character-XP award falls off.
+    expect(sim.countItem(ENTRY.itemId, pid)).toBe(1);
+    expect(meta.lifetimeXp).toBe(before);
   });
 
   it('denies harvest for a dead player without granting the item or the timer', () => {

@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1036,6 +1035,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': '已封鎖來自 {name} 的聊天。',
   'hud.system.noLongerIgnoring': '不再封鎖 {name}。',
   'hud.system.playerNotNearby': '該玩家不在附近。',
+  'hud.system.playerInfoNotFound': '找不到該名稱的角色。',
   'hud.system.duelCountdown': '決鬥將在 {seconds} 秒後開始...',
   'hud.system.duelEndBanner': '{winner} 在決鬥中擊敗了 {loser}！',
   'hud.system.duelEndLog': '{winner} 在決鬥中擊敗了 {loser}。',
@@ -1555,6 +1555,82 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '貪婪 {item}',
   'itemUi.lootRoll.passAria': '放棄 {item}',
   'itemUi.lootRoll.everyonePassed': '所有人都放棄了 {item}。',
+  'entities.abilities.chain_heal.name': '治療鏈',
+  'entities.abilities.chain_heal.description':
+    '對一名友方目標進行大量治療，然後跳躍至最多2名附近的盟友，每次跳躍治療量降低50%。',
+  'entities.abilities.crusader_strike.name': '十字軍打擊',
+  'entities.abilities.crusader_strike.description': '對目標造成武器傷害加24點神聖傷害。',
+  'entities.abilities.metamorphosis.name': '恐懼之相',
+  'entities.abilities.metamorphosis.description':
+    '變身為可怕的惡魔，持續20秒，法術傷害提高20%，施法速度提高20%。你的惡魔獲得50%傷害提高和20%施法速度提高。',
+  'entities.abilities.holy_shock.name': '神聖震擊',
+  'entities.abilities.holy_shock.description':
+    '用神聖能量震擊友方目標進行治療，或對敵人造成神聖傷害。',
+  'entities.abilities.holy_shield.name': '聖牆',
+  'entities.abilities.holy_shield.description':
+    '向敵人投擲神聖聖盾，造成神聖傷害並彈射至2個附近的敵人。',
+  'entities.abilities.bestial_wrath.name': '咆哮怒火',
+  'entities.abilities.bestial_wrath.description':
+    '使你陷入野獸狂怒，持續15秒，攻擊強度提高20%，寵物傷害提高100%。',
+  'entities.abilities.trueshot_aura.name': '穩射光環',
+  'entities.abilities.trueshot_aura.description': '激勵附近的盟友，攻擊強度提高10%，持續30分鐘。',
+  'entities.abilities.wyvern_sting.name': '翼龍釘刺',
+  'entities.abilities.wyvern_sting.description':
+    '從遠處刺向敵人，使其失能最多4秒。受到傷害將解除該效果。',
+  'entities.abilities.arcane_power.name': '以太湧動',
+  'entities.abilities.arcane_power.description': '法術傷害提高20%，法術急速提高10%，持續10秒。',
+  'entities.abilities.combustion.name': '閃焰',
+  'entities.abilities.combustion.description': '法術暴擊機率提高50%，持續15秒。',
+  'entities.abilities.icy_veins.name': '冰脈',
+  'entities.abilities.icy_veins.description':
+    '法術急速提高30%，並防止施法被打斷或產生施法後仰，持續10秒。',
+  'entities.abilities.cold_blood.name': '殺意冷靜',
+  'entities.abilities.cold_blood.description': '凝聚你的殺意，使你的下一次攻擊必定爆擊。',
+  'entities.abilities.blade_flurry.name': '劍刃亂舞',
+  'entities.abilities.blade_flurry.description': '釋放一連串劍刃攻擊，攻擊速度提高20%，持續12秒。',
+  'entities.abilities.hemorrhage.name': '紅絲帶',
+  'entities.abilities.hemorrhage.description':
+    '以武器傷害加流血效果擊中敵人，造成持續12秒的流血傷害，並使流血傷害提高40%。獲得1點連擊點數。',
+  'entities.abilities.power_infusion.name': '恩澤',
+  'entities.abilities.power_infusion.description':
+    '為友方目標注入力量，使其法術急速提高20%，持續15秒。',
+  'entities.abilities.holy_nova.name': '神聖新星',
+  'entities.abilities.holy_nova.description':
+    '引發神聖光輝的爆發，治療附近的盟友並傷害附近的敵人。',
+  'entities.abilities.shadowform.name': '暮靄形態',
+  'entities.abilities.shadowform.description':
+    '化身闇影形態，使闇影傷害提高15%，直至你變回原形。施放治療法術會解除該形態。再次施放可變回原形。',
+  'entities.abilities.elemental_mastery.name': '元素掌控',
+  'entities.abilities.elemental_mastery.description': '召喚風暴之力，使你的下一個法術瞬發。',
+  'entities.abilities.siphon_life.name': '汲取生命',
+  'entities.abilities.siphon_life.description':
+    '從敵人身上汲取生命，造成持續30秒的闇影傷害並治療你等同於造成的傷害。',
+  'entities.abilities.conflagrate.name': '燃燒',
+  'entities.abilities.conflagrate.description': '引燃你施放在敵人身上的獻祭效果，造成火焰傷害。',
+  'entities.abilities.moonkin_form.name': '月翼形態',
+  'entities.abilities.moonkin_form.description':
+    '變身為可怕的梟獸，法術傷害提高20%，護甲提高50%。直至你變回原形。再次施放可變回施法者形態。',
+  'entities.abilities.feral_charge.name': '原始衝能',
+  'entities.abilities.feral_charge.description':
+    '釋放原始衝能。在獵豹形態下，能量回復速度提高100%，持續10秒。在熊形態下，立即產生50點怒氣。',
+  'entities.abilities.swiftmend.name': '迅捷治療',
+  'entities.abilities.swiftmend.description':
+    '消耗友方目標身上的一個持續治療效果，為其恢復生命值。',
+  'entities.abilities.pummel.name': '碎顎',
+  'entities.abilities.pummel.description': '打斷目標的施法，並使其在4秒內無法施放該系法術。',
+  'entities.abilities.kick.name': '重踢',
+  'entities.abilities.kick.description': '打斷目標的施法，並使其在4秒內無法施放該系法術。',
+  'entities.abilities.counterspell.name': '法術反制',
+  'entities.abilities.counterspell.description': '反制目標的施法，並使其在6秒內無法施放該系法術。',
+  'entities.abilities.counter_shot.name': '靜默射擊',
+  'entities.abilities.counter_shot.description': '快速射擊，打斷目標的施法並封鎖該系法術4秒。',
+  'entities.abilities.rebuke.name': '譴責',
+  'entities.abilities.rebuke.description': '打斷目標的施法，並使其在4秒內無法施放該系法術。',
+  'entities.abilities.skull_bash.name': '頭槌',
+  'entities.abilities.skull_bash.description': '猛衝頭槌，打斷目標的施法並封鎖該系法術4秒。',
+  'entities.abilities.spell_lock.name': '咒縛',
+  'entities.abilities.spell_lock.description':
+    '使目標在施法中沉默，並使其在5秒內無法施放該系法術。',
   'itemUi.lootRoll.winnerOffline': '{item}的獲勝者已離線；戰利品已歸還屍體。',
   'entities.abilities.heroic_strike.name': '英勇打擊',
   'entities.abilities.heroic_strike.description':
@@ -1598,6 +1674,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.taunt.name': '嘲諷',
   'entities.abilities.taunt.description':
     '嘲諷目標：你的威脅值提高到其最仇恨敵人的水平，並強迫其攻擊你 3 秒。',
+  'entities.abilities.ironhold.name': '堅守',
+  'entities.abilities.ironhold.description': '緊守盾牌，在 8 秒內使受到的所有傷害降低 40%。',
   'entities.abilities.fireball.name': '火球術',
   'entities.abilities.fireball.description':
     '投擲一團火球，造成 {damage} 點火焰傷害，並附加持續傷害。',
@@ -1728,6 +1806,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.retribution_aura.name': '懲戒光環',
   'entities.abilities.retribution_aura.description':
     '以神聖能量環繞自身，持續 30 分鐘，對任何近戰攻擊你的敵人造成 5 點神聖傷害。',
+  'entities.abilities.sacred_bulwark.name': '神聖壁壘',
+  'entities.abilities.sacred_bulwark.description':
+    '持續 10 秒，下一次本該致命的打擊將被抵擋，並使你恢復到 35% 的生命值。',
   'entities.abilities.tame_beast.name': '馴服野獸',
   'entities.abilities.tame_beast.description':
     '開始馴服一隻野獸作為你的夥伴。牠必須不高於你的等級，且不能是精英。你的寵物會跟隨你、攻擊敵人，並保持自己的威脅值。同一時間只能擁有一隻寵物。',
@@ -1903,6 +1984,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.tigers_fury.description': '使攻擊強度提高 40，持續 6 秒。僅限狼形態。',
   'entities.abilities.rip.name': '割裂',
   'entities.abilities.rip.description': '終結技，在 12 秒內造成流血傷害。消耗連擊點。僅限狼形態。',
+  'entities.abilities.primal_reflexes.name': '原始反射',
+  'entities.abilities.primal_reflexes.description':
+    '你的本能變得敏銳，在 6 秒內使閃避機率提高 50%。',
   'entities.abilities.mortal_strike.name': '致死打擊',
   'entities.abilities.mortal_strike.description':
     '凶狠打擊，造成武器傷害外加 {damage} 點傷害。（武器專精標誌技能）',
@@ -2058,6 +2142,15 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': '帝王金黃',
   'entities.items.vanguard_azure_armor_plate.name': '先鋒蔚藍',
   'entities.items.vanguard_chrome_armor_plate.name': '先鋒鉻銀',
+  'entities.items.enchanting_dust.name': '附魔塵',
+  'entities.items.scroll_minor_might.name': '微弱力量卷軸',
+  'entities.items.scroll_minor_vigor.name': '微弱活力卷軸',
+  'entities.items.scroll_minor_focus.name': '微弱專注卷軸',
+  'entities.items.scroll_minor_agility.name': '微弱敏捷卷軸',
+  'entities.enchants.enchant_minor_might.name': '微弱力量',
+  'entities.enchants.enchant_minor_vigor.name': '微弱活力',
+  'entities.enchants.enchant_minor_focus.name': '微弱專注',
+  'entities.enchants.enchant_minor_agility.name': '微弱敏捷',
   'entities.items.deacons_cleaver.name': '執事劈刀',
   'entities.items.staff_of_drowned_prayers.name': '溺亡祈禱法杖',
   'entities.items.mistbinder_kris.name': '縛霧短劍',
@@ -2374,6 +2467,14 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.tidewatcher_ondrel.title': '守潮者',
   'entities.npcs.tidewatcher_ondrel.greeting':
     '湖水飲盡了月光，{className}，再將溺者吐還。我已守望那道門三十夜——而今夜，它開了。',
+  'entities.quests.q_prof_intro.title': '值得學習的手藝',
+  'entities.quests.q_prof_intro.text':
+    '每門手藝都從指甲縫裡的泥土開始，{playerName}。去鎮東的林地裡採集2條蜘蛛腿，然後到我的鍛爐前打一件新兵束衣；打造它所需的骨骼碎片沿途很容易找到。再給我帶些值得分解出奧術塵埃的東西。讓我看看你能採集、能打造、也能分解，我就讓你見識手藝的價值。',
+  'entities.quests.q_prof_intro.completion':
+    '這才是值得學習的手藝。多在鍛爐邊下功夫，{playerName}，總有一天你能一口氣釘馬掌又附魔利刃。',
+  'entities.quests.q_prof_intro.objectives.0.label': '採集蜘蛛腿',
+  'entities.quests.q_prof_intro.objectives.1.label': '打造新兵束衣',
+  'entities.quests.q_prof_intro.objectives.2.label': '附魔塵埃',
   'entities.quests.q_wolves.title': '門前群狼',
   'entities.quests.q_wolves.text':
     '森林狼已敢撲咬北路旅人，{playerName}。擊敗8隻森林狼，讓東溪能鬆一口氣。',
@@ -3385,7 +3486,6 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/秒',
   'hudChrome.meters.perSecondRow': '{total}（{rate}）',
   'hudChrome.meters.seconds': '{s}秒',
-  'hudChrome.mobile.autorun': '自動奔跑',
   'hudChrome.mobile.haptics': '觸覺回饋',
   'hudChrome.mobile.hapticsOff': '觸覺回饋已關閉',
   'hudChrome.mobile.jump': '跳躍',
@@ -3456,6 +3556,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hud.tutorial.returnTitle': '餵養爐火',
   'hud.tutorial.returnBody': '你帶著會燃燒之物。返回綠掌修士處，按 {interactKey} 交付。',
   'entities.mobs.nythraxis_skeleton_warrior.name': '復甦王室衛兵',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': '奧德倫之魂',
+  'entities.mobs.nythraxis_heroic_priest_add.name': '馬爾里克之魂',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': '沃斯之魂',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': '尼思拉克西斯，荊峰之災',
   'itemUi.quality.legendary': '傳說',
   'entities.items.deathless_heartwood.name': '不朽王冠之心木',
@@ -3468,6 +3571,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': '魂焰披肩',
   'entities.items.stormcallers_crown.name': '喚雷者之冠',
   'entities.items.stormcallers_spaulders.name': '喚雷者肩甲',
+  'entities.items.deathless_greatblade.name': '不朽巨劍',
+  'entities.items.scepter_of_the_deathless_court.name': '不朽王庭權杖',
+  'entities.items.stormcallers_focus.name': '喚雷者的焦點',
   'hud.chat.context.convertToRaid': '轉換為團隊',
   'hud.chat.context.convertToParty': '轉換為隊伍',
   'hudChrome.raidConvert.leaderOnly': '只有團隊領袖可以轉換為隊伍。',
@@ -4389,14 +4495,14 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     '用一件全新的升級品換下舊裝備，對你的助益遠勝於穿著早已過時的裝備打得再完美。當有更好的東西掉落，或任務提供升級時，就收下吧。別把你的好物品留到以後。',
   'guide.gear.upgradeTitle': '保持裝備更新',
-  'guide.lore.aldricBody':
-    '一位謙卑的鄉村牧師，他最先在東溪一座被玷污的墳前指出邪教的名號，隨後親自循著線索穿過沼澤，一路向上來到高守哨站的城牆。他是整場戰役中堅定不移的核心。',
-  'guide.lore.aldricRole': '谷地的牧師',
+  'guide.lore.faddickBody':
+    '他手持長柄工具，比起劍更熟悉鏟子。他掃除從林中滲入的陰翳，安葬亡者，記著自己照管的每一塊地。當線索離開神龛之時，往往是他來指出前路。',
+  'guide.lore.faddickRole': '法洛畦場的掘墓人',
   'guide.lore.figuresBody': '有少數幾個人會與你一同走過這整條路。從谷地到群峰，請記住這些名字。',
   'guide.lore.figuresTitle': '你將會熟識的面孔',
-  'guide.lore.marenBody':
-    '你在泥沼的蘆葦叢中遇見的一位寡言追蹤者，腳步輕巧無聲，配著一把短刃。她也一路向北追查線索，正是她的耳朵捕捉到了那幾句話，把你送往群峰。',
-  'guide.lore.marenRole': '元帥的斥候',
+  'guide.lore.zebediahBody':
+    '他是一位耐心的教堂管事，用這本曆法守護著這片原野，雙手常半埋在土裡。他注視著瓶中的燈火，按月令安排耕種，是初來乍到者最先聽到的聲音。',
+  'guide.lore.zebediahRole': '根谷的教堂管事',
   'guide.models.count': '{count} 個模型',
   'guide.models.groupClasses': '職業',
   'guide.models.groupCreatures': '生物',
@@ -4442,6 +4548,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '在 Thornpeak，整場圖謀變得清晰。自 Vale 以來被竊取的每一個靈魂，都是傾注於那個邪教在山脈心臟地帶之陰森勾當的貢品。始於一座禮拜堂庭院的線索，終結於此：一場五人的深入探索，去面對這一切背後的黑手。至於在最深處等候的是誰，就留給你自己去揭曉了。',
   'guide.questsPage.sagaPeaksTitle': '群峰：貢品所為何來',
   'guide.questsPage.sagaTitle': '循線北行',
+  'guide.questsPage.sagaReachesBody':
+    '在霍洛沃原野，布雷澤·綠爪以火絨燈守護著神龛之瓶，而教堂管事與掘墓人則按月令安排耕種。第一條線索很小：守好燈火，清除野狼，摸熟這片土地。等到前路開啟，你自會知道那盞燈正握在誰的手中。',
+  'guide.questsPage.sagaReachesTitle': '原野：一盞燈與一本曆法',
   'guide.questsPage.sagaValeBody':
     '在東溪，亡者不得安息，而其背後的印記屬於一個早被認為消亡已久的教派。將它追溯到一名在禮拜堂地穴中作祟的喚墓者身上，而他自己的文件又把你指向北方的沼澤。',
   'guide.questsPage.sagaValeTitle': '谷地：印記上的一個名字',
@@ -4641,6 +4750,15 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': '刻痕碎片',
   'entities.items.tally_shard.flavorText':
     '……以五為一組刻得極深，每數完一輪便劃去一道。劃去的五連一組，累計上百組，最後一行卻始終沒有劃完……',
+  'entities.items.root_token_unbinding.name': '鬆開的根結',
+  'entities.items.root_token_unbinding.flavorText':
+    '……一面被拇指摩挲得光滑，彷彿在鬆開一個看不見繫在何處的結。有人相信放手是一種仁慈。那人要嘛錯了，要嘛為時過早，或兩者皆是……',
+  'entities.items.root_token_offering.name': '小餵食石',
+  'entities.items.root_token_offering.flavorText':
+    '……石頭上刻著一個淺淺的碗，比硬幣還小，彷彿是留給某個無法開口求食之物的一口殘渣。這裡吞食過的東西並未停止飢餓，只是不再被人看見……',
+  'entities.items.root_token_verdict.name': '刻痕裁決石',
+  'entities.items.root_token_verdict.flavorText':
+    '……刻痕以三為一組，而非五，反覆裁定又反覆推翻，壓得極深，第三遍時石頭都裂開了。彷彿有人在黑暗中，為同一個問題一次又一次地改變心意……',
   'entities.mobs.acolyte_tessa.name': '侍僧泰莎',
   'entities.mobs.deacon_varric.name': '執事瓦瑞克',
   'entities.mobs.reliquary_bonewalker.name': '復起的骨行者',
@@ -4686,6 +4804,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.palefeeder.name': '蒼白噬光者',
   'entities.mobs.rootmaw.name': '根顎獸',
   'entities.mobs.the_witness_root.name': '見證之根',
+  'entities.mobs.greenpaw_cutting_dawn.name': '綠掌的插枝',
+  'entities.mobs.greenpaw_cutting_moss.name': '綠掌的插枝',
+  'entities.mobs.greenpaw_cutting_ash.name': '綠掌的插枝',
   'entities.npcs.brother_halven.greeting': '下方的聖物庫又移位了。',
   'entities.npcs.brother_halven.name': '哈爾文修士',
   'entities.npcs.brother_halven.title': '聖物庫守護人',
@@ -4880,6 +5001,12 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'sim.collections.notFound': '那個東西不存在。',
   'sim.collections.tooFar': '太遠了。',
   'sim.gathering.nothingToHarvest': '這具屍體沒有什麼可以採集的。',
+  'sim.greenpawCutting.alreadyPlanted': '你已經種下了插枝。給它一些時間成長。',
+  'sim.greenpawCutting.needHomestead': '你需要先擁有一塊宅地才能種下它。',
+  'sim.greenpawCutting.tooFar': '你必須在自己的宅地才能種下它。',
+  'sim.greenpawCutting.planted': '你在自己的宅地種下了插枝。耐心等待吧。',
+  'sim.greenpawCutting.grown': '你的插枝已經長成了一隻夥伴。牠現在會跟隨你。',
+  'sim.dailyRewards.claimed': '你領取了每日獎勵。',
   'sim.hearth.emberbulb1': '這才叫柴火……瞧瞧她喘氣的樣子，夥計……',
   'sim.hearth.emberbulb2': '爐子慢慢地、乾乾淨淨地吃下去，她就愛這樣……',
   'sim.hearth.emberbulb3': '添了柴，冒了煙……那個波長已經開始鬆動了，我能感覺到。',
@@ -5223,6 +5350,15 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.npcJournal.next': '下一頁',
   'hudChrome.npcJournal.close': '關閉日記',
   'hudChrome.npcJournal.title': '{name}的日記',
+  'dailyRewardsUi.menuButton': '每日獎勵',
+  'dailyRewardsUi.window.title': '每日獎勵',
+  'dailyRewardsUi.window.close': '關閉每日獎勵',
+  'dailyRewardsUi.window.claim': '領取',
+  'dailyRewardsUi.window.claimAria': '領取今日獎勵',
+  'dailyRewardsUi.window.claimed': '已領取，明天再來。',
+  'dailyRewardsUi.window.locked': '此帳號暫時無法領取每日獎勵。',
+  'dailyRewardsUi.window.hint': '每天可領取一次。錯過一天不會有任何損失。',
+  'dailyRewardsUi.cell.today': '今天',
   'housingUi.claimedBanner': '你將這塊地認領為家園。',
   'housingUi.ownerBanner': '這是{name}的家園。',
   'housingUi.prompt.claim': '認領這塊地',
@@ -5369,6 +5505,27 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.gathering.spore': '孢子',
   'hudChrome.gathering.toolTier': '{tier}級工具',
   'hudChrome.gathering.toolNone': '無工具',
+  'hudChrome.crafting.title': '製作',
+  'hudChrome.crafting.close': '關閉製作',
+  'hudChrome.crafting.tabRecipes': '配方',
+  'hudChrome.crafting.tabEnchants': '附魔',
+  'hudChrome.crafting.craftButton': '製作',
+  'hudChrome.crafting.craftAria': '製作{item}',
+  'hudChrome.crafting.disenchantSectionTitle': '分解',
+  'hudChrome.crafting.disenchantButton': '分解',
+  'hudChrome.crafting.disenchantAria': '分解{item}',
+  'hudChrome.crafting.disenchantEmpty': '沒有可分解的物品。',
+  'hudChrome.crafting.applyButton': '施加',
+  'hudChrome.crafting.applyAria': '將{enchant}施加到{slot}',
+  'hudChrome.crafting.activeTag': '已生效',
+  'hudChrome.crafting.needScroll': '需要{scroll}',
+  'hudChrome.crafting.craftType.weaponcrafting': '武器鍛造',
+  'hudChrome.crafting.craftType.armorcrafting': '護甲鍛造',
+  'hudChrome.crafting.craftType.tailoring': '裁縫',
+  'hudChrome.crafting.craftType.leatherworking': '製皮',
+  'hudChrome.crafting.craftType.cooking': '烹飪',
+  'hudChrome.crafting.craftType.alchemy': '煉金',
+  'hudChrome.crafting.craftType.enchanting': '附魔',
   'hudChrome.warfare.ratingLabel': '戰意',
   'hudChrome.warfare.balance': '榮譽：{amount}',
   'hudChrome.warfare.honorAmount': '{amount} 榮譽',
@@ -5379,6 +5536,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaKill': '狂歡擊倒',
   'hudChrome.warfare.reasons.fiestaComplete': '狂歡比賽',
   'hudChrome.warfare.reasons.fiestaWin': '狂歡勝利',
+  'hudChrome.hitRating.ratingLabel': '命中等級',
   'entities.npcs.bramble.name': '布蘭博',
   'entities.npcs.bramble.title': '榮譽軍需官',
   'entities.npcs.bramble.greeting': '沙場記得每一場勝利。好好花你的榮譽吧。',

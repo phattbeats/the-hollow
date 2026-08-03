@@ -42,6 +42,7 @@ import {
   type Vec3,
 } from '../types';
 import { groundHeight, waterLevelAt } from '../world';
+import { updateChannelHealerHold } from './healer_hold';
 import { rallyFleeingAllies } from './social_aggro';
 import { isTrivialTo, retargetMob, updateMobTarget } from './targeting';
 import { emitMobYell } from './yells';
@@ -122,6 +123,13 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
     if (ctx.isStunned(mob)) return;
     if (ctx.isDelveCompanionMob(mob)) {
       ctx.updateDelveCompanion(mob);
+      return;
+    }
+    // Greenpaw's cutting companion (PHAA-751): a cosmetic, non-combat owned
+    // mob, dispatched to its own follow-only tick instead of falling through
+    // to the combat pet branch below (ctx.updatePet, pet_ai.ts).
+    if (ctx.isGreenpawCompanionMob(mob)) {
+      ctx.updateGreenpawCompanion(mob);
       return;
     }
     ctx.updatePet(mob);
@@ -269,6 +277,7 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
         break;
       }
       if (ctx.maybeFlee(mob, target)) break;
+      if (updateChannelHealerHold(ctx, mob)) break;
       const spell = MOBS[mob.templateId]?.petSpell;
       const leash = mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
       const leashAnchor = mob.leashAnchor ?? mob.spawnPos;
@@ -314,6 +323,7 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
         break;
       }
       if (ctx.maybeFlee(mob, target)) break;
+      if (updateChannelHealerHold(ctx, mob)) break;
       // Anti-kite snare also fires in melee (slows ranged players around the boss).
       pulseAntiKiteSnare(ctx, mob);
       pulseLoudYell(ctx, mob);
@@ -371,12 +381,13 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
           mob.stompTimer = stomp.every;
           const school = stomp.school ?? 'physical';
           ctx.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
-          ctx.emit({
-            type: 'log',
-            text: `${mob.name} unleashes ${stomp.name}!`,
-            color: '#ff9933',
-            entityId: mob.id,
-          });
+          if (!MOBS[mob.templateId]?.quietMechanics)
+            ctx.emit({
+              type: 'log',
+              text: `${mob.name} unleashes ${stomp.name}!`,
+              color: '#ff9933',
+              entityId: mob.id,
+            });
           for (const meta of ctx.players.values()) {
             const pe = ctx.entities.get(meta.entityId);
             if (!pe || pe.dead || dist2d(pe.pos, mob.pos) > stomp.radius) continue;
@@ -409,12 +420,13 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
           mob.stoneskinTimer = stoneskin.every;
           const school = (stoneskin.school ?? 'physical') as Aura['school'];
           ctx.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
-          ctx.emit({
-            type: 'log',
-            text: `${mob.name} unleashes ${stoneskin.name}!`,
-            color: '#c9c2b5',
-            entityId: mob.id,
-          });
+          if (!MOBS[mob.templateId]?.quietMechanics)
+            ctx.emit({
+              type: 'log',
+              text: `${mob.name} unleashes ${stoneskin.name}!`,
+              color: '#c9c2b5',
+              entityId: mob.id,
+            });
           ctx.applyAura(mob, {
             id: `stoneskin_${mob.templateId}`,
             name: stoneskin.name,
@@ -440,12 +452,13 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
           mob.terrifyTimer = terrify.every;
           const school = terrify.school ?? 'shadow';
           ctx.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
-          ctx.emit({
-            type: 'log',
-            text: `${mob.name} unleashes ${terrify.name}!`,
-            color: '#ff9933',
-            entityId: mob.id,
-          });
+          if (!MOBS[mob.templateId]?.quietMechanics)
+            ctx.emit({
+              type: 'log',
+              text: `${mob.name} unleashes ${terrify.name}!`,
+              color: '#ff9933',
+              entityId: mob.id,
+            });
           for (const meta of ctx.players.values()) {
             const pe = ctx.entities.get(meta.entityId);
             if (!pe || pe.dead || dist2d(pe.pos, mob.pos) > terrify.radius) continue;
@@ -484,12 +497,13 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
             mob.castRemaining = 0;
             const school = (bigCast.school ?? 'nature') as Aura['school'];
             ctx.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
-            ctx.emit({
-              type: 'log',
-              text: `${mob.name} unleashes ${bigCast.name}!`,
-              color: '#ff9933',
-              entityId: mob.id,
-            });
+            if (!MOBS[mob.templateId]?.quietMechanics)
+              ctx.emit({
+                type: 'log',
+                text: `${mob.name} unleashes ${bigCast.name}!`,
+                color: '#ff9933',
+                entityId: mob.id,
+              });
             for (const meta of ctx.players.values()) {
               const pe = ctx.entities.get(meta.entityId);
               if (pe && !pe.dead && dist2d(pe.pos, mob.pos) <= bigCast.radius) {
@@ -661,6 +675,8 @@ export function resetEvadingMob(ctx: SimContext, mob: Entity): void {
   mob.terrifyTimer = MOBS[mob.templateId]?.terrify?.every ?? 0;
   mob.mendTimer = MOBS[mob.templateId]?.mendAlly?.every ?? 0;
   mob.wardTimer = MOBS[mob.templateId]?.wardAllies?.every ?? 0;
+  mob.channelTimer = MOBS[mob.templateId]?.channelHeal?.every ?? 0;
+  mob.channelRamp = 0;
   mob.stoneskinTimer = MOBS[mob.templateId]?.stoneskin?.every ?? 0;
   mob.rallyTimer = MOBS[mob.templateId]?.rally?.every ?? 0;
   mob.warcryTimer = MOBS[mob.templateId]?.warcry?.every ?? 0;

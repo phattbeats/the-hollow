@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import type { GreenpawCuttingSave } from '../src/sim/greenpaw_cutting';
 import type { GreenpawHearthSave } from '../src/sim/greenpaw_hearth';
 import type { HomesteadSave } from '../src/sim/homestead';
 import type { HousingSave } from '../src/sim/housing';
@@ -11,10 +12,12 @@ import { seedChatFilterDefaults } from './chat_filter_db';
 import type { ChatLogRow } from './chat_log';
 import { DISCORD_SCHEMA } from './discord_db';
 import { isUniqueViolation } from './http_util';
+import { MAPS_SCHEMA } from './maps_db';
 import { OAUTH_SCHEMA } from './oauth_db';
 import { REALM } from './realm';
 import { chooseArchiveName } from './reclaim_name';
 import { SOCIAL_SCHEMA } from './social_db';
+import { USER_ASSETS_SCHEMA } from './user_assets_db';
 
 try {
   process.loadEnvFile?.();
@@ -86,6 +89,24 @@ CREATE INDEX IF NOT EXISTS characters_lifetime_xp
   ON characters (realm, ${LIFETIME_XP_EXPR} DESC);
 CREATE INDEX IF NOT EXISTS characters_lifetime_xp_global
   ON characters (${LIFETIME_XP_EXPR} DESC);
+-- Book of Asphodelia Renown index. The sim owns deed and title decisions in
+-- characters.state JSONB; this additive table is the server-side ranked read
+-- model. Every write supplies realm explicitly because several realm processes
+-- share one database. The unique pair makes replayed unlocks idempotent.
+CREATE TABLE IF NOT EXISTS character_deeds (
+  id BIGSERIAL PRIMARY KEY,
+  realm TEXT NOT NULL,
+  character_id INT NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+  account_id INT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+  deed_id TEXT NOT NULL,
+  earned_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (character_id, deed_id)
+);
+CREATE INDEX IF NOT EXISTS character_deeds_deed ON character_deeds(deed_id);
+CREATE INDEX IF NOT EXISTS character_deeds_account ON character_deeds(account_id);
+CREATE INDEX IF NOT EXISTS character_deeds_character_earned
+  ON character_deeds(character_id, earned_at DESC);
+ALTER TABLE accounts ADD COLUMN IF NOT EXISTS deed_broadcasts BOOLEAN NOT NULL DEFAULT TRUE;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS is_admin BOOLEAN NOT NULL DEFAULT FALSE;
 -- Fine-grained admin roles. admin_roles is the single SOURCE OF TRUTH for what
 -- an operator may do (staff_db.ts effectiveAdminRoles derives nothing from
@@ -122,6 +143,12 @@ ALTER TABLE accounts ADD COLUMN IF NOT EXISTS last_login_user_agent TEXT;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS cosmetics JSONB NOT NULL DEFAULT '{}'::jsonb;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS email TEXT;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS deactivated_at TIMESTAMPTZ;
+-- PHAA-660: daily rewards (docs/design/daily-rewards.md), account-scoped like
+-- cosmetics above so alts on one account share one claim per real day. The
+-- participation lock is deliberately its own column, narrower than banned_at: it
+-- blocks only the reward claim, not login/chat/play (the #1773 adapt).
+ALTER TABLE accounts ADD COLUMN IF NOT EXISTS daily_rewards JSONB NOT NULL DEFAULT '{}'::jsonb;
+ALTER TABLE accounts ADD COLUMN IF NOT EXISTS daily_rewards_locked_at TIMESTAMPTZ;
 -- Whether the account has a password the OWNER set (and therefore can log in with
 -- via username + password). Defaults TRUE so every existing account keeps its
 -- usable password. Discord-provisioned accounts are created with FALSE: they have
@@ -496,6 +523,11 @@ export async function ensureSchema(): Promise<void> {
     // unconditionally (idempotent) so the tables exist before the feature is
     // enabled, like the other schema modules.
     await client.query(DISCORD_SCHEMA);
+    // Map editor tables: saved/forked custom maps and uploaded GLB assets.
+    // Both FK-reference accounts(id), so they run after SCHEMA. Applied
+    // unconditionally (idempotent), like the other schema modules.
+    await client.query(MAPS_SCHEMA);
+    await client.query(USER_ASSETS_SCHEMA);
     // Seed the chat-filter word lists + config on first boot only (idempotent).
     // Runs under the same advisory lock so concurrent realm boots don't race.
     await seedChatFilterDefaults(client);
@@ -614,6 +646,82 @@ export async function revokeAccountMechChroma(
   const cosmetics = await loadAccountCosmetics(accountId);
   const mechChromaIds = cosmetics.mechChromaIds.filter((id) => id !== chromaId);
   return saveAccountCosmetics(accountId, { ...cosmetics, mechChromaIds });
+}
+
+// PHAA-660: daily rewards (docs/design/daily-rewards.md), account-scoped like
+// AccountCosmetics above. cycleIndex is which DAILY_REWARD_CYCLE slot claims next;
+// lastClaimUtcDay ('' until the first claim) gates one claim per real UTC day and
+// is compared against the sim's own utcDay (server/game.ts), never read here.
+export interface AccountDailyRewards {
+  cycleIndex: number;
+  lastClaimUtcDay: string;
+}
+
+export function normalizeAccountDailyRewards(value: unknown): AccountDailyRewards {
+  const src = value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
+  const cycleIndex = Number(src.cycleIndex);
+  return {
+    cycleIndex: Number.isInteger(cycleIndex) && cycleIndex >= 0 ? cycleIndex : 0,
+    lastClaimUtcDay: typeof src.lastClaimUtcDay === 'string' ? src.lastClaimUtcDay : '',
+  };
+}
+
+export async function loadAccountDailyRewards(accountId: number): Promise<AccountDailyRewards> {
+  const res = await pool.query('SELECT daily_rewards FROM accounts WHERE id = $1', [accountId]);
+  return normalizeAccountDailyRewards(res.rows[0]?.daily_rewards);
+}
+
+// The full wire shape (cycle state + the narrow participation lock), one query.
+// Used to hydrate a session at WS join (server/main.ts), mirroring loadAccountCosmetics.
+export interface AccountDailyRewardsInfo extends AccountDailyRewards {
+  locked: boolean;
+}
+
+export async function loadAccountDailyRewardsInfo(
+  accountId: number,
+): Promise<AccountDailyRewardsInfo> {
+  const res = await pool.query(
+    'SELECT daily_rewards, daily_rewards_locked_at FROM accounts WHERE id = $1',
+    [accountId],
+  );
+  return {
+    ...normalizeAccountDailyRewards(res.rows[0]?.daily_rewards),
+    locked: res.rows[0]?.daily_rewards_locked_at != null,
+  };
+}
+
+// Atomically advances the cycle IF the account is not reward-locked and has not
+// already claimed `today`. Returns null (no grant) on either failure, so the
+// caller (server/game.ts) never double-grants even under concurrent claims: the
+// WHERE guard on lastClaimUtcDay means only the first of two racing claims can
+// ever flip it to today. cycleLength comes from the caller (DAILY_REWARD_CYCLE
+// .length) rather than being hardcoded here, so the two never drift. Returns the
+// GRANTED cycle index (the slot claimed just now, not the next one) alongside
+// the new persisted state, since the caller needs to know which reward to grant.
+export async function claimAccountDailyReward(
+  accountId: number,
+  today: string,
+  cycleLength: number,
+): Promise<{ grantedCycleIndex: number; next: AccountDailyRewards } | null> {
+  const current = await loadAccountDailyRewards(accountId);
+  const next: AccountDailyRewards = {
+    cycleIndex: (current.cycleIndex + 1) % cycleLength,
+    lastClaimUtcDay: today,
+  };
+  const res = await pool.query(
+    `UPDATE accounts
+     SET daily_rewards = $2
+     WHERE id = $1
+       AND daily_rewards_locked_at IS NULL
+       AND COALESCE(daily_rewards ->> 'lastClaimUtcDay', '') IS DISTINCT FROM $3
+     RETURNING daily_rewards`,
+    [accountId, JSON.stringify(next), today],
+  );
+  if ((res.rowCount ?? 0) === 0) return null;
+  return {
+    grantedCycleIndex: current.cycleIndex,
+    next: normalizeAccountDailyRewards(res.rows[0]?.daily_rewards ?? next),
+  };
 }
 
 function cleanMetadataText(value: string | null | undefined, max: number): string | null {
@@ -2251,6 +2359,17 @@ export async function loadHomesteadState(): Promise<HomesteadSave | null> {
 
 export async function saveHomesteadState(save: HomesteadSave): Promise<void> {
   await saveWorldState('homestead', save);
+}
+
+// Greenpaw's cutting (PHAA-751): shared global state like greenpaw_hearth,
+// one JSONB blob under the 'greenpaw_cutting' key. Additive: no new tables or
+// columns.
+export async function loadGreenpawCuttingState(): Promise<GreenpawCuttingSave | null> {
+  return loadWorldState<GreenpawCuttingSave>('greenpaw_cutting');
+}
+
+export async function saveGreenpawCuttingState(save: GreenpawCuttingSave): Promise<void> {
+  await saveWorldState('greenpaw_cutting', save);
 }
 
 // ---------------------------------------------------------------------------

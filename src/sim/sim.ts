@@ -41,7 +41,7 @@ import {
   spendResource as spendResourceImpl,
   updateCasting as updateCastingImpl,
 } from './combat/casting_lifecycle';
-import { isRooted, isStunned } from './combat/cc';
+import { isLockedOut, isRooted, isSilenced, isStunned } from './combat/cc';
 import {
   dealDamage as dealDamageImpl,
   grantXp as grantXpImpl,
@@ -56,12 +56,14 @@ import {
   healingThreat as healingThreatImpl,
   hexOutputMult as hexOutputMultImpl,
 } from './combat/heal';
+import { spellCritBonusFromAuras, spellDamageMultFromAuras } from './combat/spell_combat';
 import { isSpellResisted } from './combat/spell_resist';
 // A3: the augment/power-up content helpers used by the Fiesta match logic
 // (AUGMENTS_BY_ID/AugmentDef/eligibleAugments/POWERUPS/PowerupDef/tierForWave)
 // moved to social/fiesta.ts with that logic; sim.ts keeps only the type used by
 // the PlayerMeta interface + the power-up catalog the fiestaMatchInfo accessor reads.
 import { type AugmentSpecial, type AugmentTier, POWERUPS_BY_ID } from './content/augments';
+import { DAILY_REWARD_CYCLE } from './content/daily_rewards';
 import { VASE_LANDING_POS } from './content/hollow';
 import type { JailState } from './content/jail';
 import { FURY_ENTITY_ID, FURY_NPC_ID } from './content/pvp_honor';
@@ -88,6 +90,8 @@ import {
   talentPointsAtLevel,
 } from './content/talents';
 import { applyCooldowns, type SavedCooldowns, serializeCooldowns } from './cooldown_persist';
+import { craftItem as craftItemImpl, emptyCraftProficiency } from './crafting';
+import * as dailyRewardsMod from './daily_rewards';
 import type { DelveShopGate, DelveShopOffer } from './data';
 import {
   abilitiesKnownAt,
@@ -117,6 +121,10 @@ import * as companionMod from './delves/companion';
 import * as lockpickMod from './delves/lockpick_controller';
 import * as runsMod from './delves/runs';
 import { projectOutsideDungeonDoors } from './dungeon_door_clearance';
+import {
+  applyEnchant as applyEnchantImpl,
+  disenchantItem as disenchantItemImpl,
+} from './enchanting';
 import * as nythraxis from './encounters/nythraxis';
 // A3: ARENA_SPAWNS_A_2v2/B_2v2 (read only by the moved fiestaRevive) now live with
 // social/fiesta.ts. The dungeon-wall consts (DUNGEON_WALL_HW/X) are now read only by
@@ -154,6 +162,12 @@ import {
   isNodeHarvestableBy,
   nodeCooldownIdsFor,
 } from './gathering';
+import {
+  GreenpawCutting,
+  type GreenpawCuttingSave,
+  isGreenpawCompanionMob,
+  updateGreenpawCompanion,
+} from './greenpaw_cutting';
 import { GreenpawHearth, type GreenpawHearthSave } from './greenpaw_hearth';
 import { Homestead, type HomesteadSave } from './homestead';
 import { Housing, type HousingSave } from './housing';
@@ -183,6 +197,7 @@ import {
 } from './loot/loot_roll';
 import { type MailSave, PostOffice } from './mail/post_office';
 import { Market, type MarketListing, type MarketSave } from './market';
+import { NYTHRAXIS_SPIRIT_MENDING_CAST_ID } from './mob/healer_channel';
 import * as lifecycle from './mob/lifecycle';
 import { resetEvadingMob as resetEvadingMobFn, updateMob as updateMobFn } from './mob/locomotion';
 import { runMobSwingAffixes } from './mob/mob_swing';
@@ -318,6 +333,7 @@ import {
   type AuraKind,
   angleTo,
   armorReduction,
+  type CraftType,
   type CrowdControlDrCategory,
   type CrowdControlDrState,
   DELVE_COMPANION_HEAL_INTERVAL,
@@ -370,6 +386,7 @@ import {
   virtualLevel,
   xpToReachLevel,
 } from './types';
+import * as weaponStowMod from './weapon_stow';
 import { groundHeight, waterLevel, waterLevelAt } from './world';
 
 // TRIVIAL_LEVEL_GAP moved to mob/targeting.ts (used only by isTrivialTo).
@@ -530,6 +547,10 @@ export interface Party {
   raid: boolean;
   raidGroups: Map<number, 1 | 2>; // pid -> raid subgroup
   lootStrategies: LootStrategies;
+  // Heroic Nythraxis difficulty selection (leader-set, see setRaidDifficulty in
+  // social/party.ts). Read at the raid's next fresh instance claim; a claimed
+  // instance's difficulty is then fixed for its life regardless of a later flip.
+  raidDifficulty: 'normal' | 'heroic';
 }
 
 export interface TradeSession {
@@ -665,6 +686,10 @@ export interface InstanceSlot {
   objectIds: number[];
   exitId: number | null;
   emptyFor: number;
+  // Claimed difficulty (Heroic Nythraxis only; every other dungeon stays
+  // 'normal'). Set from the claiming raid's raidDifficulty at claim time and
+  // fixed for the instance's life; reset to 'normal' when the instance frees.
+  difficulty: 'normal' | 'heroic';
 }
 
 export interface ResolvedAbility {
@@ -879,6 +904,16 @@ export interface PlayerMeta {
   // (CharacterState.gatheringProficiency); feeds a future proficiency-scaled
   // rarity roll.
   gatheringProficiency: Record<GatherNodeType, number>;
+  // Per-player craft proficiency (PHAA-574): one counter per craft type,
+  // incremented on every successful craft of that craft. Persisted
+  // (CharacterState.craftProficiency); scales the output quality roll the
+  // same way gatheringProficiency scales harvest rarity.
+  craftProficiency: Record<CraftType, number>;
+  // Active per-equip-slot enchants (PHAA-649 child, upstream #1712): slot ->
+  // EnchantDef id. Persisted (CharacterState.enchants). Reskinned onto a slot
+  // rather than a specific item copy (no per-item-instance system exists
+  // here); see src/sim/enchanting.ts.
+  enchants: Partial<Record<EquipSlot, string>>;
   // Collection tracking core (PHAA-626): the set of collectible ids (world
   // readables today; future kinds later) this player has ever found. Grows
   // only, never shrinks. Persisted (CharacterState.collectedIds).
@@ -999,6 +1034,12 @@ export interface CharacterState {
   // Optional so characters saved before per-node gathering proficiency
   // existed load cleanly (addPlayer backfills to all-zero).
   gatheringProficiency?: Partial<Record<GatherNodeType, number>>;
+  // Optional so characters saved before crafting (PHAA-574) existed load
+  // cleanly (addPlayer backfills to all-zero).
+  craftProficiency?: Partial<Record<CraftType, number>>;
+  // Optional so characters saved before enchanting (PHAA-649 child, upstream
+  // #1712) existed load cleanly (addPlayer backfills to empty).
+  enchants?: Partial<Record<EquipSlot, string>>;
   // A live jail sentence (PHAA-657). Persisted so it keeps running across a
   // reconnect and the character reloads still jailed. Absent = not jailed.
   jail?: JailState;
@@ -1167,6 +1208,12 @@ export class Sim {
   // owns the plot ownership book. Constructed in the ctor after the SimContext
   // (it consumes the seam); Sim keeps thin delegates below, mirroring housing.
   homestead!: Homestead;
+  // Greenpaw's cutting (PHAA-751): owns the planted-cutting record book and
+  // the growth/companion-spawn lifecycle. Constructed in the ctor after the
+  // SimContext (it consumes the seam AND homesteadOwnedPlotFor, so it must be
+  // constructed after homestead above); Sim keeps thin delegates below,
+  // mirroring the greenpawHearth pattern.
+  greenpawCutting!: GreenpawCutting;
   // Gathering v0 (PHAA-504): corpse harvest, the single-use first-come opposite
   // of a world gathering node. Constructed in the ctor after the SimContext (it
   // consumes the seam for its one rng draw); Sim keeps a thin delegate below,
@@ -1243,6 +1290,11 @@ export class Sim {
     // Homestead v0: owns the open-world plot book; consumes the seam. Draws no
     // rng at construction (or ever), so the draws below are unperturbed.
     this.homestead = new Homestead(this.ctx);
+    // Greenpaw's cutting (PHAA-751): owns the planted-cutting record book;
+    // consumes the seam (including homesteadOwnedPlotFor, above). Draws rng
+    // only from plant() (a player command), never at construction, so the
+    // draws below are unperturbed.
+    this.greenpawCutting = new GreenpawCutting(this.ctx);
 
     // Spawn content: a custom world (editor play-test) or the built-in world.
     // CAMPS order is a determinism contract; both bundles preserve it.
@@ -1350,6 +1402,7 @@ export class Sim {
             objectIds: [],
             exitId: null,
             emptyFor: 0,
+            difficulty: 'normal',
           });
         }
         continue;
@@ -1375,6 +1428,7 @@ export class Sim {
           objectIds: [],
           exitId: null,
           emptyFor: 0,
+          difficulty: 'normal',
         });
       }
     }
@@ -1654,6 +1708,8 @@ export class Sim {
       delveDaily: { date: '', firstClearXp: new Set(), markClears: 0 },
       nodeHarvestReadyAt: {},
       gatheringProficiency: emptyGatheringProficiency(),
+      craftProficiency: emptyCraftProficiency(),
+      enchants: {},
       collectedIds: new Set(),
       achievements: emptyAchievementProgress(),
     };
@@ -1755,6 +1811,10 @@ export class Sim {
       if (s.gatheringProficiency) {
         meta.gatheringProficiency = { ...emptyGatheringProficiency(), ...s.gatheringProficiency };
       }
+      if (s.craftProficiency) {
+        meta.craftProficiency = { ...emptyCraftProficiency(), ...s.craftProficiency };
+      }
+      if (s.enchants) meta.enchants = { ...s.enchants };
       if (s.delveLoreUnlocked) for (const id of s.delveLoreUnlocked) meta.delveLoreUnlocked.add(id);
       if (s.collectedIds) for (const id of s.collectedIds) meta.collectedIds.add(id);
       if (s.unlockedAchievements)
@@ -1780,9 +1840,9 @@ export class Sim {
 
     // Resolve the flat talent struct once, before the stat pass + ability
     // resolver below consume it (they only ever read these flat numbers).
-    meta.talentMods = computeTalentModifiers(cls, meta.talents, meta.secondaryCls);
+    meta.talentMods = computeTalentModifiers(cls, meta.talents, meta.secondaryCls, player.level);
     this.refreshKnownAbilities(meta, false);
-    recalcPlayerStats(player, cls, meta.equipment, meta.talentMods);
+    recalcPlayerStats(player, cls, meta.equipment, meta.talentMods, meta.enchants);
     if (savedState) {
       player.hp = Math.max(1, Math.min(player.maxHp, savedState.hp));
       player.resource =
@@ -1806,6 +1866,10 @@ export class Sim {
     player.potionCooldownUntil = applyCooldowns(savedState?.cooldowns, player.cooldowns, this.time);
     player.potionCooldownRemaining = Math.max(0, player.potionCooldownUntil - this.time);
     if (savedState?.pet) this.restorePet(player, savedState.pet);
+    // Greenpaw's cutting (PHAA-751): spawn the companion now if the player's
+    // planted cutting already finished growing (possibly across a prior
+    // session's worth of elapsed time).
+    this.greenpawCutting.onPlayerJoin(meta);
 
     // The Hollow spawn policy (PHAA-404): under hollowStart every join lands
     // inside the Hollow hub instance, and a character last saved inside the
@@ -1864,6 +1928,10 @@ export class Sim {
     // with the character and removed from the live world instead of released
     const pet = this.petOf(pid, true);
     if (pet) this.despawnPersistentPet(pet);
+    // Greenpaw's cutting (PHAA-751): the companion is a session-only
+    // projection of the persisted record, so it never idles in the world
+    // after its owner logs off.
+    this.greenpawCutting.onPlayerLeave(meta);
     for (const m of this.entities.values()) {
       if (m.kind !== 'mob') continue;
       m.threat.delete(pid);
@@ -1973,6 +2041,7 @@ export class Sim {
               date: meta.honorArenaDaily.date,
               winsByOpponent: { ...meta.honorArenaDaily.winsByOpponent },
               fiestaCompletionsByOpponent: { ...meta.honorArenaDaily.fiestaCompletionsByOpponent },
+              fiestaKillsByVictim: { ...meta.honorArenaDaily.fiestaKillsByVictim },
               totalWins: meta.honorArenaDaily.totalWins,
             },
           }
@@ -1999,6 +2068,8 @@ export class Sim {
       delveClears: { ...meta.delveClears },
       companionUpgrades: { ...meta.companionUpgrades },
       gatheringProficiency: { ...meta.gatheringProficiency },
+      craftProficiency: { ...meta.craftProficiency },
+      enchants: { ...meta.enchants },
       delveLoreUnlocked: [...meta.delveLoreUnlocked],
       collectedIds: [...meta.collectedIds],
       unlockedAchievements: [...meta.achievements.unlocked],
@@ -2054,6 +2125,15 @@ export class Sim {
   setPlayerGuild(pid: number, guild: string): void {
     const e = this.entities.get(pid);
     if (e) e.guild = guild;
+  }
+
+  /** Z-key sheathe toggle (IWorld.toggleWeaponStow; server `stow_weapon` command).
+   *  Cosmetic only: flips Entity.weaponStowed, which rides the entity wire and the
+   *  renderer maps to the on-back weapon pose. Refused while dead (like /sit). */
+  toggleWeaponStow(pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    weaponStowMod.toggleWeaponStow(r.e);
   }
 
   /** Cosmetic skin-select event: rolls a rarity rank (once) and emits the
@@ -2625,6 +2705,7 @@ export class Sim {
       canAddItem: sim.canAddItem.bind(sim),
       partyOf: sim.partyOf.bind(sim),
       removeFromParty: (pid: number, verb: string) => sim.party.removeFromParty(pid, verb),
+      setRaidDifficulty: sim.setRaidDifficulty.bind(sim),
       // /ready chat command routes through the seam to social/ready_check.ts (the
       // leader-gated start; readyCheckRespond is a direct Sim delegate below, not on
       // the seam, since nothing inside sim internals calls it).
@@ -2720,6 +2801,11 @@ export class Sim {
       // mobSwing/moveToward/isHostileTo/isRooted/moveSpeedMult/swingIntervalMult it consumes
       // stay on Sim and are bound above (M2/T1/C4a), not re-bound for the companion slice.
       updateDelveCompanion: (companion) => companionMod.updateDelveCompanion(sim.ctx, companion),
+      // Greenpaw's cutting companion (PHAA-751) lives in src/sim/greenpaw_cutting.ts;
+      // locomotion.updateMob's owned-companion branch reaches it through this seam
+      // binding, same shape as the delve companion above.
+      isGreenpawCompanionMob: (mob) => isGreenpawCompanionMob(mob),
+      updateGreenpawCompanion: (companion) => updateGreenpawCompanion(sim.ctx, companion),
       updateBossMechanics: sim.updateBossMechanics.bind(sim),
       // N1: updateNythraxisEncounter now lives in encounters/nythraxis.ts; late-bound
       // arrow (mob/locomotion.ts updateMob drives it via ctx). resetNythraxisEncounter
@@ -2865,6 +2951,11 @@ export class Sim {
       // Homestead v0: the /homestead chat-command branch routes through the seam to
       // the Homestead instance (constructed after this literal; late-bound arrow).
       homesteadChat: (raw, pid) => sim.homestead.handleChat(raw, pid),
+      homesteadOwnedPlotFor: (meta) => sim.homestead.ownedPlotFor(meta),
+      // Greenpaw's cutting (PHAA-751): the item-use 'plant' branch routes through
+      // the seam to the GreenpawCutting instance (constructed after this literal;
+      // late-bound arrow).
+      plantGreenpawCutting: (pid) => sim.greenpawCutting.plant(pid),
       // Gathering v0 (PHAA-504): corpse-harvest item selection (the one rng draw)
       // routes through the seam to the Gathering instance (constructed after this
       // literal; late-bound arrow).
@@ -2926,7 +3017,18 @@ export class Sim {
     // from a sane baseline (virtualLevel never falls below the real level). Only
     // ever raises it and lifetimeXp is monotonic.
     r.meta.lifetimeXp = Math.max(r.meta.lifetimeXp, xpToReachLevel(r.e.level));
-    recalcPlayerStats(r.e, r.meta.cls, r.meta.equipment, this.playerMods(r.meta));
+    // Re-bake the flat talent mods at the new level before the stat pass: spec mastery
+    // magnitudes scale with level (min(1, level/20)), so a dev/GM level jump must
+    // strengthen (or weaken) the mastery, exactly like the live ding path
+    // (combat/damage.ts grantXp). Without this a level-jumped character keeps the
+    // mastery baked at the OLD level.
+    r.meta.talentMods = computeTalentModifiers(
+      r.meta.cls,
+      r.meta.talents,
+      r.meta.secondaryCls,
+      r.e.level,
+    );
+    recalcPlayerStats(r.e, r.meta.cls, r.meta.equipment, this.playerMods(r.meta), r.meta.enchants);
     r.e.hp = r.e.maxHp;
     if (r.e.resourceType === 'mana') r.e.resource = r.e.maxResource;
     this.refreshKnownAbilities(r.meta, false);
@@ -3139,6 +3241,7 @@ export class Sim {
     this.postOffice.update();
     this.greenpawHearth.update(DT);
     this.plantSpeech.update(this.greenpawHearth.smokeValue, this.greenpawHearth.lastFeederName);
+    this.greenpawCutting.update(DT);
     updateNpcWander(this.ctx);
     drainDelayedEvents(this.ctx);
 
@@ -3511,7 +3614,9 @@ export class Sim {
     });
     for (const target of this.hostilesInRadius(source, effect.pos, effect.radius)) {
       if (!this.hasLineOfSight(source, target)) continue;
-      const dmg = Math.round(this.rng.range(effect.min, effect.max) + (effect.spBonus ?? 0));
+      const isSpell = effect.school !== 'physical';
+      const rawDmg = this.rng.range(effect.min, effect.max) + (effect.spBonus ?? 0);
+      const dmg = Math.round(isSpell ? rawDmg * spellDamageMultFromAuras(source) : rawDmg);
       this.dealDamage(
         source,
         target,
@@ -3585,7 +3690,7 @@ export class Sim {
     if (!removed) return;
     this.emit({ type: 'aura', targetId: e.id, name: removed.name, gained: false });
     if (auraAffectsStats(removed)) {
-      recalcPlayerStats(e, meta.cls, meta.equipment, this.playerMods(meta));
+      recalcPlayerStats(e, meta.cls, meta.equipment, this.playerMods(meta), meta.enchants);
     }
   }
 
@@ -3594,7 +3699,21 @@ export class Sim {
   }
 
   private spellCrit(p: Entity): number {
-    return 0.05 + p.stats.int * 0.0008;
+    return 0.05 + p.stats.int * 0.0008 + spellCritBonusFromAuras(p);
+  }
+
+  // Pet damage multiplier from pet_damage_pct auras (Howling Rage/Metamorphosis) and
+  // the owner's petDmgPct mastery (Beast Mastery). Shared by mob melee (which pets
+  // route through) and the pet spell-cast path below.
+  private petDamageMult(e: Entity): number {
+    if (e.ownerId === null) return 1;
+    let mult = 1;
+    for (const a of e.auras) {
+      if (a.kind === 'pet_damage_pct') mult += a.value > 1 ? a.value / 100 : a.value;
+    }
+    const ownerMeta = this.players.get(e.ownerId);
+    if (ownerMeta) mult *= 1 + this.playerMods(ownerMeta).global.petDmgPct;
+    return mult;
   }
 
   // Heal core, heal multipliers, heal-absorb soak, crit-vuln bonus, and the
@@ -3641,6 +3760,7 @@ export class Sim {
     if (target.kind === 'npc' && isRejectedFriendlyNpcAura(aura)) return;
     if (
       this.isNythraxisRaidEnemy(target) &&
+      !nythraxis.isNythraxisControllableAdd(target) && // Malric + Voss are meant to be CC'd
       this.isNythraxisControlAura(aura.kind) &&
       aura.sourceId !== target.id &&
       !this.isNythraxisScriptedControl(target, aura)
@@ -3676,7 +3796,8 @@ export class Sim {
     this.refreshMobLeashFromAction(source ?? null, target);
     if (target.kind === 'player') {
       const meta = this.players.get(target.id);
-      if (meta) recalcPlayerStats(target, meta.cls, meta.equipment, this.playerMods(meta));
+      if (meta)
+        recalcPlayerStats(target, meta.cls, meta.equipment, this.playerMods(meta), meta.enchants);
     }
   }
 
@@ -3811,6 +3932,14 @@ export class Sim {
     const top = topThreatValue(mob);
     const mine = mob.threat.get(p.id) ?? 0;
     mob.threat.set(p.id, Math.max(mine, top, 1));
+    // A mob flagged ignoreTaunt (Heroic Nythraxis's untauntable Spirit of Voss)
+    // or a training dummy takes the threat (it shows on meters) but never
+    // turns, forces, or fights: without this guard a taunt permanently
+    // force-aggroed it and pinned the attacker in combat forever.
+    if (MOBS[mob.templateId]?.ignoreTaunt || MOBS[mob.templateId]?.dummy) {
+      this.enterCombat(p, mob);
+      return;
+    }
     if (p.ownerId !== null && MOBS[mob.templateId]?.boss) {
       this.enterCombat(p, mob);
       return;
@@ -3989,6 +4118,7 @@ export class Sim {
     noRage = false,
     threatOpts?: { flat?: number; mult?: number },
     direct = true,
+    alreadyFinal = false,
   ): void {
     dealDamageImpl(
       this.ctx,
@@ -4002,6 +4132,7 @@ export class Sim {
       noRage,
       threatOpts,
       direct,
+      alreadyFinal,
     );
   }
 
@@ -4348,6 +4479,7 @@ export class Sim {
     if (crit) dmg *= 2;
     const enrage = MOBS[mob.templateId]?.enrage;
     if (mob.enraged && enrage) dmg *= enrage.dmgMult;
+    dmg *= this.petDamageMult(mob);
     const rawDmg = dmg; // pre-armor, post-crit/enrage and basis for cleave splash
     dmg *= 1 - armorReduction(this.effectiveArmor(target), mob.level);
     const dealt = Math.max(1, Math.round(dmg));
@@ -4361,7 +4493,7 @@ export class Sim {
   // module never reaches into the Sim players map directly.
   private recalcPlayer(target: Entity): void {
     const meta = this.players.get(target.id);
-    if (meta) recalcPlayerStats(target, meta.cls, meta.equipment, meta.talentMods);
+    if (meta) recalcPlayerStats(target, meta.cls, meta.equipment, meta.talentMods, meta.enchants);
   }
 
   private updateRangedPetAttack(
@@ -4393,7 +4525,7 @@ export class Sim {
       fx: 'projectile',
     });
     // Pet spells are resisted, not missed (same semantics as player casts).
-    if (isSpellResisted(this.rng, pet.level, target.level)) {
+    if (isSpellResisted(this.rng, pet.level, target.level, pet.hitBonus)) {
       this.emit({
         type: 'damage',
         sourceId: pet.id,
@@ -4407,7 +4539,8 @@ export class Sim {
       this.enterCombat(pet, target);
     } else {
       const dmg = Math.round(
-        this.rng.range(spell.min + pet.level * 0.8, spell.max + pet.level * 1.1),
+        this.rng.range(spell.min + pet.level * 0.8, spell.max + pet.level * 1.1) *
+          this.petDamageMult(pet),
       );
       this.dealDamage(pet, target, Math.max(1, dmg), false, spell.school, spell.name, 'hit');
     }
@@ -4492,6 +4625,7 @@ export class Sim {
         !tmpl.desperateHeal &&
         !tmpl.mendAlly &&
         !tmpl.wardAllies &&
+        !tmpl.channelHeal &&
         !tmpl.rally &&
         !tmpl.warcry)
     )
@@ -4519,12 +4653,13 @@ export class Sim {
     if (tmpl.enrage && enrageAllowed && !mob.enraged && hpFrac <= tmpl.enrage.belowHpPct) {
       mob.enraged = true;
       this.emit({ type: 'aura', targetId: mob.id, name: 'Enrage', gained: true });
-      this.emit({
-        type: 'log',
-        text: `${mob.name} becomes enraged!`,
-        color: '#ff6666',
-        entityId: mob.id,
-      });
+      if (!tmpl.quietMechanics)
+        this.emit({
+          type: 'log',
+          text: `${mob.name} becomes enraged!`,
+          color: '#ff6666',
+          entityId: mob.id,
+        });
       this.emit({
         type: 'spellfx',
         sourceId: mob.id,
@@ -4624,6 +4759,76 @@ export class Sim {
       }
     }
 
+    // Channeled ESCALATING heal ("Malric's Mending", Heroic Nythraxis): heal the
+    // strongest friendly mob in range (its protectee, the raid boss) for a base
+    // amount plus a ramp that grows each uninterrupted tick. Any stun/incapacitate/
+    // silence, OR a real interrupt (a school lockout landing on the channel's
+    // school), breaks the channel and RESETS the ramp, so a raid that fails to
+    // lock the caster down watches the boss heal for more and more. The caster is
+    // CC-able by design (ccImmune: false).
+    if (tmpl.channelHeal) {
+      const ch = tmpl.channelHeal;
+      const interrupted =
+        isStunned(mob) || isSilenced(mob) || isLockedOut(mob, ch.school ?? 'shadow');
+      if (interrupted) {
+        // Clear the (scripted) channel bar so a stunned/interrupted healer is not
+        // left rendering a frozen cast; updateChannelHealerHold re-arms it once free.
+        if (mob.castingAbility === NYTHRAXIS_SPIRIT_MENDING_CAST_ID) {
+          mob.castingAbility = null;
+          mob.castTotal = 0;
+          mob.castRemaining = 0;
+          mob.channeling = false;
+        }
+        if (mob.channelRamp > 0) {
+          mob.channelRamp = 0;
+          if (!tmpl.quietMechanics)
+            this.emit({
+              type: 'log',
+              text: `${ch.name} is interrupted!`,
+              color: '#ffcc66',
+              entityId: mob.id,
+            });
+        }
+        mob.channelTimer = ch.every;
+      } else {
+        mob.channelTimer -= DT;
+        if (mob.channelTimer <= 0) {
+          mob.channelTimer = ch.every;
+          let protectee: Entity | null = null;
+          for (const ally of this.entities.values()) {
+            if (ally.kind !== 'mob' || ally.dead || ally.ownerId !== null) continue; // skip players, pets, corpses
+            if (ally.hostile !== mob.hostile || ally.id === mob.id) continue; // same-faction, not self
+            if (dist2d(ally.pos, mob.pos) > ch.radius) continue;
+            if (!protectee || ally.maxHp > protectee.maxHp) protectee = ally; // the boss = biggest pool
+          }
+          if (protectee && protectee.hp < protectee.maxHp) {
+            const amount = Math.round(Math.min(ch.maxHeal, ch.baseHeal + mob.channelRamp));
+            const school = ch.school ?? 'shadow';
+            this.emit({
+              type: 'spellfx',
+              sourceId: mob.id,
+              targetId: protectee.id,
+              school,
+              fx: 'beam',
+            });
+            // quietMechanics healers (the Nythraxis spirit adds) stay silent: the
+            // beam + heal event are enough, no per-tick chat line.
+            if (!tmpl.quietMechanics)
+              this.emit({
+                type: 'log',
+                text: `${mob.name} channels ${ch.name}.`,
+                color: '#66ff99',
+                entityId: mob.id,
+              });
+            this.applyHeal(mob, protectee, amount, ch.name);
+          }
+          // The ramp grows each uninterrupted tick (capped so base+ramp never
+          // exceeds maxHeal), so an ignored channel heals more and more over time.
+          mob.channelRamp = Math.min(ch.maxHeal - ch.baseHeal, mob.channelRamp + ch.rampAdd);
+        }
+      }
+    }
+
     // Commander "Rally": periodically empower every friendly mob in range
     // (including the caster) with a refreshing attack-power buff. The offensive
     // twin of mendAlly and same telegraphed timer, same same-faction ally scan,
@@ -4642,12 +4847,13 @@ export class Sim {
         if (allies.length > 0) {
           const school = tmpl.rally.school ?? 'physical';
           this.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
-          this.emit({
-            type: 'log',
-            text: `${mob.name} unleashes ${tmpl.rally.name}!`,
-            color: '#ffcc33',
-            entityId: mob.id,
-          });
+          if (!tmpl.quietMechanics)
+            this.emit({
+              type: 'log',
+              text: `${mob.name} unleashes ${tmpl.rally.name}!`,
+              color: '#ffcc33',
+              entityId: mob.id,
+            });
           for (const ally of allies) {
             this.applyAura(ally, {
               id: `rally_${mob.templateId}`,
@@ -4844,6 +5050,41 @@ export class Sim {
     if (!r) return false;
     const { meta } = r;
     return canAddItem(meta.inventory, bagCapacity(meta.bags), itemId, count);
+  }
+
+  // PHAA-660 (docs/design/daily-rewards.md): server-authoritative online play never
+  // calls this IWorld member on the authoritative Sim (a single online Sim hosts
+  // many accounts, so a single `dailyRewards` field can't represent all of them;
+  // server/game.ts instead does its own Postgres-backed, account-scoped eligibility
+  // and calls grantDailyRewardCycleSlot below directly). This method is what makes
+  // OFFLINE solo play work: there is no separate account/server layer offline, so
+  // the Sim owns its own eligibility check the same way the delve daily lockout
+  // does (this.utcDay, injected by the host, never read from the wall clock here).
+  dailyRewards: import('../world_api').DailyRewardsInfo = {
+    cycleIndex: 0,
+    lastClaimUtcDay: '',
+    locked: false,
+  };
+
+  claimDailyReward(pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    if (this.dailyRewards.locked) return;
+    if (this.utcDay && this.dailyRewards.lastClaimUtcDay === this.utcDay) return;
+    const cycleIndex = this.dailyRewards.cycleIndex;
+    dailyRewardsMod.claimDailyReward(this.ctx, cycleIndex, r.meta.entityId);
+    this.dailyRewards = {
+      ...this.dailyRewards,
+      cycleIndex: (cycleIndex + 1) % DAILY_REWARD_CYCLE.length,
+      lastClaimUtcDay: this.utcDay,
+    };
+  }
+
+  // The online-only grant primitive: server/game.ts calls this directly (never
+  // through the claimDailyReward() IWorld member above) after its own
+  // Postgres-backed eligibility check (claimAccountDailyReward, server/db.ts).
+  grantDailyRewardCycleSlot(cycleIndex: number, pid?: number): boolean {
+    return dailyRewardsMod.claimDailyReward(this.ctx, cycleIndex, pid ?? this.primaryId);
   }
 
   equipBag(itemId: string, socket?: number, pid?: number): void {
@@ -5120,6 +5361,40 @@ export class Sim {
 
   get gatheringProficiency(): Record<GatherNodeType, number> {
     return this.gatheringProficiencyFor(this.primaryId);
+  }
+
+  // Crafting (PHAA-574): consume a recipe's reagents and grant its output, a
+  // thin delegate onto src/sim/crafting.ts, resolved on the deterministic
+  // tick the command arrives on, same shape as harvestNode above.
+  craftItem(recipeId: string, pid?: number): void {
+    craftItemImpl(this.ctx, recipeId, pid);
+  }
+
+  craftProficiencyFor(pid: number): Record<CraftType, number> {
+    return this.players.get(pid)?.craftProficiency ?? emptyCraftProficiency();
+  }
+
+  get craftProficiency(): Record<CraftType, number> {
+    return this.craftProficiencyFor(this.primaryId);
+  }
+
+  // Enchanting (PHAA-649 child, upstream #1712): disenchant/apply-enchant, thin
+  // delegates onto src/sim/enchanting.ts, resolved on the deterministic tick the
+  // command arrives on, same shape as craftItem above.
+  disenchantItem(itemId: string, pid?: number): void {
+    disenchantItemImpl(this.ctx, itemId, pid);
+  }
+
+  applyEnchant(enchantId: string, pid?: number): void {
+    applyEnchantImpl(this.ctx, enchantId, pid);
+  }
+
+  enchantsFor(pid: number): Partial<Record<EquipSlot, string>> {
+    return this.players.get(pid)?.enchants ?? {};
+  }
+
+  get enchants(): Partial<Record<EquipSlot, string>> {
+    return this.enchantsFor(this.primaryId);
   }
 
   // Collection tracking core (PHAA-626): read-as-command entry point, a thin
@@ -5427,6 +5702,10 @@ export class Sim {
   moveRaidMember(targetPid: number, group: 1 | 2, pid?: number): void {
     this.party.moveRaidMember(targetPid, group, pid);
   }
+
+  setRaidDifficulty(difficulty: 'normal' | 'heroic', pid?: number): void {
+    this.party.setRaidDifficulty(difficulty, pid);
+  }
   // nextRaidGroupFor / normalizeRaidGroups / removeFromParty moved to the
   // PartyMachine (src/sim/social/party.ts, A1). removeFromParty is reachable by
   // removePlayer through `this.ctx.removeFromParty` (the SimContext seam).
@@ -5511,7 +5790,8 @@ export class Sim {
     }
     if (statsDirty && target.kind === 'player') {
       const meta = this.players.get(target.id);
-      if (meta) recalcPlayerStats(target, meta.cls, meta.equipment, this.playerMods(meta));
+      if (meta)
+        recalcPlayerStats(target, meta.cls, meta.equipment, this.playerMods(meta), meta.enchants);
     }
   }
 
@@ -6156,6 +6436,21 @@ export class Sim {
 
   loadHomestead(save: HomesteadSave | null | undefined): void {
     this.homestead.loadHomestead(save);
+  }
+
+  // -------------------------------------------------------------------------
+  // Greenpaw's cutting (PHAA-751, thin delegates to this.greenpawCutting).
+  // Persisted like greenpawHearth (a continuously drifting accumulator, saved
+  // unconditionally on the autosave cadence), not like homestead's rev-diffed
+  // rare-change book.
+  // -------------------------------------------------------------------------
+
+  serializeGreenpawCutting(): GreenpawCuttingSave {
+    return this.greenpawCutting.serialize();
+  }
+
+  loadGreenpawCutting(save: GreenpawCuttingSave | null | undefined): void {
+    this.greenpawCutting.load(save);
   }
 
   // -------------------------------------------------------------------------

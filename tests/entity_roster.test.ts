@@ -181,6 +181,7 @@ function makeCtx() {
     canAddItem: vi.fn(() => true),
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
+    setRaidDifficulty: vi.fn(),
     dropPartyMarkers: vi.fn(),
     readyCheckStart: vi.fn(),
     onMobKilledForQuests: vi.fn(),
@@ -251,6 +252,8 @@ function makeCtx() {
     updatePet: vi.fn(),
     isDelveCompanionMob: vi.fn(() => false),
     updateDelveCompanion: vi.fn(),
+    isGreenpawCompanionMob: vi.fn(() => false),
+    updateGreenpawCompanion: vi.fn(),
     updateBossMechanics: vi.fn(),
     updateNythraxisEncounter: vi.fn(),
     resetNythraxisEncounter: vi.fn(),
@@ -323,6 +326,8 @@ function makeCtx() {
     notifyPlantThreshold: vi.fn(),
     plantSpeechAmbientChat: vi.fn(),
     homesteadChat: vi.fn(() => false),
+    homesteadOwnedPlotFor: vi.fn(() => null),
+    plantGreenpawCutting: vi.fn(),
     gatherHarvestItemFor: vi.fn(() => null),
   };
   const ctx = createSimContext(host);

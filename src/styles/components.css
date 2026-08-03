@@ -944,6 +944,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  .equip-slot .slot-enchant {
+    font-size: 10px;
+    color: var(--gold);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .char-model-panel {
     flex: 1;
     min-width: 0;
@@ -2557,6 +2564,134 @@
   .vendor-hint {
     font-size: 11px;
     color: #c8b888;
+    margin-top: 8px;
+    border-top: 1px solid #463a1c;
+    padding-top: 6px;
+  }
+
+  /* ---------- crafting (PHAA-818) ---------- */
+  /* crafting/enchanting window */
+  #crafting-window {
+    width: 440px;
+  }
+  .crafting-proficiency {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    padding: 5px;
+    font-size: 11px;
+    color: #c8b888;
+  }
+  .crafting-section-title {
+    margin-top: 8px;
+    padding-top: 7px;
+    border-top: 1px solid #463a1c;
+    color: var(--gold);
+    font-family: var(--title-font);
+    font-size: 12px;
+  }
+  .crafting-empty {
+    padding: 5px;
+    font-size: 11px;
+    color: #887c5c;
+  }
+  .crafting-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+    padding: 5px;
+    border-radius: 4px;
+  }
+  .crafting-row:hover {
+    background: #ffffff10;
+  }
+  .crafting-name {
+    font-size: 12px;
+    flex: 1;
+  }
+  .crafting-craft-type,
+  .crafting-slot {
+    font-size: 11px;
+    color: #ddd;
+  }
+  .crafting-reagents {
+    font-size: 11px;
+    color: #c8b888;
+  }
+  .crafting-active-tag {
+    font-size: 11px;
+    color: var(--gold);
+  }
+  .crafting-action-btn {
+    min-height: 40px;
+    min-width: 40px;
+    padding: 6px 10px;
+    border: 1px solid #6a5320;
+    border-radius: 4px;
+    cursor: var(--cursor-point);
+    background: linear-gradient(#8a6a26, #5a4413 55%, #473409);
+    color: #ffe6a8;
+    font-family: var(--title-font);
+    font-size: 12px;
+  }
+  .crafting-action-btn:hover:not(:disabled) {
+    filter: brightness(1.12);
+  }
+  .crafting-action-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  /* ---------- daily rewards (PHAA-660) ---------- */
+  #daily-rewards-window {
+    width: 380px;
+  }
+  .daily-rewards-strip {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+  .daily-rewards-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 2px;
+    border: 1px solid #463a1c;
+    border-radius: 4px;
+    background: #ffffff08;
+    text-align: center;
+  }
+  .daily-rewards-cell.is-next {
+    border-color: var(--gold);
+    background: #ffd97022;
+  }
+  .drc-today {
+    font-size: 9px;
+    color: var(--gold);
+    font-family: var(--title-font);
+  }
+  .drc-money {
+    font-size: 10px;
+  }
+  .drc-item {
+    font-size: 9px;
+    color: #c8b888;
+  }
+  .daily-rewards-status {
+    margin-top: 8px;
+    font-size: 11px;
+    color: #c8b888;
+    text-align: center;
+  }
+  .daily-rewards-claim {
+    width: 100%;
+    margin-top: 8px;
+  }
+  .daily-rewards-hint {
+    font-size: 11px;
+    color: #887c5c;
     margin-top: 8px;
     border-top: 1px solid #463a1c;
     padding-top: 6px;

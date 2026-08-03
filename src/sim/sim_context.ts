@@ -14,6 +14,7 @@
 
 import type { TalentModifiers } from './content/talents';
 import type { DelayedEvent, GroundAoE } from './entity_roster';
+import type { HomesteadPlotState } from './homestead';
 import type { PendingLootRoll } from './loot/loot_roll';
 import type { MarketListing } from './market';
 import type { PlantThresholdKind } from './plant_speech';
@@ -206,6 +207,10 @@ export interface SimContextCallbacks {
     noRage?: boolean,
     threatOpts?: { flat?: number; mult?: number },
     direct?: boolean,
+    // Amount is already fully source-modified (a pet-share redirect); skip the
+    // source-output mods (Defensive Stance's own-damage cut, Weakening Hex,
+    // Gloamveil's shadow amp).
+    alreadyFinal?: boolean,
   ): void;
   handleDeath(entity: Entity, killer: Entity | null): void;
   cancelCast(entity: Entity): void;
@@ -320,6 +325,9 @@ export interface SimContextCallbacks {
   // chat "/ready" command in social/chat.ts. Delegates to social/ready_check.ts.
   readyCheckStart(pid?: number): void;
   removeFromParty(pid: number, verb: string): void;
+  // Heroic Nythraxis difficulty selection (the "/raid heroic|normal" chat
+  // command, social/chat.ts); thin delegate to PartyMachine.setRaidDifficulty.
+  setRaidDifficulty(difficulty: 'normal' | 'heroic', pid?: number): void;
   // Drop a disbanded party's whole raid-marker set (points at T1's targeting store).
   dropPartyMarkers(partyId: number): void;
   onMobKilledForQuests(mob: Entity, meta: PlayerMeta): void;
@@ -416,8 +424,10 @@ export interface SimContextCallbacks {
   frenzyPackmates(dead: Entity): void;
   armDeathThroes(dead: Entity): void;
   // C1's grantXp level-up path AND G1a's talent application (progression/talents.ts)
-  // both consume refreshKnownAbilities: the talent path always passes announce=false
-  // (a silent re-resolve, no learnAbility spam); the level-up path passes announce=true.
+  // both consume refreshKnownAbilities: the talent path passes announce=true (spec
+  // signature/active-node grants must emit learnAbility, PHAA-715); the level-up
+  // path also passes announce=true, while the silent character-LOAD path passes
+  // announce=false so login never spams "You have learned" for already-known kit.
   // G1a's talent module also consumes the core `error` sink (declared above). The talent
   // PUBLIC API (applyTalents/spendTalent/setSpec/respec/saveLoadout/switchLoadout/
   // deleteLoadout/talentPoints) is NOT on this seam: Sim keeps thin wrapper methods that
@@ -460,6 +470,11 @@ export interface SimContextCallbacks {
   updatePet(pet: Entity): void;
   isDelveCompanionMob(mob: Entity): boolean;
   updateDelveCompanion(companion: Entity): void;
+  // Greenpaw's cutting companion (PHAA-751, greenpaw_cutting.ts): a cosmetic,
+  // non-combat owned mob dispatched here instead of falling through to
+  // updatePet (pet_ai.ts), whose rng draw order is locked for the parity gate.
+  isGreenpawCompanionMob(mob: Entity): boolean;
+  updateGreenpawCompanion(companion: Entity): void;
   updateBossMechanics(mob: Entity): void;
   updateNythraxisEncounter(boss: Entity): void;
   resetNythraxisEncounter(boss: Entity): void;
@@ -636,6 +651,15 @@ export interface SimContextCallbacks {
   // when the raw message was a /homestead command (handled). Append-only,
   // late-bound to Sim.
   homesteadChat(raw: string, pid: number): boolean;
+  // Public plot lookup on the Homestead instance (src/sim/homestead.ts),
+  // exposed here so a foreign system (greenpaw_cutting.ts's plant-at-your-
+  // own-plot gate) can resolve "does this player own a plot, and where"
+  // without duplicating the owner-key logic. Append-only, late-bound to Sim.
+  homesteadOwnedPlotFor(meta: PlayerMeta): HomesteadPlotState | null;
+  // Greenpaw's cutting (PHAA-751): the item-use 'plant' branch
+  // (src/sim/items.ts) routes through the seam to the GreenpawCutting
+  // instance on Sim. Append-only, late-bound to Sim.
+  plantGreenpawCutting(pid?: number): void;
   // Gathering v0 (PHAA-504): the one rng draw a corpse harvest needs (which
   // component tag's item a multi-tag corpse yields) routes through the seam
   // to the Gathering instance on Sim. Append-only, late-bound to Sim.
@@ -873,6 +897,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     partyOf: host.partyOf,
     readyCheckStart: host.readyCheckStart,
     removeFromParty: host.removeFromParty,
+    setRaidDifficulty: host.setRaidDifficulty,
     dropPartyMarkers: host.dropPartyMarkers,
     onMobKilledForQuests: host.onMobKilledForQuests,
     onInventoryChangedForQuests: host.onInventoryChangedForQuests,
@@ -934,6 +959,8 @@ export function createSimContext(host: SimContextHost): SimContext {
     updatePet: host.updatePet,
     isDelveCompanionMob: host.isDelveCompanionMob,
     updateDelveCompanion: host.updateDelveCompanion,
+    isGreenpawCompanionMob: host.isGreenpawCompanionMob,
+    updateGreenpawCompanion: host.updateGreenpawCompanion,
     updateBossMechanics: host.updateBossMechanics,
     updateNythraxisEncounter: host.updateNythraxisEncounter,
     resetNythraxisEncounter: host.resetNythraxisEncounter,
@@ -1010,6 +1037,8 @@ export function createSimContext(host: SimContextHost): SimContext {
     plantSpeechAmbientChat: host.plantSpeechAmbientChat,
     // Homestead v0: the /homestead chat-command branch.
     homesteadChat: host.homesteadChat,
+    homesteadOwnedPlotFor: host.homesteadOwnedPlotFor,
+    plantGreenpawCutting: host.plantGreenpawCutting,
     // Gathering v0 (PHAA-504): the corpse-harvest item-selection rng draw.
     gatherHarvestItemFor: host.gatherHarvestItemFor,
     // Bags capacity pre-check (stays on Sim next to the inventory hub).

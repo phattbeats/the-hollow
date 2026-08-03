@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1600,7 +1599,8 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Cupidité pour {item}',
   'itemUi.lootRoll.passAria': 'Passer pour {item}',
   'itemUi.lootRoll.everyonePassed': 'Tout le monde a passé pour {item}.',
-  'itemUi.lootRoll.winnerOffline': 'Le gagnant de {item} était hors ligne ; il a été rendu au corps.',
+  'itemUi.lootRoll.winnerOffline':
+    'Le gagnant de {item} était hors ligne ; il a été rendu au corps.',
   'entities.abilities.heroic_strike.name': 'Frappe héroïque',
   'entities.abilities.heroic_strike.description':
     "Une attaque puissante qui augmente les dégâts de mêlée de {damage}. S'active lors de votre prochaine frappe.",
@@ -2113,6 +2113,15 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Éclat aux Marques de Compte',
   'entities.items.tally_shard.flavorText':
     '...des marques par cinq, gravées profond, barrées chaque fois que le compte revenait. des centaines de cinq avant que les barres ne cessent, et la dernière rangée ne fut jamais finie...',
+  'entities.items.root_token_unbinding.name': 'Nœud de Racine Dénoué',
+  'entities.items.root_token_unbinding.flavorText':
+    "...usé et lisse là où un pouce a pressé encore et encore, comme pour dénouer un nœud attaché autour de rien que l'on puisse voir. quelqu'un croyait que lâcher prise était une bonté. quelqu'un avait tort, ou trop tôt, ou les deux...",
+  'entities.items.root_token_offering.name': 'Petite Pierre à Offrande',
+  'entities.items.root_token_offering.flavorText':
+    "...un creux peu profond gravé dans la pierre, pas plus grand qu'une pièce, du genre où l'on laisserait une miette pour quelque chose qui ne pouvait pas demander. ce qui mangeait ici n'a pas cessé d'avoir faim. il a seulement cessé d'être vu...",
+  'entities.items.root_token_verdict.name': 'Pierre du Jugement Marquée',
+  'entities.items.root_token_verdict.flavorText':
+    "...un compte marqué par trois, non par cinq, jugé et rejugé, pressé si fort que le troisième passage a fendu la pierre. quelqu'un n'arrêtait pas de changer d'avis sur la même question, encore et encore, dans le noir...",
   'entities.items.linen_pouch.name': 'Bourse en Lin',
   'entities.items.travelers_knapsack.name': 'Havresac du Voyageur',
   'entities.items.wolfhide_satchel.name': 'Sacoche en Peau de Loup',
@@ -2168,6 +2177,11 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': 'Or impérial',
   'entities.items.vanguard_azure_armor_plate.name': 'Avant-garde azur',
   'entities.items.vanguard_chrome_armor_plate.name': 'Avant-garde chrome',
+  'entities.items.enchanting_dust.name': "Poussière d'Enchantement",
+  'entities.items.scroll_minor_might.name': 'Parchemin de Puissance Mineure',
+  'entities.items.scroll_minor_vigor.name': 'Parchemin de Vigueur Mineure',
+  'entities.items.scroll_minor_focus.name': 'Parchemin de Concentration Mineure',
+  'entities.items.scroll_minor_agility.name': "Parchemin d'Agilité Mineure",
   'entities.items.deacons_cleaver.name': 'Fendoir du diacre',
   'entities.items.staff_of_drowned_prayers.name': 'Bâton des prières noyées',
   'entities.items.mistbinder_kris.name': 'Kris Lie-brume',
@@ -3370,7 +3384,6 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s} s',
-  'hudChrome.mobile.autorun': 'Course automatique',
   'hudChrome.mobile.haptics': 'Vibrations',
   'hudChrome.mobile.hapticsOff': 'Vibrations désactivées',
   'hudChrome.mobile.jump': 'Sauter',
@@ -3413,6 +3426,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.controller.help':
     "Le stick gauche déplace, le droit oriente la caméra. Ouvrez une fenêtre pour utiliser le pointeur à l'écran.",
   'entities.mobs.nythraxis_skeleton_warrior.name': 'Garde royal relevé',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': "Esprit d'Aldren",
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'Esprit de Malric',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'Esprit de Voss',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'Nythraxis, Fléau de Thornpeak',
   'entities.dungeons.nythraxis_boss_arena.name': 'Arène de raid de Nythraxis',
   'entities.dungeons.nythraxis_boss_arena.enterText': 'Vous franchissez la porte royale scellée.',
@@ -3428,6 +3444,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': "Mantelet Flamme-d'âme",
   'entities.items.stormcallers_crown.name': "Couronne d'Appel-tempête",
   'entities.items.stormcallers_spaulders.name': "Spallières d'Appel-tempête",
+  'entities.items.deathless_greatblade.name': 'Grande Lame immortelle',
+  'entities.items.scepter_of_the_deathless_court.name': 'Sceptre de la Cour immortelle',
+  'entities.items.stormcallers_focus.name': "Point focal de l'Appel-tempête",
   'hud.chat.context.convertToRaid': 'Convertir en raid',
   'hud.chat.context.convertToParty': 'Convertir en groupe',
   'hudChrome.raidConvert.leaderOnly': 'Seul le chef de raid peut convertir en groupe.',
@@ -4365,15 +4384,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     "Remplacer une vieille pièce par une amélioration toute fraîche vous sert davantage que de jouer à la perfection dans un équipement que vous avez dépassé. Quand quelque chose de meilleur tombe ou qu'une quête vous le propose, prenez-le. Ne gardez pas vos bons objets pour plus tard.",
   'guide.gear.upgradeTitle': 'Gardez votre équipement à jour',
-  'guide.lore.aldricBody':
-    "Un humble prêtre de village qui, le premier, nomme le culte au-dessus d'une tombe profanée à Eastbrook, puis suit sa piste en personne à travers le marais jusqu'au rempart de Highwatch. Il est le cœur constant de toute la campagne.",
-  'guide.lore.aldricRole': 'Prêtre du Val',
   'guide.lore.figuresBody':
     "Une poignée de gens parcourent toute la route à vos côtés. Guettez ces noms, de la vallée jusqu'aux sommets.",
   'guide.lore.figuresTitle': 'Des visages que vous apprendrez à connaître',
-  'guide.lore.marenBody':
-    "Une traqueuse à la voix basse que vous croisez dans les roseaux de Mirefen, tout en pas feutrés et en lame courte. Elle suit la piste vers le nord, elle aussi, et c'est son oreille qui saisit les mots qui vous envoient vers les sommets.",
-  'guide.lore.marenRole': "L'éclaireuse du maréchal",
   'guide.models.count': '{count} modèles',
   'guide.models.groupClasses': 'Classes',
   'guide.models.groupCreatures': 'Créatures',

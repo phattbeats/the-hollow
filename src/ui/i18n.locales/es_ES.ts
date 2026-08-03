@@ -5,7 +5,7 @@
 // therefore carries ONLY the keys whose value differs from es; every other key is
 // intentionally omitted. A key must NOT be re-added with a value equal to es
 // (redundant duplication). Every key here must be a real `en` leaf
-// path (tests/i18n_overlay_key_membership.test.ts + the byte gate). Keys are in `en`'s
+// path (the flat TranslationKey union type + the byte gate). Keys are in `en`'s
 // leaf order.
 
 import type { TranslationKey } from '../i18n.catalog';
@@ -183,8 +183,14 @@ export const es_ES: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.title': 'Profundidad',
   'entities.delves.collapsed_reliquary.leaveText':
     'Trepas de vuelta hasta el Hermano Halven, en la ruina del relicario.',
+  'entities.items.deathless_greatblade.name': 'Espadón de los Eternos',
+  'entities.items.scepter_of_the_deathless_court.name': 'Cetro de la Corte Eterna',
+  'entities.items.stormcallers_focus.name': 'Foco del Invocatormentas',
   'entities.mobs.reliquary_bonewalker.name': 'Caminahuesos alzado',
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Acólito invocasepulcros',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': 'Alma de Aldren',
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'Alma de Malric',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'Alma de Voss',
   'entities.npcs.brother_halven.greeting': 'El relicario de abajo ha vuelto a moverse.',
   'sim.delve.alreadyInDelve': 'Ya estás en una Profundidad.',
   'sim.delve.bossChest':

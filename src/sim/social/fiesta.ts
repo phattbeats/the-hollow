@@ -186,7 +186,7 @@ export function fiestaApplyAugments(meta: PlayerMeta, e: Entity): void {
   meta.fiestaSpecial = sp;
   meta.known = abilitiesKnownAt(meta.cls, e.level, meta.fiestaMods, meta.secondaryCls);
   const frac = e.maxHp > 0 ? e.hp / e.maxHp : 1;
-  recalcPlayerStats(e, meta.cls, meta.equipment, meta.fiestaMods);
+  recalcPlayerStats(e, meta.cls, meta.equipment, meta.fiestaMods, meta.enchants);
   e.hp = e.dead ? 0 : Math.max(1, Math.round(e.maxHp * frac));
 }
 
@@ -204,7 +204,7 @@ export function clearFiestaAugments(meta: PlayerMeta, e: Entity): void {
   meta.fiestaMods = null;
   meta.fiestaSpecial = {};
   meta.known = abilitiesKnownAt(meta.cls, e.level, meta.talentMods, meta.secondaryCls);
-  recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods);
+  recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods, meta.enchants);
 }
 
 // Standardize a fighter to a balanced level-20 build for the bout. The
@@ -215,10 +215,10 @@ export function fiestaStandardize(ctx: SimContext, meta: PlayerMeta, e: Entity):
   meta.fiestaRestore = { level: e.level, xp: meta.xp, talents: cloneAllocation(meta.talents) };
   e.level = FIESTA_STANDARD_LEVEL;
   meta.talents = defaultBuild(meta.cls, talentPointsAtLevel(FIESTA_STANDARD_LEVEL));
-  meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, meta.secondaryCls);
+  meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, meta.secondaryCls, e.level);
   meta.known = abilitiesKnownAt(meta.cls, e.level, ctx.playerMods(meta), meta.secondaryCls);
   meta.wireRev++; // talents/loadouts swapped for the bout, refresh the wire promptly
-  recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta));
+  recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
 }
 
 // Undo fiestaStandardize: restore the player's real level/xp/talents.
@@ -228,11 +228,11 @@ export function fiestaRestoreChar(meta: PlayerMeta, e: Entity): void {
   e.level = snap.level;
   meta.xp = snap.xp;
   meta.talents = snap.talents;
-  meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, meta.secondaryCls);
+  meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, meta.secondaryCls, e.level);
   meta.fiestaRestore = null;
   meta.known = abilitiesKnownAt(meta.cls, e.level, meta.talentMods, meta.secondaryCls);
   meta.wireRev++; // real talents restored, refresh the wire promptly
-  recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods);
+  recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods, meta.enchants);
 }
 
 // Player command: lock in one of the augments currently on offer.
@@ -342,7 +342,7 @@ export function fiestaTakedown(
   if (killerMeta) killerMeta.counters.kills++;
   f.kills.set(killerPid, (f.kills.get(killerPid) ?? 0) + 1);
   if (killerMeta && !match.practice && ctx.isArenaCrossTeam(match, killerPid, victim.id)) {
-    awardFiestaKillHonor(ctx, killerMeta, victim.id, f.honorKillsByPair);
+    awardFiestaKillHonor(ctx, killerMeta, victim.id);
   }
 
   fiestaDown(ctx, match, victim, killerPid);

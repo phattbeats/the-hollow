@@ -1,6 +1,7 @@
 import type { WebSocket } from 'ws';
 import { createBotDetector } from '#bot-detector';
 import { verifyChallenge } from '../src/sim/client_challenge';
+import { DAILY_REWARD_CYCLE } from '../src/sim/content/daily_rewards';
 import { isInJailCage, type JailState, jailCageSpawn } from '../src/sim/content/jail';
 import { MECH_CHROMAS, mechChromaItemId, mechChromaSkinIndex } from '../src/sim/content/skins';
 import type { TalentAllocation } from '../src/sim/content/talents';
@@ -38,11 +39,18 @@ import type {
 import { ChatFilter } from './chat_filter';
 import { applyChatStrike, loadChatFilterState, recordChatViolation } from './chat_filter_db';
 import { ChatLogger } from './chat_log';
-import type { AccountChatMuteStatus, AccountCosmetics, RequestMetadata } from './db';
+import type {
+  AccountChatMuteStatus,
+  AccountCosmetics,
+  AccountDailyRewardsInfo,
+  RequestMetadata,
+} from './db';
 import {
+  claimAccountDailyReward,
   closePlaySession,
   grantAccountMechChroma,
   insertChatLogs,
+  loadGreenpawCuttingState,
   loadGreenpawHearthState,
   loadHomesteadState,
   loadHousingState,
@@ -55,6 +63,7 @@ import {
   saveCharacterAndMailState,
   saveCharacterAndMarketState,
   saveCharacterState,
+  saveGreenpawCuttingState,
   saveGreenpawHearthState,
   saveHomesteadState,
   saveHousingState,
@@ -341,6 +350,7 @@ export interface ClientSession {
   ws: WebSocket;
   accountId: number;
   accountCosmetics: AccountCosmetics;
+  accountDailyRewards: AccountDailyRewardsInfo;
   characterId: number;
   pid: number; // player entity id in the sim
   name: string;
@@ -589,6 +599,7 @@ function dynamicFields(e: Entity): Record<string, unknown> {
     if (e.channeling) out.chan = 1;
   }
   if (e.sitting || e.eating || e.drinking) out.sit = 1;
+  if (e.weaponStowed) out.ws = 1;
   if (e.aggroTargetId !== null) out.aggro = e.aggroTargetId;
   if (e.tappedById !== null) out.tap = e.tappedById;
   if (e.ownerId !== null) out.own = e.ownerId;
@@ -766,6 +777,9 @@ export class GameServer {
   // The sim's homestead change counter as of the last persisted save; polled
   // each tick so a claim persists promptly, not only on the autosave.
   private lastSavedHomesteadRev = 0;
+  // Serializes writes of the single global Greenpaw's cutting blob (PHAA-751,
+  // same freshness-order rationale as the market writer above).
+  private readonly enqueueGreenpawCuttingWrite = createSerialWriter();
   private restartCountdownStartedAt: number | null = null;
   private readonly restartCountdownTimers: NodeJS.Timeout[] = [];
   private readonly startedAt = Date.now();
@@ -1173,6 +1187,7 @@ export class GameServer {
             this.enforceJailStates();
             this.routeEvents(this.interceptPlantUtterances(events));
             this.detectActivity(events);
+            this.grantBoarballWinDailyBonus(events);
             lap('events');
             this.runAntibotTick();
             lap('antibot');
@@ -1212,6 +1227,7 @@ export class GameServer {
             void this.saveMarket();
             void this.saveMail();
             void this.saveGreenpawHearth();
+            void this.saveGreenpawCutting();
           }
           // Housing persists on change (claims are rare and the blob is tiny).
           if (this.sim.housingRev !== this.lastSavedHousingRev) {
@@ -1542,6 +1558,7 @@ export class GameServer {
     meta: RequestMetadata &
       Partial<AccountChatMuteStatus> & {
         accountCosmetics?: AccountCosmetics;
+        accountDailyRewards?: AccountDailyRewardsInfo;
         chatStrikes?: number;
         isAdmin?: boolean;
         adminPermissions?: readonly string[];
@@ -1606,6 +1623,11 @@ export class GameServer {
       ws,
       accountId,
       accountCosmetics,
+      accountDailyRewards: meta.accountDailyRewards ?? {
+        cycleIndex: 0,
+        lastClaimUtcDay: '',
+        locked: false,
+      },
       characterId,
       pid,
       name,
@@ -2103,6 +2125,28 @@ export class GameServer {
       );
     } catch (err) {
       console.error('failed to save greenpaw hearth:', err);
+    }
+  }
+
+  // Greenpaw's cutting (PHAA-751) is shared global state like greenpaw_hearth:
+  // one JSONB blob under the world_state 'greenpaw_cutting' key. Growth drifts
+  // every tick like hunger/smoke, so this loads at boot and saves on the
+  // autosave cadence, not on a rev-diff.
+  async loadGreenpawCutting(): Promise<void> {
+    try {
+      this.sim.loadGreenpawCutting(await loadGreenpawCuttingState());
+    } catch (err) {
+      console.error('failed to load greenpaw cutting:', err);
+    }
+  }
+
+  async saveGreenpawCutting(): Promise<void> {
+    try {
+      await this.enqueueGreenpawCuttingWrite(() =>
+        saveGreenpawCuttingState(this.sim.serializeGreenpawCutting()),
+      );
+    } catch (err) {
+      console.error('failed to save greenpaw cutting:', err);
     }
   }
 
@@ -2664,6 +2708,9 @@ export class GameServer {
       case 'stopattack':
         sim.stopAutoAttack(pid);
         break;
+      case 'stow_weapon':
+        sim.toggleWeaponStow(pid);
+        break;
       case 'interact':
         sim.interact(pid);
         break;
@@ -2675,6 +2722,15 @@ export class GameServer {
         break;
       case 'harvestNode':
         if (typeof msg.node === 'string') sim.harvestNode(msg.node, pid);
+        break;
+      case 'craftItem':
+        if (typeof msg.recipe === 'string') sim.craftItem(msg.recipe, pid);
+        break;
+      case 'disenchantItem':
+        if (typeof msg.itemId === 'string') sim.disenchantItem(msg.itemId, pid);
+        break;
+      case 'applyEnchant':
+        if (typeof msg.enchantId === 'string') sim.applyEnchant(msg.enchantId, pid);
         break;
       case 'readCollectible':
         if (typeof msg.collectibleId === 'string') sim.readCollectible(msg.collectibleId, pid);
@@ -3243,6 +3299,24 @@ export class GameServer {
       case 'mail_markread':
         if (typeof msg.id === 'number') sim.mailMarkRead(msg.id, pid);
         break;
+      // PHAA-660 (docs/design/daily-rewards.md): account-scoped eligibility lives
+      // in Postgres, not the sim (see grantDailyRewardCycleSlot's comment on Sim);
+      // the two guard reads here are a cheap in-memory pre-check, the real
+      // atomicity guarantee is claimAccountDailyReward's WHERE clause.
+      case 'daily_rewards_claim': {
+        if (session.accountDailyRewards.locked) break;
+        const today = this.sim.utcDay;
+        if (!today || session.accountDailyRewards.lastClaimUtcDay === today) break;
+        void claimAccountDailyReward(session.accountId, today, DAILY_REWARD_CYCLE.length)
+          .then((result) => {
+            if (!result) return;
+            sim.grantDailyRewardCycleSlot(result.grantedCycleIndex, pid);
+            session.accountDailyRewards = { ...result.next, locked: false };
+            session.selfHeavyDirty = true;
+          })
+          .catch((err) => console.error(`daily reward claim failed for ${session.name}:`, err));
+        break;
+      }
       // Housing v0 (PHAA-405): interact-key commands, the only flow since the
       // /house chat command was removed (PHAA-482). sim.housingClaim/Place/Remove
       // re-validate range and ownership server-side.
@@ -3702,6 +3776,8 @@ export class GameServer {
     maybe('dmarks', this.sim.delveMarksFor(anchorSession.pid));
     maybe('dcomp', this.sim.companionUpgradesFor(anchorSession.pid));
     maybe('gprof', this.sim.gatheringProficiencyFor(anchorSession.pid));
+    maybe('cprof', this.sim.craftProficiencyFor(anchorSession.pid));
+    maybe('ench', this.sim.enchantsFor(anchorSession.pid));
     // Per-viewer gather-node cooldown ids (PHAA-618): the nodes NOT harvestable
     // by this player right now, so the online client's nodeHarvestableByMe (and
     // the minimap gather dots it drives) match the offline Sim instead of the
@@ -3744,6 +3820,7 @@ export class GameServer {
       maybe('buyback', meta.vendorBuyback);
       maybe('equip', meta.equipment);
       maybe('cosmetics', anchorSession.accountCosmetics);
+      maybe('dailyRewards', anchorSession.accountDailyRewards);
       maybe('qlog', [...meta.questLog.values()]);
       maybe('qdone', [...meta.questsDone]);
       // Book of Asphodelia (PHAA-744): deed progress auto-tracks (no accept step),
@@ -3930,6 +4007,38 @@ export class GameServer {
           now,
         );
       }
+    }
+  }
+
+  // PHAA-701: a boarball win auto-claims today's daily-reward slot for the
+  // winner's account, if they haven't claimed it yet today. This reuses the
+  // exact same account-scoped, atomically-guarded claim path as the explicit
+  // `daily_rewards_claim` command (PHAA-660) rather than inventing a second
+  // grant primitive: a win just saves the player an extra menu click, it never
+  // grants MORE than the one slot/day the account is already entitled to, so
+  // farming repeated boarball wins in a day cannot stack extra rewards.
+  private grantBoarballWinDailyBonus(events: SimEvent[]): void {
+    const today = this.sim.utcDay;
+    if (!today) return;
+    for (const ev of events) {
+      if (ev.type !== 'arenaEnd' || ev.format !== 'boarball' || !ev.won || ev.pid === undefined) {
+        continue;
+      }
+      const pid = ev.pid;
+      const session = this.clients.get(pid);
+      if (!session) continue;
+      if (session.accountDailyRewards.locked) continue;
+      if (session.accountDailyRewards.lastClaimUtcDay === today) continue;
+      void claimAccountDailyReward(session.accountId, today, DAILY_REWARD_CYCLE.length)
+        .then((result) => {
+          if (!result) return;
+          this.sim.grantDailyRewardCycleSlot(result.grantedCycleIndex, pid);
+          session.accountDailyRewards = { ...result.next, locked: false };
+          session.selfHeavyDirty = true;
+        })
+        .catch((err) =>
+          console.error(`boarball win daily reward grant failed for ${session.name}:`, err),
+        );
     }
   }
 

@@ -22,6 +22,7 @@
 // `src/sim`-pure: no DOM/Three/render/ui/game/net imports, no Math.random/Date.now
 // (enforced by tests/architecture.test.ts).
 
+import { computeTalentModifiers } from '../content/talents';
 import { DELVES, GROUP_XP_BONUS, MOBS } from '../data';
 import { recalcPlayerStats } from '../entity';
 import { DAMAGE_IDLE_DESPAWN_MOB_IDS, DAMAGE_IDLE_DESPAWN_SECONDS } from '../entity_roster';
@@ -74,6 +75,12 @@ export function dealDamage(
   // ticks). Only direct damage may walk a mob's leash anchor; passive damage must
   // let the mob leash (evade home) so it can't be kited an unlimited distance.
   direct = true,
+  // The amount is ALREADY fully source-modified (e.g. a Fiendlore share of damage the
+  // owner already took): skip the source-output mods (Defensive Stance's own-damage
+  // cut, Weakening Hex, Gloamveil's shadow amp) so they are not applied a second time.
+  // Target-side amps, absorb, death, and events still run so the redirected hit lands
+  // normally on the pet.
+  alreadyFinal = false,
 ): void {
   if (target.dead) return;
   if (target.gm) return; // GM characters are invulnerable — every damage path funnels here
@@ -86,6 +93,7 @@ export function dealDamage(
 
   // Defensive Stance, classic: deal 10% less, take 10% less (and +30% threat below)
   if (
+    !alreadyFinal &&
     source &&
     source.id !== target.id &&
     source.auras.some((a) => a.kind === 'defensive_stance')
@@ -98,6 +106,15 @@ export function dealDamage(
     target.auras.some((a) => a.kind === 'defensive_stance')
   ) {
     amount = Math.round(amount * 0.9);
+  }
+
+  // Ironhold (v0.26.0, upstream #1912): a big defensive cooldown, fraction less
+  // damage from any source, any school, DoT ticks included. Non-stacking: the
+  // strongest ward wins.
+  if (amount > 0) {
+    let ward = 0;
+    for (const a of target.auras) if (a.kind === 'shield_wall') ward = Math.max(ward, a.value);
+    if (ward > 0) amount = Math.round(amount * (1 - ward));
   }
 
   // Expose: a cracked-guard debuff amplifies the physical damage the victim
@@ -132,9 +149,19 @@ export function dealDamage(
 
   // Weakening Hex: a hexed source deals less damage (mirrors the healing cut in
   // applyHeal). Self-damage paths (source === target) are left untouched.
-  if (source && source.id !== target.id) {
+  if (!alreadyFinal && source && source.id !== target.id) {
     const hexMult = ctx.hexOutputMult(source);
     if (hexMult !== 1) amount = Math.round(amount * hexMult);
+  }
+
+  // Gloamveil Form (Shadow priest signature): while in the form, the caster's
+  // SHADOW-school damage is amplified. School-scoped so only shadow spells benefit,
+  // and a source-output mod (skipped when the amount is already final, e.g. a
+  // redirect share). Every shadow damage path (direct nuke, DoT tick, AoE) funnels
+  // here, so this one site covers them all; the boost is dynamic (it follows the form).
+  if (!alreadyFinal && source && school === 'shadow' && amount > 0) {
+    const form = source.auras.find((a) => a.kind === 'form_shadow');
+    if (form) amount = Math.round(amount * (1 + form.value / 100));
   }
 
   // "Find Weakness": a critvuln debuff makes the target's exposed flesh take
@@ -176,9 +203,85 @@ export function dealDamage(
     amount = Math.max(0, Math.round(amount * pvpDamageMultiplier(source, target)));
   }
 
+  // Fiendlore (Demonology warlock mastery): a fraction of damage the owner takes is
+  // redirected to their demon instead. The redirected share is dealt to the pet as
+  // an alreadyFinal hit (it already carries the owner's source-output mods), so the
+  // owner's own reductions/hex aren't double-applied to the pet's portion.
+  if (target.kind === 'player' && amount > 0) {
+    const meta = ctx.players.get(target.id);
+    const share = meta ? ctx.playerMods(meta).global.petDmgSharePct : 0;
+    const pet = share > 0 ? ctx.petOf(target.id) : null;
+    if (pet && !pet.dead) {
+      const redirected = Math.min(amount, Math.round(amount * share));
+      if (redirected > 0) {
+        amount -= redirected;
+        ctx.dealDamage(
+          source,
+          pet,
+          redirected,
+          crit,
+          school,
+          ability,
+          kind,
+          noRage,
+          threatOpts,
+          direct,
+          true,
+        );
+      }
+    }
+  }
+
   // duels end at 1 hp — nobody dies
   const duel = target.kind === 'player' ? ctx.duels.get(target.id) : undefined;
+
+  // Sacred Bulwark (v0.26.0, upstream #1912): an enemy lethal hit spends the
+  // ward, clamps overkill to the health actually lost, and restores the wearer
+  // from the aura's data value. The damage still falls through the shared tail
+  // below so combat, counters, CC/stealth breaks, consumption, pushback, rage,
+  // and deeds all run. Sourceless and self damage do not spend this enemy-hit
+  // defensive.
+  //
+  // Duels are excluded on purpose: a duel already clamps the loser to 1 hp, so
+  // there is no death to deny. Letting the ward fire there would spend it for
+  // nothing, leave the duel running because endDuel never gets called, and
+  // (below the restore fraction) hand the loser a free heal.
+  // Only a player can carry the ward, so resolve hostility lazily: asking
+  // isHostileTo about a mob target is both wasted work on the damage hot path
+  // and outside that helper's contract.
+  let guardianWardRestore = 0;
+  const guardianWardEnemyHit =
+    target.kind !== 'player' || !source
+      ? false
+      : source.kind === 'mob' && source.ownerId === null
+        ? source.hostile
+        : ctx.isHostileTo(source, target);
+  const guardianWardDuel =
+    !!duel &&
+    duel.state === 'active' &&
+    !!sourcePlayer &&
+    (sourcePlayer.id === duel.a || sourcePlayer.id === duel.b);
   if (
+    amount > 0 &&
+    target.kind === 'player' &&
+    source &&
+    source.id !== target.id &&
+    guardianWardEnemyHit &&
+    !guardianWardDuel &&
+    target.hp - amount <= 0
+  ) {
+    const wardIdx = target.auras.findIndex((a) => a.kind === 'guardian_ward');
+    if (wardIdx >= 0) {
+      const ward = target.auras[wardIdx];
+      target.auras.splice(wardIdx, 1);
+      ctx.emit({ type: 'aura', targetId: target.id, name: ward.name, gained: false });
+      amount = Math.max(0, target.hp);
+      guardianWardRestore = Math.max(1, Math.round(target.maxHp * ward.value));
+    }
+  }
+
+  if (
+    guardianWardRestore === 0 &&
     duel &&
     duel.state === 'active' &&
     sourcePlayer &&
@@ -221,6 +324,7 @@ export function dealDamage(
     }
   }
   if (
+    guardianWardRestore === 0 &&
     match?.fiesta &&
     match.state === 'active' &&
     sourcePlayer &&
@@ -247,6 +351,7 @@ export function dealDamage(
   // Ranked arena eliminations use normal death state so clients and combat
   // logic see a real 0 HP defeat. The return timer revives everyone after.
   if (
+    guardianWardRestore === 0 &&
     match &&
     !match.fiesta &&
     match.state === 'active' &&
@@ -277,7 +382,9 @@ export function dealDamage(
     }
   }
 
-  target.hp = Math.max(0, target.hp - amount);
+  // Guardian Ward: if the enemy hit was denied, target.hp lands at the
+  // restore fraction instead of 0. Otherwise the standard damage fall-through.
+  target.hp = guardianWardRestore || Math.max(0, target.hp - amount);
   ctx.emit({
     type: 'damage',
     sourceId: source?.id ?? -1,
@@ -692,7 +799,11 @@ export function grantXp(
     meta.xp -= xpForLevel(p.level);
     p.level++;
     meta.counters.levelUps++;
-    recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta));
+    // Re-bake the flat talent mods at the new level BEFORE the stat pass: spec mastery
+    // magnitudes scale with level (min(1, level/20) in accumulate), so a ding must
+    // strengthen the mastery without waiting for a respec/spec-pick/relog re-bake.
+    meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, meta.secondaryCls, p.level);
+    recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
     p.hp = p.maxHp;
     if (p.resourceType === 'mana') p.resource = p.maxResource;
     ctx.emit({ type: 'levelup', level: p.level, pid: p.id });

@@ -27,6 +27,7 @@ import { ARENA_NEW, BASE_NEW, ITEM_NEW, PET_NEW, QUEST_NEW, RAID_NEW } from './s
 
 const baseEnTable = {
   'error.lineOfSight': 'Line of sight.',
+  'error.nothingToConsume': 'Nothing to consume.',
   'log.playtime': 'Total time played: {time}.',
   'error.specLevel': 'You may choose a specialization at level {level}.',
   'error.invalidBuild': 'Invalid talent build.',
@@ -69,6 +70,11 @@ const baseEnTable = {
   'error.noLootPermission': "You don't have permission to loot that.",
   'error.gatherNodeMissing': 'That resource node does not exist.',
   'error.gatherNodeNotRespawned': 'This resource node has not respawned for you yet.',
+  'error.recipeUnknown': 'That recipe is unknown.',
+  'error.recipeMaterials': "You don't have the materials for that.",
+  'error.disenchantInvalid': 'That cannot be disenchanted.',
+  'error.enchantUnknown': 'That enchant is unknown.',
+  'error.noScroll': "You don't have that scroll.",
   'log.talentsUpdated': 'Talents updated.',
   'log.talentsReset': 'Talents reset.',
   'log.savedBuild': 'Saved build “{name}”.',
@@ -195,6 +201,7 @@ const baseEnTable = {
   'mechanic.timberfallHeave': 'Timberfall Heave',
   'mechanic.heartwoodEruption': 'Heartwood Eruption',
   'aura.graspingRoots': 'Grasping Roots',
+  'mechanic.channelInterrupted': '{name} is interrupted!',
 } as const;
 
 const petEnTable = {
@@ -250,6 +257,7 @@ export type SimMessageKey = keyof typeof enTable;
 // a missing locale OR a missing/renamed key (stronger than the server DICT).
 const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = {
   en: {
+    'error.nothingToConsume': 'Nothing to consume.',
     'error.lineOfSight': 'Line of sight.',
     'log.playtime': 'Total time played: {time}.',
     'error.specLevel': 'You may choose a specialization at level {level}.',
@@ -293,6 +301,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noLootPermission': "You don't have permission to loot that.",
     'error.gatherNodeMissing': 'That resource node does not exist.',
     'error.gatherNodeNotRespawned': 'This resource node has not respawned for you yet.',
+    'error.recipeUnknown': 'That recipe is unknown.',
+    'error.recipeMaterials': "You don't have the materials for that.",
+    'error.disenchantInvalid': 'That cannot be disenchanted.',
+    'error.enchantUnknown': 'That enchant is unknown.',
+    'error.noScroll': "You don't have that scroll.",
     'log.talentsUpdated': 'Talents updated.',
     'log.talentsReset': 'Talents reset.',
     'log.savedBuild': 'Saved build “{name}”.',
@@ -418,6 +431,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.timberfallHeave': 'Timberfall Heave',
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   es: {
     'log.learnedAbility': 'Has aprendido una nueva habilidad: {name}.',
@@ -512,6 +526,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.timberfallHeave': 'Timberfall Heave',
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
+    'error.nothingToConsume': 'Nada que consumir.',
     'error.lineOfSight': 'Sin línea de visión.',
     'log.playtime': 'Tiempo total jugado: {time}.',
     'error.specLevel': 'Puedes elegir una especialización al nivel {level}.',
@@ -555,6 +570,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noLootPermission': 'No tienes permiso para saquear eso.',
     'error.gatherNodeMissing': 'Ese nodo de recursos no existe.',
     'error.gatherNodeNotRespawned': 'Este nodo de recursos aún no ha reaparecido para ti.',
+    'error.recipeUnknown': 'Esa receta no existe.',
+    'error.recipeMaterials': 'No tienes los materiales para eso.',
+    'error.disenchantInvalid': 'Eso no se puede desencantar.',
+    'error.enchantUnknown': 'Ese encantamiento no existe.',
+    'error.noScroll': 'No tienes ese pergamino.',
     'log.talentsUpdated': 'Talentos actualizados.',
     'log.talentsReset': 'Talentos restablecidos.',
     'log.savedBuild': 'Configuración “{name}” guardada.',
@@ -589,6 +609,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Domado',
     'aura.causticSpores': 'Esporas Cáusticas',
     'aura.elixirBear': 'Poder del Oso',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   es_ES: {
     'log.learnedAbility': 'Has aprendido una nueva habilidad: {name}.',
@@ -683,6 +704,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.timberfallHeave': 'Timberfall Heave',
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
+    'error.nothingToConsume': 'Nada que consumir.',
     'error.lineOfSight': 'Sin línea de visión.',
     'log.playtime': 'Tiempo total jugado: {time}.',
     'error.specLevel': 'Podrás elegir una especialización en el nivel {level}.',
@@ -727,6 +749,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noLootPermission': 'No tienes permiso para saquear eso.',
     'error.gatherNodeMissing': 'Ese nodo de recursos no existe.',
     'error.gatherNodeNotRespawned': 'Este nodo de recursos aún no ha reaparecido para ti.',
+    'error.recipeUnknown': 'Esa receta no existe.',
+    'error.recipeMaterials': 'No tienes los materiales para eso.',
+    'error.disenchantInvalid': 'Eso no se puede desencantar.',
+    'error.enchantUnknown': 'Ese encantamiento no existe.',
+    'error.noScroll': 'No tienes ese pergamino.',
     'log.talentsUpdated': 'Talentos actualizados.',
     'log.talentsReset': 'Talentos restablecidos.',
     'log.savedBuild': 'Configuración “{name}” guardada.',
@@ -761,6 +788,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Domado',
     'aura.causticSpores': 'Esporas Cáusticas',
     'aura.elixirBear': 'Poder del Oso',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   fr_FR: {
     'log.learnedAbility': 'Vous avez appris une nouvelle technique : {name}.',
@@ -860,6 +888,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.timberfallHeave': 'Timberfall Heave',
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
+    'error.nothingToConsume': 'Rien à consommer.',
     'error.lineOfSight': 'Pas de ligne de vue.',
     'log.playtime': 'Temps de jeu total : {time}.',
     'error.specLevel': 'Vous pourrez choisir une spécialisation au niveau {level}.',
@@ -905,6 +934,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noLootPermission': "Vous n'avez pas la permission de ramasser cela.",
     'error.gatherNodeMissing': "Ce nœud de ressources n'existe pas.",
     'error.gatherNodeNotRespawned': "Ce nœud de ressources n'est pas encore réapparu pour vous.",
+    'error.recipeUnknown': "Cette recette n'existe pas.",
+    'error.recipeMaterials': "Vous n'avez pas les matériaux nécessaires.",
+    'error.disenchantInvalid': 'Cela ne peut pas être désenchanté.',
+    'error.enchantUnknown': 'Cet enchantement est inconnu.',
+    'error.noScroll': "Vous n'avez pas ce parchemin.",
     'log.talentsUpdated': 'Talents mis à jour.',
     'log.talentsReset': 'Talents réinitialisés.',
     'log.savedBuild': 'Distribution « {name} » enregistrée.',
@@ -939,6 +973,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Apprivoisé',
     'aura.causticSpores': 'Spores Caustiques',
     'aura.elixirBear': "Puissance de l'Ours",
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   fr_CA: {
     'log.learnedAbility': 'Vous avez appris une nouvelle technique : {name}.',
@@ -1038,6 +1073,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.timberfallHeave': 'Timberfall Heave',
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
+    'error.nothingToConsume': 'Rien à consommer.',
     'error.lineOfSight': 'Pas de ligne de vue.',
     'log.playtime': 'Temps de jeu total : {time}.',
     'error.specLevel': 'Vous pourrez choisir une spécialisation au niveau {level}.',
@@ -1084,6 +1120,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noLootPermission': "Vous n'avez pas la permission de ramasser cela.",
     'error.gatherNodeMissing': "Ce nœud de ressources n'existe pas.",
     'error.gatherNodeNotRespawned': "Ce nœud de ressources n'est pas encore réapparu pour vous.",
+    'error.recipeUnknown': "Cette recette n'existe pas.",
+    'error.recipeMaterials': "Vous n'avez pas les matériaux nécessaires.",
+    'error.disenchantInvalid': 'Cela ne peut pas être désenchanté.',
+    'error.enchantUnknown': 'Cet enchantement est inconnu.',
+    'error.noScroll': "Vous n'avez pas ce parchemin.",
     'log.talentsUpdated': 'Talents mis à jour.',
     'log.talentsReset': 'Talents réinitialisés.',
     'log.savedBuild': 'Spécialisation “{name}” enregistrée.',
@@ -1118,6 +1159,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Apprivoisé',
     'aura.causticSpores': 'Spores Caustiques',
     'aura.elixirBear': "Puissance de l'Ours",
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   en_CA: {
     'log.learnedAbility': 'You have learned a new ability: {name}.',
@@ -1211,6 +1253,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.timberfallHeave': 'Timberfall Heave',
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
+    'error.nothingToConsume': 'Nothing to consume.',
     'error.lineOfSight': 'Line of sight.',
     'log.playtime': 'Total time played: {time}.',
     'error.specLevel': 'You may choose a specialization at level {level}.',
@@ -1254,6 +1297,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noLootPermission': "You don't have permission to loot that.",
     'error.gatherNodeMissing': 'That resource node does not exist.',
     'error.gatherNodeNotRespawned': 'This resource node has not respawned for you yet.',
+    'error.recipeUnknown': 'That recipe is unknown.',
+    'error.recipeMaterials': "You don't have the materials for that.",
+    'error.disenchantInvalid': 'That cannot be disenchanted.',
+    'error.enchantUnknown': 'That enchant is unknown.',
+    'error.noScroll': "You don't have that scroll.",
     'log.talentsUpdated': 'Talents updated.',
     'log.talentsReset': 'Talents reset.',
     'log.savedBuild': 'Saved build “{name}”.',
@@ -1288,6 +1336,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Tamed',
     'aura.causticSpores': 'Caustic Spores',
     'aura.elixirBear': 'Might of the Bear',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   it_IT: {
     'log.learnedAbility': 'Hai imparato una nuova abilità: {name}.',
@@ -1382,6 +1431,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.timberfallHeave': 'Timberfall Heave',
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
+    'error.nothingToConsume': 'Niente da consumare.',
     'error.lineOfSight': 'Nessuna linea di vista.',
     'log.playtime': 'Tempo totale di gioco: {time}.',
     'error.specLevel': 'Puoi scegliere una specializzazione al livello {level}.',
@@ -1426,6 +1476,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noLootPermission': 'Non hai il permesso di saccheggiare quello.',
     'error.gatherNodeMissing': 'Quel nodo di risorse non esiste.',
     'error.gatherNodeNotRespawned': 'Questo nodo di risorse non è ancora ricomparso per te.',
+    'error.recipeUnknown': 'Quella ricetta non esiste.',
+    'error.recipeMaterials': 'Non hai i materiali necessari.',
+    'error.disenchantInvalid': 'Non può essere disincantato.',
+    'error.enchantUnknown': "Quell'incantesimo è sconosciuto.",
+    'error.noScroll': 'Non hai quella pergamena.',
     'log.talentsUpdated': 'Talenti aggiornati.',
     'log.talentsReset': 'Talenti azzerati.',
     'log.savedBuild': 'Build “{name}” salvata.',
@@ -1460,6 +1515,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Addomesticato',
     'aura.causticSpores': 'Spore Caustiche',
     'aura.elixirBear': "Potenza dell'Orso",
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   de_DE: {
     'log.learnedAbility': 'Ihr habt eine neue Fähigkeit erlernt: {name}.',
@@ -1555,6 +1611,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.timberfallHeave': 'Timberfall Heave',
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
+    'error.nothingToConsume': 'Nichts zu verbrauchen.',
     'error.lineOfSight': 'Kein Sichtkontakt.',
     'log.playtime': 'Gesamtspielzeit: {time}.',
     'error.specLevel': 'Ihr könnt auf Stufe {level} eine Spezialisierung wählen.',
@@ -1600,6 +1657,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.gatherNodeMissing': 'Dieses Ressourcenvorkommen existiert nicht.',
     'error.gatherNodeNotRespawned':
       'Dieses Ressourcenvorkommen ist für Euch noch nicht erneut erschienen.',
+    'error.recipeUnknown': 'Dieses Rezept existiert nicht.',
+    'error.recipeMaterials': 'Diese Materialien habt Ihr nicht.',
+    'error.disenchantInvalid': 'Das kann nicht entzaubert werden.',
+    'error.enchantUnknown': 'Diese Verzauberung ist unbekannt.',
+    'error.noScroll': 'Diese Schriftrolle habt Ihr nicht.',
     'log.talentsUpdated': 'Talente aktualisiert.',
     'log.talentsReset': 'Talente zurückgesetzt.',
     'log.savedBuild': 'Skillung „{name}“ gespeichert.',
@@ -1634,6 +1696,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Gezähmt',
     'aura.causticSpores': 'Ätzende Sporen',
     'aura.elixirBear': 'Macht des Bären',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   zh_CN: {
     'log.learnedAbility': '你学会了新技能：{name}。',
@@ -1727,6 +1790,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.timberfallHeave': 'Timberfall Heave',
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
+    'error.nothingToConsume': '没有可消耗的效果。',
     'error.lineOfSight': '目标不在视线内。',
     'log.playtime': '总游戏时长：{time}。',
     'error.specLevel': '你将在{level}级时选择专精。',
@@ -1770,6 +1834,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noLootPermission': '你没有拾取它的权限。',
     'error.gatherNodeMissing': '那个资源点不存在。',
     'error.gatherNodeNotRespawned': '这个资源点尚未为你刷新。',
+    'error.recipeUnknown': '没有这个配方。',
+    'error.recipeMaterials': '你没有所需的材料。',
+    'error.disenchantInvalid': '那件物品无法分解。',
+    'error.enchantUnknown': '没有这种附魔。',
+    'error.noScroll': '你没有那个卷轴。',
     'log.talentsUpdated': '天赋已更新。',
     'log.talentsReset': '天赋已重置。',
     'log.savedBuild': '已保存配置“{name}”。',
@@ -1803,6 +1872,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': '已驯服',
     'aura.causticSpores': '腐蚀孢子',
     'aura.elixirBear': '巨熊之力',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   zh_TW: {
     'log.learnedAbility': '你學會了新技能：{name}。',
@@ -1896,6 +1966,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.timberfallHeave': 'Timberfall Heave',
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
+    'error.nothingToConsume': '沒有可消耗的效果。',
     'error.lineOfSight': '目標不在視線內。',
     'log.playtime': '總遊戲時長：{time}。',
     'error.specLevel': '你必須達到等級 {level} 才能選擇專精。',
@@ -1939,6 +2010,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noLootPermission': '你沒有拾取它的權限。',
     'error.gatherNodeMissing': '那個資源點不存在。',
     'error.gatherNodeNotRespawned': '這個資源點尚未為你重新出現。',
+    'error.recipeUnknown': '沒有這個配方。',
+    'error.recipeMaterials': '你沒有所需的材料。',
+    'error.disenchantInvalid': '那件物品無法分解。',
+    'error.enchantUnknown': '沒有這種附魔。',
+    'error.noScroll': '你沒有那個卷軸。',
     'log.talentsUpdated': '天賦已更新。',
     'log.talentsReset': '天賦已重置。',
     'log.savedBuild': '已儲存配置「{name}」。',
@@ -1972,6 +2048,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': '馴服',
     'aura.causticSpores': '腐蝕孢子',
     'aura.elixirBear': '巨熊之力',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   ko_KR: {
     'log.learnedAbility': '새로운 기술을 배웠습니다: {name}.',
@@ -2066,6 +2143,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.timberfallHeave': 'Timberfall Heave',
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
+    'error.nothingToConsume': '소모할 대상이 없습니다.',
     'error.lineOfSight': '시야가 막혀 있습니다.',
     'log.playtime': '총 플레이 시간: {time}.',
     'error.specLevel': '{level}레벨에 전문화를 선택할 수 있습니다.',
@@ -2109,6 +2187,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noLootPermission': '그 대상의 전리품을 획득할 권한이 없습니다.',
     'error.gatherNodeMissing': '그 자원 지점은 존재하지 않습니다.',
     'error.gatherNodeNotRespawned': '이 자원 지점은 아직 당신에게 다시 생성되지 않았습니다.',
+    'error.recipeUnknown': '해당 제작법이 없습니다.',
+    'error.recipeMaterials': '그 재료가 없습니다.',
+    'error.disenchantInvalid': '그것은 마법 분해를 할 수 없습니다.',
+    'error.enchantUnknown': '그런 마법부여는 존재하지 않습니다.',
+    'error.noScroll': '그 두루마리가 없습니다.',
     'log.talentsUpdated': '특성이 갱신되었습니다.',
     'log.talentsReset': '특성이 초기화되었습니다.',
     'log.savedBuild': '구성 “{name}”을(를) 저장했습니다.',
@@ -2143,6 +2226,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': '길들여짐',
     'aura.causticSpores': '부식성 포자',
     'aura.elixirBear': '곰의 힘',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   ja_JP: {
     'log.learnedAbility': '新しいアビリティ「{name}」を習得しました。',
@@ -2239,6 +2323,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.timberfallHeave': 'Timberfall Heave',
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
+    'error.nothingToConsume': '消費するものがありません。',
     'error.lineOfSight': '視線が通っていません。',
     'log.playtime': '総プレイ時間: {time}。',
     'error.specLevel': '専門化はレベル{level}で選択できます。',
@@ -2283,6 +2368,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noLootPermission': 'その戦利品を入手する権限がありません。',
     'error.gatherNodeMissing': 'その資源ポイントは存在しません。',
     'error.gatherNodeNotRespawned': 'この資源ポイントは、あなたにはまだ再出現していません。',
+    'error.recipeUnknown': 'そのレシピは存在しません。',
+    'error.recipeMaterials': '必要な素材を持っていません。',
+    'error.disenchantInvalid': 'それは分解できません。',
+    'error.enchantUnknown': 'そのエンチャントは存在しません。',
+    'error.noScroll': 'その巻物を持っていません。',
     'log.talentsUpdated': 'タレントを更新しました。',
     'log.talentsReset': 'タレントをリセットしました。',
     'log.savedBuild': 'ビルド「{name}」を保存しました。',
@@ -2317,6 +2407,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'テイム',
     'aura.causticSpores': '腐食胞子',
     'aura.elixirBear': '熊の力',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   pt_BR: {
     'log.learnedAbility': 'Você aprendeu uma nova habilidade: {name}.',
@@ -2412,6 +2503,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.timberfallHeave': 'Timberfall Heave',
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
+    'error.nothingToConsume': 'Nada para consumir.',
     'error.lineOfSight': 'Sem linha de visão.',
     'log.playtime': 'Tempo total jogado: {time}.',
     'error.specLevel': 'Você pode escolher uma especialização no nível {level}.',
@@ -2456,6 +2548,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noLootPermission': 'Você não tem permissão para saquear isso.',
     'error.gatherNodeMissing': 'Esse ponto de recursos não existe.',
     'error.gatherNodeNotRespawned': 'Este ponto de recursos ainda não ressurgiu para você.',
+    'error.recipeUnknown': 'Essa receita não existe.',
+    'error.recipeMaterials': 'Você não tem os materiais necessários.',
+    'error.disenchantInvalid': 'Isso não pode ser desencantado.',
+    'error.enchantUnknown': 'Esse encantamento é desconhecido.',
+    'error.noScroll': 'Você não tem esse pergaminho.',
     'log.talentsUpdated': 'Talentos atualizados.',
     'log.talentsReset': 'Talentos redefinidos.',
     'log.savedBuild': 'Estrutura “{name}” salva.',
@@ -2490,6 +2587,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Domado',
     'aura.causticSpores': 'Esporos Cáusticos',
     'aura.elixirBear': 'Força do Urso',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   ru_RU: {
     'log.learnedAbility': 'Вы изучили новое умение: {name}.',
@@ -2586,6 +2684,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.timberfallHeave': 'Timberfall Heave',
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
+    'error.nothingToConsume': 'Нечего расходовать.',
     'error.lineOfSight': 'Нет прямой видимости.',
     'log.playtime': 'Общее время игры: {time}.',
     'error.specLevel': 'Выбрать специализацию можно на {level} уровне.',
@@ -2630,6 +2729,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noLootPermission': 'У вас нет разрешения на добычу этого.',
     'error.gatherNodeMissing': 'Этого источника ресурсов не существует.',
     'error.gatherNodeNotRespawned': 'Этот источник ресурсов ещё не восстановился для вас.',
+    'error.recipeUnknown': 'Такого рецепта нет.',
+    'error.recipeMaterials': 'У вас нет нужных материалов.',
+    'error.disenchantInvalid': 'Это нельзя расколдовать.',
+    'error.enchantUnknown': 'Такое зачарование неизвестно.',
+    'error.noScroll': 'У вас нет этого свитка.',
     'log.talentsUpdated': 'Таланты обновлены.',
     'log.talentsReset': 'Таланты сброшены.',
     'log.savedBuild': 'Сборка «{name}» сохранена.',
@@ -2664,6 +2768,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Приручён',
     'aura.causticSpores': 'Едкие споры',
     'aura.elixirBear': 'Мощь Медведя',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   ...BASE_NEW,
 };
@@ -4042,7 +4147,11 @@ type RaidExtraKey =
   | 'royalDoorSealed'
   | 'locked'
   | 'engagedSealed'
-  | 'mustFall';
+  | 'mustFall'
+  | 'leaderSetDifficulty'
+  | 'alreadySetTo'
+  | 'difficultySet'
+  | 'heroicLocked';
 
 export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>> = {
   en: {
@@ -4063,6 +4172,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'You are locked to Nythraxis Raid Arena.',
     engagedSealed: 'Nythraxis is engaged - the royal door has sealed shut.',
     mustFall: 'The royal door is sealed - Nythraxis must fall first.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   en_CA: {
     converted: 'Your party has converted to a raid group.',
@@ -4082,6 +4195,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'You are locked to Nythraxis Raid Arena.',
     engagedSealed: 'Nythraxis is engaged - the royal door has sealed shut.',
     mustFall: 'The royal door is sealed - Nythraxis must fall first.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   es: {
     converted: 'Tu grupo se ha convertido en una banda.',
@@ -4101,6 +4218,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Estas vinculado a la Arena de banda de Nythraxis.',
     engagedSealed: 'Nythraxis esta en combate; la puerta real se ha sellado.',
     mustFall: 'La puerta real esta sellada; Nythraxis debe caer primero.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   es_ES: {
     converted: 'Tu grupo se ha convertido en una banda.',
@@ -4120,6 +4241,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Estas vinculado a la Arena de banda de Nythraxis.',
     engagedSealed: 'Nythraxis esta en combate; la puerta real se ha sellado.',
     mustFall: 'La puerta real esta sellada; Nythraxis debe caer primero.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   fr_FR: {
     converted: 'Votre groupe est devenu un raid.',
@@ -4139,6 +4264,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Vous etes lie a larene de raid de Nythraxis.',
     engagedSealed: 'Nythraxis est engage; la porte royale sest scellee.',
     mustFall: 'La porte royale est scellee; Nythraxis doit tomber dabord.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   fr_CA: {
     converted: 'Votre groupe est devenu un raid.',
@@ -4158,6 +4287,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Vous etes lie a larene de raid de Nythraxis.',
     engagedSealed: 'Nythraxis est engage; la porte royale sest scellee.',
     mustFall: 'La porte royale est scellee; Nythraxis doit tomber dabord.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   it_IT: {
     converted: 'Il tuo gruppo e diventato un raid.',
@@ -4177,6 +4310,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Sei vincolato all Arena raid di Nythraxis.',
     engagedSealed: 'Nythraxis e in combattimento; la porta reale si e sigillata.',
     mustFall: 'La porta reale e sigillata; Nythraxis deve cadere prima.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   de_DE: {
     converted: 'Eure Gruppe wurde in einen Schlachtzug umgewandelt.',
@@ -4197,6 +4334,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Ihr seid an die Nythraxis-Schlachtzugsarena gebunden.',
     engagedSealed: 'Nythraxis ist im Kampf; die koenigliche Tuer hat sich versiegelt.',
     mustFall: 'Die koenigliche Tuer ist versiegelt; Nythraxis muss zuerst fallen.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   zh_CN: {
     converted: '你的队伍已转换为团队。',
@@ -4216,6 +4357,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: '你已锁定到尼瑟拉克斯团队竞技场。',
     engagedSealed: '尼瑟拉克斯已进入战斗；王室之门已经封闭。',
     mustFall: '王室之门已封闭；必须先击败尼瑟拉克斯。',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   zh_TW: {
     converted: '你的隊伍已轉換為團隊。',
@@ -4235,6 +4380,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: '你已鎖定到尼瑟拉克斯團隊競技場。',
     engagedSealed: '尼瑟拉克斯已進入戰鬥；王室之門已經封閉。',
     mustFall: '王室之門已封閉；必須先擊敗尼瑟拉克斯。',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   ko_KR: {
     converted: '파티가 공격대 그룹으로 전환되었습니다.',
@@ -4254,6 +4403,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: '니트락시스 공격대 투기장에 귀속되어 있습니다.',
     engagedSealed: '니트락시스가 전투 중입니다. 왕실 문이 봉인되었습니다.',
     mustFall: '왕실 문이 봉인되었습니다. 먼저 니트락시스를 쓰러뜨려야 합니다.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   ja_JP: {
     converted: 'パーティがレイドグループに変換されました。',
@@ -4273,6 +4426,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'ナイスラクシスのレイドアリーナにロックされています。',
     engagedSealed: 'ナイスラクシスが戦闘中です。王家の扉は封印されました。',
     mustFall: '王家の扉は封印されています。先にナイスラクシスを倒さねばなりません。',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   pt_BR: {
     converted: 'Seu grupo foi convertido em raide.',
@@ -4292,6 +4449,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Voce esta salvo na Arena de Raide de Nythraxis.',
     engagedSealed: 'Nythraxis esta em combate; a porta real se selou.',
     mustFall: 'A porta real esta selada; Nythraxis deve cair primeiro.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   ru_RU: {
     converted: 'Ваша группа преобразована в рейд.',
@@ -4311,6 +4472,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Вы привязаны к рейдовой арене Нитраксиса.',
     engagedSealed: 'Нитраксис уже в бою; королевская дверь запечаталась.',
     mustFall: 'Королевская дверь запечатана; сначала должен пасть Нитраксис.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   ...RAID_NEW,
 };
@@ -4695,12 +4860,28 @@ const RULES: Rule[] = [
   { re: /^The royal door is sealed to you\.$/, build: () => tRaidExtra('royalDoorSealed') },
   { re: /^You are locked to Nythraxis Raid Arena\.$/, build: () => tRaidExtra('locked') },
   {
+    re: /^You are locked to Heroic Nythraxis Raid Arena\.$/,
+    build: () => tRaidExtra('heroicLocked'),
+  },
+  {
     re: /^Nythraxis is engaged — the royal door has sealed shut\.$/,
     build: () => tRaidExtra('engagedSealed'),
   },
   {
     re: /^The royal door is sealed — Nythraxis must fall first\.$/,
     build: () => tRaidExtra('mustFall'),
+  },
+  {
+    re: /^Only the raid leader may set the raid difficulty\.$/,
+    build: () => tRaidExtra('leaderSetDifficulty'),
+  },
+  {
+    re: /^The raid is already set to (.+)\.$/,
+    build: (m) => tRaidExtra('alreadySetTo', { difficulty: m[1] }),
+  },
+  {
+    re: /^Raid difficulty set to (.+)\.$/,
+    build: (m) => tRaidExtra('difficultySet', { difficulty: m[1] }),
   },
   {
     re: /^You join the Ashen Coliseum 2v2 queue\. Stand by for opponents[.…]{1,3}$/,
@@ -4749,6 +4930,8 @@ const RULES: Rule[] = [
     re: /^(.+) cannot queue from inside an instance\.$/,
     build: (m) => tArenaExtra('memberInstance', { name: m[1] }),
   },
+  // Daily rewards (PHAA-660): the claim grant's fixed, no-argument confirmation.
+  { re: /^You claim your daily reward\.$/, build: () => t('sim.dailyRewards.claimed') },
   // Delve / lockpicking sim text. Re-localized through t() against the sim.delve.* /
   // sim.lockpick.* keys (src/ui/i18n.catalog/index.ts). The module-enter banner is two
   // rules anchored on the fixed objective lines ("X: Clear the room." / "X: Defeat the
@@ -5154,6 +5337,28 @@ const RULES: Rule[] = [
     re: /^Homestead: \/homestead, \/homestead claim\.$/,
     build: () => t('sim.homestead.helpLine'),
   },
+  // Greenpaw's cutting (PHAA-751): the first_cutting item-use 'plant' branch
+  // (src/sim/greenpaw_cutting.ts) player-facing text.
+  {
+    re: /^You have already planted your cutting\. Give it time to grow\.$/,
+    build: () => t('sim.greenpawCutting.alreadyPlanted'),
+  },
+  {
+    re: /^You need a homestead plot before you can plant this\.$/,
+    build: () => t('sim.greenpawCutting.needHomestead'),
+  },
+  {
+    re: /^You must be at your own homestead to plant this\.$/,
+    build: () => t('sim.greenpawCutting.tooFar'),
+  },
+  {
+    re: /^You plant the cutting at your homestead\. Give it time\.$/,
+    build: () => t('sim.greenpawCutting.planted'),
+  },
+  {
+    re: /^Your cutting has grown into a companion\. It follows you now\.$/,
+    build: () => t('sim.greenpawCutting.grown'),
+  },
   // Ready checks (PHAA-641, src/sim/social/ready_check.ts): the leader-gated /ready
   // start guards, plus the counts-only finalize summary sent to every participant.
   // "You are not the party leader." reuses the existing error.notPartyLeader EXACT
@@ -5169,6 +5374,13 @@ const RULES: Rule[] = [
   {
     re: /^Ready check: (\d+) ready, (\d+) not ready, (\d+) no response\.$/,
     build: (m) => t('sim.readyCheck.summary', { ready: m[1], notReady: m[2], noResponse: m[3] }),
+  },
+  // A channelHeal mechanic's channel breaking on CC (Heroic Nythraxis's Malric).
+  // Broad (one open capture), so it stays near the end, before the even broader
+  // "unleashes" rule.
+  {
+    re: /^(.+) is interrupted!$/,
+    build: (m) => tSim('mechanic.channelInterrupted', { name: locBossMechanic(m[1]) }),
   },
   // Boss/mob mechanic broadcast. Broad (two open captures), so it MUST stay last -
   // after every more-specific "{X} {verb}!" rule above (awakens, enraged, calls for aid).

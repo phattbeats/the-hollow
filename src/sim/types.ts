@@ -114,6 +114,7 @@ export interface HonorArenaDailyState {
   date: string;
   winsByOpponent: Record<string, number>;
   fiestaCompletionsByOpponent: Record<string, number>;
+  fiestaKillsByVictim: Record<string, number>;
   totalWins: number;
 }
 
@@ -166,6 +167,12 @@ export type AuraKind =
   | 'attackspeed'
   | 'debuff_ap'
   | 'buff_ap'
+  // Owner's pet damage bonus (Beast Mastery/Demonology masteries: petDmgPct/Howling Rage).
+  // value: percent points if > 1 (100 = +100%), else a fraction, mirroring the pctValue
+  // convention already used for the other percent-buff kinds below.
+  | 'pet_damage_pct'
+  // Pet attack/cast speed bonus (Metamorphosis demon). value: fraction (0.2 = +20%).
+  | 'pet_spellhaste'
   | 'buff_armor'
   | 'buff_int'
   | 'buff_agi'
@@ -173,6 +180,20 @@ export type AuraKind =
   | 'buff_speed'
   | 'buff_haste'
   | 'buff_spellpower'
+  // Spec-mastery/cooldown caster buffs (Combustion/Icy Veins/Arcane Power/Metamorphosis):
+  // additive spell crit chance, a spell damage percent multiplier, and a spell haste
+  // fraction, each read alongside the resolved Entity stat by spell_combat.ts.
+  | 'buff_spellcrit'
+  | 'buff_spelldmg'
+  | 'buff_spellhaste'
+  // Icy Veins: while active, casts cannot be interrupted or pushed back.
+  | 'cast_shield'
+  // Cold Blood (Assassination rogue signature): guarantees the next damaging
+  // ability use is a critical strike. Consumed in effect_dispatch.ts.
+  | 'next_attack_crit'
+  // Elemental Mastery (Elemental shaman signature): the next spell cast is instant.
+  // Consumed in casting_lifecycle.ts castAbility.
+  | 'next_cast_instant'
   | 'hot'
   | 'absorb'
   | 'imbue'
@@ -182,6 +203,18 @@ export type AuraKind =
   | 'form_bear'
   | 'form_cat'
   | 'form_travel'
+  // Balance druid signature form: Spell Power (value) lives on the aura itself so it
+  // rides the one toggle; its +20% spell damage rides a separate buff_spelldmg aura.
+  | 'form_moonkin'
+  // Shadow priest signature form: amplifies Shadow-school damage (combat/damage.ts),
+  // contributes no stat-pass bonus itself (value carries the percent for that amp).
+  | 'form_shadow'
+  // Warlock Metamorphosis: a temporary demon transform (cosmetic scale + tint in render,
+  // its damage/haste bonuses ride separate buff auras).
+  | 'form_metamorph'
+  // Feral (cat form) signature: Energy regeneration multiplier while active (value = a
+  // fraction, 1 = +100%).
+  | 'buff_energyregen'
   | 'stealth'
   | 'defensive_stance'
   | 'righteous_fury'
@@ -191,6 +224,9 @@ export type AuraKind =
   | 'blind'
   | 'disarm'
   | 'expose'
+  // Bleed damage taken debuff (Hemorrhage): a physical-school dot tick is amplified by
+  // the sum of the target's live bleed_vuln stacks (auras.ts updateAuras).
+  | 'bleed_vuln'
   | 'spellvuln'
   | 'lockout'
   | 'vulnerability'
@@ -200,6 +236,13 @@ export type AuraKind =
   | 'heal_absorb'
   | 'critvuln'
   | 'buff_spi'
+  // Warrior Ironhold: a big, short, all-school damage-taken reduction (value =
+  // fraction less, e.g. 0.4 = 40% less), applied in damage.ts.
+  | 'shield_wall'
+  // Paladin Sacred Bulwark: a divine cheat-death ward. While it holds, a lethal
+  // enemy hit is denied in damage.ts and the wearer is restored by value (a
+  // fraction of max health, e.g. 0.35 = 35%) before the ward is consumed.
+  | 'guardian_ward'
   // 2v2 Fiesta power-up buffs: `buff_scale` value = body-size multiplier (also
   // boosts max-hp when >1); `buff_jump` value = jump-height multiplier.
   | 'buff_scale'
@@ -239,6 +282,7 @@ export interface Aura {
   charges?: number; // thorns: remaining reflect charges (Lightning Shield); undefined => unlimited
   icd?: number; // thorns: internal-cooldown remaining, seconds (counts down each tick)
   icdMax?: number; // thorns: configured internal cooldown, seconds (re-armed on each reflect)
+  leechPct?: number; // dot only: fraction of tick damage healed back to source
 }
 
 export type CrowdControlDrCategory =
@@ -315,7 +359,10 @@ export type ItemUse =
   // (canGatherTier / canHarvestMonsterMaterial). This item type never carries
   // a durability field (this repo has no durability mechanic anywhere), so a
   // gathering tool can never become unusable.
-  | { type: 'gatherTool'; nodeType: GatherNodeType; tier: number };
+  | { type: 'gatherTool'; nodeType: GatherNodeType; tier: number }
+  // Plants a keepsake at the player's own claimed homestead plot (PHAA-751).
+  // See src/sim/greenpaw_cutting.ts; first_cutting is the only item using this.
+  | { type: 'plant' };
 
 // Rarity ranks for the cosmetic skin-select event, ordered low → high. A rolled
 // rank unlocks its own tier and every tier below it (epic unlocks rare+uncommon).
@@ -350,6 +397,10 @@ interface BaseItemDef {
   // the PvP caps before applying damage. See src/sim/content/pvp_honor.ts.
   pvpOffenseRating?: number;
   pvpDefenseRating?: number;
+  // Hit rating: reduces melee/ranged miss AND spell resist by the same percent
+  // (src/sim/combat/hit_rating.ts). Off the primary stat budget like spellPower;
+  // the endgame-gear differentiator (Heroic delve variants, see item_budget.ts).
+  hitRating?: number;
   // Honor price for a Quartermaster purchase. An Honor-only item omits
   // buyValue; both fields may coexist when a vendor charges both currencies.
   priceHonor?: number;
@@ -606,6 +657,16 @@ export interface MobTemplate {
   // location live in src/sim/world_boss.ts; the loot roll runs through
   // ctx.rollWorldBossLoot.
   worldBoss?: boolean;
+  // Upstream #1707 (Thunzharr quiet-mechanics): suppresses the per-mechanic
+  // combat-log barks ("<Name> unleashes <Mechanic>!" and "<Name> becomes
+  // enraged!") for a mob whose only voice should be its periodic battle cry (a
+  // world boss). The mechanics still fire, with their spellfx and damage: only
+  // the noisy log line is silenced. Also suppresses the "{name} channels
+  // {mechanic}." chat line a support/channel mechanic would otherwise emit
+  // (Heroic Nythraxis's Spirit of Malric): the heal beam + floating combat text
+  // already telegraph it, so a per-tick chat line would just be noise for a
+  // squishy add meant to die fast.
+  quietMechanics?: boolean;
   // Elite scaling, vanilla-style: ~2.3x health, ~1.5x damage, double XP.
   elite?: boolean;
   // Rare/miniboss controls.
@@ -616,6 +677,11 @@ export interface MobTemplate {
   // leaves snares landing so most elites can still be kited; a raid boss sets both
   // (upstream #1502).
   slowImmune?: boolean;
+  // Ignores taunt/growl forced-target windows. Heroic Nythraxis's Spirit of Voss
+  // add: the raid cannot tank-lock it onto a target with taunt, only peel it off
+  // healers with CC. Taunt still registers threat (it shows on meters); see the
+  // ignoreTaunt guard in Sim.applyTaunt.
+  ignoreTaunt?: boolean;
   // Upstream #1643 (Thunzharr unkitable-movespeed fix): every movement step (chase,
   // flee, wander, leash return) takes moveToward's ignoreObstacles branch, a straight
   // line that ignores prop colliders, the waterline, and the steep-wall gate. For a
@@ -720,6 +786,24 @@ export interface MobTemplate {
     every: number;
     hasteMult: number;
     duration: number;
+    name: string;
+    school?: Aura['school'];
+  };
+  // Channeled ESCALATING heal ("Malric's Mending", Heroic Nythraxis): every
+  // `every`s the caster heals the highest-max-hp friendly mob in `radius` (its
+  // protectee, e.g. the raid boss) for `baseHeal` plus a ramp that GROWS by
+  // `rampAdd` each uninterrupted tick, capped so a tick never exceeds `maxHeal`.
+  // Any stun/incapacitate/silence or a matching school lockout breaks the
+  // channel and RESETS the ramp, so a raid that fails to lock the caster down
+  // watches the boss heal for more and more. The caster must be CC-able
+  // (template `ccImmune: false`) for the reset to matter. Rides applyHeal; no
+  // new aura kind. Resets on evade/respawn like mendAlly.
+  channelHeal?: {
+    radius: number;
+    every: number;
+    baseHeal: number;
+    rampAdd: number;
+    maxHeal: number;
     name: string;
     school?: Aura['school'];
   };
@@ -1189,8 +1273,17 @@ export type AbilityEffect =
       requiresBehind?: boolean;
       weaponMult?: number;
     } // instant special attack (sinister strike, overpower, backstab)
-  | { type: 'directDamage'; min: number; max: number }
+  | { type: 'directDamage'; min: number; max: number; vsRootedMult?: number }
+  // Interrupts the target's in-progress cast/channel and locks out further casts of
+  // that spell's school for `lockout` seconds. Rides the existing lockout AuraKind
+  // (already applied by mob interrupt procs, see mob/mob_swing.ts) and isLockedOut
+  // gate (combat/cc.ts, already consumed by casting_lifecycle.ts castAbility).
+  | { type: 'interrupt'; lockout: number }
   | { type: 'heal'; min: number; max: number } // friendly target (or self)
+  // Chain Heal: heal the primary friendly target, then bounce to the nearest not-yet-healed
+  // ally within `radius`, up to `jumps` extra targets, each jump healing `falloff`x the last.
+  | { type: 'chainHeal'; min: number; max: number; jumps: number; falloff: number; radius: number }
+  | { type: 'aoeHeal'; min: number; max: number; radius: number }
   | { type: 'hot'; total: number; duration: number; interval: number } // renew, rejuvenation
   | { type: 'absorb'; amount: number; duration: number } // power word: shield
   | { type: 'imbue'; bonus: number; duration: number; judgeMin?: number; judgeMax?: number } // seals / rockbiter: extra damage per swing
@@ -1210,13 +1303,26 @@ export type AbilityEffect =
       party?: boolean;
     } // fortitude/might/mark on a friendly target
   | { type: 'finisherDamage'; base: number; perCombo: number; variance: number } // eviscerate
-  | { type: 'dot'; total: number; duration: number; interval: number }
+  | { type: 'dot'; total: number; duration: number; interval: number; leechPct?: number }
   | { type: 'slow'; mult: number; duration: number }
   | { type: 'root'; duration: number }
   | { type: 'stun'; duration: number }
   | { type: 'incapacitate'; duration: number } // gouge: breaks on damage
   | { type: 'polymorph'; duration: number } // sheep: breaks on damage, target heals
   | { type: 'aoeDamage'; min: number; max: number; radius: number }
+  // Bounce damage: the caster's directDamage already hit the primary target; this arcs
+  // from that target to the nearest not-yet-hit hostile within `radius`, up to `jumps`
+  // enemies (the primary and the caster are excluded), each jump dealing `falloff`x the
+  // last. The hop pick is DETERMINISTIC (nearest by distance, then lowest id), mirroring
+  // chainHeal, so the only rng is the one base roll plus each hit's crit.
+  | {
+      type: 'chainDamage';
+      min: number;
+      max: number;
+      jumps: number;
+      falloff: number;
+      radius: number;
+    }
   | {
       type: 'groundAoE';
       min: number;
@@ -1227,7 +1333,23 @@ export type AbilityEffect =
     }
   | { type: 'aoeAttackSpeed'; mult: number; duration: number; radius: number } // thunder clap rider
   | { type: 'aoeAttackPower'; amount: number; duration: number; radius: number } // demoralizing roar/shout
+  // party-style ALLY buff: +AP aura on the caster and nearby friendlies (Trueshot Aura)
+  | {
+      type: 'aoeAllyAttackPower';
+      amount?: number;
+      apPct?: number;
+      duration: number;
+      radius: number;
+    }
+  | { type: 'aoeAllyHaste'; mult: number; duration: number; radius: number }
   | { type: 'aoeRoot'; duration: number; radius: number; min: number; max: number }
+  | {
+      type: 'consumeAura';
+      auraIds?: string[];
+      auraKind?: 'dot' | 'hot';
+      deal?: { min: number; max: number };
+      heal?: { min: number; max: number };
+    }
   | {
       type: 'selfBuff';
       kind: AuraKind;
@@ -1238,11 +1360,16 @@ export type AbilityEffect =
       charges?: number;
       internalCooldown?: number;
     }
+  | { type: 'petBuff'; kind: AuraKind; value: number; duration: number }
+  | { type: 'applyDebuff'; kind: AuraKind; value: number; duration: number }
   | { type: 'finisherHaste'; mult: number; basedur: number; perCombo: number } // slice and dice
   | { type: 'finisherStun'; base: number; perCombo: number } // kidney shot: stun seconds scale with combo
   | { type: 'gainResource'; amount: number } // bloodrage immediate
   | { type: 'selfDamagePctMax'; pct: number } // bloodrage cost
   | { type: 'charge' }
+  // Druid Feral signature (Feral Instinct): a form-gated resource burst. In Cat Form it
+  // grants an Energy-regeneration buff; in Bear Form it instantly generates Rage.
+  | { type: 'feralCharge' }
   | { type: 'sunder'; armor: number; maxStacks: number } // sunder armor: stacking armor debuff + flat threat
   // PHAA-577: the percent-armor-debuff sibling of 'sunder' above. Same stacking/
   // threat/miss-chance mechanics (see effect_dispatch.ts case 'armorDebuffPct'),
@@ -1292,7 +1419,7 @@ export interface AbilityDef {
   // instead (Arcane Shot, Serpent Sting, Aimed Shot), regardless of school.
   scalesWith?: 'ranged';
   requiresTarget: boolean;
-  targetType?: 'enemy' | 'friendly'; // friendly = self or allied player (defaults to enemy)
+  targetType?: 'enemy' | 'friendly' | 'any'; // friendly = self or allied player (defaults to enemy)
   onNextSwing?: boolean; // heroic strike style: no GCD, queues on swing
   offGcd?: boolean;
   awardsCombo?: number; // rogue builders
@@ -1303,6 +1430,11 @@ export interface AbilityDef {
   // multiplier on the damage-threat (both scale with stance/form modifiers).
   threat?: { flat?: number; mult?: number };
   requiresForm?: 'bear' | 'cat'; // druid form kit (maul/growl/swipe/claw/bite)
+  // Castable while shapeshifted (druid bear/cat/travel) without requiring a SPECIFIC form,
+  // so it works in both Cat and Bear Form. Exempts the ability from the "can't act while
+  // shapeshifted" lock. Default false: shapeshifted druids normally can't cast class-kit
+  // spells; tank cooldowns like Primal Reflexes opt IN so a bear tank pops them mid-fight.
+  usableInForm?: boolean;
   // Mutually exclusive self-buff group: casting one ability in the group cancels
   // any active buff from a sibling in the same group (e.g. hunter aspects, where
   // only one aspect may be active at a time). Distinct from form toggles, which
@@ -1408,6 +1540,52 @@ export interface GatherNodeDef {
   zoneId: string;
   type: GatherNodeType;
   pos: { x: number; z: number };
+}
+
+// Crafting (PHAA-574): the fixed set of crafts a recipe belongs to. Common-tier
+// only for this slice (professions-depth batch, framework + reskin); a later
+// slice adds skill-tier gating, the archetype ceiling, and recipe acquisition.
+export type CraftType =
+  | 'weaponcrafting'
+  | 'armorcrafting'
+  | 'tailoring'
+  | 'leatherworking'
+  | 'cooking'
+  | 'alchemy'
+  // Enchanting (PHAA-649 child, upstream #1712): the scroll itself is just
+  // another craftable recipe output (src/sim/content/recipes.ts), so this
+  // craft type needs no new crafting logic, only this new tag.
+  | 'enchanting';
+
+// One craftable recipe: consume `reagents` (existing gathered-material items),
+// grant `resultCount` of `resultItemId`. Every recipe is craftable by any
+// player with the materials (no per-recipe skill/known gate this slice); see
+// src/sim/crafting.ts for resolution. `level` is the recipe's content level,
+// used only for the green-to-gray character-XP falloff on a craft (PHAA-712,
+// src/sim/crafting.ts's craftItem); it does not gate who can craft it.
+export interface RecipeDef {
+  id: string;
+  craft: CraftType;
+  reagents: { itemId: string; count: number }[];
+  resultItemId: string;
+  resultCount: number;
+  level: number;
+}
+
+// Enchanting (PHAA-649 child, upstream #1712): reskinned onto the Hollow's flat
+// itemId+count equipment model (no per-item-instance system exists here), so
+// an enchant is applied to an EQUIP SLOT rather than to a specific item copy:
+// the bonus folds into recalcPlayerStats whenever that slot is occupied (see
+// src/sim/entity.ts), and is lost only if the player re-enchants the slot with
+// a different EnchantDef (no stacking, no refund of the old one). Applying
+// consumes one `scrollItemId` (itself a normal crafted item, output of a
+// CraftType:'enchanting' RecipeDef); see src/sim/enchanting.ts for resolution.
+export interface EnchantDef {
+  id: string;
+  name: string; // English source, localized via entity_i18n like other content records
+  slot: EquipSlot;
+  scrollItemId: string;
+  stats: Partial<CoreStats>;
 }
 
 // World-placed readable props (WoW-style journals/books lying around, PHAA-552).
@@ -1858,7 +2036,16 @@ export interface Entity {
   rangedHaste: number;
   spellHaste: number;
   critChance: number; // 0..1
+  // Extra critical-strike damage from a spec mastery (0 = none), split by OUTPUT CHANNEL
+  // so a mastery only strengthens the crits it is meant to. Added to the matching base
+  // crit multiplier at the crit site: spell crits deal 1.5 + critDmgSpellBonus, physical
+  // crits 2 + critDmgPhysBonus, heal crits 1.5 + critDmgHealBonus.
+  critDmgSpellBonus: number;
+  critDmgPhysBonus: number;
+  critDmgHealBonus: number;
   dodgeChance: number;
+  hitRating: number; // accumulated hit rating from gear (see combat/hit_rating.ts)
+  hitBonus: number; // hit fraction (hitRating converted): reduces miss/resist, 0..1
   castPushbackReduction: number; // 0..1: damage cast-pushback removed by item-set bonuses (1 = immune)
   moveSpeed: number;
   hostile: boolean;
@@ -1907,6 +2094,9 @@ export interface Entity {
   sitting: boolean;
   eating: Consuming | null;
   drinking: Consuming | null;
+  // Z-key cosmetic toggle: held weapons render sheathed on the back. Cleared by
+  // any deliberate combat action (auto-attack engage, ability cast), WoW-style.
+  weaponStowed: boolean;
   // mob AI
   aiState: AiState;
   tappedById: number | null; // first player to damage this mob owns loot/xp/quest credit
@@ -1934,6 +2124,9 @@ export interface Entity {
   detonateTimer: number; // Death Throes fuse on a volatile corpse; Infinity = no pending detonation
   mendTimer: number; // mendAlly support-heal cast countdown
   wardTimer: number; // wardAllies support-shield cast countdown
+  channelTimer: number; // channelHeal escalating-heal tick countdown
+  channelRamp: number; // channelHeal accumulated bonus heal; reset to 0 on interrupt (CC)
+  healProtecteeId?: number | null; // channelHeal: cached protectee (the ally healed), re-scanned lazily
   rallyTimer: number; // rally commander-buff cast countdown
   warcryTimer: number; // warcry ally-haste pulse countdown
   firedSummons: number; // summonAdds thresholds already triggered
@@ -2045,6 +2238,12 @@ export interface NythraxisEncounterState {
   deathlessTimer: number;
   deathlessCastRemaining: number;
   deathlessStunRemaining: number;
+  // Heroic-only: the Deathless Court re-summon channel (Aldren/Malric/Voss) and
+  // the Dread Curse tank-swap debuff. See encounters/nythraxis.ts.
+  heroicSummonChannelRemaining?: number;
+  dreadCurseTimer?: number;
+  dreadCurseTargetId?: number | null;
+  dreadCurseStacks?: number;
   wardChannels: NythraxisWardChannel[];
   finalStand: boolean;
   deathSpoken: boolean;
@@ -2297,7 +2496,7 @@ export type SimEvent = { pid?: number } & (
       sourceId: number;
       targetId: number;
       school: string;
-      fx: 'projectile' | 'beam' | 'tick' | 'nova' | 'lightning';
+      fx: 'projectile' | 'beam' | 'tick' | 'nova' | 'lightning' | 'chainHeal';
     }
   // entityId (when set) anchors the log to that entity so the server only
   // delivers it to nearby players; anchorless logs broadcast server-wide.
@@ -2681,20 +2880,26 @@ export function rageFromTaking(damage: number, attackerLevel: number): number {
   return damage / (Math.max(1, attackerLevel) * 1.5);
 }
 
-// Attacking a target ABOVE your level adds a steep miss penalty (extra miss %),
-// tuned so +2 is ~19% and +4 is ~85% miss: fighting way-above-level enemies is meant
-// to be near-futile. The curve approximates 2.5 * diff^2.5, but is stored as an integer
-// table (level diffs are always integers) so it stays bit-for-bit deterministic across
-// engines — Math.pow with a fractional exponent is not guaranteed identical browser vs node.
-//   +1 -> 2.5   +2 -> 14   +3 -> 39   +4 -> 80   (+5 and beyond saturate past the clamp)
-const ABOVE_LEVEL_MISS_PCT = [0, 2.5, 14, 39, 80];
+// Attacking a target ABOVE your level adds a miss/resist penalty (extra %) on top of
+// the base miss (5%) / resist (4%). It ramps with the level gap but is CAPPED so even
+// far-above content (Heroic delves run enemies at +3) never reads as a coin flip: the
+// penalty tops out at 21, so melee miss maxes at ~26% and spell resist at ~25%. Stored
+// as an integer table (level diffs are always integers) so it stays bit-for-bit
+// deterministic across engines. Beyond the last entry the penalty SATURATES at the cap
+// (it does not keep climbing). Gear Hit rating (combat/hit_rating.ts) then closes the
+// remainder of this penalty back toward 0; see swingMissChance/spell_resist.ts.
+//   +1 -> 2.5   +2 -> 14   +3 -> 21   (+4 and beyond hold at 21)
+const ABOVE_LEVEL_MISS_PCT = [0, 2.5, 14, 21];
 function aboveLevelMissPct(diff: number): number {
   if (diff <= 0) return 0;
-  return diff < ABOVE_LEVEL_MISS_PCT.length ? ABOVE_LEVEL_MISS_PCT[diff] : 100;
+  return diff < ABOVE_LEVEL_MISS_PCT.length
+    ? ABOVE_LEVEL_MISS_PCT[diff]
+    : ABOVE_LEVEL_MISS_PCT[ABOVE_LEVEL_MISS_PCT.length - 1];
 }
 
 // Spell hit by level difference (target - caster): 96% at equal level, a gentle
-// +1%/level bonus below you, and the steep above-level penalty above. cap 99%, floor 5%.
+// +1%/level bonus below you, and the capped above-level penalty above (resist tops
+// out at ~25%). cap 99%, floor 5%.
 export function spellHitChance(casterLevel: number, targetLevel: number): number {
   const diff = targetLevel - casterLevel;
   const hit = diff <= 0 ? 96 + -diff * 1 : 96 - aboveLevelMissPct(diff);
@@ -2702,7 +2907,7 @@ export function spellHitChance(casterLevel: number, targetLevel: number): number
 }
 
 // Melee miss vs target by level difference: 5% base, a gentle -0.2%/level below you,
-// and the steep above-level penalty above. cap 95%, floor 0.5%.
+// and the capped above-level penalty above (miss tops out at ~26%). cap 95%, floor 0.5%.
 export function meleeMissChance(attackerLevel: number, targetLevel: number): number {
   const diff = targetLevel - attackerLevel;
   const miss = diff > 0 ? 5 + aboveLevelMissPct(diff) : 5 + diff * 0.2;
@@ -2724,7 +2929,11 @@ export function swingMissChance(attacker: Entity, target: Entity): number {
   const miss = meleeMissChance(attacker.level, target.level);
   const mobAttacker = attacker.kind === 'mob' && attacker.hostile && attacker.ownerId === null;
   const playerSide = target.kind === 'player' || target.ownerId !== null;
-  return mobAttacker && playerSide ? Math.min(miss, MOB_VS_PLAYER_MAX_MISS) : miss;
+  if (mobAttacker && playerSide) return Math.min(miss, MOB_VS_PLAYER_MAX_MISS);
+  // Player/pet -> mob keeps the full above-level scaling, minus the attacker's gear
+  // Hit rating (attacker.hitBonus, 0 for anything without hit gear so ungeared draws
+  // are unchanged), floored at 0 so a hit-capped attacker can reach 0% miss.
+  return Math.max(0, miss - attacker.hitBonus);
 }
 
 export function armorReduction(armor: number, attackerLevel: number): number {
