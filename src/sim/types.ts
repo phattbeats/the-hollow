@@ -661,7 +661,11 @@ export interface MobTemplate {
   // combat-log barks ("<Name> unleashes <Mechanic>!" and "<Name> becomes
   // enraged!") for a mob whose only voice should be its periodic battle cry (a
   // world boss). The mechanics still fire, with their spellfx and damage: only
-  // the noisy log line is silenced.
+  // the noisy log line is silenced. Also suppresses the "{name} channels
+  // {mechanic}." chat line a support/channel mechanic would otherwise emit
+  // (Heroic Nythraxis's Spirit of Malric): the heal beam + floating combat text
+  // already telegraph it, so a per-tick chat line would just be noise for a
+  // squishy add meant to die fast.
   quietMechanics?: boolean;
   // Elite scaling, vanilla-style: ~2.3x health, ~1.5x damage, double XP.
   elite?: boolean;
@@ -678,11 +682,6 @@ export interface MobTemplate {
   // healers with CC. Taunt still registers threat (it shows on meters); see the
   // ignoreTaunt guard in Sim.applyTaunt.
   ignoreTaunt?: boolean;
-  // Suppresses the "{name} channels {mechanic}." chat line a support/channel
-  // mechanic would otherwise emit (Heroic Nythraxis's Spirit of Malric): the
-  // heal beam + floating combat text already telegraph it, so a per-tick chat
-  // line would just be noise for a squishy add meant to die fast.
-  quietMechanics?: boolean;
   // Upstream #1643 (Thunzharr unkitable-movespeed fix): every movement step (chase,
   // flee, wander, leash return) takes moveToward's ignoreObstacles branch, a straight
   // line that ignores prop colliders, the waterline, and the steep-wall gate. For a
