@@ -33,9 +33,9 @@ const CLASSES = process.env.CLASSES
 // so we never actually enter the world (no follow-cam, no second body).
 async function boot(page) {
   const errors = [];
-  page.on('pageerror', (e) => errors.push('PAGEERROR: ' + e.message));
+  page.on('pageerror', (e) => errors.push(`PAGEERROR: ${e.message}`));
   page.on('console', (m) => {
-    if (m.type() === 'error') errors.push('CONSOLE: ' + m.text());
+    if (m.type() === 'error') errors.push(`CONSOLE: ${m.text()}`);
   });
   await page.goto(URL, { waitUntil: 'load', timeout: 90000 });
   await page.waitForSelector('#btn-offline', { timeout: 90000 });

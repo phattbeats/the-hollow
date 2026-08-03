@@ -62,7 +62,7 @@ async function locate(page) {
     const p = window.__probe.preview;
     const holders = {};
     p.characterGroup.traverse((o) => {
-      if (o.userData && o.userData.weaponMesh) {
+      if (o.userData?.weaponMesh) {
         let cur = o;
         while (cur.parent) {
           const pn = (cur.parent.name || '').toLowerCase();

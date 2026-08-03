@@ -1,6 +1,3 @@
-// PHAA-697 evidence montage (throwaway): a before/after pair sheet for the 4
-// classes captured both ways, and a 3x3 "after" sheet for all 9 female classes.
-import fs from 'node:fs';
 import sharp from 'sharp';
 
 const DIR = 'docs/screenshots/phaa-697';
