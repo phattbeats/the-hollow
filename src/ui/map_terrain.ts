@@ -60,7 +60,7 @@ export function paintTerrainRows(
         g = 100;
         b = 82;
       }
-      if (h < wl) {
+      if (h < wl && Number.isFinite(wl)) {
         r = 38;
         g = 84;
         b = 138;

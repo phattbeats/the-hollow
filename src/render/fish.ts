@@ -10,7 +10,7 @@ import { GFX } from './gfx';
 // critters and motes use: a fixed pool of fish that recycle (we never grow
 // the pool), each idling beneath the surface until it arcs out of the water,
 // splashes, and re-enters. Fish only ever break water that is genuinely deep
-// enough -- we sample the SAME deterministic `terrainHeight`/`waterLevelAt` the
+// enough, we sample the SAME deterministic `terrainHeight`/`waterLevelAt` the
 // sim uses (the hard "terrain height = sim height" invariant), so a leap can
 // never appear over dry land or a shoreline puddle, even a sculpted feature
 // outside every declared lake (`waterLevelAt` there is -Infinity).
