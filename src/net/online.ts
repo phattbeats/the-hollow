@@ -1980,6 +1980,13 @@ export class ClientWorld implements IWorld {
   equipItem(itemId: string): void {
     this.cmd({ cmd: 'equip', item: itemId });
   }
+  // Aimed-slot equip: the paperdoll drop target. The server re-validates the
+  // slot against the item, so a forged 'equip' with a wrong slot is refused,
+  // not coerced. The wire shape reuses the 'equip' command (additive 'slot'
+  // field), so existing clients stay byte-identical.
+  equipItemToSlot(itemId: string, slot: EquipSlot): void {
+    this.cmd({ cmd: 'equip', item: itemId, slot });
+  }
   unequipItem(slot: EquipSlot): void {
     this.cmd({ cmd: 'unequip_item', slot });
   }

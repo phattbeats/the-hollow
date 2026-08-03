@@ -4878,6 +4878,15 @@ export class Sim {
     items.equipItem(this.ctx, itemId, pid);
   }
 
+  // Equip into the exact equipment key the player aimed at (the paperdoll drop
+  // target). Server-authoritative: the sim re-validates the slot against the
+  // item through slotAcceptsItem, so a hand-crafted 'equip' packet cannot put
+  // a helm on a ring finger. Aimed slot is honored once validated, so a ring
+  // dropped on the ring2 socket fills ring2 even while ring1 is free.
+  equipItemToSlot(itemId: string, slot: EquipSlot, pid?: number): void {
+    items.equipItem(this.ctx, itemId, pid, slot);
+  }
+
   unequipItem(slot: EquipSlot, pid?: number): boolean {
     return items.unequipItem(this.ctx, slot, pid);
   }

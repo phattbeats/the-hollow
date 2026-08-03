@@ -19,7 +19,7 @@
 import { addStacked, bagsFullError, equipBag as equipBagCmd } from './bags';
 import { ITEMS } from './data';
 import { recalcPlayerStats } from './entity';
-import { canEquipItem } from './equipment_rules';
+import { canEquipItem, resolveEquipSlot, slotAcceptsItem } from './equipment_rules';
 import { formatMoney } from './format_money';
 import type { ItemUseResult, PlayerMeta } from './sim';
 import type { SimContext } from './sim_context';
@@ -59,13 +59,26 @@ export function discardItem(ctx: SimContext, itemId: string, count = 1, pid?: nu
   });
 }
 
-export function equipItem(ctx: SimContext, itemId: string, pid?: number): void {
+export function equipItem(
+  ctx: SimContext,
+  itemId: string,
+  pid?: number,
+  targetSlot?: EquipSlot,
+): void {
   const r = ctx.resolve(pid);
   if (!r) return;
   const { meta, e: p } = r;
   const def = ITEMS[itemId];
   if (!def?.slot || (def.kind !== 'weapon' && def.kind !== 'armor')) return;
   if (ctx.countItem(itemId, meta.entityId) <= 0) return;
+  // The aimed slot is a REQUEST, never a bypass: a hand-crafted 'equip' packet
+  // cannot put a helm on a ring finger. The HUD drop target reads the same leaf
+  // (slotAcceptsItem) for its hover feedback, so the client never promises an
+  // equip the server will refuse.
+  if (targetSlot && !slotAcceptsItem(def, targetSlot)) {
+    ctx.error(meta.entityId, 'That does not go in that slot.');
+    return;
+  }
   if (!canEquipItem(meta.cls, def)) {
     ctx.error(meta.entityId, 'You cannot equip that.');
     return;
@@ -74,7 +87,12 @@ export function equipItem(ctx: SimContext, itemId: string, pid?: number): void {
     ctx.error(meta.entityId, `Requires level ${def.requiredLevel}.`);
     return;
   }
-  const slot = def.slot;
+  // In this fork the item's declared slot IS its equipment key (no 'ring'
+  // slot kind to resolve, no offhand). An aimed slot is honored verbatim once
+  // validated above, so a drop on a wrong paperdoll socket never coerces the
+  // equip into the right slot.
+  const slot = targetSlot ?? resolveEquipSlot(def, meta.equipment);
+  if (!slot) return;
   const old = meta.equipment[slot];
   ctx.removeItem(itemId, 1, meta.entityId);
   if (old) addItemSilent(old, 1, meta);
