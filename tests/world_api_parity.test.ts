@@ -1,6 +1,6 @@
 // W0c: the IWorld structural-parity gate.
 //
-// `IWorld` (src/world_api.ts, 196 members) is the ONE seam render/ui depend
+// `IWorld` (src/world_api.ts, 197 members) is the ONE seam render/ui depend
 // on. `tsc` already proves both the offline `Sim` and the online `ClientWorld` satisfy
 // it structurally, but the interface is erased at build: there is NO runtime member
 // list, so nothing catches a present-but-throws stub or a kind flip (method vs read).
@@ -9,7 +9,7 @@
 // IWORLD_MEMBERS below is the hand-maintained member list, the W0c analog of the
 // append-only CALLBACK_KEYS in tests/sim_context.test.ts. It is APPEND-ONLY WITH THE
 // INTERFACE: whenever a future slice adds (or removes/renames) a member on `IWorld`,
-// it lands the matching edit here in the SAME commit. The count pins (196 / 59 / 137)
+// it lands the matching edit here in the SAME commit. The count pins (197 / 59 / 138)
 // plus the sorted-name `toEqual` snapshots (modeled on the anti-loosening exclude-set
 // pin in tests/parity/harness.test.ts:131-162) are what force that: a dropped or
 // renamed member reddens deliberately, never silently.
@@ -76,8 +76,8 @@ interface IWorldMember {
   readonly kind: IWorldMemberKind;
 }
 
-// The 196 members of `interface IWorld`, in interface order (world_api.ts).
-// Partition: 59 `data` + 137 `method` (read-returning + command-void + 3 async).
+// The 197 members of `interface IWorld`, in interface order (world_api.ts).
+// Partition: 59 `data` + 138 `method` (read-returning + command-void + 3 async).
 // biome-ignore lint/suspicious/noExportsInTest: IWORLD_MEMBERS is the W0c pinned structural-parity contract (the authoritative IWorld member list)
 export const IWORLD_MEMBERS = [
   // --- core world / player roster + economy reads (data) ---
@@ -135,6 +135,7 @@ export const IWORLD_MEMBERS = [
   { name: 'acceptLinkedQuest', kind: 'method' },
   { name: 'setActiveTitle', kind: 'method' },
   { name: 'equipItem', kind: 'method' },
+  { name: 'equipItemToSlot', kind: 'method' },
   { name: 'unequipItem', kind: 'method' },
   { name: 'equipBag', kind: 'method' },
   { name: 'unequipBag', kind: 'method' },
@@ -404,9 +405,9 @@ beforeAll(() => {
 
 describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => {
   it('pins total / data / method counts', () => {
-    expect(IWORLD_MEMBERS.length).toBe(196);
+    expect(IWORLD_MEMBERS.length).toBe(197);
     expect(DATA_MEMBERS.length).toBe(59);
-    expect(METHOD_MEMBERS.length).toBe(137);
+    expect(METHOD_MEMBERS.length).toBe(138);
   });
 
   it('has no duplicate member names', () => {
@@ -482,6 +483,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'entities',
       'equipBag',
       'equipItem',
+      'equipItemToSlot',
       'equipment',
       'feedGreenpaw',
       'feedPet',
@@ -724,6 +726,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'enterDungeon',
       'equipBag',
       'equipItem',
+      'equipItemToSlot',
       'feedGreenpaw',
       'feedPet',
       'friendAdd',
@@ -936,6 +939,7 @@ const FACET_INVENTORY = [
   'equipment',
   'copper',
   'equipItem',
+  'equipItemToSlot',
   'unequipItem',
   'useItem',
   'discardItem',
@@ -1289,11 +1293,11 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the 32 fa
     expect(overlaps, `members filed in more than one facet:\n${overlaps.join('\n')}`).toEqual([]);
   });
 
-  it('the union of the 32 facets equals the pinned 196-member IWORLD_MEMBERS set', () => {
+  it('the union of the 32 facets equals the pinned 197-member IWORLD_MEMBERS set', () => {
     const union = Object.values(FACET_MEMBER_ARRAYS).flatMap((arr) => [...arr]);
-    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(196);
+    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(197);
     expect(new Set(union).size, 'union size after dedup (catches a duplicate across facets)').toBe(
-      196,
+      197,
     );
     const sortedUnion = [...union].sort();
     const pinned = IWORLD_MEMBERS.map((m) => m.name).sort();
