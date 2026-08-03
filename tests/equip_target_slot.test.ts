@@ -19,8 +19,9 @@ describe('aimed paperdoll equip', () => {
 
     sim.equipItemToSlot('cryptbone_helm', 'chest', pid);
 
-    const equipment = (sim as unknown as { players: Map<number, { equipment: Record<string, string> }> })
-      .players.get(pid)!.equipment;
+    const equipment = (
+      sim as unknown as { players: Map<number, { equipment: Record<string, string> }> }
+    ).players.get(pid)!.equipment;
     expect(equipment.chest).toBe('recruit_tunic');
     expect(equipment.helmet).toBeUndefined();
     expect(sim.countItem('cryptbone_helm', pid)).toBe(1);
@@ -38,9 +39,9 @@ describe('aimed paperdoll equip', () => {
     sim.addItem('cryptbone_helm', 1, pid);
     sim.equipItemToSlot('cryptbone_helm', 'helmet', pid);
     expect(
-      (sim as unknown as { players: Map<number, { equipment: Record<string, string> }> }).players.get(
-        pid,
-      )!.equipment.helmet,
+      (
+        sim as unknown as { players: Map<number, { equipment: Record<string, string> }> }
+      ).players.get(pid)!.equipment.helmet,
     ).toBe('cryptbone_helm');
 
     const { ClientWorld } = await import('../src/net/online');

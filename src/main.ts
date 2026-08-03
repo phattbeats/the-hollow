@@ -106,9 +106,9 @@ import {
   validateForm,
 } from './ui/auth_utils';
 import { assembleBugReportMeta } from './ui/bug_report';
+import { deleteCharButtonHtml } from './ui/char_delete_button';
 import { ChatCommandMenu } from './ui/chat_command_menu';
 import { chatInputSize } from './ui/chat_input_autosize';
-import { deleteCharButtonHtml } from './ui/char_delete_button';
 import { CLASS_DETAILS, classPairLabel, SIGNATURE_ABILITIES } from './ui/class_details_data';
 import { DISCORD_SURFACES_ENABLED } from './ui/discord_flags';
 import {

@@ -27,7 +27,10 @@ describe('quiet character delete control', () => {
   });
 
   it('uses quiet styling and preserves the touch target floor', () => {
-    const block = shell.slice(shell.indexOf('.char-delete-btn {'), shell.indexOf('.char-delete-btn .ui-icon'));
+    const block = shell.slice(
+      shell.indexOf('.char-delete-btn {'),
+      shell.indexOf('.char-delete-btn .ui-icon'),
+    );
     expect(block).toContain('background: transparent;');
     expect(block).toContain('border: 1px solid transparent;');
     const touch = shell.slice(shell.indexOf('body.mobile-touch .char-delete-btn {'));

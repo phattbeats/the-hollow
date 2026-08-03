@@ -447,9 +447,12 @@ export class BagsWindow {
         this.sellBagItem(s, ev);
       });
       const canDragToHotbar = this.deps.isHotbarItemId(s.itemId);
-      const canDragToPaperdoll =
-        (item.kind === 'weapon' || item.kind === 'armor') && !!item.slot;
-      if (!this.deps.tradeOpen() && !this.deps.vendorOpen() && (canDragToHotbar || canDragToPaperdoll)) {
+      const canDragToPaperdoll = (item.kind === 'weapon' || item.kind === 'armor') && !!item.slot;
+      if (
+        !this.deps.tradeOpen() &&
+        !this.deps.vendorOpen() &&
+        (canDragToHotbar || canDragToPaperdoll)
+      ) {
         row.draggable = true;
         row.addEventListener('dragstart', (e) => {
           if (canDragToPaperdoll) this.deps.beginEquipDrag(s.itemId);
