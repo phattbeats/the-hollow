@@ -149,7 +149,7 @@ describe('footstep toggle', () => {
 });
 
 // Paint-only biomes (custom maps, PHAA-679) have no dedicated ambience bed, so
-// ambience() borrows the closest shipped wind loop — same fallback mapping
+// ambience() borrows the closest shipped wind loop -- same fallback mapping
 // music.ts already uses for musicZoneForLocation: beach->vale, cave->marsh,
 // desert/volcano->peaks. amb_birds stays vale-only (a vale-specific bed, not a
 // general wind bed) so it must NOT fire for any of the fallback biomes.

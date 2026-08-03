@@ -11,7 +11,7 @@ import { cloudTexture, skyTexture } from './textures';
 // High tier: the dome fragment shader samples real Poly Haven equirect HDRIs
 // (one per biome) by view direction, cross-fading two maps across the same
 // zone-boundary windows the terrain palette uses. Each HDRI's sample is
-// rotated in azimuth so its real sun sits at SUN_ANCHOR's azimuth — the one
+// rotated in azimuth so its real sun sits at SUN_ANCHOR's azimuth -- the one
 // canonical sun that shadows, god rays and water glints all share. Procedural
 // warm sun-glow lobes stay layered on top so the anchor direction always
 // carries the glow even where the HDRI sun's elevation differs.
@@ -34,7 +34,7 @@ const DOME_RADIUS = 560;
 // samples the same shader, so IBL stays in step.
 // beach/desert/volcano/cave are paint-only biomes (see render/foliage.ts).
 // The sky dome picks one HDRI per frame from the player's 1D z-band biome
-// (see biomeBlendAt below), never a 2D biomePaint cell — a dome cannot show
+// (see biomeBlendAt below), never a 2D biomePaint cell -- a dome cannot show
 // two skies at once, so a painted patch's sky stays whatever its zone band
 // already is. They borrow an existing shipped HDRI/backdrop rather than
 // requiring new art, matching the upstream reference port.
@@ -162,7 +162,7 @@ function shouldUseLiteBackdrop(): boolean {
 
 const BIOME_BACKDROP = shouldUseLiteBackdrop() ? BIOME_BACKDROP_4K : BIOME_BACKDROP_8K;
 
-// Measured brightest-texel u (sun azimuth in equirect space) per HDRI — see
+// Measured brightest-texel u (sun azimuth in equirect space) per HDRI -- see
 // tmp/analyze_hdr.mjs. Used to rotate each map so its sun matches SUN_ANCHOR.
 const HDRI_SUN_U: Record<BiomeId, number> = {
   vale: 0.595,
@@ -428,7 +428,7 @@ export function buildSky(lowGfx: boolean, sunDir: THREE.Vector3): SkyView {
       // dome samples at u + off. three r165 negates environmentRotation
       // before building the PMREM lookup matrix ("accommodate left-handed
       // frame", WebGLMaterials.js), so the effective lookup azimuth is
-      // alpha + theta — matching the dome needs theta = +off*2pi. (A negated
+      // alpha + theta -- matching the dome needs theta = +off*2pi. (A negated
       // value lands the env sun 2x the offset away from the dome's.)
       return sunOffsetU(biome, sun) * 2 * Math.PI;
     },
@@ -442,7 +442,7 @@ export interface CloudLayer {
 
 // Cloud sprites. Low tier keeps the full painted layer over its gradient
 // dome. High tier: the HDRIs carry photographic cloud cover, so the cumulus
-// sprite deck is retired — only a faint, slow cirrus layer remains for
+// sprite deck is retired -- only a faint, slow cirrus layer remains for
 // parallax/motion against the static sky.
 export function buildClouds(lowGfx: boolean): CloudLayer {
   const variants = lowGfx
