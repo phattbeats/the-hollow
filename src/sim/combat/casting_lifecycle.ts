@@ -290,7 +290,7 @@ export function castAbility(ctx: SimContext, abilityId: string, pid?: number): v
       ctx.error(p.id, `You must be in ${ability.requiresForm === 'bear' ? 'Bear' : 'Wolf'} Form.`);
       return;
     }
-  } else if (form && !isFormToggle(ability)) {
+  } else if (form && !isFormToggle(ability) && !ability.usableInForm) {
     ctx.error(p.id, "You can't do that while shapeshifted.");
     return;
   }

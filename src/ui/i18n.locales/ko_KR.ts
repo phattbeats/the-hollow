@@ -1746,6 +1746,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.taunt.name': '도발',
   'entities.abilities.taunt.description':
     '대상을 도발합니다. 자신의 위협 수준이 대상이 가장 증오하는 적과 같아지며, 3초 동안 자신을 공격하게 만듭니다.',
+  'entities.abilities.ironhold.name': '아이언홀드',
+  'entities.abilities.ironhold.description':
+    '방패 뒤에 웅크려 8초 동안 받는 모든 피해를 40% 감소시킵니다.',
   'entities.abilities.fireball.name': '화염구',
   'entities.abilities.fireball.description':
     '불덩이를 날려 {damage}의 화염 피해와 추가 지속 피해를 입힙니다.',
@@ -1882,6 +1885,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.retribution_aura.name': '응징의 오라',
   'entities.abilities.retribution_aura.description':
     '30분 동안 신성한 기운으로 자신을 감싸 근접 공격으로 자신을 타격하는 모든 적에게 5의 신성 피해를 입힙니다.',
+  'entities.abilities.sacred_bulwark.name': '신성한 보루',
+  'entities.abilities.sacred_bulwark.description':
+    '10초 동안, 당신을 죽일 다음 공격이 무효화되며 대신 체력을 35%로 회복시킵니다.',
   'entities.abilities.tame_beast.name': '야수 길들이기',
   'entities.abilities.tame_beast.description':
     '야수를 길들여 동료로 삼기 시작합니다. 야수는 자신의 레벨 이하이며 정예가 아니어야 합니다. 소환수는 주인을 따르고 적을 공격하며 자체 위협 수준을 유지합니다. 한 번에 하나의 소환수만 둘 수 있습니다.',
@@ -2082,6 +2088,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.rip.name': '찢기',
   'entities.abilities.rip.description':
     '12초에 걸쳐 출혈 피해를 입히는 결정타입니다. 연계 점수를 소모합니다. 늑대 변신 전용.',
+  'entities.abilities.primal_reflexes.name': '원시 반사신경',
+  'entities.abilities.primal_reflexes.description':
+    '본능이 예민해져 6초 동안 회피 확률이 50% 증가합니다.',
   'entities.abilities.mortal_strike.name': '죽음의 일격',
   'entities.abilities.mortal_strike.description':
     '잔혹한 일격으로 무기 피해에 {damage}의 피해를 더합니다. (무기 특화 대표 기술)',

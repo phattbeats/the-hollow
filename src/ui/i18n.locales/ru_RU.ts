@@ -1781,6 +1781,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.taunt.name': 'Провокация',
   'entities.abilities.taunt.description':
     'Провоцирует цель: ваша угроза повышается до уровня самого ненавистного ей врага, и она вынуждена атаковать вас 3 сек.',
+  'entities.abilities.ironhold.name': 'Железная защита',
+  'entities.abilities.ironhold.description':
+    'Вы укрываетесь за щитом, снижая весь получаемый урон на 40% в течение 8 сек.',
   'entities.abilities.fireball.name': 'Огненный шар',
   'entities.abilities.fireball.description':
     'Бросает огненный шар, наносящий {damage} ед. урона от огня и дополнительный периодический урон.',
@@ -1919,6 +1922,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.retribution_aura.name': 'Аура воздаяния',
   'entities.abilities.retribution_aura.description':
     'Окружает вас священной энергией на 30 мин и наносит 5 ед. урона светлой магией любому врагу, атакующему вас в ближнем бою.',
+  'entities.abilities.sacred_bulwark.name': 'Священный бастион',
+  'entities.abilities.sacred_bulwark.description':
+    'В течение 10 сек. следующий смертельный удар по вам будет отменен, а здоровье восстановлено до 35%.',
   'entities.abilities.tame_beast.name': 'Приручение зверя',
   'entities.abilities.tame_beast.description':
     'Начинает приручать зверя в качестве спутника. Он должен быть не выше вашего уровня и не элитным. Ваш питомец следует за вами, атакует врагов и удерживает собственную угрозу. Одновременно можно иметь одного питомца.',
@@ -2121,6 +2127,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.rip.name': 'Разрывание',
   'entities.abilities.rip.description':
     'Завершающий прием, наносящий урон от кровотечения в течение 12 сек. Расходует приемы серии. Только в облике волка.',
+  'entities.abilities.primal_reflexes.name': 'Первобытные рефлексы',
+  'entities.abilities.primal_reflexes.description':
+    'Ваши инстинкты обостряются, повышая шанс уклонения на 50% в течение 6 сек.',
   'entities.abilities.mortal_strike.name': 'Смертельный удар',
   'entities.abilities.mortal_strike.description':
     'Жестокий удар, наносящий урон оружием плюс {damage}. (ключевая способность ветки «Оружие»)',

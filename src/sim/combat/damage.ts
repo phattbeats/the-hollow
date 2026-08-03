@@ -108,6 +108,15 @@ export function dealDamage(
     amount = Math.round(amount * 0.9);
   }
 
+  // Ironhold (v0.26.0, upstream #1912): a big defensive cooldown, fraction less
+  // damage from any source, any school, DoT ticks included. Non-stacking: the
+  // strongest ward wins.
+  if (amount > 0) {
+    let ward = 0;
+    for (const a of target.auras) if (a.kind === 'shield_wall') ward = Math.max(ward, a.value);
+    if (ward > 0) amount = Math.round(amount * (1 - ward));
+  }
+
   // Expose: a cracked-guard debuff amplifies the physical damage the victim
   // takes (from any attacker) until it expires. Armor is already applied at the
   // swing site, so this rides on top of the post-mitigation amount.
@@ -225,7 +234,54 @@ export function dealDamage(
 
   // duels end at 1 hp — nobody dies
   const duel = target.kind === 'player' ? ctx.duels.get(target.id) : undefined;
+
+  // Sacred Bulwark (v0.26.0, upstream #1912): an enemy lethal hit spends the
+  // ward, clamps overkill to the health actually lost, and restores the wearer
+  // from the aura's data value. The damage still falls through the shared tail
+  // below so combat, counters, CC/stealth breaks, consumption, pushback, rage,
+  // and deeds all run. Sourceless and self damage do not spend this enemy-hit
+  // defensive.
+  //
+  // Duels are excluded on purpose: a duel already clamps the loser to 1 hp, so
+  // there is no death to deny. Letting the ward fire there would spend it for
+  // nothing, leave the duel running because endDuel never gets called, and
+  // (below the restore fraction) hand the loser a free heal.
+  // Only a player can carry the ward, so resolve hostility lazily: asking
+  // isHostileTo about a mob target is both wasted work on the damage hot path
+  // and outside that helper's contract.
+  let guardianWardRestore = 0;
+  const guardianWardEnemyHit =
+    target.kind !== 'player' || !source
+      ? false
+      : source.kind === 'mob' && source.ownerId === null
+        ? source.hostile
+        : ctx.isHostileTo(source, target);
+  const guardianWardDuel =
+    !!duel &&
+    duel.state === 'active' &&
+    !!sourcePlayer &&
+    (sourcePlayer.id === duel.a || sourcePlayer.id === duel.b);
   if (
+    amount > 0 &&
+    target.kind === 'player' &&
+    source &&
+    source.id !== target.id &&
+    guardianWardEnemyHit &&
+    !guardianWardDuel &&
+    target.hp - amount <= 0
+  ) {
+    const wardIdx = target.auras.findIndex((a) => a.kind === 'guardian_ward');
+    if (wardIdx >= 0) {
+      const ward = target.auras[wardIdx];
+      target.auras.splice(wardIdx, 1);
+      ctx.emit({ type: 'aura', targetId: target.id, name: ward.name, gained: false });
+      amount = Math.max(0, target.hp);
+      guardianWardRestore = Math.max(1, Math.round(target.maxHp * ward.value));
+    }
+  }
+
+  if (
+    guardianWardRestore === 0 &&
     duel &&
     duel.state === 'active' &&
     sourcePlayer &&
@@ -268,6 +324,7 @@ export function dealDamage(
     }
   }
   if (
+    guardianWardRestore === 0 &&
     match?.fiesta &&
     match.state === 'active' &&
     sourcePlayer &&
@@ -294,6 +351,7 @@ export function dealDamage(
   // Ranked arena eliminations use normal death state so clients and combat
   // logic see a real 0 HP defeat. The return timer revives everyone after.
   if (
+    guardianWardRestore === 0 &&
     match &&
     !match.fiesta &&
     match.state === 'active' &&
@@ -324,7 +382,9 @@ export function dealDamage(
     }
   }
 
-  target.hp = Math.max(0, target.hp - amount);
+  // Guardian Ward: if the enemy hit was denied, target.hp lands at the
+  // restore fraction instead of 0. Otherwise the standard damage fall-through.
+  target.hp = guardianWardRestore || Math.max(0, target.hp - amount);
   ctx.emit({
     type: 'damage',
     sourceId: source?.id ?? -1,

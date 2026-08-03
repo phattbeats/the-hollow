@@ -4297,6 +4297,10 @@ export const ja_JP: EnTranslations = {
         "name": "挑発",
         "description": "対象を挑発します。あなたの脅威が対象の最も憎む敵と同じ値まで上がり、3秒間あなたを攻撃させます。"
       },
+      "ironhold": {
+        "name": "アイアンホールド",
+        "description": "盾の陰に身を潜め、8秒間受けるダメージを40%軽減する。"
+      },
       "fireball": {
         "name": "ファイアボール",
         "description": "炎の球を放ち、{damage} の火炎ダメージと追加の継続ダメージを与えます。"
@@ -4488,6 +4492,10 @@ export const ja_JP: EnTranslations = {
       "retribution_aura": {
         "name": "リトリビューションオーラ",
         "description": "30分間、聖なる力で身を包み、近接攻撃をしてきた敵に5の神聖ダメージを与えます。"
+      },
+      "sacred_bulwark": {
+        "name": "聖なる防壁",
+        "description": "10秒間、致命的な一撃を無効化し、代わりに体力を35%まで回復する。"
       },
       "tame_beast": {
         "name": "獣の調教",
@@ -4772,6 +4780,10 @@ export const ja_JP: EnTranslations = {
       "rip": {
         "name": "リップ",
         "description": "12秒かけて出血ダメージを与えるフィニッシュムーブです。コンボポイントを消費します。ウルフフォーム専用。"
+      },
+      "primal_reflexes": {
+        "name": "原始反射",
+        "description": "本能が研ぎ澄まされ、6秒間回避率が50%上昇する。"
       },
       "mortal_strike": {
         "name": "致死打撃",

@@ -236,6 +236,13 @@ export type AuraKind =
   | 'heal_absorb'
   | 'critvuln'
   | 'buff_spi'
+  // Warrior Ironhold: a big, short, all-school damage-taken reduction (value =
+  // fraction less, e.g. 0.4 = 40% less), applied in damage.ts.
+  | 'shield_wall'
+  // Paladin Sacred Bulwark: a divine cheat-death ward. While it holds, a lethal
+  // enemy hit is denied in damage.ts and the wearer is restored by value (a
+  // fraction of max health, e.g. 0.35 = 35%) before the ward is consumed.
+  | 'guardian_ward'
   // 2v2 Fiesta power-up buffs: `buff_scale` value = body-size multiplier (also
   // boosts max-hp when >1); `buff_jump` value = jump-height multiplier.
   | 'buff_scale'
@@ -1390,8 +1397,10 @@ export interface AbilityDef {
   // multiplier on the damage-threat (both scale with stance/form modifiers).
   threat?: { flat?: number; mult?: number };
   requiresForm?: 'bear' | 'cat'; // druid form kit (maul/growl/swipe/claw/bite)
-  // Castable while shapeshifted without requiring a SPECIFIC form (Feral Instinct works in
-  // both Cat and Bear Form). Exempts the ability from the "can't act while shapeshifted" lock.
+  // Castable while shapeshifted (druid bear/cat/travel) without requiring a SPECIFIC form,
+  // so it works in both Cat and Bear Form. Exempts the ability from the "can't act while
+  // shapeshifted" lock. Default false: shapeshifted druids normally can't cast class-kit
+  // spells; tank cooldowns like Primal Reflexes opt IN so a bear tank pops them mid-fight.
   usableInForm?: boolean;
   // Mutually exclusive self-buff group: casting one ability in the group cancels
   // any active buff from a sibling in the same group (e.g. hunter aspects, where
