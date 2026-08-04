@@ -262,6 +262,7 @@ import {
   publishCard,
 } from './player_card_share';
 import { chatPlayerContextActions } from './player_context_menu';
+import { playerStealthed } from './player_stealthed';
 import { hydratePortraits, portraitChipHtml } from './portrait_chip';
 import { maskProfanity } from './profanity';
 import { encodeQuestLink, parseChatSegments } from './quest_link';
@@ -4681,8 +4682,23 @@ export class Hud {
     // call IN the core while the painter elides the DOM setAttribute (Top risk 4).
     this.renderPetBar();
     if (this.spellbookWindow.isOpen) this.spellbookWindow.refreshHotbarControls();
+    // PHAA-739 row F / upstream #1906: derive `stealthed` from the mirrored
+    // auras (playerStealthed) rather than trust the raw entity field. Offline
+    // the entity IS the live Sim Entity, whose `stealthed` field stays current
+    // via Sim.updateAuras; online it is the ClientWorld mirror, constructed
+    // with `stealthed: false` and never updated (server-local
+    // interest-filtering cache not encoded on the wire; see src/net/online.ts
+    // and server/game.ts). The auras ARE mirrored, so this is correct on both
+    // hosts. Without it the bar never dimmed Cheap Shot / Ambush / Garrote
+    // out of stealth, so they looked equally "ready" whether or not the cast
+    // would actually succeed (issue #1890).
+    const abPlayer = { ...p, stealthed: playerStealthed(p.auras) };
     this.actionBarPainter.paint(
-      this.actionBarView.tick({ player: p, target: target ?? null, inventory: sim.inventory }),
+      this.actionBarView.tick({
+        player: abPlayer,
+        target: target ?? null,
+        inventory: sim.inventory,
+      }),
     );
 
     // xp bar: pre-cap shows the level bar; post-cap fills toward the next virtual
