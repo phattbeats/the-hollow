@@ -1180,7 +1180,7 @@ export const de_DE: EnTranslations = {
         "levels": "Stufe {min} bis {max}",
         "cta": "Die Welt entdecken",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Eastbrook-Tal",
         "valeBlurb": "Grüne Hügel und alte Wälder, wo jedes Abenteuer beginnt.",
         "marshName": "Mirefen-Moor",
@@ -1681,6 +1681,8 @@ export const de_DE: EnTranslations = {
       "typeGroupBody": "Jedes Kapitel der Hauptgeschichte endet an einer Dungeon-Tür. Die Einführung ist im Alleingang lösbar, doch der finale Schlag gegen den Schurken eines Kapitels ist für eine Gruppe von fünf gedacht.",
       "sagaTitle": "Folge der Spur nach Norden",
       "sagaBody": "Die Hauptgeschichte ist eine einzige lange Verfolgung. Ein Todeskult ist an den Gräbern des Reichs am Werk, und jedes Kapitel, das du abschließt, weist ein Gebiet weiter die Straße hinauf. Du bekämpfst nie die ganze Verschwörung auf einmal; du ziehst an einem Faden, und er führt dich zur nächsten Hand, die ihn hält.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "Das Tal: ein Name auf einem Siegel",
       "sagaValeBody": "In Eastbrook wollen die Toten nicht ruhen, und das Zeichen dahinter gehört einer Sekte, die man längst für verschwunden hielt. Verfolge es bis zu einem Grabrufer, der in der Kapellengruft am Werk ist, und seine eigenen Papiere weisen dich zum Moor im Norden.",
       "sagaMarshTitle": "Das Moor: ein Zehnt an Seelen",
@@ -1698,10 +1700,10 @@ export const de_DE: EnTranslations = {
     "lore": {
       "figuresTitle": "Gesichter, die du kennenlernen wirst",
       "figuresBody": "Eine Handvoll Leute gehen den ganzen Weg mit dir. Halte vom Tal bis zu den Gipfeln nach diesen Namen Ausschau.",
-      "aldricRole": "Priester des Tals",
-      "aldricBody": "Ein bescheidener Dorfpriester, der den Kult zuerst über einem geschändeten Grab in Eastbrook beim Namen nennt und dann seiner Spur höchstpersönlich durch das Moor und hinauf zur Mauer von Highwatch folgt. Er ist das ruhige Herz des ganzen Feldzugs.",
-      "marenRole": "Die Späherin des Marschalls",
-      "marenBody": "Eine wortkarge Fährtenleserin, der du im Schilf von Mirefen begegnest, lauter leise Füße und eine kurze Klinge. Auch sie folgt der Spur nach Norden, und es ist ihr Ohr, das die Worte auffängt, die dich zu den Gipfeln schicken."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Dungeons und Schlachtzüge",
@@ -4298,6 +4300,10 @@ export const de_DE: EnTranslations = {
         "name": "Spott",
         "description": "Verspottet das Ziel: Eure Bedrohung steigt auf die seines meistgehassten Gegners und es wird 3 Sek. lang gezwungen, euch anzugreifen."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
       "fireball": {
         "name": "Feuerball",
         "description": "Schleudert einen feurigen Ball, der {damage} Feuerschaden sowie zusätzlichen Schaden über Zeit verursacht."
@@ -4489,6 +4495,10 @@ export const de_DE: EnTranslations = {
       "retribution_aura": {
         "name": "Vergeltungsaura",
         "description": "Umgibt Euch 30 Min. lang mit heiliger Energie und fügt jedem Gegner, der Euch im Nahkampf trifft, 5 Heiligschaden zu."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
       },
       "tame_beast": {
         "name": "Wildtier zähmen",
@@ -4773,6 +4783,10 @@ export const de_DE: EnTranslations = {
       "rip": {
         "name": "Zerfetzen",
         "description": "Finishing-Move, der über 12 Sek. Blutungsschaden verursacht. Verbraucht Combopunkte. Nur in Wolfsgestalt."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
       },
       "mortal_strike": {
         "name": "Tödlicher Stoß",
@@ -5866,6 +5880,18 @@ export const de_DE: EnTranslations = {
         "name": "Scherbe mit Zählkerben",
         "flavorText": "...Kerben in Fünfergruppen, tief geritzt, durchgestrichen, sooft die Zählung herumkam. hunderte Fünfer, bevor das Durchstreichen aufhört, und die letzte Reihe wurde nie vollendet..."
       },
+      "root_token_unbinding": {
+        "name": "Gelöster Wurzelknoten",
+        "flavorText": "...glattgerieben, wo ein Daumen immer wieder drückte, als löse er einen Knoten, der um nichts Sichtbares gebunden war. jemand glaubte, Loslassen sei eine Gnade. jemand irrte sich, oder war zu früh, oder beides..."
+      },
+      "root_token_offering": {
+        "name": "Kleiner Fütterstein",
+        "flavorText": "...eine flache Mulde, kaum größer als eine Münze, in Stein geritzt, der Art, in die man einen Krümel für etwas legt, das nicht bitten kann. was hier fraß, hörte nicht auf, hungrig zu sein. es hörte nur auf, gesehen zu werden..."
+      },
+      "root_token_verdict": {
+        "name": "Urteilsgezählter Stein",
+        "flavorText": "...eine Zählung in Dreiergruppen, nicht in Fünfern, gerichtet und neu gerichtet, so fest gedrückt, dass der dritte Durchgang den Stein spaltete. jemand änderte immer wieder seine Meinung zur selben Frage, wieder und wieder, im Dunkeln..."
+      },
       "reliquary_plate_chest": {
         "name": "Halsberge der Reliquiarwache"
       },
@@ -5992,6 +6018,15 @@ export const de_DE: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "Schulterplatten des Sturmrufers"
+      },
+      "deathless_greatblade": {
+        "name": "Todloses Großschwert"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Zepter des todlosen Hofes"
+      },
+      "stormcallers_focus": {
+        "name": "Fokus des Sturmrufers"
       },
       "unknown_alien_weaponry": {
         "name": "Unbekannte Alien-Waffen"
@@ -6231,6 +6266,15 @@ export const de_DE: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Geißel von Thornpeak"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Geist von Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Geist von Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Geist von Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Verzeichnisgespenst"

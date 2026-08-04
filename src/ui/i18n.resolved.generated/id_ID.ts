@@ -1180,7 +1180,7 @@ export const id_ID: EnTranslations = {
         "levels": "Level {min} hingga {max}",
         "cta": "Lihat dunianya",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Lembah Eastbrook",
         "valeBlurb": "Bukit hijau dan hutan tua tempat setiap petualangan bermula.",
         "marshName": "Rawa Mirefen",
@@ -1681,6 +1681,8 @@ export const id_ID: EnTranslations = {
       "typeGroupBody": "Setiap babak kisah utama berakhir di pintu dungeon. Bagian pengantarnya bisa dimainkan sendirian, tetapi pukulan akhir terhadap penjahat sebuah babak ditujukan bagi party beranggota lima.",
       "sagaTitle": "Ikuti jejak ke utara",
       "sagaBody": "Kisah utama adalah satu perburuan panjang. Sekte kematian sedang bekerja di makam-makam dunia ini, dan setiap babak yang kamu tutup menunjukkan satu zona lebih jauh di sepanjang jalan. Kamu tak pernah melawan seluruh persekongkolan sekaligus; kamu menarik satu benang, dan ia menuntun ke tangan berikutnya yang memegangnya.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "Lembah: sebuah nama di atas lambang",
       "sagaValeBody": "Di Eastbrook orang mati tak mau beristirahat, dan tanda di baliknya milik sebuah sekte yang sudah lama dikira lenyap. Lacak hingga ke seorang Gravecaller yang bekerja di kripta kapel, dan surat-suratnya sendiri mengarahkanmu menuju rawa di utara.",
       "sagaMarshTitle": "Rawa: persembahan jiwa",
@@ -1698,10 +1700,10 @@ export const id_ID: EnTranslations = {
     "lore": {
       "figuresTitle": "Wajah-wajah yang akan kamu kenali",
       "figuresBody": "Segelintir orang menempuh seluruh perjalanan bersamamu. Perhatikan nama-nama ini dari lembah hingga puncak.",
-      "aldricRole": "Pendeta Lembah",
-      "aldricBody": "Seorang pendeta desa yang rendah hati, yang pertama menyebut nama kultus itu di atas kuburan yang dinodai di Eastbrook, lalu mengikuti jejaknya secara langsung melewati rawa hingga ke tembok di Highwatch. Dia adalah jantung yang teguh dari seluruh kampanye ini.",
-      "marenRole": "Pengintai sang Marshal",
-      "marenBody": "Seorang pelacak bersuara pelan yang kamu temui di antara alang-alang Mirefen, dengan langkah senyap dan bilah pendek. Dia juga mengikuti jejak ke utara, dan telinganyalah yang menangkap kata-kata yang mengantarmu ke puncak."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Ruang Bawah Tanah dan Raid",
@@ -4298,6 +4300,10 @@ export const id_ID: EnTranslations = {
         "name": "Provokasi",
         "description": "Memprovokasi target: ancamanmu naik menyamai musuhnya yang paling dibenci dan ia terpaksa menyerangmu selama 3 detik."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
       "fireball": {
         "name": "Bola Api",
         "description": "Melontarkan bola berkobar yang menimbulkan {damage} kerusakan Api ditambah kerusakan tambahan seiring waktu."
@@ -4489,6 +4495,10 @@ export const id_ID: EnTranslations = {
       "retribution_aura": {
         "name": "Aura Pembalasan",
         "description": "Menyelimuti dirimu dengan energi suci selama 30 menit, memberikan 5 kerusakan Suci kepada musuh mana pun yang menyerangmu dari jarak dekat."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
       },
       "tame_beast": {
         "name": "Jinakkan Hewan",
@@ -4773,6 +4783,10 @@ export const id_ID: EnTranslations = {
       "rip": {
         "name": "Robekan",
         "description": "Gerakan penutup yang menyebabkan kerusakan Pendarahan selama 12 detik. Menghabiskan poin kombo. Hanya Wujud Serigala."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
       },
       "mortal_strike": {
         "name": "Serangan Maut",
@@ -5866,6 +5880,18 @@ export const id_ID: EnTranslations = {
         "name": "Pecahan Bertanda Hitungan",
         "flavorText": "...tanda dalam kelompok lima, digores dalam, dicoret tiap kali hitungan genap. ratusan kelompok lima sebelum coretan berhenti, dan baris terakhir tak pernah selesai..."
       },
+      "root_token_unbinding": {
+        "name": "Simpul Akar Terlepas",
+        "flavorText": "...halus terkikis di tempat ibu jari menekan berulang kali, seolah melepaskan simpul yang terikat pada sesuatu yang tak terlihat. seseorang percaya bahwa melepaskan adalah kebaikan. seseorang salah, atau terlalu cepat, atau keduanya..."
+      },
+      "root_token_offering": {
+        "name": "Batu Pemberi Makan Kecil",
+        "flavorText": "...sebuah cekungan dangkal terukir di batu, tak lebih besar dari koin, jenis yang akan kau isi dengan remah untuk sesuatu yang tak bisa meminta. apa yang makan di sini tidak berhenti lapar. ia hanya berhenti terlihat..."
+      },
+      "root_token_verdict": {
+        "name": "Batu Bertanda Vonis",
+        "flavorText": "...sebuah hitungan ditandai per tiga, bukan per lima, diadili dan diadili ulang, ditekan begitu keras hingga tanda ketiga meretakkan batu. seseorang terus berubah pikiran tentang pertanyaan yang sama, berulang kali, dalam gelap..."
+      },
       "reliquary_plate_chest": {
         "name": "Baju Zirah Penjaga Relikuari"
       },
@@ -5992,6 +6018,15 @@ export const id_ID: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "Pelindung Bahu Pemanggil Badai"
+      },
+      "deathless_greatblade": {
+        "name": "Pedang Besar Baka"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Tongkat Kerajaan Istana Baka"
+      },
+      "stormcallers_focus": {
+        "name": "Fokus Pemanggil Badai"
       },
       "unknown_alien_weaponry": {
         "name": "Persenjataan Alien Tak Dikenal"
@@ -6231,6 +6266,15 @@ export const id_ID: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Bencana Thornpeak"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Roh Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Roh Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Roh Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Arwah Buku Catatan"

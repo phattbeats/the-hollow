@@ -924,6 +924,15 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Odłamek z Karbami',
   'entities.items.tally_shard.flavorText':
     '...karby piątkami, ryte głęboko, przekreślane za każdym razem, gdy rachunek się domykał. setki piątek, nim przekreślenia ustają, a ostatni rząd nigdy nie został dokończony...',
+  'entities.items.root_token_unbinding.name': 'Rozluźniony Węzeł Korzenia',
+  'entities.items.root_token_unbinding.flavorText':
+    '...wygładzony tam, gdzie kciuk naciskał raz za razem, jakby rozluźniał węzeł zawiązany wokół czegoś niewidocznego. ktoś wierzył, że puszczenie było aktem łaski. ktoś się mylił, albo był zbyt wczesny, albo jedno i drugie...',
+  'entities.items.root_token_offering.name': 'Mały Kamień Karmienia',
+  'entities.items.root_token_offering.flavorText':
+    '...płytka miska wyryta w kamieniu, nie większa niż moneta, taka, w której zostawiłbyś okruch dla czegoś, co nie mogło o to poprosić. to, co tu jadło, nie przestało być głodne. po prostu przestało być widziane...',
+  'entities.items.root_token_verdict.name': 'Kamień Naznaczony Wyrokiem',
+  'entities.items.root_token_verdict.flavorText':
+    '...rachunek znaczony trójkami, nie piątkami, osądzany i osądzany ponownie, dociskany tak mocno, że trzecie przejście rozłupało kamień. ktoś wciąż zmieniał zdanie w tej samej sprawie, raz za razem, w ciemności...',
   'entities.items.linen_pouch.name': 'Lniana Sakiewka',
   'entities.items.travelers_knapsack.name': 'Plecak Wędrowca',
   'entities.items.wolfhide_satchel.name': 'Torba z Wilczej Skóry',
@@ -1123,6 +1132,9 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.items.storm_core.name': 'Rdzeń burzy',
   'entities.items.stormcallers_crown.name': 'Korona przywoływacza burz',
   'entities.items.stormcallers_spaulders.name': 'Naramienniki przywoływacza burz',
+  'entities.items.deathless_greatblade.name': 'Nieśmiertelny Wielki Miecz',
+  'entities.items.scepter_of_the_deathless_court.name': 'Berło Nieśmiertelnego Dworu',
+  'entities.items.stormcallers_focus.name': 'Skupienie przywoływacza burz',
   'entities.items.stormshard_leggings.name': 'Nogawice burzowego odłamka',
   'entities.items.sturdy_belt.name': 'Solidny pas podróżnika',
   'entities.items.supply_crate.name': 'Skradziona skrzynia z zaopatrzeniem',
@@ -1238,6 +1250,9 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.nhalia_mourner.name': 'Żałobnica Nhalia',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'Nythraxis, Plaga Ciernistego Szczytu',
   'entities.mobs.nythraxis_skeleton_warrior.name': 'Powstały Strażnik Królewski',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': 'Duch Aldrena',
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'Duch Malrica',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'Duch Vossa',
   'entities.mobs.ogre_crusher.name': 'Miażdżyciel z Ciernistego Szczytu',
   'entities.mobs.old_cragmaw.name': 'Stary Skalogryz',
   'entities.mobs.old_greyjaw.name': 'Stary Szaropaszczy',
@@ -2844,15 +2859,9 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'guide.language.label': 'Język',
   'guide.language.select': 'Wybierz język',
   'guide.loading': 'Ładowanie...',
-  'guide.lore.aldricBody':
-    'Skromny wiejski kapłan, który jako pierwszy nazywa kult nad zbezczeszczonym grobem we Wschodnim Strumieniu, a potem osobiście podąża jego śladem przez bagna aż pod mur w Wysokiej Straży. To niewzruszone serce całej kampanii.',
-  'guide.lore.aldricRole': 'Kapłan Doliny',
   'guide.lore.figuresBody':
     'Garstka osób przemierza z tobą całą drogę. Wypatruj tych imion od doliny po szczyty.',
   'guide.lore.figuresTitle': 'Twarze, które poznasz',
-  'guide.lore.marenBody':
-    'Cicho mówiąca tropicielka, którą spotykasz w trzcinach Mokrzawia, sama cisza stóp i krótkie ostrze. Ona również podąża tropem na północ, a to jej ucho wyłapuje słowa, które wysyłają cię na szczyty.',
-  'guide.lore.marenRole': 'Zwiadowczyni Marszałka',
   'guide.models.count': 'Modele: {count}',
   'guide.models.groupClasses': 'Klasy',
   'guide.models.groupCreatures': 'Stworzenia',

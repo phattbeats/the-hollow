@@ -1681,6 +1681,8 @@ export const ja_JP: EnTranslations = {
       "typeGroupBody": "メインストーリーの各章は、ダンジョンの扉で終わります。導入はソロでこなせますが、章の悪役への最後の一撃は五人パーティ向けに作られています。",
       "sagaTitle": "北へ続く足取りを追え",
       "sagaBody": "メインストーリーは一つの長い追跡劇です。死のカルトが王国の墓に手を出しており、一章を閉じるごとに、道はさらにゾーン一つ分先を指し示します。陰謀の全体を一度に相手取ることはありません。一本の糸を引けば、それが次にその糸を握る手へと導いてくれます。",
+      "sagaReachesTitle": "リーチズ：灯と暦",
+      "sagaReachesBody": "ホロウ・リーチズでは、ブラザー・グリーンポーが聖域の壺をエンバーバルブの灯で生かし、ヴァージャーとセクストンが月合图に作付けを整えています。最初の糸は小さなものです。灯を絶やさず、狼を払い、この土地を知る。街道が開くころには、灯を誰が手にしているかを、きっとあなたは知っているでしょう。",
       "sagaValeTitle": "渓谷：印に刻まれた名",
       "sagaValeBody": "イーストブルックでは死者が安らがず、その背後の印は、とうに滅んだと思われていた一派のものです。それを礼拝堂の地下墓所で働くグレイブコーラーまでたどれば、彼自身の書き物が北の沼へとあなたを導きます。",
       "sagaMarshTitle": "湿地：魂の貢ぎ",
@@ -1698,10 +1700,10 @@ export const ja_JP: EnTranslations = {
     "lore": {
       "figuresTitle": "やがて知ることになる顔ぶれ",
       "figuresBody": "ひと握りの人々が、あなたと共にこの道のりを最後まで歩みます。渓谷から高地まで、これらの名前に心を留めておきましょう。",
-      "aldricRole": "渓谷の司祭",
-      "aldricBody": "つつましい村の司祭。イーストブルックの汚された墓の前で初めてカルトの名を口にし、その足取りを自ら湿地を抜け、ハイウォッチの壁まで追っていきます。彼はこの遠征全体の揺るがぬ心です。",
-      "marenRole": "元帥の斥候",
-      "marenBody": "マイアフェンの葦の中で出会う、声を潜めた追跡者。静かな足取りと短い刃の持ち主です。彼女もまた北へと足取りを追い、あなたを高地へ送り出す言葉を聞き取るのは、彼女の耳です。"
+      "zebediahRole": "ルート・ホロウのヴァージャー",
+      "zebediahBody": "リーチズを暦に添えて保つ、辛抱強いヴァージャーで、その手はいつも半ば土に埋まっています。壺の灯を見守り、月合图に作付けを整え、新たなる訪れに街道が最初に語りかける声です。",
+      "faddickRole": "ファロー・エイカーズのセクスン",
+      "faddickBody": "長柄の道具を持ち、剣よりも鋤に馴染む静かなセクスン。彼は森から忍び寄るものを掃き清め、死者を弔い、その土地のすべての区画を覚えています。街道が聖域を離れるとき、指し示すのはたいてい彼です。"
     },
     "dungeonsPage": {
       "heading": "ダンジョンとレイド",
@@ -4298,6 +4300,10 @@ export const ja_JP: EnTranslations = {
         "name": "挑発",
         "description": "対象を挑発します。あなたの脅威が対象の最も憎む敵と同じ値まで上がり、3秒間あなたを攻撃させます。"
       },
+      "ironhold": {
+        "name": "アイアンホールド",
+        "description": "盾の陰に身を潜め、8秒間受けるダメージを40%軽減する。"
+      },
       "fireball": {
         "name": "ファイアボール",
         "description": "炎の球を放ち、{damage} の火炎ダメージと追加の継続ダメージを与えます。"
@@ -4489,6 +4495,10 @@ export const ja_JP: EnTranslations = {
       "retribution_aura": {
         "name": "リトリビューションオーラ",
         "description": "30分間、聖なる力で身を包み、近接攻撃をしてきた敵に5の神聖ダメージを与えます。"
+      },
+      "sacred_bulwark": {
+        "name": "聖なる防壁",
+        "description": "10秒間、致命的な一撃を無効化し、代わりに体力を35%まで回復する。"
       },
       "tame_beast": {
         "name": "獣の調教",
@@ -4773,6 +4783,10 @@ export const ja_JP: EnTranslations = {
       "rip": {
         "name": "リップ",
         "description": "12秒かけて出血ダメージを与えるフィニッシュムーブです。コンボポイントを消費します。ウルフフォーム専用。"
+      },
+      "primal_reflexes": {
+        "name": "原始反射",
+        "description": "本能が研ぎ澄まされ、6秒間回避率が50%上昇する。"
       },
       "mortal_strike": {
         "name": "致死打撃",
@@ -5866,6 +5880,18 @@ export const ja_JP: EnTranslations = {
         "name": "刻み跡の欠片",
         "flavorText": "……五本ひと組で深く刻まれ、数え終えるたびに線で消されている。消された五本組が幾百とあり、それが途絶える、最後の一列だけは最後まで消されずに終わっている……"
       },
+      "root_token_unbinding": {
+        "name": "緩んだ根の結び目",
+        "flavorText": "……親指で何度も擦られて滑らかになっている。見えない何かに結ばれた結び目を緩めるかのように。誰かは手放すことが優しさだと信じていた。その人は間違っていたか、早すぎたか、その両方だったのだろう……"
+      },
+      "root_token_offering": {
+        "name": "小さな給餌石",
+        "flavorText": "……硬貨よりも小さな、浅い窪みが石に刻まれている。求めることさえできない何かに、ひとかけらを残すためのものだったのだろう。ここで食べていた何かは、飢えをやめたわけではない。ただ、見られなくなっただけだ……"
+      },
+      "root_token_verdict": {
+        "name": "裁きの刻み石",
+        "flavorText": "……刻み目は五つでなく三つひと組で刻まれ、裁かれては覆され、三度目には石が割れるほど強く押し付けられている。誰かが暗闇の中で、同じ問いについて何度も何度も心を変え続けていたかのようだ……"
+      },
       "reliquary_plate_chest": {
         "name": "聖遺物庫衛兵のホーバーク"
       },
@@ -5992,6 +6018,15 @@ export const ja_JP: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "嵐呼びの肩当て"
+      },
+      "deathless_greatblade": {
+        "name": "不死の大剣"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "不死の宮廷の笏"
+      },
+      "stormcallers_focus": {
+        "name": "嵐呼びの焦点"
       },
       "unknown_alien_weaponry": {
         "name": "未知の異星武装"
@@ -6231,6 +6266,15 @@ export const ja_JP: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "ナイスラクシス、ソーンピークの災厄"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "オルドレンの霊"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "マルリックの霊"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "ヴォスの霊"
       },
       "reliquary_ledger_wraith": {
         "name": "台帳の亡霊"

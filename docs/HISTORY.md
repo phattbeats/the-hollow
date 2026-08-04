@@ -1,6 +1,6 @@
 ---
 title: "The Hollow — Origin and Status"
-date: 2026-07-28
+date: 2026-08-01
 project: The Hollow
 repo: github.com/phattbeats/the-hollow
 paperclip_project: a4a13a28-702b-4b0e-b7b8-353d6e18b832
@@ -12,7 +12,7 @@ tags: [the-hollow, phatt-studios, mmo, the-plant, history]
 
 # THE HOLLOW — Origin and Status
 
-_Written 2026-07-28 to move the project's history out of the claude.ai planning project and into the repo. This is history and current state. `docs/plan-the-hollow.md` is the constitution and governs the game; `the-hollow-book-of-the-plant.md` and `the-hollow-lorebook-notes.md` govern the world._
+_Written 2026-08-01 to move the project's history out of the claude.ai planning project and into the repo. This is history and current state. `docs/plan-the-hollow.md` is the constitution and governs the game; `the-hollow-book-of-the-plant.md` and `the-hollow-lorebook-notes.md` govern the world._
 
 ---
 
@@ -145,7 +145,7 @@ Output: `the-hollow-book-of-the-plant.md` v1.0 (the in-world scripture, every sc
 
 ## 4. Board history (Paperclip, July 2026)
 
-411 issues under project `The Hollow`, prefix `PHAA`. Every one created in July 2026.
+436 issues under project `The Hollow`, prefix `PHAA`, effectively all created since 2026-07-02.
 
 | Milestone | Ref | Closed |
 |---|---|---|
@@ -168,18 +168,18 @@ Phase 0 to a Board-passed gate in a single day. That is what forking bought.
 
 ---
 
-## 5. Current status (as of 2026-07-28)
+## 5. Current status (as of 2026-08-01)
 
-**Active. The only project currently consuming studio capacity.** 304 issues completed in July alone, against 4 for Veles and 4 for Last Copy in the same month.
+**Active, and still moving.** 331 issues done, with fresh activity through 2026-08-01. It is the only project consuming studio capacity: Veles and Last Copy have logged 1 and 0 touches respectively since the start of August.
 
 | Status | Count |
 |---|---|
-| done | 304 |
-| backlog | 32 |
-| in_review | 26 |
+| done | 331 |
+| backlog | 34 |
+| in_review | 25 |
 | blocked | 21 |
 | cancelled | 16 |
-| todo | 11 |
+| todo | 8 |
 | in_progress | 1 |
 
 **Live friction, and it is process rather than design:**

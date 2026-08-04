@@ -5,6 +5,7 @@ import {
   ARENA_DAILY_TAPER_FLOOR_START,
   ARENA_DAILY_TAPER_START,
   arenaRepeatHonorMultiplier,
+  awardFiestaKillHonor,
   FIESTA_KILL_HONOR,
   grantHonor,
   RANKED_ARENA_WIN_HONOR,
@@ -90,15 +91,22 @@ describe('src/sim/pvp/honor.ts: grantHonor + diminishing returns', () => {
     expect(arenaRepeatHonorMultiplier(1)).toBe(0);
     expect(arenaRepeatHonorMultiplier(5)).toBe(0);
   });
+
+  it('Fiesta kill honor persists its taper across matches on the same UTC day', () => {
+    const sim = makeWorld();
+    const killer = sim.meta(sim.addPlayer('warrior', 'Killer'))!;
+    const victim = sim.addPlayer('mage', 'Victim');
+    expect(awardFiestaKillHonor(sim.ctx as any, killer, victim)).toBe(FIESTA_KILL_HONOR);
+    expect(awardFiestaKillHonor(sim.ctx as any, killer, victim)).toBe(FIESTA_KILL_HONOR / 2);
+    expect(killer.honorArenaDaily?.fiestaKillsByVictim[String(victim)]).toBe(2);
+  });
 });
 
 describe('WARFARE rating -> damage fractions (src/sim/pvp/power.ts)', () => {
   it('converts rating to percent at 10 rating per point and caps at 20%', () => {
     expect(pvpFractionsFromRatings(0, 0)).toEqual({ offense: 0, defense: 0 });
     expect(pvpFractionsFromRatings(100, 50)).toEqual({ offense: 0.1, defense: 0.05 });
-    // 168 rating (a full 11-slot upstream kit) still lands under the cap
     expect(pvpFractionsFromRatings(168, 168).offense).toBeCloseTo(0.168, 5);
-    // absurd rating clamps at the 20% cap, never exceeds it
     expect(pvpFractionsFromRatings(10_000, 10_000)).toEqual({ offense: 0.2, defense: 0.2 });
   });
 
@@ -124,6 +132,7 @@ describe('WARFARE is PvP-only: dealDamage never scales player-vs-mob or mob-vs-p
     const mob = {
       id: 999_999,
       kind: 'mob',
+      templateId: 'test_mob',
       hp: 1000,
       maxHp: 1000,
       dead: false,
@@ -196,6 +205,7 @@ describe('Daily arena tapering (ARENA_DAILY_TAPER_START/FLOOR_START)', () => {
       date: '',
       winsByOpponent: {},
       fiestaCompletionsByOpponent: {},
+      fiestaKillsByVictim: {},
       totalWins: ARENA_DAILY_TAPER_START,
     };
     const before = winner.honor;
@@ -219,6 +229,7 @@ describe('Honor persists through CharacterState round-trip', () => {
       date: '2026-07-17',
       winsByOpponent: { '1v1:["character:1"]': 1 },
       fiestaCompletionsByOpponent: {},
+      fiestaKillsByVictim: {},
       totalWins: 1,
     };
     const state = sim.serializeCharacter(pid)!;

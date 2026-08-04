@@ -23,3 +23,10 @@ scripts/*
 deploy
 *.md
 .venv
+# Top-level WoC-branded assets that the fork's Plant World reskin never
+# references. Keeping them out of the Docker build context trims ~9.5MB off
+# the image and stops the upstream legacy logos from shipping with the
+# Hollow build (PHAA-825 row AM).
+woc_community.png
+worldofclaude.png
+build-version-footer.png

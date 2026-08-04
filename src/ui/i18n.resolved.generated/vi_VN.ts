@@ -1180,7 +1180,7 @@ export const vi_VN: EnTranslations = {
         "levels": "Cấp {min} đến {max}",
         "cta": "Ngắm thế giới",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Thung Lũng Đông Khê",
         "valeBlurb": "Những ngọn đồi xanh và những cánh rừng già nơi mọi cuộc phiêu lưu bắt đầu.",
         "marshName": "Đầm Lầy Bùn Sâu",
@@ -1681,6 +1681,8 @@ export const vi_VN: EnTranslations = {
       "typeGroupBody": "Mỗi chương của cốt truyện chính kết thúc tại cửa một hầm ngục. Phần dẫn vào có thể chơi đơn, nhưng đòn kết liễu kẻ phản diện của một chương được dành cho một tổ đội năm người.",
       "sagaTitle": "Theo dấu vết về phương bắc",
       "sagaBody": "Cốt truyện chính là một cuộc truy đuổi dài. Một giáo phái tử thần đang hoạt động trên những ngôi mộ của vương quốc, và mỗi chương bạn khép lại đều chỉ về phía bắc thêm một khu vực trên con đường. Bạn không bao giờ đối đầu với toàn bộ âm mưu cùng lúc; bạn kéo một sợi chỉ, và nó dẫn đến bàn tay tiếp theo đang nắm giữ nó.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "Thung Lũng: một cái tên trên ấn triện",
       "sagaValeBody": "Tại Eastbrook người chết không chịu yên nghỉ, và dấu ấn đằng sau nó thuộc về một giáo phái từ lâu tưởng đã biến mất. Lần theo nó đến một Kẻ Gọi Mộ đang hoạt động trong hầm mộ nguyện đường, và chính giấy tờ của hắn chỉ bạn về phía đầm lầy ở phương bắc.",
       "sagaMarshTitle": "Đầm lầy: một khoản thuế linh hồn",
@@ -1698,10 +1700,10 @@ export const vi_VN: EnTranslations = {
     "lore": {
       "figuresTitle": "Những gương mặt bạn sẽ dần quen biết",
       "figuresBody": "Một số ít người sẽ đi cùng bạn suốt cả chặng đường. Hãy để mắt đến những cái tên này từ thung lũng đến các đỉnh núi.",
-      "aldricRole": "Tu Sĩ của Thung Lũng",
-      "aldricBody": "Một tu sĩ làng quê khiêm nhường, người đầu tiên gọi đích danh giáo phái bên một nấm mồ bị báng bổ ở Đông Khê, rồi đích thân lần theo dấu vết của nó qua đầm lầy và lên tới bức tường thành ở Highwatch. Ông là trái tim vững vàng của toàn bộ chiến dịch.",
-      "marenRole": "Trinh Sát của Thống Soái",
-      "marenBody": "Một người dò đường ít nói mà bạn gặp giữa đám lau sậy ở Đầm Lầy Bùn Sâu, bước chân lặng lẽ và một lưỡi dao ngắn. Cô cũng lần theo dấu vết về phương bắc, và chính đôi tai của cô đã bắt được những lời đẩy bạn lên tới các đỉnh núi."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Hầm Ngục và Raid",
@@ -4298,6 +4300,10 @@ export const vi_VN: EnTranslations = {
         "name": "Khiêu Khích",
         "description": "Khiêu khích mục tiêu: đe dọa của bạn tăng lên ngang bằng kẻ địch mà nó căm ghét nhất và nó buộc phải tấn công bạn trong 3 giây."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
       "fireball": {
         "name": "Cầu Lửa",
         "description": "Ném ra một quả cầu lửa rực cháy gây {damage} sát thương Hỏa cùng sát thương cộng dồn theo thời gian."
@@ -4489,6 +4495,10 @@ export const vi_VN: EnTranslations = {
       "retribution_aura": {
         "name": "Hào Quang Báo Phục",
         "description": "Bao bọc bạn trong năng lượng thánh thiện trong 30 phút, gây 5 sát thương Thánh cho bất kỳ kẻ địch nào đánh cận chiến bạn."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
       },
       "tame_beast": {
         "name": "Thuần Thú",
@@ -4773,6 +4783,10 @@ export const vi_VN: EnTranslations = {
       "rip": {
         "name": "Xé Rách",
         "description": "Đòn kết liễu gây sát thương Chảy Máu trong 12 giây. Tiêu hao điểm liên hoàn. Chỉ dùng được ở Hình Sói."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
       },
       "mortal_strike": {
         "name": "Đòn Trí Mạng",
@@ -5866,6 +5880,18 @@ export const vi_VN: EnTranslations = {
         "name": "Mảnh Vỡ Khắc Vạch Đếm",
         "flavorText": "...vạch khắc theo từng nhóm năm, khía sâu, gạch chéo mỗi lần đếm đủ vòng. hàng trăm nhóm năm trước khi những nét gạch dừng lại, và hàng cuối cùng chưa bao giờ được khắc xong..."
       },
+      "root_token_unbinding": {
+        "name": "Nút Rễ Đã Nới Lỏng",
+        "flavorText": "...mòn nhẵn nơi một ngón tay cái ấn đi ấn lại, như đang nới lỏng một nút thắt quanh thứ gì đó không thể nhìn thấy. ai đó tin rằng buông tay là một lòng tốt. ai đó đã sai, hoặc đến sớm, hoặc cả hai..."
+      },
+      "root_token_offering": {
+        "name": "Đá Cho Ăn Nhỏ",
+        "flavorText": "...một cái bát nông khắc trong đá, không lớn hơn một đồng xu, loại mà người ta để lại một mẩu vụn cho thứ gì đó không thể lên tiếng xin. thứ ăn ở đây không ngừng đói. nó chỉ ngừng bị nhìn thấy..."
+      },
+      "root_token_verdict": {
+        "name": "Đá Khắc Phán Quyết",
+        "flavorText": "...một bảng đếm khắc theo từng nhóm ba, không phải nhóm năm, bị phán xét rồi phán xét lại, ấn mạnh đến mức lần khắc thứ ba làm nứt đá. ai đó cứ mãi thay đổi ý kiến về cùng một câu hỏi, lặp đi lặp lại, trong bóng tối..."
+      },
       "reliquary_plate_chest": {
         "name": "Áo Giáp Vệ Binh Thánh Tích"
       },
@@ -5992,6 +6018,15 @@ export const vi_VN: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "Giáp Vai của Triệu Bão Sư"
+      },
+      "deathless_greatblade": {
+        "name": "Đại Kiếm Bất Tử"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Quyền Trượng Của Triều Đình Bất Tử"
+      },
+      "stormcallers_focus": {
+        "name": "Tiêu Điểm Của Triệu Bão Sư"
       },
       "unknown_alien_weaponry": {
         "name": "Vũ Khí Ngoài Hành Tinh Bí Ẩn"
@@ -6231,6 +6266,15 @@ export const vi_VN: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Tai Họa Đỉnh Gai"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Linh Hồn Của Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Linh Hồn Của Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Linh Hồn Của Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Oan Hồn Sổ Sách"

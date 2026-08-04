@@ -916,6 +916,15 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Skärva med Räknemärken',
   'entities.items.tally_shard.flavorText':
     '...märken i femtal, djupt ristade, överstrukna varje gång räkningen gick runt. hundratals femtal innan överstrykningarna upphör, och den sista raden blev aldrig färdig...',
+  'entities.items.root_token_unbinding.name': 'Lossad Rotknut',
+  'entities.items.root_token_unbinding.flavorText':
+    '...sliten blank där en tumme tryckte om och om igen, som att lossa en knut bunden runt ingenting man kunde se. någon trodde att släppa taget var en godhet. någon hade fel, eller var för tidig, eller båda delarna...',
+  'entities.items.root_token_offering.name': 'Liten Matningssten',
+  'entities.items.root_token_offering.flavorText':
+    '...en grund skål ristad i sten, inte större än ett mynt, den sortens man skulle lämna en smula i åt något som inte kunde be om det. det som åt här slutade inte vara hungrigt. det slutade bara synas...',
+  'entities.items.root_token_verdict.name': 'Domsmärkt Sten',
+  'entities.items.root_token_verdict.flavorText':
+    '...en räkning märkt i tretal, inte femtal, dömd och omdömd, tryckt så hårt att det tredje märket sprack stenen. någon fortsatte att ändra sig om samma fråga, om och om igen, i mörkret...',
   'entities.items.linen_pouch.name': 'Linnepåse',
   'entities.items.travelers_knapsack.name': 'Vandrarens Ryggsäck',
   'entities.items.wolfhide_satchel.name': 'Vargskinnsväska',
@@ -1115,6 +1124,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.storm_core.name': 'Stormkärna',
   'entities.items.stormcallers_crown.name': 'Stormkallarens krona',
   'entities.items.stormcallers_spaulders.name': 'Stormkallarens axelskydd',
+  'entities.items.deathless_greatblade.name': 'Det odödliga storsvärdet',
+  'entities.items.scepter_of_the_deathless_court.name': 'Spiran från det odödliga hovet',
+  'entities.items.stormcallers_focus.name': 'Stormkallarens fokus',
   'entities.items.stormshard_leggings.name': 'Stormskärvebenkläder',
   'entities.items.sturdy_belt.name': 'Stadigt resenärsbälte',
   'entities.items.supply_crate.name': 'Stulen förrådslåda',
@@ -1230,6 +1242,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.nhalia_mourner.name': 'Sörjaren Nhalia',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'Nythraxis, Törntoppens gissel',
   'entities.mobs.nythraxis_skeleton_warrior.name': 'Uppstånden kunglig vakt',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': 'Aldrens ande',
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'Malrics ande',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'Voss ande',
   'entities.mobs.ogre_crusher.name': 'Törntoppskrossare',
   'entities.mobs.old_cragmaw.name': 'Gamle Klippkäft',
   'entities.mobs.old_greyjaw.name': 'Gamle Gråkäft',
@@ -2833,15 +2848,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.language.label': 'Språk',
   'guide.language.select': 'Välj ett språk',
   'guide.loading': 'Laddar...',
-  'guide.lore.aldricBody':
-    'En ödmjuk bypräst som först namnger kulten över en skändad grav i Östbäcken, sedan följer dess spår personligen genom träsket och upp till muren vid Högvakten. Han är det stadiga hjärtat i hela kampanjen.',
-  'guide.lore.aldricRole': 'Präst i Dalen',
   'guide.lore.figuresBody':
     'En handfull människor går hela vägen med dig. Håll utkik efter dessa namn från dalen till topparna.',
   'guide.lore.figuresTitle': 'Ansikten du kommer att lära känna',
-  'guide.lore.marenBody':
-    'En tystlåten spårare du möter i vassen i Dykärret, helt tysta fötter och ett kort blad. Hon följer också spåret norrut, och det är hennes öra som fångar orden som skickar dig till topparna.',
-  'guide.lore.marenRole': 'Marskalkens spejare',
   'guide.models.count': '{count} modeller',
   'guide.models.groupClasses': 'Klasser',
   'guide.models.groupCreatures': 'Varelser',

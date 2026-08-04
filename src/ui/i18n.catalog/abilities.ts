@@ -794,6 +794,11 @@ const classAbilityNamesEn = {
         'Taunts the target: your threat rises to match its most hated enemy and it is compelled to attack you for 3 sec.',
       ],
       [
+        'ironhold',
+        'Ironhold',
+        'Brace behind your guard, reducing all damage taken by 40% for 8 sec.',
+      ],
+      [
         'fireball',
         'Fireball',
         'Hurls a fiery ball that causes {damage} Fire damage plus additional damage over time.',
@@ -984,6 +989,11 @@ const classAbilityNamesEn = {
         'retribution_aura',
         'Retribution Aura',
         'Surrounds you with holy energy for 30 min, dealing 5 Holy damage to any enemy that strikes you in melee.',
+      ],
+      [
+        'sacred_bulwark',
+        'Sacred Bulwark',
+        'For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead.',
       ],
       [
         'tame_beast',
@@ -1239,6 +1249,11 @@ const classAbilityNamesEn = {
         'rip',
         'Rip',
         'Finishing move that causes Bleed damage over 12 sec. Consumes combo points. Wolf Form only.',
+      ],
+      [
+        'primal_reflexes',
+        'Primal Reflexes',
+        'Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec.',
       ],
       [
         'mortal_strike',
@@ -3944,6 +3959,7 @@ export const classAbilityNames = {
           '撕裂目标的护甲，每次使其降低 {damage}。最多叠加 5 次。产生大量威胁值。',
         ],
         ['taunt', '嘲讽', '嘲讽目标：你的威胁值提高到其最仇恨敌人的水平，并强迫其攻击你 3 秒。'],
+        ['ironhold', '坚守', '紧守盾牌，在 8 秒内使受到的所有伤害降低 40%。'],
         ['fireball', '火球术', '投掷一团火球，造成 {damage} 点火焰伤害，并附加持续伤害。'],
         ['frost_armor', '霜甲术', '以寒霜包裹自身，使护甲提高 30，持续 30 分钟。'],
         ['arcane_intellect', '奥术智慧', '使智力提高 2，持续 30 分钟。'],
@@ -4059,6 +4075,11 @@ export const classAbilityNames = {
           'retribution_aura',
           '惩戒光环',
           '以神圣能量环绕自身，持续 30 分钟，对任何近战攻击你的敌人造成 5 点神圣伤害。',
+        ],
+        [
+          'sacred_bulwark',
+          '神圣壁垒',
+          '持续 10 秒，下一次本该致命的打击将被抵挡，并使你恢复到 35% 的生命值。',
         ],
         [
           'tame_beast',
@@ -4183,6 +4204,7 @@ export const classAbilityNames = {
         ['insect_swarm', '虫群', '敌人被虫群侵袭，在 12 秒内受到 {damage} 点自然伤害。'],
         ['tigers_fury', '猛虎之怒', '使攻击强度提高 40，持续 6 秒。仅限猎豹形态。'],
         ['rip', '割裂', '终结技，在 12 秒内造成流血伤害。消耗连击点。仅限猎豹形态。'],
+        ['primal_reflexes', '原始反射', '你的本能变得敏锐，在 6 秒内使闪避几率提高 50%。'],
         [
           'mortal_strike',
           '致死打击',
@@ -4323,6 +4345,7 @@ export const classAbilityNames = {
           '撕裂目標的護甲，每次使其降低 {damage}。最多疊加 5 次。產生大量威脅值。',
         ],
         ['taunt', '嘲諷', '嘲諷目標：你的威脅值提高到其最仇恨敵人的水平，並強迫其攻擊你 3 秒。'],
+        ['ironhold', '堅守', '緊守盾牌，在 8 秒內使受到的所有傷害降低 40%。'],
         ['fireball', '火球術', '投擲一團火球，造成 {damage} 點火焰傷害，並附加持續傷害。'],
         ['frost_armor', '霜甲術', '以寒霜包裹自身，使護甲提高 30，持續 30 分鐘。'],
         ['arcane_intellect', '秘法智慧', '使智力提高 2，持續 30 分鐘。'],
@@ -4438,6 +4461,11 @@ export const classAbilityNames = {
           'retribution_aura',
           '懲戒光環',
           '以神聖能量環繞自身，持續 30 分鐘，對任何近戰攻擊你的敵人造成 5 點神聖傷害。',
+        ],
+        [
+          'sacred_bulwark',
+          '神聖壁壘',
+          '持續 10 秒，下一次本該致命的打擊將被抵擋，並使你恢復到 35% 的生命值。',
         ],
         [
           'tame_beast',
@@ -4562,6 +4590,7 @@ export const classAbilityNames = {
         ['insect_swarm', '蟲群', '敵人被蟲群侵襲，在 12 秒內受到 {damage} 點自然傷害。'],
         ['tigers_fury', '猛虎之怒', '使攻擊強度提高 40，持續 6 秒。僅限獵豹形態。'],
         ['rip', '割裂', '終結技，在 12 秒內造成流血傷害。消耗連擊點。僅限獵豹形態。'],
+        ['primal_reflexes', '原始反射', '你的本能變得敏銳，在 6 秒內使閃避機率提高 50%。'],
         [
           'mortal_strike',
           '致死打擊',
@@ -4778,6 +4807,7 @@ export const classAbilityNames = {
           '도발',
           '대상을 도발합니다. 자신의 위협 수준이 대상이 가장 증오하는 적과 같아지며, 3초 동안 자신을 공격하게 만듭니다.',
         ],
+        ['ironhold', '아이언홀드', '방패 뒤에 웅크려 8초 동안 받는 모든 피해를 40% 감소시킵니다.'],
         ['fireball', '화염구', '불덩이를 날려 {damage}의 화염 피해와 추가 지속 피해를 입힙니다.'],
         ['frost_armor', '냉기 갑옷', '자신을 냉기로 감싸 30분 동안 방어도를 30만큼 증가시킵니다.'],
         ['arcane_intellect', '신비한 지능', '30분 동안 지능이 2만큼 증가합니다.'],
@@ -4953,6 +4983,11 @@ export const classAbilityNames = {
           'retribution_aura',
           '응징의 오라',
           '30분 동안 자신을 신성한 기운으로 감싸 근접 공격을 가하는 적에게 5의 신성 피해를 입힙니다.',
+        ],
+        [
+          'sacred_bulwark',
+          '신성한 보루',
+          '10초 동안, 당신을 죽일 다음 공격이 무효화되며 대신 체력을 35%로 회복시킵니다.',
         ],
         [
           'tame_beast',
@@ -5186,6 +5221,11 @@ export const classAbilityNames = {
           '12초에 걸쳐 출혈 피해를 입히는 결정타입니다. 연계 점수를 소모합니다. 표범 변신 전용.',
         ],
         [
+          'primal_reflexes',
+          '원시 반사신경',
+          '본능이 예민해져 6초 동안 회피 확률이 50% 증가합니다.',
+        ],
+        [
           'mortal_strike',
           '죽음의 일격',
           '잔혹한 일격으로 무기 피해에 {damage}의 피해를 더합니다. (무기 특화 대표 기술)',
@@ -5393,6 +5433,7 @@ export const classAbilityNames = {
           '挑発',
           '対象を挑発します。あなたの脅威が対象の最も憎む敵と同じ値まで上がり、3秒間あなたを攻撃させます。',
         ],
+        ['ironhold', 'アイアンホールド', '盾の陰に身を潜め、8秒間受けるダメージを40%軽減する。'],
         [
           'fireball',
           'ファイアボール',
@@ -5588,6 +5629,11 @@ export const classAbilityNames = {
           'retribution_aura',
           '懲罰のオーラ',
           '30分間、神聖なエネルギーで自身を包み、近接攻撃を仕掛けてきた敵に5の神聖ダメージを与えます。',
+        ],
+        [
+          'sacred_bulwark',
+          '聖なる防壁',
+          '10秒間、致命的な一撃を無効化し、代わりに体力を35%まで回復する。',
         ],
         [
           'tame_beast',
@@ -5836,6 +5882,7 @@ export const classAbilityNames = {
           'リップ',
           '12秒かけて出血ダメージを与えるフィニッシュムーブです。コンボポイントを消費します。キャットフォーム専用。',
         ],
+        ['primal_reflexes', '原始反射', '本能が研ぎ澄まされ、6秒間回避率が50%上昇する。'],
         [
           'mortal_strike',
           '致死打撃',
@@ -6682,6 +6729,11 @@ export const classAbilityNames = {
           'Провоцирует цель: ваша угроза повышается до уровня самого ненавистного ей врага, и она вынуждена атаковать вас 3 сек.',
         ],
         [
+          'ironhold',
+          'Железная защита',
+          'Вы укрываетесь за щитом, снижая весь получаемый урон на 40% в течение 8 сек.',
+        ],
+        [
           'fireball',
           'Огненный шар',
           'Бросает огненный шар, наносящий {damage} ед. урона от огня и дополнительный периодический урон.',
@@ -6888,6 +6940,11 @@ export const classAbilityNames = {
           'retribution_aura',
           'Аура воздаяния',
           'Окружает вас священной энергией на 30 мин и наносит 5 ед. урона светлой магией любому врагу, атакующему вас в ближнем бою.',
+        ],
+        [
+          'sacred_bulwark',
+          'Священный бастион',
+          'В течение 10 сек. следующий смертельный удар по вам будет отменен, а здоровье восстановлено до 35%.',
         ],
         [
           'tame_beast',
@@ -7183,6 +7240,11 @@ export const classAbilityNames = {
           'rip',
           'Разрывание',
           'Завершающий прием, наносящий урон от кровотечения в течение 12 сек. Расходует приемы серии. Только в облике кошки.',
+        ],
+        [
+          'primal_reflexes',
+          'Первобытные рефлексы',
+          'Ваши инстинкты обостряются, повышая шанс уклонения на 50% в течение 6 сек.',
         ],
         [
           'mortal_strike',

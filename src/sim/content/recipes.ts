@@ -13,6 +13,11 @@
 
 import type { RecipeDef } from '../types';
 
+// `level` (PHAA-712): every reagent here is a The Hollow Reaches node drop
+// (gathering.ts's NODE_HARVEST_TABLE), and that zone's levelRange is [1, 4]
+// (content/hollow_zone.ts) -- so this whole common-tier batch sits at the
+// zone's floor, level 1. A later crafting-depth batch introducing
+// higher-tier reagents/recipes sets its own `level` accordingly.
 export const RECIPES: RecipeDef[] = [
   {
     id: 'recipe_rusty_dagger',
@@ -23,6 +28,7 @@ export const RECIPES: RecipeDef[] = [
     ],
     resultItemId: 'rusty_dagger',
     resultCount: 1,
+    level: 1,
   },
   {
     id: 'recipe_recruit_tunic',
@@ -30,6 +36,7 @@ export const RECIPES: RecipeDef[] = [
     reagents: [{ itemId: 'bone_fragments', count: 3 }],
     resultItemId: 'recruit_tunic',
     resultCount: 1,
+    level: 1,
   },
   {
     id: 'recipe_apprentice_robe',
@@ -37,6 +44,7 @@ export const RECIPES: RecipeDef[] = [
     reagents: [{ itemId: 'linen_scrap', count: 3 }],
     resultItemId: 'apprentice_robe',
     resultCount: 1,
+    level: 1,
   },
   {
     id: 'recipe_footpad_jerkin',
@@ -47,6 +55,7 @@ export const RECIPES: RecipeDef[] = [
     ],
     resultItemId: 'footpad_jerkin',
     resultCount: 1,
+    level: 1,
   },
   {
     id: 'recipe_tough_jerky',
@@ -54,6 +63,7 @@ export const RECIPES: RecipeDef[] = [
     reagents: [{ itemId: 'spider_leg', count: 1 }],
     resultItemId: 'tough_jerky',
     resultCount: 1,
+    level: 1,
   },
   {
     id: 'recipe_minor_healing_potion',
@@ -64,6 +74,7 @@ export const RECIPES: RecipeDef[] = [
     ],
     resultItemId: 'minor_healing_potion',
     resultCount: 1,
+    level: 1,
   },
   // Enchanting scrolls (PHAA-649 child, upstream #1712): each scroll is
   // crafted from disenchant's own salvage output (enchanting_dust), so the
@@ -77,6 +88,7 @@ export const RECIPES: RecipeDef[] = [
     reagents: [{ itemId: 'enchanting_dust', count: 2 }],
     resultItemId: 'scroll_minor_might',
     resultCount: 1,
+    level: 1,
   },
   {
     id: 'recipe_scroll_minor_vigor',
@@ -84,6 +96,7 @@ export const RECIPES: RecipeDef[] = [
     reagents: [{ itemId: 'enchanting_dust', count: 2 }],
     resultItemId: 'scroll_minor_vigor',
     resultCount: 1,
+    level: 1,
   },
   {
     id: 'recipe_scroll_minor_focus',
@@ -91,6 +104,7 @@ export const RECIPES: RecipeDef[] = [
     reagents: [{ itemId: 'enchanting_dust', count: 2 }],
     resultItemId: 'scroll_minor_focus',
     resultCount: 1,
+    level: 1,
   },
   {
     id: 'recipe_scroll_minor_agility',
@@ -98,5 +112,6 @@ export const RECIPES: RecipeDef[] = [
     reagents: [{ itemId: 'enchanting_dust', count: 2 }],
     resultItemId: 'scroll_minor_agility',
     resultCount: 1,
+    level: 1,
   },
 ];

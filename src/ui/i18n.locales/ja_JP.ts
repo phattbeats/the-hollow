@@ -1758,6 +1758,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.taunt.name': '挑発',
   'entities.abilities.taunt.description':
     '対象を挑発します。あなたの脅威が対象の最も憎む敵と同じ値まで上がり、3秒間あなたを攻撃させます。',
+  'entities.abilities.ironhold.name': 'アイアンホールド',
+  'entities.abilities.ironhold.description': '盾の陰に身を潜め、8秒間受けるダメージを40%軽減する。',
   'entities.abilities.fireball.name': 'ファイアボール',
   'entities.abilities.fireball.description':
     '炎の球を放ち、{damage} の火炎ダメージと追加の継続ダメージを与えます。',
@@ -1893,6 +1895,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.retribution_aura.name': 'リトリビューションオーラ',
   'entities.abilities.retribution_aura.description':
     '30分間、聖なる力で身を包み、近接攻撃をしてきた敵に5の神聖ダメージを与えます。',
+  'entities.abilities.sacred_bulwark.name': '聖なる防壁',
+  'entities.abilities.sacred_bulwark.description':
+    '10秒間、致命的な一撃を無効化し、代わりに体力を35%まで回復する。',
   'entities.abilities.tame_beast.name': '獣の調教',
   'entities.abilities.tame_beast.description':
     '獣を仲間にするための調教を始めます。獣はあなたのレベル以下で、エリートであってはなりません。ペットはあなたに従い、敵を攻撃し、独自の脅威を保ちます。同時に連れられるペットは1体だけです。',
@@ -2085,6 +2090,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.rip.name': 'リップ',
   'entities.abilities.rip.description':
     '12秒かけて出血ダメージを与えるフィニッシュムーブです。コンボポイントを消費します。ウルフフォーム専用。',
+  'entities.abilities.primal_reflexes.name': '原始反射',
+  'entities.abilities.primal_reflexes.description':
+    '本能が研ぎ澄まされ、6秒間回避率が50%上昇する。',
   'entities.abilities.mortal_strike.name': '致死打撃',
   'entities.abilities.mortal_strike.description':
     '凶悪な一撃で武器ダメージに加えて {damage} のダメージを与えます。（武器シグネチャー）',
@@ -3438,6 +3446,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.bramblehide_jerkin.name': '茨革のジャーキン',
   'entities.items.monarch_crown_helm.name': '君主の王冠',
   'entities.mobs.nythraxis_skeleton_warrior.name': '蘇った王家の衛兵',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': 'オルドレンの霊',
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'マルリックの霊',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'ヴォスの霊',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'ナイスラクシス、ソーンピークの災厄',
   // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': 'チャットチャンネルを追加',
@@ -3715,6 +3726,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': '魂炎のマント',
   'entities.items.stormcallers_crown.name': '嵐呼びの冠',
   'entities.items.stormcallers_spaulders.name': '嵐呼びの肩当て',
+  'entities.items.deathless_greatblade.name': '不死の大剣',
+  'entities.items.scepter_of_the_deathless_court.name': '不死の宮廷の笏',
+  'entities.items.stormcallers_focus.name': '嵐呼びの焦点',
   'hud.chat.context.convertToRaid': 'レイドに変換',
   'hud.chat.context.convertToParty': 'パーティに変換',
   'hudChrome.raidConvert.leaderOnly': 'パーティに変換できるのはレイドリーダーだけです。',
@@ -4719,15 +4733,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     '古い一品を新たなアップグレードに替えるほうが、もう手に余る装備で完璧に立ち回るより効果があります。より良いものがドロップしたり、クエストで提示されたりしたら、受け取りましょう。良いアイテムを後のために取っておいてはいけません。',
   'guide.gear.upgradeTitle': 'ギアは常に最新に',
-  'guide.lore.aldricBody':
-    'つつましい村の司祭。イーストブルックの汚された墓の前で初めてカルトの名を口にし、その足取りを自ら湿地を抜け、ハイウォッチの壁まで追っていきます。彼はこの遠征全体の揺るがぬ心です。',
-  'guide.lore.aldricRole': '渓谷の司祭',
+  'guide.lore.faddickBody':
+    '長柄の道具を持ち、剣よりも鋤に馴染む静かなセクスン。彼は森から忍び寄るものを掃き清め、死者を弔い、その土地のすべての区画を覚えています。街道が聖域を離れるとき、指し示すのはたいてい彼です。',
+  'guide.lore.faddickRole': 'ファロー・エイカーズのセクスン',
   'guide.lore.figuresBody':
     'ひと握りの人々が、あなたと共にこの道のりを最後まで歩みます。渓谷から高地まで、これらの名前に心を留めておきましょう。',
   'guide.lore.figuresTitle': 'やがて知ることになる顔ぶれ',
-  'guide.lore.marenBody':
-    'マイアフェンの葦の中で出会う、声を潜めた追跡者。静かな足取りと短い刃の持ち主です。彼女もまた北へと足取りを追い、あなたを高地へ送り出す言葉を聞き取るのは、彼女の耳です。',
-  'guide.lore.marenRole': '元帥の斥候',
+  'guide.lore.zebediahBody':
+    'リーチズを暦に添えて保つ、辛抱強いヴァージャーで、その手はいつも半ば土に埋まっています。壺の灯を見守り、月合图に作付けを整え、新たなる訪れに街道が最初に語りかける声です。',
+  'guide.lore.zebediahRole': 'ルート・ホロウのヴァージャー',
   'guide.models.count': '{count}体のモデル',
   'guide.models.groupClasses': 'クラス',
   'guide.models.groupCreatures': 'クリーチャー',
@@ -4776,6 +4790,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'Thornpeakで企ての全貌が明らかになります。Vale以来盗まれてきたすべての魂は、山の中心で進むカルトの陰惨な企てに注がれた貢ぎ物でした。礼拝堂の前庭で始まった足取りは、すべての黒幕と対峙する五人での降下となって、ここで終わります。その奥に誰が待つのかは、あなた自身に見届けてもらいましょう。',
   'guide.questsPage.sagaPeaksTitle': '峰々：貢ぎは何のためだったのか',
   'guide.questsPage.sagaTitle': '北へ続く足取りを追え',
+  'guide.questsPage.sagaReachesBody':
+    'ホロウ・リーチズでは、ブラザー・グリーンポーが聖域の壺をエンバーバルブの灯で生かし、ヴァージャーとセクストンが月合图に作付けを整えています。最初の糸は小さなものです。灯を絶やさず、狼を払い、この土地を知る。街道が開くころには、灯を誰が手にしているかを、きっとあなたは知っているでしょう。',
+  'guide.questsPage.sagaReachesTitle': 'リーチズ：灯と暦',
   'guide.questsPage.sagaValeBody':
     'イーストブルックでは死者が安らがず、その背後の印は、とうに滅んだと思われていた一派のものです。それを礼拝堂の地下墓所で働くグレイブコーラーまでたどれば、彼自身の書き物が北の沼へとあなたを導きます。',
   'guide.questsPage.sagaValeTitle': '渓谷：印に刻まれた名',
@@ -4982,6 +4999,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': '刻み跡の欠片',
   'entities.items.tally_shard.flavorText':
     '……五本ひと組で深く刻まれ、数え終えるたびに線で消されている。消された五本組が幾百とあり、それが途絶える、最後の一列だけは最後まで消されずに終わっている……',
+  'entities.items.root_token_unbinding.name': '緩んだ根の結び目',
+  'entities.items.root_token_unbinding.flavorText':
+    '……親指で何度も擦られて滑らかになっている。見えない何かに結ばれた結び目を緩めるかのように。誰かは手放すことが優しさだと信じていた。その人は間違っていたか、早すぎたか、その両方だったのだろう……',
+  'entities.items.root_token_offering.name': '小さな給餌石',
+  'entities.items.root_token_offering.flavorText':
+    '……硬貨よりも小さな、浅い窪みが石に刻まれている。求めることさえできない何かに、ひとかけらを残すためのものだったのだろう。ここで食べていた何かは、飢えをやめたわけではない。ただ、見られなくなっただけだ……',
+  'entities.items.root_token_verdict.name': '裁きの刻み石',
+  'entities.items.root_token_verdict.flavorText':
+    '……刻み目は五つでなく三つひと組で刻まれ、裁かれては覆され、三度目には石が割れるほど強く押し付けられている。誰かが暗闇の中で、同じ問いについて何度も何度も心を変え続けていたかのようだ……',
   'entities.mobs.acolyte_tessa.name': '侍祭テッサ',
   'entities.mobs.deacon_varric.name': '助祭ヴァリック',
   'entities.mobs.reliquary_bonewalker.name': '蘇りし骨歩き',

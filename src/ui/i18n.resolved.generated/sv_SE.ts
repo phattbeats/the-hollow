@@ -1180,7 +1180,7 @@ export const sv_SE: EnTranslations = {
         "levels": "Nivå {min} till {max}",
         "cta": "Se världen",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Östbäcksdalen",
         "valeBlurb": "Gröna kullar och gamla skogar där varje äventyr börjar.",
         "marshName": "Dykärrsträsket",
@@ -1681,6 +1681,8 @@ export const sv_SE: EnTranslations = {
       "typeGroupBody": "Varje kapitel i huvudberättelsen slutar vid en fängelsehåledörr. Upptakten kan klaras ensam, men det avgörande slaget mot ett kapitels skurk är menat för en grupp om fem.",
       "sagaTitle": "Följ spåret norrut",
       "sagaBody": "Huvudberättelsen är en enda lång jakt. En dödskult är i farten vid rikets gravar, och varje kapitel du avslutar pekar en zon längre upp längs vägen. Du strider aldrig mot hela konspirationen på en gång; du drar i en tråd, och den leder till nästa hand som håller i den.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "Dalen: ett namn på ett sigill",
       "sagaValeBody": "I Östbäck vill de döda inte vila, och märket bakom det tillhör en sekt man länge trott vara borta. Spåra det till en Gravkallare som verkar i kapellkryptan, och hans egna papper pekar dig mot kärret i norr.",
       "sagaMarshTitle": "Träsket: ett tionde av själar",
@@ -1698,10 +1700,10 @@ export const sv_SE: EnTranslations = {
     "lore": {
       "figuresTitle": "Ansikten du kommer att lära känna",
       "figuresBody": "En handfull människor går hela vägen med dig. Håll utkik efter dessa namn från dalen till topparna.",
-      "aldricRole": "Präst i Dalen",
-      "aldricBody": "En ödmjuk bypräst som först namnger kulten över en skändad grav i Östbäcken, sedan följer dess spår personligen genom träsket och upp till muren vid Högvakten. Han är det stadiga hjärtat i hela kampanjen.",
-      "marenRole": "Marskalkens spejare",
-      "marenBody": "En tystlåten spårare du möter i vassen i Dykärret, helt tysta fötter och ett kort blad. Hon följer också spåret norrut, och det är hennes öra som fångar orden som skickar dig till topparna."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Fängelsehålor och raider",
@@ -4298,6 +4300,10 @@ export const sv_SE: EnTranslations = {
         "name": "Håna",
         "description": "Hånar målet: ditt hot stiger till nivå med dess mest hatade fiende och det tvingas anfalla dig i 3 sek."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
       "fireball": {
         "name": "Eldklot",
         "description": "Slungar ett brinnande klot som vållar {damage} eldskada plus ytterligare skada över tid."
@@ -4489,6 +4495,10 @@ export const sv_SE: EnTranslations = {
       "retribution_aura": {
         "name": "Vedergällningsaura",
         "description": "Omger dig med helig energi i 30 min och tillfogar 5 helig skada till varje fiende som slår dig i närstrid."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
       },
       "tame_beast": {
         "name": "Tämja best",
@@ -4773,6 +4783,10 @@ export const sv_SE: EnTranslations = {
       "rip": {
         "name": "Riv upp",
         "description": "Avslutande manöver som tillfogar blödningsskada under 12 sek. Förbrukar kombopoäng. Endast vargform."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
       },
       "mortal_strike": {
         "name": "Dödligt hugg",
@@ -5866,6 +5880,18 @@ export const sv_SE: EnTranslations = {
         "name": "Skärva med Räknemärken",
         "flavorText": "...märken i femtal, djupt ristade, överstrukna varje gång räkningen gick runt. hundratals femtal innan överstrykningarna upphör, och den sista raden blev aldrig färdig..."
       },
+      "root_token_unbinding": {
+        "name": "Lossad Rotknut",
+        "flavorText": "...sliten blank där en tumme tryckte om och om igen, som att lossa en knut bunden runt ingenting man kunde se. någon trodde att släppa taget var en godhet. någon hade fel, eller var för tidig, eller båda delarna..."
+      },
+      "root_token_offering": {
+        "name": "Liten Matningssten",
+        "flavorText": "...en grund skål ristad i sten, inte större än ett mynt, den sortens man skulle lämna en smula i åt något som inte kunde be om det. det som åt här slutade inte vara hungrigt. det slutade bara synas..."
+      },
+      "root_token_verdict": {
+        "name": "Domsmärkt Sten",
+        "flavorText": "...en räkning märkt i tretal, inte femtal, dömd och omdömd, tryckt så hårt att det tredje märket sprack stenen. någon fortsatte att ändra sig om samma fråga, om och om igen, i mörkret..."
+      },
       "reliquary_plate_chest": {
         "name": "Relikvarievaktens ringbrynja"
       },
@@ -5992,6 +6018,15 @@ export const sv_SE: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "Stormkallarens axelskydd"
+      },
+      "deathless_greatblade": {
+        "name": "Det odödliga storsvärdet"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Spiran från det odödliga hovet"
+      },
+      "stormcallers_focus": {
+        "name": "Stormkallarens fokus"
       },
       "unknown_alien_weaponry": {
         "name": "Okänd främmande vapenutrustning"
@@ -6231,6 +6266,15 @@ export const sv_SE: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Törntoppens gissel"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Aldrens ande"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Malrics ande"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Voss ande"
       },
       "reliquary_ledger_wraith": {
         "name": "Liggarvålnad"

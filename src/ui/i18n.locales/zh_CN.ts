@@ -1673,6 +1673,8 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.taunt.name': '嘲讽',
   'entities.abilities.taunt.description':
     '嘲讽目标：你的威胁值提高到其最仇恨敌人的水平，并强迫其攻击你 3 秒。',
+  'entities.abilities.ironhold.name': '坚守',
+  'entities.abilities.ironhold.description': '紧守盾牌，在 8 秒内使受到的所有伤害降低 40%。',
   'entities.abilities.fireball.name': '火球术',
   'entities.abilities.fireball.description':
     '投掷一团火球，造成 {damage} 点火焰伤害，并附加持续伤害。',
@@ -1803,6 +1805,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.retribution_aura.name': '惩戒光环',
   'entities.abilities.retribution_aura.description':
     '以神圣能量环绕自身，持续 30 分钟，对任何近战攻击你的敌人造成 5 点神圣伤害。',
+  'entities.abilities.sacred_bulwark.name': '神圣壁垒',
+  'entities.abilities.sacred_bulwark.description':
+    '持续 10 秒，下一次本该致命的打击将被抵挡，并使你恢复到 35% 的生命值。',
   'entities.abilities.tame_beast.name': '驯服野兽',
   'entities.abilities.tame_beast.description':
     '开始驯服一只野兽作为你的伙伴。它必须不高于你的等级，且不能是精英。你的宠物会跟随你、攻击敌人，并保持自己的威胁值。同一时间只能拥有一只宠物。',
@@ -1978,6 +1983,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.tigers_fury.description': '使攻击强度提高 40，持续 6 秒。仅限狼形态。',
   'entities.abilities.rip.name': '割裂',
   'entities.abilities.rip.description': '终结技，在 12 秒内造成流血伤害。消耗连击点。仅限狼形态。',
+  'entities.abilities.primal_reflexes.name': '原始反射',
+  'entities.abilities.primal_reflexes.description':
+    '你的本能变得敏锐，在 6 秒内使闪避几率提高 50%。',
   'entities.abilities.mortal_strike.name': '致死打击',
   'entities.abilities.mortal_strike.description':
     '凶狠打击，造成武器伤害外加 {damage} 点伤害。（武器专精标志技能）',
@@ -3548,6 +3556,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hud.tutorial.returnTitle': '喂养炉火',
   'hud.tutorial.returnBody': '你带着会燃烧之物。返回绿掌修士处，按 {interactKey} 交付。',
   'entities.mobs.nythraxis_skeleton_warrior.name': '复苏王室卫兵',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': '奥德伦之魂',
+  'entities.mobs.nythraxis_heroic_priest_add.name': '马尔里克之魂',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': '沃斯之魂',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': '尼思拉克西斯，荆峰之灾',
   'itemUi.quality.legendary': '传说',
   'entities.items.deathless_heartwood.name': '不朽王冠之心木',
@@ -3560,6 +3571,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': '魂焰披肩',
   'entities.items.stormcallers_crown.name': '唤雷者之冠',
   'entities.items.stormcallers_spaulders.name': '唤雷者肩甲',
+  'entities.items.deathless_greatblade.name': '不朽巨剑',
+  'entities.items.scepter_of_the_deathless_court.name': '不朽王庭权杖',
+  'entities.items.stormcallers_focus.name': '唤雷者的焦点',
   'hud.chat.context.convertToRaid': '转换为团队',
   'hud.chat.context.convertToParty': '转换为队伍',
   'hudChrome.raidConvert.leaderOnly': '只有团队领袖可以转换为队伍。',
@@ -4482,14 +4496,14 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     '用一件全新的升级换下旧装备，比你穿着已经过时的行头打得再完美都更有意义。当有更好的东西掉落或任务给予时，拿下它。别把好物品留到以后。',
   'guide.gear.upgradeTitle': '让装备保持更新',
-  'guide.lore.aldricBody':
-    '一位谦逊的乡村牧师，他在东溪一座被玷污的坟墓前最先道出了邪教之名，随后亲自循着踪迹穿过湿地，一路追到高守哨站的城墙下。他是整场战役坚定的核心。',
-  'guide.lore.aldricRole': '谷地的牧师',
+  'guide.lore.faddickBody':
+    '他手持长柄工具，比起剑更熟悉铲子。他扫除从林中渗入的阴翳，安葬亡者，记着自己照管的每一块地。当线索离开神龛之时，往往是他来指出前路。',
+  'guide.lore.faddickRole': '法洛畦场的掘墓人',
   'guide.lore.figuresBody': '有那么几个人会与你同行整段旅途。从谷地到峰巅，留意这些名字。',
   'guide.lore.figuresTitle': '你将渐渐熟识的面孔',
-  'guide.lore.marenBody':
-    '一位你在泥沼的芦苇丛中遇见的低声寡言的追踪者，脚步轻悄，配一柄短刃。她也一路向北循迹而行，正是她的耳朵捕捉到了那些话语，将你引向峰巅。',
-  'guide.lore.marenRole': '元帅的斥候',
+  'guide.lore.zebediahBody':
+    '他是一位耐心的教堂管事，用这本历法守护着这片原野，双手常半埋在土里。他注视着瓶中的灯火，按月令安排耕种，是初来乍到者最先听到的声音。',
+  'guide.lore.zebediahRole': '根谷的教堂管事',
   'guide.models.count': '{count} 个模型',
   'guide.models.groupClasses': '职业',
   'guide.models.groupCreatures': '生物',
@@ -4536,6 +4550,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '在 Thornpeak，整个图谋终于水落石出。自 the Vale 以来被窃走的每一个灵魂，都是为这座山岳腹心深处邪教的阴森勾当而倾注的贡赋。始于一座礼拜堂院落的踪迹在此终结，化作一场五人的深入，去直面这一切背后的黑手。至于谁在尽头等候，我们就留给你自己去揭晓吧。',
   'guide.questsPage.sagaPeaksTitle': '峰巅：贡赋所为何来',
   'guide.questsPage.sagaTitle': '循迹北行',
+  'guide.questsPage.sagaReachesBody':
+    '在霍洛沃原野，布莱泽·绿爪用火绒灯守着那座神龛之瓶，教堂管事与掘墓人则按月令安排耕种。第一条线索很小：守好灯火，清除野狼，摸熟这片土地。等到前路开启，你自会知道那盏灯正握在谁的手里。',
+  'guide.questsPage.sagaReachesTitle': '原野：一盏灯与一本历法',
   'guide.questsPage.sagaValeBody':
     '在东溪，死者无法安息，而其背后的印记属于一个早被认为已然消亡的教派。循迹追查到一名在礼拜堂地穴中作业的唤墓者，他自己的文书又将你指向北方的湿地。',
   'guide.questsPage.sagaValeTitle': '谷地：印玺上的一个名字',
@@ -4734,6 +4751,15 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': '刻痕碎片',
   'entities.items.tally_shard.flavorText':
     '……以五为一组刻得极深，每数完一轮便划去一道。划去的五连一组，累计上百组，最后一行却始终没有划完……',
+  'entities.items.root_token_unbinding.name': '松开的根结',
+  'entities.items.root_token_unbinding.flavorText':
+    '……一面被拇指摩挲得光滑，仿佛在松开一个看不见系在何处的结。有人相信放手是一种仁慈。那人要么错了，要么为时过早，或两者皆是……',
+  'entities.items.root_token_offering.name': '小喂食石',
+  'entities.items.root_token_offering.flavorText':
+    '……石头上刻着一个浅浅的碗，比硬币还小，仿佛是留给某个无法开口求食之物的一口残渣。这里吞食过的东西并未停止饥饿，只是不再被人看见……',
+  'entities.items.root_token_verdict.name': '刻痕裁决石',
+  'entities.items.root_token_verdict.flavorText':
+    '……刻痕以三为一组，而非五，反复裁定又反复推翻，压得极深，第三遍时石头都裂开了。仿佛有人在黑暗中，为同一个问题一次又一次地改变心意……',
   'entities.mobs.acolyte_tessa.name': '侍僧泰莎',
   'entities.mobs.deacon_varric.name': '执事瓦里克',
   'entities.mobs.reliquary_bonewalker.name': '复生的骨行者',

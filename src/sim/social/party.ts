@@ -132,6 +132,7 @@ export class PartyMachine {
         raid: false,
         raidGroups: new Map([[invite.fromPid, 1]]),
         lootStrategies: { ...DEFAULT_PARTY_LOOT_STRATEGIES },
+        raidDifficulty: 'normal',
       };
       this.parties.set(party.id, party);
       this.partyByPid.set(invite.fromPid, party.id);
@@ -213,6 +214,37 @@ export class PartyMachine {
       this.ctx.emit({
         type: 'log',
         text: 'Your party has converted to a raid group.',
+        color: '#aaf',
+        pid: mPid,
+      });
+    }
+  }
+
+  // Heroic Nythraxis difficulty selection (leader-only, raid-only). Stamps the
+  // raid's raidDifficulty; the claimed instance reads it only at the raid's
+  // NEXT fresh claim (instances/dungeons.ts), so a mid-run flip never changes
+  // an already-claimed arena out from under the raid.
+  setRaidDifficulty(difficulty: 'normal' | 'heroic', pid?: number): void {
+    const r = this.ctx.resolve(pid);
+    if (!r) return;
+    const party = this.partyOf(r.meta.entityId);
+    if (!party?.raid) {
+      this.ctx.error(r.meta.entityId, 'You are not in a raid group.');
+      return;
+    }
+    if (party.leader !== r.meta.entityId) {
+      this.ctx.error(r.meta.entityId, 'Only the raid leader may set the raid difficulty.');
+      return;
+    }
+    if (party.raidDifficulty === difficulty) {
+      this.ctx.error(r.meta.entityId, `The raid is already set to ${difficulty}.`);
+      return;
+    }
+    party.raidDifficulty = difficulty;
+    for (const mPid of party.members) {
+      this.ctx.emit({
+        type: 'log',
+        text: `Raid difficulty set to ${difficulty}.`,
         color: '#aaf',
         pid: mPid,
       });

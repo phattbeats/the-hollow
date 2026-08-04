@@ -1180,7 +1180,7 @@ export const fr_CA: EnTranslations = {
         "levels": "Niveaux {min} à {max}",
         "cta": "Découvrir le monde",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Val d'Eastbrook",
         "valeBlurb": "Collines verdoyantes et bois anciens où débute chaque aventure.",
         "marshName": "Marais de Mirefen",
@@ -1681,6 +1681,8 @@ export const fr_CA: EnTranslations = {
       "typeGroupBody": "Chaque chapitre de l'histoire principale s'achève à la porte d'un donjon. L'introduction se fait en solo, mais le coup de grâce contre le scélérat du chapitre est prévu pour un groupe de cinq.",
       "sagaTitle": "Suivre la piste vers le nord",
       "sagaBody": "L'histoire principale est une longue traque. Un culte de la mort est à l'œuvre sur les tombes du royaume, et chaque chapitre que vous bouclez vous mène une zone plus haut sur la route. Vous n'affrontez jamais toute la conspiration d'un coup ; vous tirez un fil, et il conduit à la main suivante qui le tient.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "Le Val : un nom sur un sceau",
       "sagaValeBody": "À Eastbrook, les morts ne reposent pas, et le sceau qui en est la cause appartient à une secte que l'on croyait disparue depuis longtemps. Remontez-en la trace jusqu'à un Appelant des tombes œuvrant dans la crypte de la chapelle, et ses propres papiers vous orientent vers la fagne au nord.",
       "sagaMarshTitle": "Le marais : un tribut d'âmes",
@@ -1698,10 +1700,10 @@ export const fr_CA: EnTranslations = {
     "lore": {
       "figuresTitle": "Des visages que vous apprendrez à connaître",
       "figuresBody": "Une poignée de gens parcourent toute la route à vos côtés. Guettez ces noms, de la vallée jusqu'aux sommets.",
-      "aldricRole": "Prêtre du Val",
-      "aldricBody": "Un humble prêtre de village qui, le premier, nomme le culte au-dessus d'une tombe profanée à Eastbrook, puis suit sa piste en personne à travers le marais jusqu'au rempart de Highwatch. Il est le cœur constant de toute la campagne.",
-      "marenRole": "L'éclaireuse du maréchal",
-      "marenBody": "Une traqueuse à la voix basse que vous croisez dans les roseaux de Mirefen, tout en pas feutrés et en lame courte. Elle suit la piste vers le nord, elle aussi, et c'est son oreille qui saisit les mots qui vous envoient vers les sommets."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Donjons et raids",
@@ -4298,6 +4300,10 @@ export const fr_CA: EnTranslations = {
         "name": "Provocation",
         "description": "Provoque la cible: votre menace rejoint celle de son ennemi le plus haï et elle est forcée de vous attaquer pendant 3 s."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
       "fireball": {
         "name": "Boule de feu",
         "description": "Lance une boule enflammée qui inflige {damage} points de dégâts de Feu plus des dégâts supplémentaires sur la durée."
@@ -4489,6 +4495,10 @@ export const fr_CA: EnTranslations = {
       "retribution_aura": {
         "name": "Aura de châtiment",
         "description": "Vous entoure d'énergie sacrée pendant 30 min, infligeant 5 points de dégâts Sacrés à tout ennemi qui vous frappe en mêlée."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
       },
       "tame_beast": {
         "name": "Apprivoiser une bête",
@@ -4773,6 +4783,10 @@ export const fr_CA: EnTranslations = {
       "rip": {
         "name": "Lacération",
         "description": "Coup de grâce qui inflige des dégâts de saignement sur 12 s. Consomme les points de combo. Forme de loup uniquement."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
       },
       "mortal_strike": {
         "name": "Frappe mortelle",
@@ -5866,6 +5880,18 @@ export const fr_CA: EnTranslations = {
         "name": "Éclat aux Marques de Compte",
         "flavorText": "...des marques par cinq, gravées profond, barrées chaque fois que le compte revenait. des centaines de cinq avant que les barres ne cessent, et la dernière rangée ne fut jamais finie..."
       },
+      "root_token_unbinding": {
+        "name": "Nœud de Racine Dénoué",
+        "flavorText": "...usé et lisse là où un pouce a pressé encore et encore, comme pour dénouer un nœud attaché autour de rien que l'on puisse voir. quelqu'un croyait que lâcher prise était une bonté. quelqu'un avait tort, ou trop tôt, ou les deux..."
+      },
+      "root_token_offering": {
+        "name": "Petite Pierre à Offrande",
+        "flavorText": "...un creux peu profond gravé dans la pierre, pas plus grand qu'une pièce, du genre où l'on laisserait une miette pour quelque chose qui ne pouvait pas demander. ce qui mangeait ici n'a pas cessé d'avoir faim. il a seulement cessé d'être vu..."
+      },
+      "root_token_verdict": {
+        "name": "Pierre du Jugement Marquée",
+        "flavorText": "...un compte marqué par trois, non par cinq, jugé et rejugé, pressé si fort que le troisième passage a fendu la pierre. quelqu'un n'arrêtait pas de changer d'avis sur la même question, encore et encore, dans le noir..."
+      },
       "reliquary_plate_chest": {
         "name": "Haubert de la garde du reliquaire"
       },
@@ -5992,6 +6018,15 @@ export const fr_CA: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "Spallières d'Appel-tempête"
+      },
+      "deathless_greatblade": {
+        "name": "Grande Lame des sans-mort"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Sceptre de la Cour des sans-mort"
+      },
+      "stormcallers_focus": {
+        "name": "Foyer de l'Appel-tempête"
       },
       "unknown_alien_weaponry": {
         "name": "Armement alien inconnu"
@@ -6231,6 +6266,15 @@ export const fr_CA: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Fléau de Thornpeak"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Âme d'Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Âme de Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Âme de Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Spectre du registre"

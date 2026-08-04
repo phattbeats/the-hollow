@@ -1783,6 +1783,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.taunt.name': 'Провокация',
   'entities.abilities.taunt.description':
     'Провоцирует цель: ваша угроза повышается до уровня самого ненавистного ей врага, и она вынуждена атаковать вас 3 сек.',
+  'entities.abilities.ironhold.name': 'Железная защита',
+  'entities.abilities.ironhold.description':
+    'Вы укрываетесь за щитом, снижая весь получаемый урон на 40% в течение 8 сек.',
   'entities.abilities.fireball.name': 'Огненный шар',
   'entities.abilities.fireball.description':
     'Бросает огненный шар, наносящий {damage} ед. урона от огня и дополнительный периодический урон.',
@@ -1921,6 +1924,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.retribution_aura.name': 'Аура воздаяния',
   'entities.abilities.retribution_aura.description':
     'Окружает вас священной энергией на 30 мин и наносит 5 ед. урона светлой магией любому врагу, атакующему вас в ближнем бою.',
+  'entities.abilities.sacred_bulwark.name': 'Священный бастион',
+  'entities.abilities.sacred_bulwark.description':
+    'В течение 10 сек. следующий смертельный удар по вам будет отменен, а здоровье восстановлено до 35%.',
   'entities.abilities.tame_beast.name': 'Приручение зверя',
   'entities.abilities.tame_beast.description':
     'Начинает приручать зверя в качестве спутника. Он должен быть не выше вашего уровня и не элитным. Ваш питомец следует за вами, атакует врагов и удерживает собственную угрозу. Одновременно можно иметь одного питомца.',
@@ -2123,6 +2129,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.rip.name': 'Разрывание',
   'entities.abilities.rip.description':
     'Завершающий прием, наносящий урон от кровотечения в течение 12 сек. Расходует приемы серии. Только в облике волка.',
+  'entities.abilities.primal_reflexes.name': 'Первобытные рефлексы',
+  'entities.abilities.primal_reflexes.description':
+    'Ваши инстинкты обостряются, повышая шанс уклонения на 50% в течение 6 сек.',
   'entities.abilities.mortal_strike.name': 'Смертельный удар',
   'entities.abilities.mortal_strike.description':
     'Жестокий удар, наносящий урон оружием плюс {damage}. (ключевая способность ветки «Оружие»)',
@@ -3759,6 +3768,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hud.tutorial.returnBody':
     'Вы несете то, что горит. Вернитесь к Брату Зеленолапу и нажмите {interactKey}, чтобы сдать его.',
   'entities.mobs.nythraxis_skeleton_warrior.name': 'Восставший королевский страж',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': 'Дух Алдрена',
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'Дух Малрика',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'Дух Восса',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'Нитраксис, Бич Торнпика',
   'itemUi.quality.legendary': 'Легендарное',
   'entities.items.deathless_heartwood.name': 'Сердцевина бессмертной короны',
@@ -3771,6 +3783,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': 'Оплечье Пламени души',
   'entities.items.stormcallers_crown.name': 'Корона призывателя бурь',
   'entities.items.stormcallers_spaulders.name': 'Наплечники призывателя бурь',
+  'entities.items.deathless_greatblade.name': 'Бессмертный большой меч',
+  'entities.items.scepter_of_the_deathless_court.name': 'Скипетр бессмертного двора',
+  'entities.items.stormcallers_focus.name': 'Фокус призывателя бурь',
   'hud.chat.context.convertToRaid': 'Преобразовать в рейд',
   'hud.chat.context.convertToParty': 'Преобразовать в группу',
   'hudChrome.raidConvert.leaderOnly': 'Только лидер рейда может преобразовать рейд в группу.',
@@ -4825,15 +4840,15 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     'Заменить старую вещь свежим улучшением даст вам больше, чем безупречная игра в снаряжении, из которого вы выросли. Когда выпадает что-то получше или это предлагает задание, берите. Не приберегайте хорошие вещи на потом.',
   'guide.gear.upgradeTitle': 'Держите снаряжение свежим',
-  'guide.lore.aldricBody':
-    'Скромный деревенский жрец, что первым называет культ над осквернённой могилой в Иствруке, а затем лично идёт по его следу через топь и до самой стены в Хайвотче. Он, незыблемое сердце всей кампании.',
-  'guide.lore.aldricRole': 'Жрец Долины',
+  'guide.lore.faddickBody':
+    'Тихий секстон с длинным инструментом в руках, которому лопата ближе меча. Он вычищает то, что подбирается из леса, предаёт мёртвых земле и помнит каждый надел на своей земле. Когда след уходит от святилища, чаще всего дорогу указывает он.',
+  'guide.lore.faddickRole': 'Секстон Фаллоу-Эйкерс',
   'guide.lore.figuresBody':
     'Горстка людей пройдёт с вами всю дорогу. Запоминайте эти имена от долины до самых вершин.',
   'guide.lore.figuresTitle': 'Лица, что станут вам знакомы',
-  'guide.lore.marenBody':
-    'Немногословная следопытка, которую вы встречаете в камышах Мирефена, вся тихий шаг и короткий клинок. Она тоже идёт по следу на север, и именно её слух улавливает слова, что отправляют вас к вершинам.',
-  'guide.lore.marenRole': 'Разведчица маршала',
+  'guide.lore.zebediahBody':
+    'Терпеливый вергер, что держит Ричес по своему календарю, его руки всегда наполовину в земле. Он следит за лампадой у сосуда, правит посев по луне и оказывается первым голосом, которым дорога заговаривает с новоприбывшим.',
+  'guide.lore.zebediahRole': 'Вергер Рут-Холлоу',
   'guide.models.count': 'Моделей: {count}',
   'guide.models.groupClasses': 'Классы',
   'guide.models.groupCreatures': 'Существа',
@@ -4882,6 +4897,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'На Thornpeak весь замысел проясняется. Каждая душа, украденная ещё со времён Vale, была податью, что лилась на мрачное дело культа в сердце горы. След, что начался во дворе часовни, кончается здесь — в спуске на пятерых игроков навстречу той руке, что стоит за всем этим. А кто ждёт на самом дне, мы дадим вам узнать самим.',
   'guide.questsPage.sagaPeaksTitle': 'Пики: для чего была подать',
   'guide.questsPage.sagaTitle': 'Следуйте по следу на север',
+  'guide.questsPage.sagaReachesBody':
+    'В Холлоу-Ричес Брат Гринпоу поддерживает живую лампаду у святилищного сосуда, а вергер и секстон правят посев по луне. Первая нить здесь невелика: не дать лампаде погаснуть, вычистить волков, узнать эту землю. Когда дорога наконец откроется, вы уже будете знать, в чьих руках лампада.',
+  'guide.questsPage.sagaReachesTitle': 'Ричес: лампада и календарь',
   'guide.questsPage.sagaValeBody':
     'В Иствруке мёртвым нет покоя, а печать за этим принадлежит секте, что давно считалась сгинувшей. Проследите её до Зовущего Могилу, трудящегося в крипте часовни, и его собственные бумаги укажут вам путь к топи на севере.',
   'guide.questsPage.sagaValeTitle': 'Долина: имя на печати',
@@ -5089,6 +5107,15 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Осколок с зарубками',
   'entities.items.tally_shard.flavorText':
     '...зарубки по пять, глубокие, каждая вычеркнута по завершении счёта. сотни пятёрок вычеркнуты, прежде чем вычёркивание прекращается, а последний ряд так и остался незавершённым...',
+  'entities.items.root_token_unbinding.name': 'Развязанный корневой узел',
+  'entities.items.root_token_unbinding.flavorText':
+    '...отполирован с одной стороны большим пальцем, снова и снова, будто развязывая узел, привязанный неизвестно к чему. кто-то верил, что отпустить - это милосердие. этот кто-то ошибался, или поторопился, или и то и другое...',
+  'entities.items.root_token_offering.name': 'Маленький камень кормления',
+  'entities.items.root_token_offering.flavorText':
+    '...в камне выцарапана мелкая чаша, не больше монеты, оставить крошку тому, что не может попросить. то, что здесь ело, не перестало голодать. оно просто перестало быть видимым...',
+  'entities.items.root_token_verdict.name': 'Камень с зарубками приговора',
+  'entities.items.root_token_verdict.flavorText':
+    '...зарубки нанесены по три, а не по пять, приговор выносился и пересматривался снова, вдавлен так глубоко, что на третий раз камень треснул. будто кто-то во тьме снова и снова менял решение об одном и том же вопросе...',
   'entities.mobs.acolyte_tessa.name': 'Послушница Тесса',
   'entities.mobs.deacon_varric.name': 'Дьякон Варрик',
   'entities.mobs.reliquary_bonewalker.name': 'Поднятый костеход',

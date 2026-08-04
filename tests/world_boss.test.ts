@@ -255,6 +255,89 @@ describe('Heartwood Colossus mechanics kit', () => {
   });
 });
 
+// PHAA-648: folds upstream #1707's Thunzharr quiet-mechanics fix into the
+// world-boss framework. The colossus keeps its battle cries as its ONLY periodic
+// voice: the per-mechanic "unleashes X!" log barks are silenced (quietMechanics)
+// while the mechanics themselves still fire with their spellfx and damage.
+describe('world boss keeps a quiet combat log (quietMechanics, upstream #1707)', () => {
+  function spawnEngagedBoss(sim: Sim): Entity {
+    const template = MOBS.heartwood_colossus;
+    const boss = createMob((sim as any).nextId++, template, template.maxLevel, {
+      x: 10,
+      y: 0,
+      z: 0,
+    });
+    (sim as any).addEntity(boss);
+    boss.aiState = 'attack';
+    boss.aggroTargetId = sim.player.id;
+    return boss;
+  }
+
+  it('opts into quiet mechanics while keeping its battle cries', () => {
+    expect(MOBS.heartwood_colossus.quietMechanics).toBe(true);
+    expect(MOBS.heartwood_colossus.battleYells).toBeTruthy();
+  });
+
+  it('fires Barkshell and Heartwood Eruption without ever barking "unleashes X" to the log', () => {
+    const sim = new Sim({ seed: 1, playerClass: 'warrior' });
+    const p = sim.player;
+    p.maxHp = 999999;
+    p.hp = 999999;
+    p.pos.x = 11;
+    p.pos.z = 0; // in melee range, so the mob stays in 'attack' (mechanics fire there)
+    const boss = spawnEngagedBoss(sim);
+    boss.stoneskinTimer = 0.001;
+    boss.bigCastTimer = 0.001;
+    let barks = 0;
+    let bossSpellfx = 0;
+    let sawBarkshell = false;
+    // Enough ticks for Barkshell, the full Heartwood Eruption cast, and a few
+    // Timberfall Heave swing procs to all land during the sample.
+    for (let t = 0; t < 20 * 15; t++) {
+      for (const e of sim.tick()) {
+        if (e.type === 'log' && /unleashes|becomes enraged/i.test((e as any).text)) barks++;
+        if (e.type === 'spellfx' && (e as any).sourceId === boss.id) bossSpellfx++;
+      }
+      // Sampled during the loop: the 8s barrier expires before the run ends.
+      if (boss.auras.some((a) => a.kind === 'absorb')) sawBarkshell = true;
+    }
+    expect(barks).toBe(0); // the log stayed quiet...
+    expect(bossSpellfx).toBeGreaterThan(0); // ...but the mechanics (spellfx novas) still fired
+    // The absorb barrier proves Barkshell actually ran, not just any nova.
+    expect(sawBarkshell).toBe(true);
+  });
+
+  it('still barks "unleashes X!" for a loud (non-quiet) template', () => {
+    const sim = new Sim({ seed: 1, playerClass: 'warrior' });
+    const p = sim.player;
+    p.maxHp = 999999;
+    p.hp = 999999;
+    p.pos.x = 11;
+    p.pos.z = 0;
+    const loudId = Object.keys(MOBS).find(
+      (id) => MOBS[id].stoneskin && !MOBS[id].quietMechanics && !MOBS[id].worldBoss,
+    )!;
+    expect(loudId).toBeTruthy();
+    const template = MOBS[loudId];
+    const mob = createMob((sim as any).nextId++, template, template.maxLevel, {
+      x: 10,
+      y: 0,
+      z: 0,
+    });
+    (sim as any).addEntity(mob);
+    mob.aiState = 'attack';
+    mob.aggroTargetId = p.id;
+    mob.stoneskinTimer = 0.001;
+    let barked = false;
+    for (let t = 0; t < 20 * 2 && !barked; t++) {
+      for (const e of sim.tick()) {
+        if (e.type === 'log' && /unleashes /.test((e as any).text)) barked = true;
+      }
+    }
+    expect(barked).toBe(true);
+  });
+});
+
 // PHAA-579: folds upstream #1643's Thunzharr unkitable-movespeed fix into the
 // world-boss framework. The colossus's moveSpeed (10.5) already outpaced base
 // player run speed (7) from the original PHAA-494 port, so raw speed alone was

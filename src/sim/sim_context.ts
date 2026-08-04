@@ -325,6 +325,9 @@ export interface SimContextCallbacks {
   // chat "/ready" command in social/chat.ts. Delegates to social/ready_check.ts.
   readyCheckStart(pid?: number): void;
   removeFromParty(pid: number, verb: string): void;
+  // Heroic Nythraxis difficulty selection (the "/raid heroic|normal" chat
+  // command, social/chat.ts); thin delegate to PartyMachine.setRaidDifficulty.
+  setRaidDifficulty(difficulty: 'normal' | 'heroic', pid?: number): void;
   // Drop a disbanded party's whole raid-marker set (points at T1's targeting store).
   dropPartyMarkers(partyId: number): void;
   onMobKilledForQuests(mob: Entity, meta: PlayerMeta): void;
@@ -894,6 +897,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     partyOf: host.partyOf,
     readyCheckStart: host.readyCheckStart,
     removeFromParty: host.removeFromParty,
+    setRaidDifficulty: host.setRaidDifficulty,
     dropPartyMarkers: host.dropPartyMarkers,
     onMobKilledForQuests: host.onMobKilledForQuests,
     onInventoryChangedForQuests: host.onInventoryChangedForQuests,

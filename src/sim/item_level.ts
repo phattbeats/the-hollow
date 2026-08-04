@@ -18,6 +18,12 @@
 //     power while keeping their own stat identity (a warrior plate piece stays
 //     str/sta, a mage cloth piece stays int/spi). itemScore() is the realized
 //     power (stats + armor + weapon dps) for at-a-glance comparison.
+
+import {
+  HEROIC_NYTHRAXIS_ITEMS,
+  NYTHRAXIS_RAID_BOSS_ID,
+  NYTHRAXIS_RAID_LOOT_SOURCE_LEVEL,
+} from './content/heroic_loot';
 import { DUNGEONS, MOBS, QUESTS } from './data';
 import {
   HEROIC_VARIANT_SOURCE_LEVEL,
@@ -151,20 +157,47 @@ export function isItemLevelEligible(item: ItemDef): boolean {
   return !!item.slot && (item.kind === 'armor' || item.kind === 'weapon');
 }
 
+// itemId set of the Heroic Nythraxis raid boss's own normal drops. Anchors
+// both the heroic-variant source level below and the three heroic-only raid
+// weapons (HEROIC_NYTHRAXIS_ITEMS), neither of which ever appear in a
+// MobTemplate.loot list of their own (variants are swapped in, and the raid
+// weapons are appended, only at loot-roll time).
+let nythraxisRaidBaseIds: Set<string> | null = null;
+
+function nythraxisRaidBaseIdsOf(): Set<string> {
+  if (!nythraxisRaidBaseIds) {
+    nythraxisRaidBaseIds = new Set(
+      (MOBS[NYTHRAXIS_RAID_BOSS_ID]?.loot ?? []).flatMap((e) => (e.itemId ? [e.itemId] : [])),
+    );
+  }
+  return nythraxisRaidBaseIds;
+}
+
 // The item level (tier number) shown in the tooltip, or undefined when there is no
 // derivable source (so the UI simply omits the line for sourceless items). Adds the
 // raid bonus so raid loot reads a tier above same-level dungeon loot.
 export function itemLevel(item: ItemDef): number | undefined {
   if (!isItemLevelEligible(item)) return undefined;
   const bonus = QUALITY_ILVL_BONUS[item.quality ?? 'common'] ?? 0;
+  // The three heroic-only Nythraxis raid weapons (content/heroic_loot.ts):
+  // never in a mob's own loot list (appended only at loot-roll time on a
+  // heroic claim), so the mob/quest source index below can never find them.
+  if (item.id in HEROIC_NYTHRAXIS_ITEMS)
+    return Math.max(1, NYTHRAXIS_RAID_LOOT_SOURCE_LEVEL + bonus);
   // Heroic-tier variants (content/heroic_variants.ts) are synthesized at
   // content-evaluation time and swapped into a mob's drop only at loot-roll time
   // (src/sim/loot/loot_roll.ts): they never appear in a MobTemplate.loot list or a
   // quest reward of their own, so the mob/quest source index below can never find
-  // them. Read their level directly off the same HEROIC_VARIANT_SOURCE_LEVEL the
-  // variant's stat budget was built against, so the tooltip shows a real tier AND
-  // the loot-roll swap's "is this an upgrade" comparison has something to compare.
-  if (item.heroicOf) return Math.max(1, HEROIC_VARIANT_SOURCE_LEVEL + bonus);
+  // them. Read their level directly off the same source level the variant's stat
+  // budget was built against: the Heroic Nythraxis raid tier (one step above the
+  // five-man/delve heroic tier) for a variant of the raid boss's own drop, the
+  // flat delve-tier level for every other heroic variant.
+  if (item.heroicOf) {
+    const source = nythraxisRaidBaseIdsOf().has(item.heroicOf)
+      ? NYTHRAXIS_RAID_LOOT_SOURCE_LEVEL
+      : HEROIC_VARIANT_SOURCE_LEVEL;
+    return Math.max(1, source + bonus);
+  }
   const src = sourceIndexOf().get(item.id);
   if (src === undefined) return undefined;
   const raid = src.raid ? RAID_ILVL_BONUS : 0;
