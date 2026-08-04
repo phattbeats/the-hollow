@@ -63,9 +63,15 @@ export const pool = new Pool({
 // An idle pooled client can error outside any query (a dropped connection,
 // a server restart) with no promise to reject; without this listener that
 // surfaces as an unhandled 'error' event and crashes the process.
-pool.on('error', (err) => {
-  console.error('idle Postgres client error:', err);
-});
+//
+// Tests stub `pg.Pool` as a bare { query } object (see tests/deeds_db.test.ts
+// and tests/daily_rewards_db.test.ts) so feature-detect the listener so the
+// module is importable without a real pool in those tests.
+if (typeof (pool as { on?: unknown }).on === 'function') {
+  pool.on('error', (err) => {
+    console.error('idle Postgres client error:', err);
+  });
+}
 
 const REALM_SQL_DEFAULT = REALM.replace(/'/g, "''");
 const LIFETIME_XP_EXPR = "((state->>'lifetimeXp')::bigint)";
