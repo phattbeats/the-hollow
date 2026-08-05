@@ -2029,6 +2029,7 @@ export const ja_JP: EnTranslations = {
     "appTitle": "マップエディター",
     "docTitle": "マップエディター - World of ClaudeCraft",
     "untitledMap": "名称未設定のマップ",
+    "playtestPlayerName": "Mapmaker",
     "topbar": {
       "label": "エディター操作",
       "mapNameLabel": "マップ名",
@@ -2126,7 +2127,9 @@ export const ja_JP: EnTranslations = {
       "newMap": "新しいマップを開始しました。",
       "imported": "「{name}」をインポートしました。",
       "importFailed": "そのファイルをインポートできませんでした。",
-      "exported": "マップをエクスポートしました。"
+      "exported": "マップをエクスポートしました。",
+      "playtestLaunch": "Launching playtest...",
+      "playtestFailed": "Could not launch playtest (storage may be blocked)."
     },
     "upload": {
       "notGlb": "アップロードできるのは .glb ファイルのみです。",

@@ -19,6 +19,8 @@ export const editorStrings = {
   // Browser tab title. Hyphen separator (not a dash character).
   docTitle: 'Map Editor - World of ClaudeCraft',
   untitledMap: 'Untitled Map',
+  // The offline character name a playtest session boots as (PHAA-679).
+  playtestPlayerName: 'Mapmaker',
 
   topbar: {
     label: 'Editor actions',
@@ -127,6 +129,8 @@ export const editorStrings = {
     imported: '"{name}" imported.',
     importFailed: 'Could not import that file.',
     exported: 'Map exported.',
+    playtestLaunch: 'Launching playtest...',
+    playtestFailed: 'Could not launch playtest (storage may be blocked).',
   },
 
   upload: {
@@ -213,9 +217,9 @@ export const editorStrings = {
   },
 
   // The 'inspector' and 'playtest' anchors from upstream's tour are omitted:
-  // neither exists in this slice (no inspector panel, Playtest is a no-op
-  // stub), so a step for either would either never resolve or point at a
-  // button that does nothing yet.
+  // there is still no inspector panel, and Playtest (PHAA-679) launches the
+  // game directly rather than opening an anchorable panel, so a step for
+  // either would either never resolve or point at nothing worth a tour stop.
   tutorial: {
     title: 'Editor tutorial',
     counter: 'Step {current} of {total}',

@@ -2029,6 +2029,7 @@ export const en_XA: EnTranslations = {
     "appTitle": "[Ɱáþ Éðíţóŕ]",
     "docTitle": "[Ɱáþ Éðíţóŕ - Ŵóŕļð óƒ ÇļáúðéÇŕáƒţ]",
     "untitledMap": "[Úñţíţļéð Ɱáþ]",
+    "playtestPlayerName": "[Ɱáþɱáķéŕ]",
     "topbar": {
       "label": "[Éðíţóŕ áçţíóñš]",
       "mapNameLabel": "[Ɱáþ ñáɱé]",
@@ -2126,7 +2127,9 @@ export const en_XA: EnTranslations = {
       "newMap": "[Šţáŕţéð á ñéŵ ɱáþ.]",
       "imported": "[\"{name}\" íɱþóŕţéð.]",
       "importFailed": "[Çóúļð ñóţ íɱþóŕţ ţĥáţ ƒíļé.]",
-      "exported": "[Ɱáþ éẋþóŕţéð.]"
+      "exported": "[Ɱáþ éẋþóŕţéð.]",
+      "playtestLaunch": "[Ļáúñçĥíñĝ þļáýţéšţ...]",
+      "playtestFailed": "[Çóúļð ñóţ ļáúñçĥ þļáýţéšţ (šţóŕáĝé ɱáý ƀé ƀļóçķéð).]"
     },
     "upload": {
       "notGlb": "[Óñļý .ĝļƀ ƒíļéš çáñ ƀé úþļóáðéð.]",

@@ -2029,6 +2029,7 @@ export const zh_TW: EnTranslations = {
     "appTitle": "地圖編輯器",
     "docTitle": "地圖編輯器 - World of ClaudeCraft",
     "untitledMap": "未命名地圖",
+    "playtestPlayerName": "Mapmaker",
     "topbar": {
       "label": "編輯器操作",
       "mapNameLabel": "地圖名稱",
@@ -2126,7 +2127,9 @@ export const zh_TW: EnTranslations = {
       "newMap": "已開始新地圖。",
       "imported": "「{name}」已匯入。",
       "importFailed": "無法匯入該檔案。",
-      "exported": "地圖已匯出。"
+      "exported": "地圖已匯出。",
+      "playtestLaunch": "Launching playtest...",
+      "playtestFailed": "Could not launch playtest (storage may be blocked)."
     },
     "upload": {
       "notGlb": "只能上傳 .glb 檔案。",

@@ -20,7 +20,12 @@ framework (Svelte stays scoped to `src/admin/`). Landed so far:
   `model.ts`/`view.ts`/`canvas.ts` (the 2D top-down view: entity list,
   camera/hit-testing, draw pass), `3d/editor_camera.ts` + `3d/viewport.ts` (the
   3D view). Boots and shows a `MapDoc` in 3D and 2D.
-- **Slice 6 (PHAA-678, this slice, "persistence + UX polish"):** real
+- **Slice 5 (PHAA-677, "authoring toolset"), partial:** the pure editing math
+  landed - `blocker_core.ts`, `edit_caps_core.ts`, `placement_transform_core.ts`,
+  `procgen.ts`, `span_core.ts`, `stamp_core.ts`, `undo_core.ts` (moved here from
+  slice 1's initial cut) plus `custom_map.ts`'s asset-placement helpers. None of
+  it is wired into the DOM yet: see "Not yet landed" below for what's left.
+- **Slice 6 (PHAA-678, "persistence + UX polish"):** real
   Save/Save As/Fork/Import/Export/autosave against slice 2's server routes
   (`persist.ts`, `save_lifecycle_core.ts`, `map_io.ts`, `file_io.ts`,
   `server_link_core.ts`, `server_errors_core.ts`), the in-editor
@@ -36,18 +41,28 @@ framework (Svelte stays scoped to `src/admin/`). Landed so far:
   worn-equipment variants, not standalone decoration). `custom_map.ts`'s
   `AssetPathResolver` is now wired in `app.ts` to the real catalogue plus a
   signed-in user's own uploads (`resolveAssetPath`), replacing the earlier
-  `NO_ASSET_CATALOG` stub. Every `Topbar` action this slice covers is live;
-  New/Open/the view toggle remain from slice 4.
+  `NO_ASSET_CATALOG` stub. Save/Save As/Fork/Import/Export/Playtest/Open/the
+  view toggle are all live; New/Open/the view toggle date from slice 4.
+- **Slice 7 (PHAA-679, "offline playtest"):** `playtest.ts` (`launchPlaytest`,
+  stashes a `WorldContent` built via `custom_map.customMapToWorldContent` into
+  `sessionStorage` and navigates to `/index.html`) plus `EditorApp.playtest()`
+  wiring `Topbar`'s Playtest button to it. The game-side half
+  (`src/game/editor_playtest.ts`'s `takeEditorPlaytestRequest` + the
+  `src/main.ts` boot-time hookup that reads it and calls `startOffline` with
+  the stashed content/seed) shipped earlier as its own portable PR since it
+  had no dependency on the editor shell. Playtest never touches the server or
+  the authoritative world; it is a local offline `Sim` boot only.
 
 ## Not yet landed (do not assume these exist)
 - **Authoring (terrain paint/place/blocker tools, undo/redo):** `Topbar`'s
   Undo/Redo stay no-op stubs and the toolbar's non-select tools have no canvas
   behavior yet. Needs new Renderer capability this fork does not have yet (see
   Gotchas below).
-- **Playtest, the inspector, and the map-list drawer:** upstream's
-  `playtest.ts`, `inspector.ts`, and `map_drawer.ts` are not ported.
-  `Topbar.onPlaytest` is a no-op stub; Open re-fetches the signed-in user's
-  most recently saved map directly (no browse-a-list UI yet).
+- **The inspector and the map-list drawer:** upstream's `inspector.ts` and
+  `map_drawer.ts` (the rest of slice 5/PHAA-677) are not ported; both need
+  slice 4's `dom.ts`/`net.ts`/`toolbar.ts`, which have been available since
+  slice 4 landed but haven't been picked up yet. Open re-fetches the
+  signed-in user's most recently saved map directly (no browse-a-list UI yet).
 
 ## Gotchas / never
 - **This fork's `src/render/renderer.ts` has no editor-live-edit surface.**

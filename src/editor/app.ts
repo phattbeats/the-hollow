@@ -34,6 +34,7 @@ import {
   uploadAsset,
 } from './net';
 import { parseMap } from './persist';
+import { launchPlaytest } from './playtest';
 import { EditGeneration, shouldAutosave } from './save_lifecycle_core';
 import { editorErrorKey } from './server_errors_core';
 import { confirmDialog, promptDialog, Toasts } from './toasts';
@@ -110,7 +111,7 @@ export class EditorApp {
       onImport: () => void this.importFile(),
       onExport: () => this.exportFile(),
       onUploadAsset: () => void this.uploadAsset(),
-      onPlaytest: () => {},
+      onPlaytest: () => this.playtest(),
       onViewMode: (mode) => this.setViewMode(mode),
       onUndo: () => {},
       onRedo: () => {},
@@ -271,6 +272,21 @@ export class EditorApp {
     this.map.meta.updatedAt = Date.now();
     downloadMap(this.map);
     this.toasts.success(t('editor.status.exported', { name: this.map.meta.name }));
+  }
+
+  // ---- playtest -----------------------------------------------------------------
+
+  private playtest(): void {
+    // Playtest navigates away; back an unsaved doc up to its draft slot first.
+    if (this.dirty) this.io.draftSave(this.map);
+    const world = customMapToWorldContent(this.map, resolveAssetPath);
+    this.toasts.info(t('editor.status.playtestLaunch'));
+    const ok = launchPlaytest(world, {
+      seed: this.map.meta.seed,
+      playerClass: 'warrior',
+      playerName: t('editor.playtestPlayerName'),
+    });
+    if (!ok) this.toasts.error(t('editor.status.playtestFailed'));
   }
 
   // ---- save / autosave / fork -------------------------------------------------
