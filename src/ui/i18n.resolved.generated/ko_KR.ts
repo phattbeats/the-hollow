@@ -2035,6 +2035,8 @@ export const ko_KR: EnTranslations = {
       "dirtyDot": "이 맵에 저장하지 않은 변경 사항이 있습니다",
       "saving": "저장 중...",
       "neverSaved": "아직 저장되지 않음",
+      "savedLocal": "이 브라우저에 저장됨",
+      "savedServer": "저장됨(버전 {version})",
       "new": "New",
       "newTitle": "기본 월드에서 새 맵 시작",
       "open": "Open",
@@ -2094,6 +2096,140 @@ export const ko_KR: EnTranslations = {
     },
     "viewport": {
       "assetsFailed": "3D 뷰포트를 불러올 수 없습니다: {error}"
+    },
+    "a11y": {
+      "stage": "맵 뷰포트",
+      "toasts": "에디터 알림"
+    },
+    "confirm": {
+      "cancel": "취소",
+      "ok": "OK",
+      "conflictTitle": "다른 사람이 이 맵을 저장했습니다",
+      "conflictBody": "서버 사본이 이제 버전 {version}이며, 회원님이 불러온 버전보다 최신입니다. 상대방의 변경 사항을 덮어쓰지 않도록 회원님의 변경 사항을 새 맵으로 저장하세요.",
+      "conflictSaveCopy": "Save As Copy",
+      "discardTitle": "저장하지 않은 변경 사항을 폐기하시겠습니까?",
+      "discardBody": "\"{name}\"에 저장하지 않은 변경 사항이 있으며, 폐기하면 사라집니다.",
+      "discard": "폐기"
+    },
+    "prompt": {
+      "saveAsTitle": "Save As",
+      "nameLabel": "맵 이름"
+    },
+    "status": {
+      "saveFailedLocal": "이 브라우저에 저장할 수 없습니다(저장 공간이 가득 찼을 수 있습니다).",
+      "savedLocalOnly": "\"{name}\"이(가) 이 브라우저에 저장되었습니다. 로그인하면 서버에도 저장할 수 있습니다.",
+      "savedServer": "\"{name}\"이(가) 저장되었습니다(버전 {version}).",
+      "autosaveOff": "자동 저장이 꺼졌습니다: {reason}",
+      "autosaveFailed": "자동 저장 초안을 기록할 수 없습니다(저장 공간이 가득 찼을 수 있습니다).",
+      "forked": "나만의 사본을 만들었습니다: \"{name}\".",
+      "opened": "\"{name}\"이(가) 열렸습니다.",
+      "newMap": "새 맵을 시작했습니다.",
+      "imported": "\"{name}\"을(를) 가져왔습니다.",
+      "importFailed": "해당 파일을 가져올 수 없습니다.",
+      "exported": "맵을 내보냈습니다."
+    },
+    "upload": {
+      "notGlb": ".glb 파일만 업로드할 수 있습니다.",
+      "tooLarge": "해당 파일이 8MiB보다 큽니다.",
+      "uploading": "업로드 중...",
+      "uploaded": "\"{name}\"이(가) 업로드되었습니다.",
+      "uploadedExisting": "이미 이 파일을 업로드했습니다. 기존 파일을 재사용합니다."
+    },
+    "serverError": {
+      "invalid_map_name": "해당 맵 이름은 유효하지 않습니다.",
+      "map_name_not_allowed": "해당 맵 이름은 허용되지 않습니다.",
+      "invalid_map_doc": "이 맵 문서는 유효하지 않습니다.",
+      "invalid_version": "해당 저장이 오래되었습니다. 맵을 다시 열고 다시 시도하세요.",
+      "map_limit_reached": "계정의 저장된 맵 한도에 도달했습니다.",
+      "map_not_found": "해당 맵이 더 이상 존재하지 않습니다.",
+      "version_conflict": "다른 사람이 먼저 이 맵을 저장했습니다.",
+      "slug_unavailable": "해당 맵 이름은 이미 사용 중입니다. 다른 이름을 시도하세요.",
+      "map_too_large": "이 맵은 너무 커서 저장할 수 없습니다.",
+      "invalid_glb": "해당 파일은 유효한 GLB 모델이 아닙니다.",
+      "asset_blocked": "해당 에셋은 모더레이터에 의해 제거되었습니다.",
+      "asset_limit_reached": "계정의 업로드된 에셋 한도에 도달했습니다.",
+      "asset_storage_limit_reached": "업로드된 에셋의 저장 공간 한도에 도달했습니다.",
+      "asset_too_large": "해당 에셋이 8MiB보다 큽니다.",
+      "asset_not_found": "해당 에셋이 더 이상 존재하지 않습니다.",
+      "rate_limited": "요청이 너무 많습니다. 잠시 후 다시 시도하세요.",
+      "unauthorized": "이 작업을 하려면 게임에서 로그인하세요.",
+      "network": "서버에 연결할 수 없습니다. 연결 상태를 확인하세요.",
+      "timeout": "서버 응답 시간이 너무 오래 걸렸습니다.",
+      "unknown": "문제가 발생했습니다. 다시 시도하세요."
+    },
+    "assets": {
+      "label": "에셋 브라우저",
+      "title": "에셋",
+      "search": "에셋 검색",
+      "searchPlaceholder": "검색...",
+      "categoryTab": "{category} ({count})",
+      "uploadedTab": "업로드됨",
+      "uploadedSignIn": "자신의 에셋을 보고 업로드하려면 게임에서 로그인하세요.",
+      "uploadedLoadFailed": "업로드한 에셋을 불러올 수 없습니다.",
+      "uploadedEmpty": "아직 업로드한 에셋이 없습니다.",
+      "loading": "불러오는 중...",
+      "empty": "일치하는 에셋이 없습니다.",
+      "pick": "{name} 배치",
+      "deleteAsset": "에셋 삭제",
+      "deleteAssetConfirm": "\"{name}\"을(를) 삭제하시겠습니까? 이 에셋을 사용하는 맵의 배치는 렌더링되지 않습니다.",
+      "category": {
+        "biome": "바이옴",
+        "chars": "캐릭터",
+        "creatures": "크리처",
+        "dungeon": "던전",
+        "foliage": "식물",
+        "props": "소품",
+        "quest": "퀘스트",
+        "resources": "자원",
+        "tools": "도구",
+        "weapons": "무기"
+      }
+    },
+    "help": {
+      "title": "에디터 도움말",
+      "mouseTitle": "마우스",
+      "flowTitle": "저장 및 초안",
+      "beginTutorial": "튜토리얼 시작",
+      "close": "닫기",
+      "mouse": {
+        "orbit3d": "3D 뷰: 왼쪽 드래그로 회전, 오른쪽 드래그로 이동",
+        "fly3d": "3D 뷰: 스크롤로 확대/축소, WASD로 비행",
+        "pan2d": "2D 뷰: 빈 공간을 드래그하여 이동, 스크롤로 확대/축소"
+      },
+      "flow": {
+        "save": "저장은 이 브라우저에 기록되며, 로그인하면 서버에도 기록됩니다",
+        "draft": "자동 저장 초안은 탭이 예기치 않게 닫혀도 저장하지 않은 편집 내용을 보호합니다"
+      }
+    },
+    "tutorial": {
+      "title": "에디터 튜토리얼",
+      "counter": "Step {current} of {total}",
+      "back": "Back",
+      "next": "Next",
+      "finish": "완료",
+      "skip": "Skip",
+      "steps": {
+        "toolbar": {
+          "title": "도구",
+          "body": "여기서 도구를 선택하세요. 배치는 지금 바로 사용할 수 있으며, 더 많은 도구가 곧 추가됩니다."
+        },
+        "stage": {
+          "title": "뷰포트",
+          "body": "이것이 회원님의 맵입니다. 언제든지 3D 뷰와 2D 뷰를 전환할 수 있습니다."
+        },
+        "viewToggle": {
+          "title": "3D / 2D 전환",
+          "body": "정확한 배치를 위해 2D 상공 뷰로 전환하거나, 결과를 보려면 3D로 전환하세요."
+        },
+        "save": {
+          "title": "Save",
+          "body": "저장은 이 브라우저에 사본을 보관하며, 로그인하면 서버에도 저장됩니다."
+        },
+        "help": {
+          "title": "Help",
+          "body": "이 투어는 언제든지 여기로 돌아와 다시 볼 수 있습니다."
+        }
+      }
     }
   },
   "apiError": {

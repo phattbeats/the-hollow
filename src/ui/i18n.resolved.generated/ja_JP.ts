@@ -2035,6 +2035,8 @@ export const ja_JP: EnTranslations = {
       "dirtyDot": "このマップには未保存の変更があります",
       "saving": "保存中...",
       "neverSaved": "未保存",
+      "savedLocal": "このブラウザに保存済み",
+      "savedServer": "保存済み（バージョン {version}）",
       "new": "New",
       "newTitle": "組み込みワールドから新しいマップを開始",
       "open": "Open",
@@ -2094,6 +2096,140 @@ export const ja_JP: EnTranslations = {
     },
     "viewport": {
       "assetsFailed": "3Dビューポートを読み込めませんでした: {error}"
+    },
+    "a11y": {
+      "stage": "マップビューポート",
+      "toasts": "エディター通知"
+    },
+    "confirm": {
+      "cancel": "キャンセル",
+      "ok": "OK",
+      "conflictTitle": "他の誰かがこのマップを保存しました",
+      "conflictBody": "サーバー上のコピーは現在バージョン {version} で、あなたが読み込んだものより新しくなっています。相手の変更を上書きしないよう、あなたの変更は新しいマップとして保存してください。",
+      "conflictSaveCopy": "Save As Copy",
+      "discardTitle": "未保存の変更を破棄しますか？",
+      "discardBody": "「{name}」には失われる未保存の変更があります。",
+      "discard": "破棄"
+    },
+    "prompt": {
+      "saveAsTitle": "Save As",
+      "nameLabel": "マップ名"
+    },
+    "status": {
+      "saveFailedLocal": "このブラウザに保存できませんでした（ストレージが不足している可能性があります）。",
+      "savedLocalOnly": "「{name}」をこのブラウザに保存しました。サインインするとサーバーにも保存されます。",
+      "savedServer": "「{name}」を保存しました（バージョン {version}）。",
+      "autosaveOff": "自動保存がオフになりました：{reason}",
+      "autosaveFailed": "自動保存の下書きを書き込めませんでした（ストレージが不足している可能性があります）。",
+      "forked": "自分用のコピーを作成しました：「{name}」。",
+      "opened": "「{name}」を開きました。",
+      "newMap": "新しいマップを開始しました。",
+      "imported": "「{name}」をインポートしました。",
+      "importFailed": "そのファイルをインポートできませんでした。",
+      "exported": "マップをエクスポートしました。"
+    },
+    "upload": {
+      "notGlb": "アップロードできるのは .glb ファイルのみです。",
+      "tooLarge": "そのファイルは8 MiBを超えています。",
+      "uploading": "アップロード中...",
+      "uploaded": "「{name}」をアップロードしました。",
+      "uploadedExisting": "このファイルは既にアップロード済みです。再利用します。"
+    },
+    "serverError": {
+      "invalid_map_name": "そのマップ名は無効です。",
+      "map_name_not_allowed": "そのマップ名は許可されていません。",
+      "invalid_map_doc": "このマップドキュメントは無効です。",
+      "invalid_version": "その保存は古くなっています。マップを開き直してもう一度お試しください。",
+      "map_limit_reached": "アカウントの保存済みマップの上限に達しました。",
+      "map_not_found": "そのマップは既に存在しません。",
+      "version_conflict": "他の誰かが先にこのマップを保存しました。",
+      "slug_unavailable": "そのマップ名は既に使用されています。別の名前をお試しください。",
+      "map_too_large": "このマップは大きすぎて保存できません。",
+      "invalid_glb": "そのファイルは有効なGLBモデルではありません。",
+      "asset_blocked": "そのアセットはモデレーターによって削除されました。",
+      "asset_limit_reached": "アカウントのアップロード済みアセットの上限に達しました。",
+      "asset_storage_limit_reached": "アップロードアセットのストレージ上限に達しました。",
+      "asset_too_large": "そのアセットは8 MiBを超えています。",
+      "asset_not_found": "そのアセットは既に存在しません。",
+      "rate_limited": "リクエストが多すぎます。少し待ってからもう一度お試しください。",
+      "unauthorized": "それを行うにはゲームでサインインしてください。",
+      "network": "サーバーに接続できませんでした。接続を確認してください。",
+      "timeout": "サーバーの応答に時間がかかりすぎました。",
+      "unknown": "問題が発生しました。もう一度お試しください。"
+    },
+    "assets": {
+      "label": "アセットブラウザ",
+      "title": "アセット",
+      "search": "アセットを検索",
+      "searchPlaceholder": "検索...",
+      "categoryTab": "{category} ({count})",
+      "uploadedTab": "アップロード済み",
+      "uploadedSignIn": "自分のアセットを表示・アップロードするにはゲームでサインインしてください。",
+      "uploadedLoadFailed": "アップロード済みのアセットを読み込めませんでした。",
+      "uploadedEmpty": "まだアセットをアップロードしていません。",
+      "loading": "読み込み中...",
+      "empty": "一致するアセットがありません。",
+      "pick": "{name} を配置",
+      "deleteAsset": "アセットを削除",
+      "deleteAssetConfirm": "「{name}」を削除しますか？このアセットを使用しているマップ上の配置は表示されなくなります。",
+      "category": {
+        "biome": "バイオーム",
+        "chars": "キャラクター",
+        "creatures": "クリーチャー",
+        "dungeon": "ダンジョン",
+        "foliage": "植物",
+        "props": "小道具",
+        "quest": "クエスト",
+        "resources": "リソース",
+        "tools": "ツール",
+        "weapons": "武器"
+      }
+    },
+    "help": {
+      "title": "エディターヘルプ",
+      "mouseTitle": "マウス",
+      "flowTitle": "保存と下書き",
+      "beginTutorial": "チュートリアルを開始",
+      "close": "閉じる",
+      "mouse": {
+        "orbit3d": "3Dビュー：左ドラッグで周回、右ドラッグでパン",
+        "fly3d": "3Dビュー：スクロールでズーム、WASDで飛行",
+        "pan2d": "2Dビュー：空白部分をドラッグしてパン、スクロールでズーム"
+      },
+      "flow": {
+        "save": "保存はこのブラウザに書き込まれ、サインイン後はサーバーにも書き込まれます",
+        "draft": "自動保存の下書きは、タブが予期せず閉じられた場合に未保存の編集を保護します"
+      }
+    },
+    "tutorial": {
+      "title": "エディターチュートリアル",
+      "counter": "Step {current} of {total}",
+      "back": "Back",
+      "next": "Next",
+      "finish": "完了",
+      "skip": "Skip",
+      "steps": {
+        "toolbar": {
+          "title": "ツール",
+          "body": "ここでツールを選びます。配置は今すぐ使用できます。他のツールは近日公開予定です。"
+        },
+        "stage": {
+          "title": "ビューポート",
+          "body": "これがあなたのマップです。3Dビューと2Dビューはいつでも切り替えられます。"
+        },
+        "viewToggle": {
+          "title": "3D / 2D 切り替え",
+          "body": "正確な配置には2D俯瞰ビューに、結果を見るには3Dに切り替えてください。"
+        },
+        "save": {
+          "title": "Save",
+          "body": "保存はこのブラウザにコピーを残し、サインイン後はサーバーにも保存します。"
+        },
+        "help": {
+          "title": "Help",
+          "body": "このツアーはいつでもここに戻って確認できます。"
+        }
+      }
     }
   },
   "apiError": {
