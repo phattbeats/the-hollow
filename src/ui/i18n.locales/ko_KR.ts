@@ -5914,7 +5914,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'editor.status.importFailed': '해당 파일을 가져올 수 없습니다.',
   'editor.status.exported': '맵을 내보냈습니다.',
   'editor.status.playtestLaunch': '플레이테스트를 시작하는 중……',
-  'editor.status.playtestFailed': '플레이테스트를 시작할 수 없습니다(저장소가 차단되었을 수 있습니다).',
+  'editor.status.playtestFailed':
+    '플레이테스트를 시작할 수 없습니다(저장소가 차단되었을 수 있습니다).',
   'editor.upload.notGlb': '.glb 파일만 업로드할 수 있습니다.',
   'editor.upload.tooLarge': '해당 파일이 8MiB보다 큽니다.',
   'editor.upload.uploading': '업로드 중...',

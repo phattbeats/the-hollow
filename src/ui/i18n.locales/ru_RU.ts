@@ -6041,7 +6041,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'editor.status.importFailed': 'Не удалось импортировать этот файл.',
   'editor.status.exported': 'Карта экспортирована.',
   'editor.status.playtestLaunch': 'Запуск плейтеста…',
-  'editor.status.playtestFailed': 'Не удалось запустить плейтест (хранилище может быть заблокировано).',
+  'editor.status.playtestFailed':
+    'Не удалось запустить плейтест (хранилище может быть заблокировано).',
   'editor.upload.notGlb': 'Можно загружать только файлы .glb.',
   'editor.upload.tooLarge': 'Этот файл больше 8 МиБ.',
   'editor.upload.uploading': 'Загрузка...',

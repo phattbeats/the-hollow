@@ -5903,7 +5903,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'editor.status.importFailed': 'そのファイルをインポートできませんでした。',
   'editor.status.exported': 'マップをエクスポートしました。',
   'editor.status.playtestLaunch': 'プレイテストを起動しています……',
-  'editor.status.playtestFailed': 'プレイテストを起動できませんでした（ストレージがブロックされている可能性があります）。',
+  'editor.status.playtestFailed':
+    'プレイテストを起動できませんでした（ストレージがブロックされている可能性があります）。',
   'editor.upload.notGlb': 'アップロードできるのは .glb ファイルのみです。',
   'editor.upload.tooLarge': 'そのファイルは8 MiBを超えています。',
   'editor.upload.uploading': 'アップロード中...',
