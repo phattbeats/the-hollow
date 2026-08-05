@@ -5539,7 +5539,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.book.title': '阿斯福德里亞之書',
   'hudChrome.book.close': '關閉',
   'hudChrome.book.deedSummary': '已完成 {done}/{total} 項事蹟',
-  'hudChrome.book.titleSummary': '{count,plural,=0{尚未獲得稱號}one{獲得 1 個稱號}other{獲得 # 個稱號}}',
+  'hudChrome.book.titleSummary':
+    '{count,plural,=0{尚未獲得稱號}one{獲得 1 個稱號}other{獲得 # 個稱號}}',
   'hudChrome.book.titlePickerHeading': '目前稱號',
   'hudChrome.book.titlePickerEmpty': '尚未選擇稱號，請於下方挑選。',
   'hudChrome.book.titlePickerEarnFirst': '完成一項事蹟以獲得你的第一個稱號。',

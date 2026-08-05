@@ -5832,7 +5832,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.book.title': '아스포델리아의 책',
   'hudChrome.book.close': '닫기',
   'hudChrome.book.deedSummary': '업적 {done}/{total} 완료',
-  'hudChrome.book.titleSummary': '{count,plural,=0{획득한 칭호 없음}one{칭호 1개 획득}other{칭호 #개 획득}}',
+  'hudChrome.book.titleSummary':
+    '{count,plural,=0{획득한 칭호 없음}one{칭호 1개 획득}other{칭호 #개 획득}}',
   'hudChrome.book.titlePickerHeading': '현재 칭호',
   'hudChrome.book.titlePickerEmpty': '선택한 칭호가 없습니다. 아래에서 골라 주세요.',
   'hudChrome.book.titlePickerEarnFirst': '업적을 하나 완료해 첫 칭호를 획득하세요.',
@@ -5939,7 +5940,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'editor.status.importFailed': '해당 파일을 가져올 수 없습니다.',
   'editor.status.exported': '맵을 내보냈습니다.',
   'editor.status.playtestLaunch': '플레이테스트를 시작하는 중……',
-  'editor.status.playtestFailed': '플레이테스트를 시작할 수 없습니다(저장소가 차단되었을 수 있습니다).',
+  'editor.status.playtestFailed':
+    '플레이테스트를 시작할 수 없습니다(저장소가 차단되었을 수 있습니다).',
   'editor.upload.notGlb': '.glb 파일만 업로드할 수 있습니다.',
   'editor.upload.tooLarge': '해당 파일이 8MiB보다 큽니다.',
   'editor.upload.uploading': '업로드 중...',

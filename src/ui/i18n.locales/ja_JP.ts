@@ -5819,7 +5819,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.book.title': 'アスフォデリアの書',
   'hudChrome.book.close': '閉じる',
   'hudChrome.book.deedSummary': '実績 {done}/{total} 完了',
-  'hudChrome.book.titleSummary': '{count,plural,=0{称号未取得}one{称号 1 個取得}other{称号 # 個取得}}',
+  'hudChrome.book.titleSummary':
+    '{count,plural,=0{称号未取得}one{称号 1 個取得}other{称号 # 個取得}}',
   'hudChrome.book.titlePickerHeading': '現在の称号',
   'hudChrome.book.titlePickerEmpty': '称号が未選択です。以下から選んでください。',
   'hudChrome.book.titlePickerEarnFirst': '実績を達成して最初の称号を獲得しましょう。',
@@ -5928,7 +5929,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'editor.status.importFailed': 'そのファイルをインポートできませんでした。',
   'editor.status.exported': 'マップをエクスポートしました。',
   'editor.status.playtestLaunch': 'プレイテストを起動しています……',
-  'editor.status.playtestFailed': 'プレイテストを起動できませんでした（ストレージがブロックされている可能性があります）。',
+  'editor.status.playtestFailed':
+    'プレイテストを起動できませんでした（ストレージがブロックされている可能性があります）。',
   'editor.upload.notGlb': 'アップロードできるのは .glb ファイルのみです。',
   'editor.upload.tooLarge': 'そのファイルは8 MiBを超えています。',
   'editor.upload.uploading': 'アップロード中...',

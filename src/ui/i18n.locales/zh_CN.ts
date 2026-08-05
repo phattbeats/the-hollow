@@ -5539,7 +5539,8 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.book.title': '阿斯福德里亚之书',
   'hudChrome.book.close': '关闭',
   'hudChrome.book.deedSummary': '已完成 {done}/{total} 项事迹',
-  'hudChrome.book.titleSummary': '{count,plural,=0{尚未获得称号}one{获得 1 个称号}other{获得 # 个称号}}',
+  'hudChrome.book.titleSummary':
+    '{count,plural,=0{尚未获得称号}one{获得 1 个称号}other{获得 # 个称号}}',
   'hudChrome.book.titlePickerHeading': '当前称号',
   'hudChrome.book.titlePickerEmpty': '尚未选择称号，请在下方挑选。',
   'hudChrome.book.titlePickerEarnFirst': '完成一项事迹以获得你的第一个称号。',

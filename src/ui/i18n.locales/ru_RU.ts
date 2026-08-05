@@ -5956,7 +5956,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.book.title': 'Книга Асфоделии',
   'hudChrome.book.close': 'Закрыть',
   'hudChrome.book.deedSummary': 'Выполнено {done} из {total} деяний',
-  'hudChrome.book.titleSummary': '{count,plural,=0{Звания не получены}one{Получено 1 звание}few{Получено # звания}many{Получено # званий}other{Получено # звания}}',
+  'hudChrome.book.titleSummary':
+    '{count,plural,=0{Звания не получены}one{Получено 1 звание}few{Получено # звания}many{Получено # званий}other{Получено # звания}}',
   'hudChrome.book.titlePickerHeading': 'Активное звание',
   'hudChrome.book.titlePickerEmpty': 'Звание не выбрано. Выберите ниже.',
   'hudChrome.book.titlePickerEarnFirst': 'Получите первое звание, выполнив деяние.',
@@ -6065,7 +6066,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'editor.status.importFailed': 'Не удалось импортировать этот файл.',
   'editor.status.exported': 'Карта экспортирована.',
   'editor.status.playtestLaunch': 'Запуск плейтеста…',
-  'editor.status.playtestFailed': 'Не удалось запустить плейтест (хранилище может быть заблокировано).',
+  'editor.status.playtestFailed':
+    'Не удалось запустить плейтест (хранилище может быть заблокировано).',
   'editor.upload.notGlb': 'Можно загружать только файлы .glb.',
   'editor.upload.tooLarge': 'Этот файл больше 8 МиБ.',
   'editor.upload.uploading': 'Загрузка...',
