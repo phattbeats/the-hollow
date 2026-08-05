@@ -2029,6 +2029,7 @@ export const ru_RU: EnTranslations = {
     "appTitle": "Редактор карт",
     "docTitle": "Редактор карт - World of ClaudeCraft",
     "untitledMap": "Карта без названия",
+    "playtestPlayerName": "Автор карты",
     "topbar": {
       "label": "Действия редактора",
       "mapNameLabel": "Название карты",
@@ -2126,7 +2127,9 @@ export const ru_RU: EnTranslations = {
       "newMap": "Начата новая карта.",
       "imported": "\"{name}\" импортирована.",
       "importFailed": "Не удалось импортировать этот файл.",
-      "exported": "Карта экспортирована."
+      "exported": "Карта экспортирована.",
+      "playtestLaunch": "Запуск плейтеста…",
+      "playtestFailed": "Не удалось запустить плейтест (хранилище может быть заблокировано)."
     },
     "upload": {
       "notGlb": "Можно загружать только файлы .glb.",

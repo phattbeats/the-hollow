@@ -2029,6 +2029,7 @@ export const id_ID: EnTranslations = {
     "appTitle": "Map Editor",
     "docTitle": "Map Editor - World of ClaudeCraft",
     "untitledMap": "Untitled Map",
+    "playtestPlayerName": "Mapmaker",
     "topbar": {
       "label": "Editor actions",
       "mapNameLabel": "Map name",
@@ -2126,7 +2127,9 @@ export const id_ID: EnTranslations = {
       "newMap": "Started a new map.",
       "imported": "\"{name}\" imported.",
       "importFailed": "Could not import that file.",
-      "exported": "Map exported."
+      "exported": "Map exported.",
+      "playtestLaunch": "Launching playtest...",
+      "playtestFailed": "Could not launch playtest (storage may be blocked)."
     },
     "upload": {
       "notGlb": "Only .glb files can be uploaded.",
