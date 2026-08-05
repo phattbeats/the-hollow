@@ -1212,7 +1212,7 @@ export const tr_TR: EnTranslations = {
         "levels": "Seviye {min} - {max}",
         "cta": "Dünyayı gör",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Doğudere Vadisi",
         "valeBlurb": "Her maceranın başladığı yeşil tepeler ve eski ormanlar.",
         "marshName": "Mirefen Bataklığı",
@@ -1713,6 +1713,8 @@ export const tr_TR: EnTranslations = {
       "typeGroupBody": "Ana hikayenin her bölümü bir zindan kapısında sona erer. Giriş kısmı tek başına yapılabilir, ama bir bölümün kötü adamına vurulacak son darbe beş kişilik bir grup içindir.",
       "sagaTitle": "İzi kuzeye doğru takip et",
       "sagaBody": "Ana hikaye tek bir uzun kovalamacadır. Bir ölüm tarikatı diyarın mezarları üzerinde çalışıyor ve kapattığın her bölüm seni yolda bir bölge daha yukarı işaret eder. Komployla bir anda baştan başa savaşmazsın; bir ipliği çekersin, o da seni onu tutan bir sonraki ele götürür.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "Vadi: bir mühürdeki isim",
       "sagaValeBody": "Doğudere'de ölüler huzur bulmuyor ve bunun ardındaki damga, çoktan yok olduğu sanılan bir mezhebe ait. İzi şapel mahzeninde çalışan bir Mezar Çağırıcı'ya kadar sür, onun kendi evrakları seni kuzeydeki bataklığa yönlendirir.",
       "sagaMarshTitle": "Bataklık: ruhlardan bir öşür",
@@ -1730,10 +1732,10 @@ export const tr_TR: EnTranslations = {
     "lore": {
       "figuresTitle": "Tanışacağın yüzler",
       "figuresBody": "Bir avuç insan tüm yolu seninle birlikte yürür. Vadiden zirvelere bu adlara dikkat et.",
-      "aldricRole": "Vadi'nin Rahibi",
-      "aldricBody": "Önce Doğudere'de kirletilmiş bir mezar başında tarikatı adlandıran, sonra onun izini bizzat bataklık boyunca ve Yüksetnöbet'teki surlara dek süren mütevazı bir köy rahibi. Tüm seferin sağlam yüreğidir.",
-      "marenRole": "Mareşal'in İzcisi",
-      "marenBody": "Mirefen'in sazlıklarında karşılaştığın, az konuşan bir iz sürücü; tamamı sessiz adımlar ve kısa bir bıçak. O da izi kuzeye doğru takip eder ve seni zirvelere gönderen sözleri yakalayan onun kulağıdır."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Zindanlar ve Akınlar",
@@ -2054,6 +2056,216 @@ export const tr_TR: EnTranslations = {
     "continue": "Continue",
     "begin": "Begin",
     "skip": "Skip"
+  },
+  "editor": {
+    "appTitle": "Map Editor",
+    "docTitle": "Map Editor - World of ClaudeCraft",
+    "untitledMap": "Untitled Map",
+    "playtestPlayerName": "Mapmaker",
+    "topbar": {
+      "label": "Editor actions",
+      "mapNameLabel": "Map name",
+      "dirtyDot": "This map has unsaved changes",
+      "saving": "Saving...",
+      "neverSaved": "Not saved yet",
+      "savedLocal": "Saved to this browser",
+      "savedServer": "Saved (version {version})",
+      "new": "New",
+      "newTitle": "Start a new map from the built-in world",
+      "open": "Open",
+      "openTitle": "Open a saved map (browser or server)",
+      "save": "Save",
+      "saveTitle": "Save to this browser, and to the server when signed in (Ctrl+S)",
+      "saveAs": "Save As",
+      "saveAsTitle": "Save a copy under a new name",
+      "fork": "Fork",
+      "forkTitle": "Create your own server-side copy of this map",
+      "forkDisabledTitle": "Open a server map first to fork it",
+      "import": "Import",
+      "importTitle": "Import a map from a JSON file",
+      "export": "Export",
+      "exportTitle": "Download this map as a JSON file",
+      "uploadAsset": "Upload Asset",
+      "uploadAssetTitle": "Upload a GLB model (up to 8 MiB) to place in your maps",
+      "uploadAssetDisabledTitle": "Sign in from the game to upload assets",
+      "playtest": "Playtest",
+      "playtestTitle": "Boot the game on this map (offline, current edits included)",
+      "viewLabel": "View mode",
+      "view3d": "3D",
+      "view3dTitle": "Edit in the rendered world",
+      "view2d": "2D",
+      "view2dTitle": "Edit on the symbolic overhead map",
+      "undoCount": "Undo: {count}",
+      "undoCountTitle": "{count} undoable steps (Ctrl+Z to undo, Ctrl+Y to redo)",
+      "autosave": "Autosave",
+      "autosaveTitle": "Automatically save the map while there are unsaved changes. Turns itself off if a save fails.",
+      "undo": "Undo",
+      "undoTitle": "Undo the last change (Ctrl+Z)",
+      "redo": "Redo",
+      "redoTitle": "Redo the last undone change (Ctrl+Y)",
+      "offline": "Offline",
+      "offlineTitle": "Not signed in: maps save to this browser only. Sign in from the game to save online.",
+      "signIn": "Sign in",
+      "signInTitle": "Open the game login screen in a new tab",
+      "help": "Help",
+      "helpTitle": "Editor guide: tools, shortcuts, and the tutorial"
+    },
+    "tool": {
+      "listLabel": "Editor tools",
+      "keyHint": "{name} ({key})",
+      "select": "Select",
+      "raise": "Raise",
+      "lower": "Lower",
+      "smooth": "Smooth",
+      "flatten": "Flatten",
+      "paint": "Paint Biome",
+      "water": "Water",
+      "place": "Place Asset",
+      "blocker": "Blocker Wall",
+      "camp": "Camp",
+      "spawn": "Spawn Point",
+      "region": "Region",
+      "erase": "Erase"
+    },
+    "viewport": {
+      "assetsFailed": "Could not load the 3D viewport: {error}"
+    },
+    "a11y": {
+      "stage": "Map viewport",
+      "toasts": "Editor notifications"
+    },
+    "confirm": {
+      "cancel": "Cancel",
+      "ok": "OK",
+      "conflictTitle": "Someone else saved this map",
+      "conflictBody": "The server copy is now version {version}, newer than the one you loaded. Save your changes as a new map to avoid overwriting theirs.",
+      "conflictSaveCopy": "Save As Copy",
+      "discardTitle": "Discard unsaved changes?",
+      "discardBody": "\"{name}\" has unsaved changes that will be lost.",
+      "discard": "Discard"
+    },
+    "prompt": {
+      "saveAsTitle": "Save As",
+      "nameLabel": "Map name"
+    },
+    "status": {
+      "saveFailedLocal": "Could not save to this browser (storage may be full).",
+      "savedLocalOnly": "\"{name}\" saved to this browser. Sign in to also save it to the server.",
+      "savedServer": "\"{name}\" saved (version {version}).",
+      "autosaveOff": "Autosave turned off: {reason}",
+      "autosaveFailed": "Autosave draft could not be written (storage may be full).",
+      "forked": "Created your own copy: \"{name}\".",
+      "opened": "\"{name}\" opened.",
+      "newMap": "Started a new map.",
+      "imported": "\"{name}\" imported.",
+      "importFailed": "Could not import that file.",
+      "exported": "Map exported.",
+      "playtestLaunch": "Launching playtest...",
+      "playtestFailed": "Could not launch playtest (storage may be blocked)."
+    },
+    "upload": {
+      "notGlb": "Only .glb files can be uploaded.",
+      "tooLarge": "That file is larger than 8 MiB.",
+      "uploading": "Uploading...",
+      "uploaded": "\"{name}\" uploaded.",
+      "uploadedExisting": "You already uploaded this file; reusing it."
+    },
+    "serverError": {
+      "invalid_map_name": "That map name is not valid.",
+      "map_name_not_allowed": "That map name is not allowed.",
+      "invalid_map_doc": "This map document is not valid.",
+      "invalid_version": "That save is out of date. Reopen the map and try again.",
+      "map_limit_reached": "You've reached the limit of saved maps for your account.",
+      "map_not_found": "That map no longer exists.",
+      "version_conflict": "Someone else saved this map first.",
+      "slug_unavailable": "That map name is already taken. Try another.",
+      "map_too_large": "This map is too large to save.",
+      "invalid_glb": "That file is not a valid GLB model.",
+      "asset_blocked": "That asset was removed by a moderator.",
+      "asset_limit_reached": "You've reached the limit of uploaded assets for your account.",
+      "asset_storage_limit_reached": "You've reached your uploaded-asset storage limit.",
+      "asset_too_large": "That asset is larger than 8 MiB.",
+      "asset_not_found": "That asset no longer exists.",
+      "rate_limited": "Too many requests. Wait a moment and try again.",
+      "unauthorized": "Sign in from the game to do that.",
+      "network": "Could not reach the server. Check your connection.",
+      "timeout": "The server took too long to respond.",
+      "unknown": "Something went wrong. Try again."
+    },
+    "assets": {
+      "label": "Asset browser",
+      "title": "Assets",
+      "search": "Search assets",
+      "searchPlaceholder": "Search...",
+      "categoryTab": "{category} ({count})",
+      "uploadedTab": "Uploaded",
+      "uploadedSignIn": "Sign in from the game to see and upload your own assets.",
+      "uploadedLoadFailed": "Could not load your uploaded assets.",
+      "uploadedEmpty": "You haven't uploaded any assets yet.",
+      "loading": "Loading...",
+      "empty": "No assets match.",
+      "pick": "Place {name}",
+      "deleteAsset": "Delete asset",
+      "deleteAssetConfirm": "Delete \"{name}\"? Any map placement using it will fail to render.",
+      "category": {
+        "biome": "Biome",
+        "chars": "Characters",
+        "creatures": "Creatures",
+        "dungeon": "Dungeon",
+        "foliage": "Foliage",
+        "props": "Props",
+        "quest": "Quest",
+        "resources": "Resources",
+        "tools": "Tools",
+        "weapons": "Weapons"
+      }
+    },
+    "help": {
+      "title": "Editor Help",
+      "mouseTitle": "Mouse",
+      "flowTitle": "Save and draft",
+      "beginTutorial": "Begin tutorial",
+      "close": "Close",
+      "mouse": {
+        "orbit3d": "3D view: left-drag to orbit, right-drag to pan",
+        "fly3d": "3D view: scroll to zoom, WASD to fly",
+        "pan2d": "2D view: drag empty space to pan, scroll to zoom"
+      },
+      "flow": {
+        "save": "Save writes to this browser, and to the server once you are signed in",
+        "draft": "An autosave draft protects unsaved edits if the tab closes unexpectedly"
+      }
+    },
+    "tutorial": {
+      "title": "Editor tutorial",
+      "counter": "Step {current} of {total}",
+      "back": "Back",
+      "next": "Next",
+      "finish": "Finish",
+      "skip": "Skip",
+      "steps": {
+        "toolbar": {
+          "title": "Tools",
+          "body": "Pick a tool here. Place is ready to use today; more tools are coming soon."
+        },
+        "stage": {
+          "title": "Viewport",
+          "body": "This is your map. Switch between the 3D and 2D views any time."
+        },
+        "viewToggle": {
+          "title": "3D / 2D toggle",
+          "body": "Switch to the 2D overhead view for precise placement, or 3D to see the result."
+        },
+        "save": {
+          "title": "Save",
+          "body": "Save keeps a copy in this browser, and on the server once you sign in."
+        },
+        "help": {
+          "title": "Help",
+          "body": "Come back here any time for this tour."
+        }
+      }
+    }
   },
   "apiError": {
     "crossSiteRejected": "Cross-site request rejected.",
@@ -4329,6 +4541,10 @@ export const tr_TR: EnTranslations = {
         "name": "Kışkırtma",
         "description": "Hedefi kışkırtır: tehdidin onun en nefret ettiği düşmana eşit hale gelir ve 3 saniye boyunca sana saldırmaya zorlanır."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
       "fireball": {
         "name": "Ateş Topu",
         "description": "Ateşli bir top fırlatarak {damage} Ateş hasarı ve ek olarak zamana yayılı hasar verir."
@@ -4520,6 +4736,10 @@ export const tr_TR: EnTranslations = {
       "retribution_aura": {
         "name": "İntikam Aurası",
         "description": "Seni 30 dakika boyunca kutsal enerjiyle sarar; yakın dövüşte sana vuran her düşmana 5 Kutsal hasar verir."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
       },
       "tame_beast": {
         "name": "Canavar Evcilleştirme",
@@ -4804,6 +5024,10 @@ export const tr_TR: EnTranslations = {
       "rip": {
         "name": "Parçalama",
         "description": "12 saniye boyunca kanama hasarı veren bitirici hamle. Kombo puanlarını tüketir. Yalnızca Kurt Formu."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
       },
       "mortal_strike": {
         "name": "Ölümcül Darbe",
@@ -5897,6 +6121,18 @@ export const tr_TR: EnTranslations = {
         "name": "Çetele İşaretli Parça",
         "flavorText": "...beşerli işaretler, derin kazınmış, sayım her döndüğünde üstü çizilmiş. çizmeler durmadan önce yüzlerce beşli, ve son sıra hiç bitirilmemiş..."
       },
+      "root_token_unbinding": {
+        "name": "Gevşetilmiş Kök Düğümü",
+        "flavorText": "...bir başparmağın defalarca bastırdığı yerde pürüzsüzleşmiş, görülemeyen bir şeyin etrafına bağlanmış bir düğümü çözermişçesine. birisi bırakmanın bir iyilik olduğuna inanıyordu. birisi yanılıyordu, ya da erkendi, ya da ikisi de..."
+      },
+      "root_token_offering": {
+        "name": "Küçük Besleme Taşı",
+        "flavorText": "...taşa kazınmış, bir bozuk paradan büyük olmayan sığ bir çukur, isteyemeyen bir şey için kırıntı bırakılacak türden. burada besleneni yemeyi bırakmadı. sadece görülmeyi bıraktı..."
+      },
+      "root_token_verdict": {
+        "name": "Yargıyla İşaretlenmiş Taş",
+        "flavorText": "...beşerli değil, üçerli işaretlenmiş bir hesap, yargılanmış ve yeniden yargılanmış, üçüncü geçişte taşı çatlatacak kadar sert bastırılmış. biri karanlıkta aynı soru üzerinde defalarca fikrini değiştirip durdu..."
+      },
       "reliquary_plate_chest": {
         "name": "Emanetlik Muhafızı Zırhı"
       },
@@ -6023,6 +6259,15 @@ export const tr_TR: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "Fırtınaçağıranın Omuzlukları"
+      },
+      "deathless_greatblade": {
+        "name": "Ölümsüz Büyük Kılıç"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Ölümsüz Sarayın Asası"
+      },
+      "stormcallers_focus": {
+        "name": "Fırtınaçağıranın Odağı"
       },
       "unknown_alien_weaponry": {
         "name": "Bilinmeyen Uzaylı Silahı"
@@ -6262,6 +6507,15 @@ export const tr_TR: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Dikenzirve Belası"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Aldren'in Ruhu"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Malric'in Ruhu"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Voss'un Ruhu"
       },
       "reliquary_ledger_wraith": {
         "name": "Defter Hayaleti"

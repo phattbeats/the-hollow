@@ -95,6 +95,10 @@ export class CharacterVisual {
 
   private def: VisualDef;
   private key: string;
+  /** Which rig family this visual uses (drives on-back grip resolution;
+   *  chibi rigs use a different back-bone and tighter scale than KayKit).
+   *  Inferred from the visual key at construction time. */
+  private rig: import('./back_grips').RigFamily;
   private entityColor: number;
   private skinIndex: number;
   private weaponItemId: string | null;
@@ -157,6 +161,10 @@ export class CharacterVisual {
       ? { ...prep.def, attach: weaponOverride.attach, weaponSlots: weaponOverride.weaponSlots }
       : prep.def;
     this.key = key;
+    // Chibi visuals (PHAA-585) carry a chibi_* key prefix; everything else uses
+    // the KayKit Rig_Medium. Drives the on-back grip family in assets.ts so a
+    // sheathed sword sits tighter on the shorter, wider chibi torso.
+    this.rig = key.startsWith('chibi_') ? 'chibi' : 'kaykit';
     this.entityColor = entityColor;
     this.skinIndex = skinIndex;
     this.weaponItemId = weaponItemId;
@@ -529,6 +537,24 @@ export class CharacterVisual {
     this.originalMaterials.clear();
     this.rebuildCasters();
     this.applyVisualMaterials();
+  }
+
+  setWeaponStowed(stowed: boolean): void {
+    // PHAA-737 Row J (upstream #1765). The sim's weaponStowed bit rides the
+    // entity wire; the renderer rebuilds the held-prop attach so the prop sits
+    // on the back (chest bone / DEF-spine003, see `def.weaponBackBone`) instead
+    // of the handslot bone. Without `clips.stow`, there is no arm-gesture
+    // one-shot to defer the swap to, so the rebuild lands immediately. The
+    // state machine (`stow_transition.ts`) is wired but inert here until a
+    // future patch adds the gesture clip.
+    if (!this.def.weaponSlots?.length) return;
+    // A re-attach is the cheapest correct way to apply the stow: strip the
+    // swap holders, then re-call setHeldWeapon with the new stow flag. The
+    // call site in renderer.ts already triggers setWeapon on each entity
+    // diff, but a standalone stow toggle needs its own path.
+    setHeldWeapon(this.model, this.def, this.weaponItemId, stowed, this.rig);
+    this.applyVisualMaterials();
+    this.rebuildCasters();
   }
 
   /** Sibling of setWeapon for armor: reflect the wearer's `equippedItems` on the

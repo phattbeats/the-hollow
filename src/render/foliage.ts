@@ -3,21 +3,20 @@ import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { HOLLOW_ZONE_ZONE } from '../sim/content/hollow_zone';
 import {
-  CAMPS,
   DUNGEON_X_THRESHOLD,
+  getActiveWorldContent,
   WORLD_MAX_X,
   WORLD_MAX_Z,
   WORLD_MIN_Z,
-  ZONES,
 } from '../sim/data';
 import type { BiomeId } from '../sim/types';
 import type { Decoration } from '../sim/world';
 import {
+  biomeAt,
   generateDecorations,
   roadDistance,
   terrainHeight,
-  WATER_LEVEL,
-  zoneBiomeAt,
+  waterLevel,
 } from '../sim/world';
 import { loadGltf } from './assets/loader';
 import { registerPreload } from './assets/preload';
@@ -111,10 +110,11 @@ for (const urls of Object.values(MODEL_URLS)) {
 // Desaturated biome tints riding instanceColor. The textured models carry
 // their own hue, so tints are lerped most of the way to white before use
 // (raw tints multiply into the albedo and read as grime).
-// beach/desert/volcano/cave are paint-only biomes (the map editor's biome brush):
-// never produced by the built-in world's zone-band biomeAt, so these rows are
-// unreachable until the render-load-in editor slice (PHAA-510 child) wires a
-// custom map's biomePaint through. Values match the upstream reference port.
+// beach/desert/volcano/cave are paint-only biomes (the map editor's biome
+// brush): reachable only where a custom map's biomePaint overrides
+// biomeAt(x, z) (see generateDressing/buildDressing/the grass ring below),
+// never the built-in world's zone-band biome. Values match the upstream
+// reference port.
 const PINE_TINT: Record<BiomeId, number> = {
   vale: 0x9bb48d,
   marsh: 0x87966b,
@@ -1159,26 +1159,28 @@ function generateDressing(seed: number): DressingSpot[] {
   const xHalf = WORLD_MAX_X - 16;
   const step = dressStep();
   const scaleBoost = GFX.leanFoliage ? DRESS_LOW_SCALE_BOOST : 1;
+  const wl = waterLevel();
+  const world = getActiveWorldContent();
   for (let gx = -xHalf; gx < xHalf; gx += step) {
     for (let gz = WORLD_MIN_Z + 16; gz < WORLD_MAX_Z - 16; gz += step) {
+      const x = gx + (hashAt(gx, gz, 42) - 0.5) * step;
+      const z = gz + (hashAt(gx, gz, 43) - 0.5) * step;
       const r = hashAt(gx, gz, 41);
-      const biome = zoneBiomeAt(gz);
+      const biome = biomeAt(x, z);
       const density =
         DRESS_DENSITY[biome] *
         (GFX.leanFoliage ? DRESS_DENSITY_LOW_SCALE : 1) *
         (inHollowReaches(gz) ? HOLLOW_REACHES_DRESS_BOOST : 1);
       if (r > density) continue;
-      const x = gx + (hashAt(gx, gz, 42) - 0.5) * step;
-      const z = gz + (hashAt(gx, gz, 43) - 0.5) * step;
       let blocked = false;
-      for (const zone of ZONES) {
+      for (const zone of world.zones) {
         if (Math.hypot(x - zone.hub.x, z - zone.hub.z) < zone.hub.radius + 4) {
           blocked = true;
           break;
         }
       }
       if (blocked) continue;
-      for (const camp of CAMPS) {
+      for (const camp of world.camps) {
         if (Math.hypot(x - camp.center.x, z - camp.center.z) < camp.radius + 2) {
           blocked = true;
           break;
@@ -1186,7 +1188,7 @@ function generateDressing(seed: number): DressingSpot[] {
       }
       if (blocked) continue;
       if (roadDistance(x, z) < 4) continue;
-      if (terrainHeight(x, z, seed) < WATER_LEVEL + 1.2) continue;
+      if (terrainHeight(x, z, seed) < wl + 1.2) continue;
       if (tooSteep(x, z, seed)) continue;
       const kind = dressKindFor(biome, hashAt(gx, gz, 44));
       const [sMin, sRange] = DRESS_SCALE[kind];
@@ -1254,7 +1256,7 @@ function buildDressing(parent: THREE.Group, seed: number, registry: BucketMesh[]
               softTint(
                 s.x,
                 s.z,
-                DRESS_TINT[zoneBiomeAt(s.z)],
+                DRESS_TINT[biomeAt(s.x, s.z)],
                 c,
                 GFX.leanFoliage ? DRESS_TINT_SOFTEN_LOW : DRESS_TINT_SOFTEN,
               ),
@@ -1499,6 +1501,8 @@ function buildGrassRing(parent: THREE.Group, seed: number): GrassRing {
     const i1 = Math.ceil(maxX / step) + 1;
     const j0 = Math.floor(minZ / step) - 1;
     const j1 = Math.ceil(maxZ / step) + 1;
+    const wl = waterLevel();
+    const zones = getActiveWorldContent().zones;
 
     for (let i = i0; i <= i1 && n < maxChunkCount; i++) {
       for (let j = j0; j <= j1 && n < maxChunkCount; j++) {
@@ -1510,11 +1514,11 @@ function buildGrassRing(parent: THREE.Group, seed: number): GrassRing {
         if (Math.abs(x) > WORLD_MAX_X - 16 || z < WORLD_MIN_Z + 16 || z > WORLD_MAX_Z - 16)
           continue;
         const h = terrainHeight(x, z, seed);
-        if (h < WATER_LEVEL + 1.6) continue;
+        if (h < wl + 1.6) continue;
         // no blades pasted onto cliff faces
         if (tooSteep(x, z, seed)) continue;
         let nearHub = false;
-        for (const zn of ZONES) {
+        for (const zn of zones) {
           if (Math.hypot(x - zn.hub.x, z - zn.hub.z) < 15) {
             nearHub = true;
             break;
@@ -1526,7 +1530,7 @@ function buildGrassRing(parent: THREE.Group, seed: number): GrassRing {
         q.setFromAxisAngle(up, r * 12.4);
         m.compose(v.set(x, h, z), q, sv.set(s, s, s));
         im.setMatrixAt(n, m);
-        c.setHex(GRASS_TINT[zoneBiomeAt(z)]);
+        c.setHex(GRASS_TINT[biomeAt(x, z)]);
         c.offsetHSL(
           (hashAt(i, j, 3) - 0.5) * 0.05,
           (hashAt(i, j, 4) - 0.5) * 0.12,

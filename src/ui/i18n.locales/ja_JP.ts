@@ -1757,6 +1757,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.taunt.name': '挑発',
   'entities.abilities.taunt.description':
     '対象を挑発します。あなたの脅威が対象の最も憎む敵と同じ値まで上がり、3秒間あなたを攻撃させます。',
+  'entities.abilities.ironhold.name': 'アイアンホールド',
+  'entities.abilities.ironhold.description': '盾の陰に身を潜め、8秒間受けるダメージを40%軽減する。',
   'entities.abilities.fireball.name': 'ファイアボール',
   'entities.abilities.fireball.description':
     '炎の球を放ち、{damage} の火炎ダメージと追加の継続ダメージを与えます。',
@@ -1892,6 +1894,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.retribution_aura.name': 'リトリビューションオーラ',
   'entities.abilities.retribution_aura.description':
     '30分間、聖なる力で身を包み、近接攻撃をしてきた敵に5の神聖ダメージを与えます。',
+  'entities.abilities.sacred_bulwark.name': '聖なる防壁',
+  'entities.abilities.sacred_bulwark.description':
+    '10秒間、致命的な一撃を無効化し、代わりに体力を35%まで回復する。',
   'entities.abilities.tame_beast.name': '獣の調教',
   'entities.abilities.tame_beast.description':
     '獣を仲間にするための調教を始めます。獣はあなたのレベル以下で、エリートであってはなりません。ペットはあなたに従い、敵を攻撃し、独自の脅威を保ちます。同時に連れられるペットは1体だけです。',
@@ -2084,6 +2089,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.rip.name': 'リップ',
   'entities.abilities.rip.description':
     '12秒かけて出血ダメージを与えるフィニッシュムーブです。コンボポイントを消費します。ウルフフォーム専用。',
+  'entities.abilities.primal_reflexes.name': '原始反射',
+  'entities.abilities.primal_reflexes.description':
+    '本能が研ぎ澄まされ、6秒間回避率が50%上昇する。',
   'entities.abilities.mortal_strike.name': '致死打撃',
   'entities.abilities.mortal_strike.description':
     '凶悪な一撃で武器ダメージに加えて {damage} のダメージを与えます。（武器シグネチャー）',
@@ -3437,6 +3445,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.bramblehide_jerkin.name': '茨革のジャーキン',
   'entities.items.monarch_crown_helm.name': '君主の王冠',
   'entities.mobs.nythraxis_skeleton_warrior.name': '蘇った王家の衛兵',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': 'オルドレンの霊',
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'マルリックの霊',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'ヴォスの霊',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'ナイスラクシス、ソーンピークの災厄',
   // v0.10.0 release fill (Fiesta / skin-select / NPC voices / chat channels / Brightwood Glade)
   'hud.core.chatChannels.add': 'チャットチャンネルを追加',
@@ -3714,6 +3725,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': '魂炎のマント',
   'entities.items.stormcallers_crown.name': '嵐呼びの冠',
   'entities.items.stormcallers_spaulders.name': '嵐呼びの肩当て',
+  'entities.items.deathless_greatblade.name': '不死の大剣',
+  'entities.items.scepter_of_the_deathless_court.name': '不死の宮廷の笏',
+  'entities.items.stormcallers_focus.name': '嵐呼びの焦点',
   'hud.chat.context.convertToRaid': 'レイドに変換',
   'hud.chat.context.convertToParty': 'パーティに変換',
   'hudChrome.raidConvert.leaderOnly': 'パーティに変換できるのはレイドリーダーだけです。',
@@ -4718,15 +4732,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     '古い一品を新たなアップグレードに替えるほうが、もう手に余る装備で完璧に立ち回るより効果があります。より良いものがドロップしたり、クエストで提示されたりしたら、受け取りましょう。良いアイテムを後のために取っておいてはいけません。',
   'guide.gear.upgradeTitle': 'ギアは常に最新に',
-  'guide.lore.aldricBody':
-    'つつましい村の司祭。イーストブルックの汚された墓の前で初めてカルトの名を口にし、その足取りを自ら湿地を抜け、ハイウォッチの壁まで追っていきます。彼はこの遠征全体の揺るがぬ心です。',
-  'guide.lore.aldricRole': '渓谷の司祭',
+  'guide.lore.faddickBody':
+    '長柄の道具を持ち、剣よりも鋤に馴染む静かなセクスン。彼は森から忍び寄るものを掃き清め、死者を弔い、その土地のすべての区画を覚えています。街道が聖域を離れるとき、指し示すのはたいてい彼です。',
+  'guide.lore.faddickRole': 'ファロー・エイカーズのセクスン',
   'guide.lore.figuresBody':
     'ひと握りの人々が、あなたと共にこの道のりを最後まで歩みます。渓谷から高地まで、これらの名前に心を留めておきましょう。',
   'guide.lore.figuresTitle': 'やがて知ることになる顔ぶれ',
-  'guide.lore.marenBody':
-    'マイアフェンの葦の中で出会う、声を潜めた追跡者。静かな足取りと短い刃の持ち主です。彼女もまた北へと足取りを追い、あなたを高地へ送り出す言葉を聞き取るのは、彼女の耳です。',
-  'guide.lore.marenRole': '元帥の斥候',
+  'guide.lore.zebediahBody':
+    'リーチズを暦に添えて保つ、辛抱強いヴァージャーで、その手はいつも半ば土に埋まっています。壺の灯を見守り、月合图に作付けを整え、新たなる訪れに街道が最初に語りかける声です。',
+  'guide.lore.zebediahRole': 'ルート・ホロウのヴァージャー',
   'guide.models.count': '{count}体のモデル',
   'guide.models.groupClasses': 'クラス',
   'guide.models.groupCreatures': 'クリーチャー',
@@ -4775,6 +4789,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'Thornpeakで企ての全貌が明らかになります。Vale以来盗まれてきたすべての魂は、山の中心で進むカルトの陰惨な企てに注がれた貢ぎ物でした。礼拝堂の前庭で始まった足取りは、すべての黒幕と対峙する五人での降下となって、ここで終わります。その奥に誰が待つのかは、あなた自身に見届けてもらいましょう。',
   'guide.questsPage.sagaPeaksTitle': '峰々：貢ぎは何のためだったのか',
   'guide.questsPage.sagaTitle': '北へ続く足取りを追え',
+  'guide.questsPage.sagaReachesBody':
+    'ホロウ・リーチズでは、ブラザー・グリーンポーが聖域の壺をエンバーバルブの灯で生かし、ヴァージャーとセクストンが月合图に作付けを整えています。最初の糸は小さなものです。灯を絶やさず、狼を払い、この土地を知る。街道が開くころには、灯を誰が手にしているかを、きっとあなたは知っているでしょう。',
+  'guide.questsPage.sagaReachesTitle': 'リーチズ：灯と暦',
   'guide.questsPage.sagaValeBody':
     'イーストブルックでは死者が安らがず、その背後の印は、とうに滅んだと思われていた一派のものです。それを礼拝堂の地下墓所で働くグレイブコーラーまでたどれば、彼自身の書き物が北の沼へとあなたを導きます。',
   'guide.questsPage.sagaValeTitle': '渓谷：印に刻まれた名',
@@ -4981,6 +4998,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': '刻み跡の欠片',
   'entities.items.tally_shard.flavorText':
     '……五本ひと組で深く刻まれ、数え終えるたびに線で消されている。消された五本組が幾百とあり、それが途絶える、最後の一列だけは最後まで消されずに終わっている……',
+  'entities.items.root_token_unbinding.name': '緩んだ根の結び目',
+  'entities.items.root_token_unbinding.flavorText':
+    '……親指で何度も擦られて滑らかになっている。見えない何かに結ばれた結び目を緩めるかのように。誰かは手放すことが優しさだと信じていた。その人は間違っていたか、早すぎたか、その両方だったのだろう……',
+  'entities.items.root_token_offering.name': '小さな給餌石',
+  'entities.items.root_token_offering.flavorText':
+    '……硬貨よりも小さな、浅い窪みが石に刻まれている。求めることさえできない何かに、ひとかけらを残すためのものだったのだろう。ここで食べていた何かは、飢えをやめたわけではない。ただ、見られなくなっただけだ……',
+  'entities.items.root_token_verdict.name': '裁きの刻み石',
+  'entities.items.root_token_verdict.flavorText':
+    '……刻み目は五つでなく三つひと組で刻まれ、裁かれては覆され、三度目には石が割れるほど強く押し付けられている。誰かが暗闇の中で、同じ問いについて何度も何度も心を変え続けていたかのようだ……',
   'entities.mobs.acolyte_tessa.name': '侍祭テッサ',
   'entities.mobs.deacon_varric.name': '助祭ヴァリック',
   'entities.mobs.reliquary_bonewalker.name': '蘇りし骨歩き',
@@ -5821,4 +5847,167 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.bramble.title': '名誉調達官',
   'entities.npcs.bramble.greeting':
     '闘技場の砂は、すべての勝利を覚えている。名誉は賢く使うといい。',
+  'editor.viewport.assetsFailed': '3Dビューポートを読み込めませんでした: {error}',
+  'editor.appTitle': 'マップエディター',
+  'editor.docTitle': 'マップエディター - World of ClaudeCraft',
+  'editor.untitledMap': '名称未設定のマップ',
+  'editor.playtestPlayerName': 'マップ作者',
+  'editor.topbar.label': 'エディター操作',
+  'editor.topbar.mapNameLabel': 'マップ名',
+  'editor.topbar.dirtyDot': 'このマップには未保存の変更があります',
+  'editor.topbar.saving': '保存中...',
+  'editor.topbar.neverSaved': '未保存',
+  'editor.topbar.newTitle': '組み込みワールドから新しいマップを開始',
+  'editor.topbar.openTitle': '保存済みのマップを開く（ブラウザまたはサーバー）',
+  'editor.topbar.saveTitle': 'このブラウザに保存し、サインイン時はサーバーにも保存（Ctrl+S）',
+  'editor.topbar.saveAsTitle': '新しい名前でコピーを保存',
+  'editor.topbar.forkTitle': 'このマップの自分用サーバー側コピーを作成',
+  'editor.topbar.forkDisabledTitle': 'フォークするにはまずサーバーマップを開いてください',
+  'editor.topbar.import': 'インポート',
+  'editor.topbar.importTitle': 'JSONファイルからマップをインポート',
+  'editor.topbar.export': 'エクスポート',
+  'editor.topbar.exportTitle': 'このマップをJSONファイルとしてダウンロード',
+  'editor.topbar.uploadAsset': 'アセットをアップロード',
+  'editor.topbar.uploadAssetTitle': 'GLBモデル（最大8MiB）をアップロードしてマップに配置',
+  'editor.topbar.uploadAssetDisabledTitle':
+    'アセットをアップロードするにはゲームでサインインしてください',
+  'editor.topbar.playtest': 'プレイテスト',
+  'editor.topbar.playtestTitle': 'このマップでゲームを起動（オフライン、現在の編集を含む）',
+  'editor.topbar.viewLabel': '表示モード',
+  'editor.topbar.view3dTitle': 'レンダリングされたワールドで編集',
+  'editor.topbar.view2dTitle': '記号化された俯瞰マップで編集',
+  'editor.topbar.undoCountTitle':
+    '{count} 件の元に戻せる操作（Ctrl+Zで元に戻す、Ctrl+Yでやり直す）',
+  'editor.topbar.autosave': '自動保存',
+  'editor.topbar.autosaveTitle':
+    '未保存の変更がある間、マップを自動的に保存します。保存に失敗すると自動的にオフになります。',
+  'editor.topbar.undoTitle': '直前の変更を元に戻す（Ctrl+Z）',
+  'editor.topbar.redoTitle': '元に戻した変更をやり直す（Ctrl+Y）',
+  'editor.topbar.offline': 'オフライン',
+  'editor.topbar.offlineTitle':
+    'サインインしていません：マップはこのブラウザにのみ保存されます。オンラインで保存するにはゲームでサインインしてください。',
+  'editor.topbar.signInTitle': '新しいタブでゲームのサインイン画面を開く',
+  'editor.topbar.helpTitle': 'エディターガイド：ツール、ショートカット、チュートリアル',
+  'editor.tool.listLabel': 'エディターツール',
+  'editor.tool.select': '選択',
+  'editor.tool.raise': '隆起',
+  'editor.tool.lower': '沈下',
+  'editor.tool.smooth': 'スムーズ',
+  'editor.tool.flatten': '平坦化',
+  'editor.tool.paint': 'バイオームを塗る',
+  'editor.tool.water': '水域',
+  'editor.tool.place': 'アセットを配置',
+  'editor.tool.blocker': '遮断壁',
+  'editor.tool.spawn': 'スポーン地点',
+  'editor.tool.region': '領域',
+  'editor.tool.erase': '消去',
+  'editor.topbar.savedLocal': 'このブラウザに保存済み',
+  'editor.topbar.savedServer': '保存済み（バージョン {version}）',
+  'editor.a11y.stage': 'マップビューポート',
+  'editor.a11y.toasts': 'エディター通知',
+  'editor.confirm.cancel': 'キャンセル',
+  'editor.confirm.conflictTitle': '他の誰かがこのマップを保存しました',
+  'editor.confirm.conflictBody':
+    'サーバー上のコピーは現在バージョン {version} で、あなたが読み込んだものより新しくなっています。相手の変更を上書きしないよう、あなたの変更は新しいマップとして保存してください。',
+  'editor.confirm.discardTitle': '未保存の変更を破棄しますか？',
+  'editor.confirm.discardBody': '「{name}」には失われる未保存の変更があります。',
+  'editor.confirm.discard': '破棄',
+  'editor.prompt.nameLabel': 'マップ名',
+  'editor.status.saveFailedLocal':
+    'このブラウザに保存できませんでした（ストレージが不足している可能性があります）。',
+  'editor.status.savedLocalOnly':
+    '「{name}」をこのブラウザに保存しました。サインインするとサーバーにも保存されます。',
+  'editor.status.savedServer': '「{name}」を保存しました（バージョン {version}）。',
+  'editor.status.autosaveOff': '自動保存がオフになりました：{reason}',
+  'editor.status.autosaveFailed':
+    '自動保存の下書きを書き込めませんでした（ストレージが不足している可能性があります）。',
+  'editor.status.forked': '自分用のコピーを作成しました：「{name}」。',
+  'editor.status.opened': '「{name}」を開きました。',
+  'editor.status.newMap': '新しいマップを開始しました。',
+  'editor.status.imported': '「{name}」をインポートしました。',
+  'editor.status.importFailed': 'そのファイルをインポートできませんでした。',
+  'editor.status.exported': 'マップをエクスポートしました。',
+  'editor.status.playtestLaunch': 'プレイテストを起動しています……',
+  'editor.status.playtestFailed': 'プレイテストを起動できませんでした（ストレージがブロックされている可能性があります）。',
+  'editor.upload.notGlb': 'アップロードできるのは .glb ファイルのみです。',
+  'editor.upload.tooLarge': 'そのファイルは8 MiBを超えています。',
+  'editor.upload.uploading': 'アップロード中...',
+  'editor.upload.uploaded': '「{name}」をアップロードしました。',
+  'editor.upload.uploadedExisting': 'このファイルは既にアップロード済みです。再利用します。',
+  'editor.serverError.invalid_map_name': 'そのマップ名は無効です。',
+  'editor.serverError.map_name_not_allowed': 'そのマップ名は許可されていません。',
+  'editor.serverError.invalid_map_doc': 'このマップドキュメントは無効です。',
+  'editor.serverError.invalid_version':
+    'その保存は古くなっています。マップを開き直してもう一度お試しください。',
+  'editor.serverError.map_limit_reached': 'アカウントの保存済みマップの上限に達しました。',
+  'editor.serverError.map_not_found': 'そのマップは既に存在しません。',
+  'editor.serverError.version_conflict': '他の誰かが先にこのマップを保存しました。',
+  'editor.serverError.slug_unavailable':
+    'そのマップ名は既に使用されています。別の名前をお試しください。',
+  'editor.serverError.map_too_large': 'このマップは大きすぎて保存できません。',
+  'editor.serverError.invalid_glb': 'そのファイルは有効なGLBモデルではありません。',
+  'editor.serverError.asset_blocked': 'そのアセットはモデレーターによって削除されました。',
+  'editor.serverError.asset_limit_reached':
+    'アカウントのアップロード済みアセットの上限に達しました。',
+  'editor.serverError.asset_storage_limit_reached':
+    'アップロードアセットのストレージ上限に達しました。',
+  'editor.serverError.asset_too_large': 'そのアセットは8 MiBを超えています。',
+  'editor.serverError.asset_not_found': 'そのアセットは既に存在しません。',
+  'editor.serverError.rate_limited':
+    'リクエストが多すぎます。少し待ってからもう一度お試しください。',
+  'editor.serverError.unauthorized': 'それを行うにはゲームでサインインしてください。',
+  'editor.serverError.network': 'サーバーに接続できませんでした。接続を確認してください。',
+  'editor.serverError.timeout': 'サーバーの応答に時間がかかりすぎました。',
+  'editor.serverError.unknown': '問題が発生しました。もう一度お試しください。',
+  'editor.assets.label': 'アセットブラウザ',
+  'editor.assets.title': 'アセット',
+  'editor.assets.search': 'アセットを検索',
+  'editor.assets.searchPlaceholder': '検索...',
+  'editor.assets.uploadedTab': 'アップロード済み',
+  'editor.assets.uploadedSignIn':
+    '自分のアセットを表示・アップロードするにはゲームでサインインしてください。',
+  'editor.assets.uploadedLoadFailed': 'アップロード済みのアセットを読み込めませんでした。',
+  'editor.assets.uploadedEmpty': 'まだアセットをアップロードしていません。',
+  'editor.assets.loading': '読み込み中...',
+  'editor.assets.empty': '一致するアセットがありません。',
+  'editor.assets.pick': '{name} を配置',
+  'editor.assets.deleteAsset': 'アセットを削除',
+  'editor.assets.deleteAssetConfirm':
+    '「{name}」を削除しますか？このアセットを使用しているマップ上の配置は表示されなくなります。',
+  'editor.assets.category.biome': 'バイオーム',
+  'editor.assets.category.chars': 'キャラクター',
+  'editor.assets.category.creatures': 'クリーチャー',
+  'editor.assets.category.dungeon': 'ダンジョン',
+  'editor.assets.category.foliage': '植物',
+  'editor.assets.category.props': '小道具',
+  'editor.assets.category.quest': 'クエスト',
+  'editor.assets.category.resources': 'リソース',
+  'editor.assets.category.tools': 'ツール',
+  'editor.assets.category.weapons': '武器',
+  'editor.help.title': 'エディターヘルプ',
+  'editor.help.mouseTitle': 'マウス',
+  'editor.help.flowTitle': '保存と下書き',
+  'editor.help.beginTutorial': 'チュートリアルを開始',
+  'editor.help.close': '閉じる',
+  'editor.help.mouse.orbit3d': '3Dビュー：左ドラッグで周回、右ドラッグでパン',
+  'editor.help.mouse.fly3d': '3Dビュー：スクロールでズーム、WASDで飛行',
+  'editor.help.mouse.pan2d': '2Dビュー：空白部分をドラッグしてパン、スクロールでズーム',
+  'editor.help.flow.save':
+    '保存はこのブラウザに書き込まれ、サインイン後はサーバーにも書き込まれます',
+  'editor.help.flow.draft':
+    '自動保存の下書きは、タブが予期せず閉じられた場合に未保存の編集を保護します',
+  'editor.tutorial.title': 'エディターチュートリアル',
+  'editor.tutorial.finish': '完了',
+  'editor.tutorial.steps.toolbar.title': 'ツール',
+  'editor.tutorial.steps.toolbar.body':
+    'ここでツールを選びます。配置は今すぐ使用できます。他のツールは近日公開予定です。',
+  'editor.tutorial.steps.stage.title': 'ビューポート',
+  'editor.tutorial.steps.stage.body':
+    'これがあなたのマップです。3Dビューと2Dビューはいつでも切り替えられます。',
+  'editor.tutorial.steps.viewToggle.title': '3D / 2D 切り替え',
+  'editor.tutorial.steps.viewToggle.body':
+    '正確な配置には2D俯瞰ビューに、結果を見るには3Dに切り替えてください。',
+  'editor.tutorial.steps.save.body':
+    '保存はこのブラウザにコピーを残し、サインイン後はサーバーにも保存します。',
+  'editor.tutorial.steps.help.body': 'このツアーはいつでもここに戻って確認できます。',
 };

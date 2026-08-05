@@ -454,6 +454,95 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     scale: 1.25,
     color: 0xc7c0b2,
   },
+  // Heroic-only Deathless Court adds (Aldren/Malric/Voss). They never spawn
+  // outside a heroic Nythraxis claim, so unlike the trash template above these
+  // numbers are the encounter's actual, final tuning (no separate normal-tier
+  // version exists to derive them from). See encounters/nythraxis.ts for the
+  // summon/despawn lifecycle and applyNythraxisHeroicTuning for the raid-wide
+  // heroic stat scaling (health x1.6 / damage x2.0 / armor x1.2) applied to
+  // the boss and every add at spawn time.
+  nythraxis_heroic_warrior_add: {
+    id: 'nythraxis_heroic_warrior_add',
+    name: 'Spirit of Aldren',
+    minLevel: 22,
+    maxLevel: 22,
+    family: 'undead',
+    elite: true,
+    ccImmune: true,
+    hpBase: 150,
+    hpPerLevel: 28,
+    dmgBase: 26,
+    dmgPerLevel: 5.6,
+    attackSpeed: 2.2,
+    armorPerLevel: 24,
+    moveSpeed: 10,
+    aggroRadius: 14,
+    loot: [],
+    scale: 1.25,
+    color: 0xc7c0b2,
+  },
+  nythraxis_heroic_priest_add: {
+    id: 'nythraxis_heroic_priest_add',
+    name: 'Spirit of Malric',
+    quietMechanics: true,
+    minLevel: 22,
+    maxLevel: 22,
+    family: 'undead',
+    elite: true,
+    // Deliberately CC-able (unlike the warrior add): the raid must stun him to
+    // break his escalating heal channel. See isNythraxisControllableAdd (the
+    // CC-immunity exemption) in encounters/nythraxis.ts.
+    ccImmune: false,
+    // Squishy: low health so a focused raid can burn him, but his heal is
+    // strong, so stunning is usually the better answer than racing his HP.
+    hpBase: 80,
+    hpPerLevel: 14,
+    dmgBase: 12,
+    dmgPerLevel: 2.6,
+    attackSpeed: 2.4,
+    armorPerLevel: 14,
+    moveSpeed: 9.5,
+    aggroRadius: 14,
+    // Escalating channeled heal on Nythraxis. A stun resets the ramp; even a
+    // well-geared raid cannot out-damage a capped channel, so the interrupt
+    // stays mandatory rather than optional.
+    channelHeal: {
+      radius: 45,
+      every: 4,
+      baseHeal: 320,
+      rampAdd: 240,
+      maxHeal: 1440,
+      name: "Malric's Mending",
+      school: 'shadow',
+    },
+    loot: [],
+    scale: 1.18,
+    color: 0x6b4a89,
+  },
+  nythraxis_heroic_rogue_add: {
+    id: 'nythraxis_heroic_rogue_add',
+    name: 'Spirit of Voss',
+    minLevel: 22,
+    maxLevel: 22,
+    family: 'undead',
+    elite: true,
+    // Untauntable (ignoreTaunt) but CC-able: the raid cannot tank-lock him onto
+    // a target, they have to stun/root him off the healers. Low health so a
+    // peel plus CC handles him.
+    ccImmune: false,
+    hpBase: 90,
+    hpPerLevel: 16,
+    dmgBase: 16,
+    dmgPerLevel: 3.4,
+    attackSpeed: 2.0,
+    armorPerLevel: 16,
+    moveSpeed: 11,
+    aggroRadius: 14,
+    ignoreTaunt: true,
+    loot: [],
+    scale: 1.12,
+    color: 0x776f83,
+  },
   // Brother Aldric is now a dynamically-spawned NPC (see NPCS.brother_aldric_raid
   // in zone3.ts and spawnNythraxisAldric in sim.ts), not a mob.
   nythraxis_scourge_of_thornpeak: {

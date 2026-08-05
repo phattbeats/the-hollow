@@ -139,6 +139,16 @@ export function chat(ctx: SimContext, text: string, pid?: number): SentChat | nu
     return null;
   }
 
+  // "/raid heroic" / "/raid normal": the raid leader selects the difficulty
+  // Heroic Nythraxis claims on the raid's next fresh arena entry (a claimed
+  // instance's difficulty stays fixed for its life). Self-only errors +
+  // raid-wide confirmation; see PartyMachine.setRaidDifficulty.
+  const raidDifficultyM = /^\/raid\s+(heroic|normal)\s*$/i.exec(raw);
+  if (raidDifficultyM) {
+    ctx.setRaidDifficulty(raidDifficultyM[1].toLowerCase() as 'normal' | 'heroic', r.meta.entityId);
+    return null;
+  }
+
   // "/ready" (the party/raid leader starts a ready check, social/ready_check.ts):
   // every other member's client shows a yes/no prompt (the readyCheckStart event),
   // answered with the readyrespond command, not chat text.
@@ -984,6 +994,7 @@ export function helpLines(): string[] {
     // listed here any more; Homestead v0 below is the unrelated open-world tier.
     'The Plant: /plant <anything> (it rarely answers, and never to Greenpaw).',
     'Homestead: /homestead, /homestead claim.',
+    'Raid leader: /raid heroic, /raid normal (Nythraxis difficulty for your next arena entry).',
   ];
 }
 

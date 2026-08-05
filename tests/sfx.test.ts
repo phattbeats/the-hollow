@@ -24,29 +24,64 @@ let nowT = 0;
 function installAudioStub(): void {
   sources.length = 0;
   nowT += 1000; // monotonic across tests so the singleton's cooldown map never blocks
-  const param = () => ({ value: 0, setValueAtTime() {}, linearRampToValueAtTime() {}, setTargetAtTime() {} });
+  const param = () => ({
+    value: 0,
+    setValueAtTime() {},
+    linearRampToValueAtTime() {},
+    setTargetAtTime() {},
+  });
   class FakeCtx {
-    get currentTime() { return nowT; }
+    get currentTime() {
+      return nowT;
+    }
     destination = {};
     listener = {} as Record<string, unknown>;
-    createGain() { return { gain: param(), connect(n: unknown) { return n; }, disconnect() {} }; }
+    createGain() {
+      return {
+        gain: param(),
+        connect(n: unknown) {
+          return n;
+        },
+        disconnect() {},
+      };
+    }
     createPanner() {
       return {
-        panningModel: '', distanceModel: '', refDistance: 0, maxDistance: 0, rolloffFactor: 0,
-        setPosition() {}, connect(n: unknown) { return n; }, disconnect() {},
+        panningModel: '',
+        distanceModel: '',
+        refDistance: 0,
+        maxDistance: 0,
+        rolloffFactor: 0,
+        setPosition() {},
+        connect(n: unknown) {
+          return n;
+        },
+        disconnect() {},
       };
     }
     createBufferSource(): FakeSource {
       const s: FakeSource = {
-        buffer: null, playbackRate: { value: 1 }, onended: null, started: false, stopAt: null,
-        connect(n: unknown) { return n; },
-        start() { this.started = true; },
-        stop(t?: number) { this.stopAt = t ?? 0; },
+        buffer: null,
+        playbackRate: { value: 1 },
+        onended: null,
+        started: false,
+        stopAt: null,
+        connect(n: unknown) {
+          return n;
+        },
+        start() {
+          this.started = true;
+        },
+        stop(t?: number) {
+          this.stopAt = t ?? 0;
+        },
       };
       sources.push(s);
       return s;
     }
-    resume() { return Promise.resolve(); }
+    resume() {
+      return Promise.resolve();
+    }
   }
   (globalThis as never as { AudioContext: unknown }).AudioContext = FakeCtx;
 }
@@ -62,6 +97,10 @@ beforeEach(() => {
   // Inject decoded buffers directly (skip async fetch/decode in preload).
   const buffers = (sfx as unknown as { buffers: Map<string, { duration: number }> }).buffers;
   buffers.set('foot_grass', { duration: 0.48 });
+  buffers.set('amb_wind_vale', { duration: 8 });
+  buffers.set('amb_birds', { duration: 8 });
+  buffers.set('amb_wind_marsh', { duration: 8 });
+  buffers.set('amb_wind_peaks', { duration: 8 });
 });
 
 describe('footstep audio', () => {
@@ -92,7 +131,7 @@ describe('footstep toggle', () => {
   it('is a no-op when footsteps are disabled', () => {
     sfx.setFootstepsEnabled(false);
     const before = sources.length;
-    sfx.footstep(0, 0, 0, 'grass', true, true);  // self
+    sfx.footstep(0, 0, 0, 'grass', true, true); // self
     sfx.footstep(5, 0, 5, 'grass', false, false); // another entity
     expect(sources.length).toBe(before);
   });
@@ -106,5 +145,43 @@ describe('footstep toggle', () => {
     sfx.footstep(0, 0, 0, 'grass', true, true);
     expect(sources.length).toBe(muted + 1);
     expect(sources.at(-1)!.started).toBe(true);
+  });
+});
+
+// Paint-only biomes (custom maps, PHAA-679) have no dedicated ambience bed, so
+// ambience() borrows the closest shipped wind loop -- same fallback mapping
+// music.ts already uses for musicZoneForLocation: beach->vale, cave->marsh,
+// desert/volcano->peaks. amb_birds stays vale-only (a vale-specific bed, not a
+// general wind bed) so it must NOT fire for any of the fallback biomes.
+describe('ambience biome fallback', () => {
+  it('borrows the vale wind bed for beach', () => {
+    sfx.ambience('beach', false, null, false);
+    expect(sfx.hasLoop('amb_wind_vale')).toBe(true);
+    expect(sfx.hasLoop('amb_birds')).toBe(false);
+  });
+
+  it('borrows the marsh wind bed for cave', () => {
+    sfx.ambience('cave', false, null, false);
+    expect(sfx.hasLoop('amb_wind_marsh')).toBe(true);
+  });
+
+  it('borrows the peaks wind bed for desert', () => {
+    sfx.ambience('desert', false, null, false);
+    expect(sfx.hasLoop('amb_wind_peaks')).toBe(true);
+  });
+
+  it('borrows the peaks wind bed for volcano', () => {
+    sfx.ambience('volcano', false, null, false);
+    expect(sfx.hasLoop('amb_wind_peaks')).toBe(true);
+  });
+
+  it('still plays birds only for vale, not its beach fallback', () => {
+    sfx.ambience('vale', false, null, false);
+    expect(sfx.hasLoop('amb_birds')).toBe(true);
+  });
+
+  it('mutes all wind beds in a dungeon regardless of biome', () => {
+    sfx.ambience('beach', true, null, false);
+    expect(sfx.hasLoop('amb_wind_vale')).toBe(false);
   });
 });

@@ -1041,36 +1041,36 @@ export const ja_JP: EnTranslations = {
       }
     },
     "book": {
-      "title": "Book of Asphodelia",
-      "close": "Close",
-      "deedSummary": "{done} of {total} deeds complete",
-      "titleSummary": "{count,plural,=0{No titles earned}one{1 title earned}other{# titles earned}}",
-      "titlePickerHeading": "Active Title",
-      "titlePickerEmpty": "No title selected. Pick one below.",
-      "titlePickerEarnFirst": "Earn your first title by completing a deed.",
-      "titleClear": "No Title",
+      "title": "アスフォデリアの書",
+      "close": "閉じる",
+      "deedSummary": "実績 {done}/{total} 完了",
+      "titleSummary": "{count,plural,=0{称号未取得}one{称号 1 個取得}other{称号 # 個取得}}",
+      "titlePickerHeading": "現在の称号",
+      "titlePickerEmpty": "称号が未選択です。以下から選んでください。",
+      "titlePickerEarnFirst": "実績を達成して最初の称号を獲得しましょう。",
+      "titleClear": "称号なし",
       "titleDisplay": "{display}",
-      "titleActiveTag": "Active",
-      "titlePickAria": "Equip the title {display}",
-      "titleRewardHint": "Completing this deed grants a title.",
-      "categoryEmpty": "Nothing in this category yet.",
+      "titleActiveTag": "装備中",
+      "titlePickAria": "称号 {display} を装備する",
+      "titleRewardHint": "この実績を達成すると称号を獲得できます。",
+      "categoryEmpty": "この分類にはまだ項目がありません。",
       "category": {
-        "chronicle": "Chronicle",
-        "collection": "Collection",
-        "combat": "Combat",
-        "delve": "Delve",
-        "dungeon": "Dungeon",
-        "exploration": "Exploration",
-        "feat": "Feats",
-        "progression": "Progression",
-        "pvp": "Player vs. Player",
-        "social": "Social",
-        "hidden": "Hidden"
+        "chronicle": "年代記",
+        "collection": "コレクション",
+        "combat": "戦闘",
+        "delve": "秘境",
+        "dungeon": "ダンジョン",
+        "exploration": "探索",
+        "feat": "偉業",
+        "progression": "成長",
+        "pvp": "対人戦",
+        "social": "社交",
+        "hidden": "隠し"
       }
     },
     "titleTracker": {
-      "unspent": "+{count} new",
-      "ariaLabel": "Active title: {display}"
+      "unspent": "新規 +{count}",
+      "ariaLabel": "現在の称号: {display}"
     },
     "hitRating": {
       "ratingLabel": "命中レーティング"
@@ -1713,6 +1713,8 @@ export const ja_JP: EnTranslations = {
       "typeGroupBody": "メインストーリーの各章は、ダンジョンの扉で終わります。導入はソロでこなせますが、章の悪役への最後の一撃は五人パーティ向けに作られています。",
       "sagaTitle": "北へ続く足取りを追え",
       "sagaBody": "メインストーリーは一つの長い追跡劇です。死のカルトが王国の墓に手を出しており、一章を閉じるごとに、道はさらにゾーン一つ分先を指し示します。陰謀の全体を一度に相手取ることはありません。一本の糸を引けば、それが次にその糸を握る手へと導いてくれます。",
+      "sagaReachesTitle": "リーチズ：灯と暦",
+      "sagaReachesBody": "ホロウ・リーチズでは、ブラザー・グリーンポーが聖域の壺をエンバーバルブの灯で生かし、ヴァージャーとセクストンが月合图に作付けを整えています。最初の糸は小さなものです。灯を絶やさず、狼を払い、この土地を知る。街道が開くころには、灯を誰が手にしているかを、きっとあなたは知っているでしょう。",
       "sagaValeTitle": "渓谷：印に刻まれた名",
       "sagaValeBody": "イーストブルックでは死者が安らがず、その背後の印は、とうに滅んだと思われていた一派のものです。それを礼拝堂の地下墓所で働くグレイブコーラーまでたどれば、彼自身の書き物が北の沼へとあなたを導きます。",
       "sagaMarshTitle": "湿地：魂の貢ぎ",
@@ -1730,10 +1732,10 @@ export const ja_JP: EnTranslations = {
     "lore": {
       "figuresTitle": "やがて知ることになる顔ぶれ",
       "figuresBody": "ひと握りの人々が、あなたと共にこの道のりを最後まで歩みます。渓谷から高地まで、これらの名前に心を留めておきましょう。",
-      "aldricRole": "渓谷の司祭",
-      "aldricBody": "つつましい村の司祭。イーストブルックの汚された墓の前で初めてカルトの名を口にし、その足取りを自ら湿地を抜け、ハイウォッチの壁まで追っていきます。彼はこの遠征全体の揺るがぬ心です。",
-      "marenRole": "元帥の斥候",
-      "marenBody": "マイアフェンの葦の中で出会う、声を潜めた追跡者。静かな足取りと短い刃の持ち主です。彼女もまた北へと足取りを追い、あなたを高地へ送り出す言葉を聞き取るのは、彼女の耳です。"
+      "zebediahRole": "ルート・ホロウのヴァージャー",
+      "zebediahBody": "リーチズを暦に添えて保つ、辛抱強いヴァージャーで、その手はいつも半ば土に埋まっています。壺の灯を見守り、月合图に作付けを整え、新たなる訪れに街道が最初に語りかける声です。",
+      "faddickRole": "ファロー・エイカーズのセクスン",
+      "faddickBody": "長柄の道具を持ち、剣よりも鋤に馴染む静かなセクスン。彼は森から忍び寄るものを掃き清め、死者を弔い、その土地のすべての区画を覚えています。街道が聖域を離れるとき、指し示すのはたいてい彼です。"
     },
     "dungeonsPage": {
       "heading": "ダンジョンとレイド",
@@ -2054,6 +2056,216 @@ export const ja_JP: EnTranslations = {
     "continue": "つづける",
     "begin": "はじめる",
     "skip": "スキップ"
+  },
+  "editor": {
+    "appTitle": "マップエディター",
+    "docTitle": "マップエディター - World of ClaudeCraft",
+    "untitledMap": "名称未設定のマップ",
+    "playtestPlayerName": "マップ作者",
+    "topbar": {
+      "label": "エディター操作",
+      "mapNameLabel": "マップ名",
+      "dirtyDot": "このマップには未保存の変更があります",
+      "saving": "保存中...",
+      "neverSaved": "未保存",
+      "savedLocal": "このブラウザに保存済み",
+      "savedServer": "保存済み（バージョン {version}）",
+      "new": "New",
+      "newTitle": "組み込みワールドから新しいマップを開始",
+      "open": "Open",
+      "openTitle": "保存済みのマップを開く（ブラウザまたはサーバー）",
+      "save": "Save",
+      "saveTitle": "このブラウザに保存し、サインイン時はサーバーにも保存（Ctrl+S）",
+      "saveAs": "Save As",
+      "saveAsTitle": "新しい名前でコピーを保存",
+      "fork": "Fork",
+      "forkTitle": "このマップの自分用サーバー側コピーを作成",
+      "forkDisabledTitle": "フォークするにはまずサーバーマップを開いてください",
+      "import": "インポート",
+      "importTitle": "JSONファイルからマップをインポート",
+      "export": "エクスポート",
+      "exportTitle": "このマップをJSONファイルとしてダウンロード",
+      "uploadAsset": "アセットをアップロード",
+      "uploadAssetTitle": "GLBモデル（最大8MiB）をアップロードしてマップに配置",
+      "uploadAssetDisabledTitle": "アセットをアップロードするにはゲームでサインインしてください",
+      "playtest": "プレイテスト",
+      "playtestTitle": "このマップでゲームを起動（オフライン、現在の編集を含む）",
+      "viewLabel": "表示モード",
+      "view3d": "3D",
+      "view3dTitle": "レンダリングされたワールドで編集",
+      "view2d": "2D",
+      "view2dTitle": "記号化された俯瞰マップで編集",
+      "undoCount": "Undo: {count}",
+      "undoCountTitle": "{count} 件の元に戻せる操作（Ctrl+Zで元に戻す、Ctrl+Yでやり直す）",
+      "autosave": "自動保存",
+      "autosaveTitle": "未保存の変更がある間、マップを自動的に保存します。保存に失敗すると自動的にオフになります。",
+      "undo": "Undo",
+      "undoTitle": "直前の変更を元に戻す（Ctrl+Z）",
+      "redo": "Redo",
+      "redoTitle": "元に戻した変更をやり直す（Ctrl+Y）",
+      "offline": "オフライン",
+      "offlineTitle": "サインインしていません：マップはこのブラウザにのみ保存されます。オンラインで保存するにはゲームでサインインしてください。",
+      "signIn": "Sign in",
+      "signInTitle": "新しいタブでゲームのサインイン画面を開く",
+      "help": "Help",
+      "helpTitle": "エディターガイド：ツール、ショートカット、チュートリアル"
+    },
+    "tool": {
+      "listLabel": "エディターツール",
+      "keyHint": "{name} ({key})",
+      "select": "選択",
+      "raise": "隆起",
+      "lower": "沈下",
+      "smooth": "スムーズ",
+      "flatten": "平坦化",
+      "paint": "バイオームを塗る",
+      "water": "水域",
+      "place": "アセットを配置",
+      "blocker": "遮断壁",
+      "camp": "Camp",
+      "spawn": "スポーン地点",
+      "region": "領域",
+      "erase": "消去"
+    },
+    "viewport": {
+      "assetsFailed": "3Dビューポートを読み込めませんでした: {error}"
+    },
+    "a11y": {
+      "stage": "マップビューポート",
+      "toasts": "エディター通知"
+    },
+    "confirm": {
+      "cancel": "キャンセル",
+      "ok": "OK",
+      "conflictTitle": "他の誰かがこのマップを保存しました",
+      "conflictBody": "サーバー上のコピーは現在バージョン {version} で、あなたが読み込んだものより新しくなっています。相手の変更を上書きしないよう、あなたの変更は新しいマップとして保存してください。",
+      "conflictSaveCopy": "Save As Copy",
+      "discardTitle": "未保存の変更を破棄しますか？",
+      "discardBody": "「{name}」には失われる未保存の変更があります。",
+      "discard": "破棄"
+    },
+    "prompt": {
+      "saveAsTitle": "Save As",
+      "nameLabel": "マップ名"
+    },
+    "status": {
+      "saveFailedLocal": "このブラウザに保存できませんでした（ストレージが不足している可能性があります）。",
+      "savedLocalOnly": "「{name}」をこのブラウザに保存しました。サインインするとサーバーにも保存されます。",
+      "savedServer": "「{name}」を保存しました（バージョン {version}）。",
+      "autosaveOff": "自動保存がオフになりました：{reason}",
+      "autosaveFailed": "自動保存の下書きを書き込めませんでした（ストレージが不足している可能性があります）。",
+      "forked": "自分用のコピーを作成しました：「{name}」。",
+      "opened": "「{name}」を開きました。",
+      "newMap": "新しいマップを開始しました。",
+      "imported": "「{name}」をインポートしました。",
+      "importFailed": "そのファイルをインポートできませんでした。",
+      "exported": "マップをエクスポートしました。",
+      "playtestLaunch": "プレイテストを起動しています……",
+      "playtestFailed": "プレイテストを起動できませんでした（ストレージがブロックされている可能性があります）。"
+    },
+    "upload": {
+      "notGlb": "アップロードできるのは .glb ファイルのみです。",
+      "tooLarge": "そのファイルは8 MiBを超えています。",
+      "uploading": "アップロード中...",
+      "uploaded": "「{name}」をアップロードしました。",
+      "uploadedExisting": "このファイルは既にアップロード済みです。再利用します。"
+    },
+    "serverError": {
+      "invalid_map_name": "そのマップ名は無効です。",
+      "map_name_not_allowed": "そのマップ名は許可されていません。",
+      "invalid_map_doc": "このマップドキュメントは無効です。",
+      "invalid_version": "その保存は古くなっています。マップを開き直してもう一度お試しください。",
+      "map_limit_reached": "アカウントの保存済みマップの上限に達しました。",
+      "map_not_found": "そのマップは既に存在しません。",
+      "version_conflict": "他の誰かが先にこのマップを保存しました。",
+      "slug_unavailable": "そのマップ名は既に使用されています。別の名前をお試しください。",
+      "map_too_large": "このマップは大きすぎて保存できません。",
+      "invalid_glb": "そのファイルは有効なGLBモデルではありません。",
+      "asset_blocked": "そのアセットはモデレーターによって削除されました。",
+      "asset_limit_reached": "アカウントのアップロード済みアセットの上限に達しました。",
+      "asset_storage_limit_reached": "アップロードアセットのストレージ上限に達しました。",
+      "asset_too_large": "そのアセットは8 MiBを超えています。",
+      "asset_not_found": "そのアセットは既に存在しません。",
+      "rate_limited": "リクエストが多すぎます。少し待ってからもう一度お試しください。",
+      "unauthorized": "それを行うにはゲームでサインインしてください。",
+      "network": "サーバーに接続できませんでした。接続を確認してください。",
+      "timeout": "サーバーの応答に時間がかかりすぎました。",
+      "unknown": "問題が発生しました。もう一度お試しください。"
+    },
+    "assets": {
+      "label": "アセットブラウザ",
+      "title": "アセット",
+      "search": "アセットを検索",
+      "searchPlaceholder": "検索...",
+      "categoryTab": "{category} ({count})",
+      "uploadedTab": "アップロード済み",
+      "uploadedSignIn": "自分のアセットを表示・アップロードするにはゲームでサインインしてください。",
+      "uploadedLoadFailed": "アップロード済みのアセットを読み込めませんでした。",
+      "uploadedEmpty": "まだアセットをアップロードしていません。",
+      "loading": "読み込み中...",
+      "empty": "一致するアセットがありません。",
+      "pick": "{name} を配置",
+      "deleteAsset": "アセットを削除",
+      "deleteAssetConfirm": "「{name}」を削除しますか？このアセットを使用しているマップ上の配置は表示されなくなります。",
+      "category": {
+        "biome": "バイオーム",
+        "chars": "キャラクター",
+        "creatures": "クリーチャー",
+        "dungeon": "ダンジョン",
+        "foliage": "植物",
+        "props": "小道具",
+        "quest": "クエスト",
+        "resources": "リソース",
+        "tools": "ツール",
+        "weapons": "武器"
+      }
+    },
+    "help": {
+      "title": "エディターヘルプ",
+      "mouseTitle": "マウス",
+      "flowTitle": "保存と下書き",
+      "beginTutorial": "チュートリアルを開始",
+      "close": "閉じる",
+      "mouse": {
+        "orbit3d": "3Dビュー：左ドラッグで周回、右ドラッグでパン",
+        "fly3d": "3Dビュー：スクロールでズーム、WASDで飛行",
+        "pan2d": "2Dビュー：空白部分をドラッグしてパン、スクロールでズーム"
+      },
+      "flow": {
+        "save": "保存はこのブラウザに書き込まれ、サインイン後はサーバーにも書き込まれます",
+        "draft": "自動保存の下書きは、タブが予期せず閉じられた場合に未保存の編集を保護します"
+      }
+    },
+    "tutorial": {
+      "title": "エディターチュートリアル",
+      "counter": "Step {current} of {total}",
+      "back": "Back",
+      "next": "Next",
+      "finish": "完了",
+      "skip": "Skip",
+      "steps": {
+        "toolbar": {
+          "title": "ツール",
+          "body": "ここでツールを選びます。配置は今すぐ使用できます。他のツールは近日公開予定です。"
+        },
+        "stage": {
+          "title": "ビューポート",
+          "body": "これがあなたのマップです。3Dビューと2Dビューはいつでも切り替えられます。"
+        },
+        "viewToggle": {
+          "title": "3D / 2D 切り替え",
+          "body": "正確な配置には2D俯瞰ビューに、結果を見るには3Dに切り替えてください。"
+        },
+        "save": {
+          "title": "Save",
+          "body": "保存はこのブラウザにコピーを残し、サインイン後はサーバーにも保存します。"
+        },
+        "help": {
+          "title": "Help",
+          "body": "このツアーはいつでもここに戻って確認できます。"
+        }
+      }
+    }
   },
   "apiError": {
     "crossSiteRejected": "クロスサイトリクエストは拒否されました。",
@@ -4329,6 +4541,10 @@ export const ja_JP: EnTranslations = {
         "name": "挑発",
         "description": "対象を挑発します。あなたの脅威が対象の最も憎む敵と同じ値まで上がり、3秒間あなたを攻撃させます。"
       },
+      "ironhold": {
+        "name": "アイアンホールド",
+        "description": "盾の陰に身を潜め、8秒間受けるダメージを40%軽減する。"
+      },
       "fireball": {
         "name": "ファイアボール",
         "description": "炎の球を放ち、{damage} の火炎ダメージと追加の継続ダメージを与えます。"
@@ -4520,6 +4736,10 @@ export const ja_JP: EnTranslations = {
       "retribution_aura": {
         "name": "リトリビューションオーラ",
         "description": "30分間、聖なる力で身を包み、近接攻撃をしてきた敵に5の神聖ダメージを与えます。"
+      },
+      "sacred_bulwark": {
+        "name": "聖なる防壁",
+        "description": "10秒間、致命的な一撃を無効化し、代わりに体力を35%まで回復する。"
       },
       "tame_beast": {
         "name": "獣の調教",
@@ -4804,6 +5024,10 @@ export const ja_JP: EnTranslations = {
       "rip": {
         "name": "リップ",
         "description": "12秒かけて出血ダメージを与えるフィニッシュムーブです。コンボポイントを消費します。ウルフフォーム専用。"
+      },
+      "primal_reflexes": {
+        "name": "原始反射",
+        "description": "本能が研ぎ澄まされ、6秒間回避率が50%上昇する。"
       },
       "mortal_strike": {
         "name": "致死打撃",
@@ -5897,6 +6121,18 @@ export const ja_JP: EnTranslations = {
         "name": "刻み跡の欠片",
         "flavorText": "……五本ひと組で深く刻まれ、数え終えるたびに線で消されている。消された五本組が幾百とあり、それが途絶える、最後の一列だけは最後まで消されずに終わっている……"
       },
+      "root_token_unbinding": {
+        "name": "緩んだ根の結び目",
+        "flavorText": "……親指で何度も擦られて滑らかになっている。見えない何かに結ばれた結び目を緩めるかのように。誰かは手放すことが優しさだと信じていた。その人は間違っていたか、早すぎたか、その両方だったのだろう……"
+      },
+      "root_token_offering": {
+        "name": "小さな給餌石",
+        "flavorText": "……硬貨よりも小さな、浅い窪みが石に刻まれている。求めることさえできない何かに、ひとかけらを残すためのものだったのだろう。ここで食べていた何かは、飢えをやめたわけではない。ただ、見られなくなっただけだ……"
+      },
+      "root_token_verdict": {
+        "name": "裁きの刻み石",
+        "flavorText": "……刻み目は五つでなく三つひと組で刻まれ、裁かれては覆され、三度目には石が割れるほど強く押し付けられている。誰かが暗闇の中で、同じ問いについて何度も何度も心を変え続けていたかのようだ……"
+      },
       "reliquary_plate_chest": {
         "name": "聖遺物庫衛兵のホーバーク"
       },
@@ -6023,6 +6259,15 @@ export const ja_JP: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "嵐呼びの肩当て"
+      },
+      "deathless_greatblade": {
+        "name": "不死の大剣"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "不死の宮廷の笏"
+      },
+      "stormcallers_focus": {
+        "name": "嵐呼びの焦点"
       },
       "unknown_alien_weaponry": {
         "name": "未知の異星武装"
@@ -6262,6 +6507,15 @@ export const ja_JP: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "ナイスラクシス、ソーンピークの災厄"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "オルドレンの霊"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "マルリックの霊"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "ヴォスの霊"
       },
       "reliquary_ledger_wraith": {
         "name": "台帳の亡霊"

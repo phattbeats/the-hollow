@@ -28,11 +28,17 @@
 // (which component tag's item a multi-tag corpse yields) routes through
 // ctx.rng, never bare Math.random.
 
-import { GATHER_NODE_TYPES, GATHER_NODES } from './data';
+import { GATHER_NODE_TYPES, GATHER_NODES, zoneById } from './data';
 import type { Rng } from './rng';
 import type { PlayerMeta } from './sim';
 import type { SimContext } from './sim_context';
-import { type GatherNodeDef, type GatherNodeType, INTERACT_RANGE, type ItemDef } from './types';
+import {
+  type GatherNodeDef,
+  type GatherNodeType,
+  INTERACT_RANGE,
+  type ItemDef,
+  mobXpValue,
+} from './types';
 
 // Component tag -> the existing item this harvest yields. Only tags with a
 // concrete profession-material item wired up so far are listed here; a mob
@@ -101,6 +107,17 @@ export const NODE_HARVEST_TABLE: Record<
 
 export function gatherNodeById(nodeId: string): GatherNodeDef | undefined {
   return GATHER_NODES.find((n) => n.id === nodeId);
+}
+
+// A node's effective "content level" for the green-to-gray XP falloff below
+// (PHAA-712): the floor of its zone's level range, the same convention
+// crafting.ts's recipe.level uses (a recipe made from this zone's materials
+// is level 1, matching The Hollow Reaches' levelRange floor) so the two
+// profession XP paths agree on what "entry-level content" means for
+// materials out of the same zone. Falls back to 1 for an unresolvable
+// zoneId (never happens for real content data) rather than throwing.
+function nodeContentLevel(node: GatherNodeDef): number {
+  return zoneById(node.zoneId)?.levelRange[0] ?? 1;
 }
 
 // Material rarity roll (PHAA-506, upstream #1190/#1122): the standard item
@@ -267,4 +284,9 @@ export function harvestNode(ctx: SimContext, nodeId: string, pid?: number): void
     return;
   }
   ctx.addItem(result.itemId!, 1, meta.entityId);
+  // Character XP with the same green-to-gray level-diff falloff kill XP uses
+  // (mobXpValue, src/sim/types.ts): a node far below the player's level stops
+  // granting XP once trivial (PHAA-712). No new rng draw, existing XP path.
+  const xpGain = mobXpValue(nodeContentLevel(node), p.level);
+  if (xpGain > 0) ctx.grantXp(xpGain, meta);
 }

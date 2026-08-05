@@ -1041,36 +1041,36 @@ export const zh_CN: EnTranslations = {
       }
     },
     "book": {
-      "title": "Book of Asphodelia",
-      "close": "Close",
-      "deedSummary": "{done} of {total} deeds complete",
-      "titleSummary": "{count,plural,=0{No titles earned}one{1 title earned}other{# titles earned}}",
-      "titlePickerHeading": "Active Title",
-      "titlePickerEmpty": "No title selected. Pick one below.",
-      "titlePickerEarnFirst": "Earn your first title by completing a deed.",
-      "titleClear": "No Title",
+      "title": "阿斯福德里亚之书",
+      "close": "关闭",
+      "deedSummary": "已完成 {done}/{total} 项事迹",
+      "titleSummary": "{count,plural,=0{尚未获得称号}one{获得 1 个称号}other{获得 # 个称号}}",
+      "titlePickerHeading": "当前称号",
+      "titlePickerEmpty": "尚未选择称号，请在下方挑选。",
+      "titlePickerEarnFirst": "完成一项事迹以获得你的第一个称号。",
+      "titleClear": "无称号",
       "titleDisplay": "{display}",
-      "titleActiveTag": "Active",
-      "titlePickAria": "Equip the title {display}",
-      "titleRewardHint": "Completing this deed grants a title.",
-      "categoryEmpty": "Nothing in this category yet.",
+      "titleActiveTag": "已装备",
+      "titlePickAria": "装备称号 {display}",
+      "titleRewardHint": "完成此事迹可获得称号。",
+      "categoryEmpty": "此分类下尚无内容。",
       "category": {
-        "chronicle": "Chronicle",
-        "collection": "Collection",
-        "combat": "Combat",
-        "delve": "Delve",
-        "dungeon": "Dungeon",
-        "exploration": "Exploration",
-        "feat": "Feats",
-        "progression": "Progression",
-        "pvp": "Player vs. Player",
-        "social": "Social",
-        "hidden": "Hidden"
+        "chronicle": "编年史",
+        "collection": "收集",
+        "combat": "战斗",
+        "delve": "秘境",
+        "dungeon": "地下城",
+        "exploration": "探索",
+        "feat": "壮举",
+        "progression": "进程",
+        "pvp": "玩家对决",
+        "social": "社交",
+        "hidden": "隐藏"
       }
     },
     "titleTracker": {
-      "unspent": "+{count} new",
-      "ariaLabel": "Active title: {display}"
+      "unspent": "+{count} 项待选",
+      "ariaLabel": "当前称号：{display}"
     },
     "hitRating": {
       "ratingLabel": "命中等级"
@@ -1713,6 +1713,8 @@ export const zh_CN: EnTranslations = {
       "typeGroupBody": "主线剧情的每个篇章都终结于一扇地下城之门。前置引导可单人完成，但对一个篇章反派的最后一击，是为五人小队准备的。",
       "sagaTitle": "循迹北行",
       "sagaBody": "主线剧情是一场漫长的追查。一个死亡邪教正在这片国度的坟墓间行动，你每揭开一个篇章，便又向北指明一个区域。你绝不会一次性面对整个阴谋；你抽出一根线头，它便引向握着下一头的那只手。",
+      "sagaReachesTitle": "原野：一盏灯与一本历法",
+      "sagaReachesBody": "在霍洛沃原野，布莱泽·绿爪用火绒灯守着那座神龛之瓶，教堂管事与掘墓人则按月令安排耕种。第一条线索很小：守好灯火，清除野狼，摸熟这片土地。等到前路开启，你自会知道那盏灯正握在谁的手里。",
       "sagaValeTitle": "谷地：印玺上的一个名字",
       "sagaValeBody": "在东溪，死者无法安息，而其背后的印记属于一个早被认为已然消亡的教派。循迹追查到一名在礼拜堂地穴中作业的唤墓者，他自己的文书又将你指向北方的湿地。",
       "sagaMarshTitle": "湿地：一笔灵魂的贡赋",
@@ -1730,10 +1732,10 @@ export const zh_CN: EnTranslations = {
     "lore": {
       "figuresTitle": "你将渐渐熟识的面孔",
       "figuresBody": "有那么几个人会与你同行整段旅途。从谷地到峰巅，留意这些名字。",
-      "aldricRole": "谷地的牧师",
-      "aldricBody": "一位谦逊的乡村牧师，他在东溪一座被玷污的坟墓前最先道出了邪教之名，随后亲自循着踪迹穿过湿地，一路追到高守哨站的城墙下。他是整场战役坚定的核心。",
-      "marenRole": "元帅的斥候",
-      "marenBody": "一位你在泥沼的芦苇丛中遇见的低声寡言的追踪者，脚步轻悄，配一柄短刃。她也一路向北循迹而行，正是她的耳朵捕捉到了那些话语，将你引向峰巅。"
+      "zebediahRole": "根谷的教堂管事",
+      "zebediahBody": "他是一位耐心的教堂管事，用这本历法守护着这片原野，双手常半埋在土里。他注视着瓶中的灯火，按月令安排耕种，是初来乍到者最先听到的声音。",
+      "faddickRole": "法洛畦场的掘墓人",
+      "faddickBody": "他手持长柄工具，比起剑更熟悉铲子。他扫除从林中渗入的阴翳，安葬亡者，记着自己照管的每一块地。当线索离开神龛之时，往往是他来指出前路。"
     },
     "dungeonsPage": {
       "heading": "地下城与团队副本",
@@ -2054,6 +2056,216 @@ export const zh_CN: EnTranslations = {
     "continue": "继续",
     "begin": "开始",
     "skip": "跳过"
+  },
+  "editor": {
+    "appTitle": "地图编辑器",
+    "docTitle": "地图编辑器 - World of ClaudeCraft",
+    "untitledMap": "未命名地图",
+    "playtestPlayerName": "地图作者",
+    "topbar": {
+      "label": "编辑器操作",
+      "mapNameLabel": "地图名称",
+      "dirtyDot": "此地图有未保存的更改",
+      "saving": "保存中……",
+      "neverSaved": "尚未保存",
+      "savedLocal": "已保存到此浏览器",
+      "savedServer": "已保存（版本 {version}）",
+      "new": "New",
+      "newTitle": "从内置世界开始新地图",
+      "open": "Open",
+      "openTitle": "打开已保存的地图（浏览器或服务器）",
+      "save": "Save",
+      "saveTitle": "保存到此浏览器；登录后同时保存到服务器（Ctrl+S）",
+      "saveAs": "Save As",
+      "saveAsTitle": "另存为新名称的副本",
+      "fork": "Fork",
+      "forkTitle": "创建此地图的服务器端个人副本",
+      "forkDisabledTitle": "请先打开一个服务器地图再复刻",
+      "import": "导入",
+      "importTitle": "从 JSON 文件导入地图",
+      "export": "导出",
+      "exportTitle": "将此地图下载为 JSON 文件",
+      "uploadAsset": "上传素材",
+      "uploadAssetTitle": "上传 GLB 模型（最大 8 MiB）以放置到你的地图中",
+      "uploadAssetDisabledTitle": "请在游戏中登录后再上传素材",
+      "playtest": "试玩",
+      "playtestTitle": "在此地图上启动游戏（离线，包含当前编辑）",
+      "viewLabel": "视图模式",
+      "view3d": "3D",
+      "view3dTitle": "在渲染世界中编辑",
+      "view2d": "2D",
+      "view2dTitle": "在符号化俯视地图上编辑",
+      "undoCount": "Undo: {count}",
+      "undoCountTitle": "{count} 步可撤销（Ctrl+Z 撤销，Ctrl+Y 重做）",
+      "autosave": "自动保存",
+      "autosaveTitle": "在有未保存更改时自动保存地图。保存失败时会自动关闭。",
+      "undo": "Undo",
+      "undoTitle": "撤销上一次更改（Ctrl+Z）",
+      "redo": "Redo",
+      "redoTitle": "重做上一次撤销的更改（Ctrl+Y）",
+      "offline": "离线",
+      "offlineTitle": "未登录：地图仅保存到此浏览器。请在游戏中登录以在线保存。",
+      "signIn": "Sign in",
+      "signInTitle": "在新标签页中打开游戏登录界面",
+      "help": "Help",
+      "helpTitle": "编辑器指南：工具、快捷键与教程"
+    },
+    "tool": {
+      "listLabel": "编辑器工具",
+      "keyHint": "{name} ({key})",
+      "select": "选择",
+      "raise": "抬高",
+      "lower": "降低",
+      "smooth": "平滑",
+      "flatten": "铲平",
+      "paint": "绘制生态群系",
+      "water": "水域",
+      "place": "放置素材",
+      "blocker": "阻挡墙",
+      "camp": "Camp",
+      "spawn": "出生点",
+      "region": "区域",
+      "erase": "擦除"
+    },
+    "viewport": {
+      "assetsFailed": "无法加载 3D 视图：{error}"
+    },
+    "a11y": {
+      "stage": "地图视口",
+      "toasts": "编辑器通知"
+    },
+    "confirm": {
+      "cancel": "取消",
+      "ok": "OK",
+      "conflictTitle": "其他人已保存此地图",
+      "conflictBody": "服务器上的副本现在是版本 {version}，比你加载的版本更新。请将你的更改另存为新地图，以免覆盖对方的更改。",
+      "conflictSaveCopy": "Save As Copy",
+      "discardTitle": "放弃未保存的更改？",
+      "discardBody": "“{name}” 有未保存的更改，这些更改将会丢失。",
+      "discard": "放弃"
+    },
+    "prompt": {
+      "saveAsTitle": "Save As",
+      "nameLabel": "地图名称"
+    },
+    "status": {
+      "saveFailedLocal": "无法保存到此浏览器（存储空间可能已满）。",
+      "savedLocalOnly": "“{name}” 已保存到此浏览器。登录后即可同时保存到服务器。",
+      "savedServer": "“{name}” 已保存（版本 {version}）。",
+      "autosaveOff": "自动保存已关闭：{reason}",
+      "autosaveFailed": "无法写入自动保存草稿（存储空间可能已满）。",
+      "forked": "已创建你自己的副本：“{name}”。",
+      "opened": "“{name}” 已打开。",
+      "newMap": "已开始新地图。",
+      "imported": "“{name}” 已导入。",
+      "importFailed": "无法导入该文件。",
+      "exported": "地图已导出。",
+      "playtestLaunch": "正在启动试玩……",
+      "playtestFailed": "无法启动试玩（存储空间可能已被阻止）。"
+    },
+    "upload": {
+      "notGlb": "只能上传 .glb 文件。",
+      "tooLarge": "该文件大于 8 MiB。",
+      "uploading": "正在上传……",
+      "uploaded": "“{name}” 已上传。",
+      "uploadedExisting": "你已上传过此文件；将重复使用它。"
+    },
+    "serverError": {
+      "invalid_map_name": "该地图名称无效。",
+      "map_name_not_allowed": "不允许使用该地图名称。",
+      "invalid_map_doc": "此地图文档无效。",
+      "invalid_version": "该保存已过期。请重新打开地图并重试。",
+      "map_limit_reached": "你的账号已达到已保存地图数量上限。",
+      "map_not_found": "该地图已不存在。",
+      "version_conflict": "其他人已先保存了此地图。",
+      "slug_unavailable": "该地图名称已被占用，请换一个。",
+      "map_too_large": "此地图过大，无法保存。",
+      "invalid_glb": "该文件不是有效的 GLB 模型。",
+      "asset_blocked": "该素材已被管理员移除。",
+      "asset_limit_reached": "你的账号已达到已上传素材数量上限。",
+      "asset_storage_limit_reached": "你已达到上传素材的存储空间上限。",
+      "asset_too_large": "该素材大于 8 MiB。",
+      "asset_not_found": "该素材已不存在。",
+      "rate_limited": "请求过于频繁，请稍候再试。",
+      "unauthorized": "请在游戏中登录后再执行此操作。",
+      "network": "无法连接到服务器，请检查你的网络连接。",
+      "timeout": "服务器响应超时。",
+      "unknown": "出了点问题，请重试。"
+    },
+    "assets": {
+      "label": "素材浏览器",
+      "title": "素材",
+      "search": "搜索素材",
+      "searchPlaceholder": "搜索……",
+      "categoryTab": "{category} ({count})",
+      "uploadedTab": "已上传",
+      "uploadedSignIn": "请在游戏中登录以查看和上传你自己的素材。",
+      "uploadedLoadFailed": "无法加载你上传的素材。",
+      "uploadedEmpty": "你还没有上传过任何素材。",
+      "loading": "加载中……",
+      "empty": "没有匹配的素材。",
+      "pick": "放置 {name}",
+      "deleteAsset": "删除素材",
+      "deleteAssetConfirm": "删除 “{name}”？使用该素材的地图放置项将无法渲染。",
+      "category": {
+        "biome": "生态群系",
+        "chars": "角色",
+        "creatures": "生物",
+        "dungeon": "地下城",
+        "foliage": "植被",
+        "props": "道具",
+        "quest": "任务",
+        "resources": "资源",
+        "tools": "工具",
+        "weapons": "武器"
+      }
+    },
+    "help": {
+      "title": "编辑器帮助",
+      "mouseTitle": "鼠标",
+      "flowTitle": "保存与草稿",
+      "beginTutorial": "开始教程",
+      "close": "关闭",
+      "mouse": {
+        "orbit3d": "3D 视图：左键拖动以环绕，右键拖动以平移",
+        "fly3d": "3D 视图：滚动以缩放，使用 WASD 飞行",
+        "pan2d": "2D 视图：拖动空白处以平移，滚动以缩放"
+      },
+      "flow": {
+        "save": "保存会写入此浏览器；登录后还会写入服务器",
+        "draft": "自动保存草稿可在标签页意外关闭时保护未保存的编辑"
+      }
+    },
+    "tutorial": {
+      "title": "编辑器教程",
+      "counter": "Step {current} of {total}",
+      "back": "Back",
+      "next": "Next",
+      "finish": "完成",
+      "skip": "Skip",
+      "steps": {
+        "toolbar": {
+          "title": "工具",
+          "body": "在这里选择工具。放置功能现已可用；更多工具即将推出。"
+        },
+        "stage": {
+          "title": "视口",
+          "body": "这是你的地图。可随时在 3D 与 2D 视图之间切换。"
+        },
+        "viewToggle": {
+          "title": "3D / 2D 切换",
+          "body": "切换到 2D 俯视图以精确放置，或切换到 3D 查看效果。"
+        },
+        "save": {
+          "title": "Save",
+          "body": "保存会在此浏览器中留存副本，登录后还会保存到服务器。"
+        },
+        "help": {
+          "title": "Help",
+          "body": "你可以随时回到这里查看本教程。"
+        }
+      }
+    }
   },
   "apiError": {
     "crossSiteRejected": "跨站请求被拒绝。",
@@ -4329,6 +4541,10 @@ export const zh_CN: EnTranslations = {
         "name": "嘲讽",
         "description": "嘲讽目标：你的威胁值提高到其最仇恨敌人的水平，并强迫其攻击你 3 秒。"
       },
+      "ironhold": {
+        "name": "坚守",
+        "description": "紧守盾牌，在 8 秒内使受到的所有伤害降低 40%。"
+      },
       "fireball": {
         "name": "火球术",
         "description": "投掷一团火球，造成 {damage} 点火焰伤害，并附加持续伤害。"
@@ -4520,6 +4736,10 @@ export const zh_CN: EnTranslations = {
       "retribution_aura": {
         "name": "惩戒光环",
         "description": "以神圣能量环绕自身，持续 30 分钟，对任何近战攻击你的敌人造成 5 点神圣伤害。"
+      },
+      "sacred_bulwark": {
+        "name": "神圣壁垒",
+        "description": "持续 10 秒，下一次本该致命的打击将被抵挡，并使你恢复到 35% 的生命值。"
       },
       "tame_beast": {
         "name": "驯服野兽",
@@ -4804,6 +5024,10 @@ export const zh_CN: EnTranslations = {
       "rip": {
         "name": "割裂",
         "description": "终结技，在 12 秒内造成流血伤害。消耗连击点。仅限狼形态。"
+      },
+      "primal_reflexes": {
+        "name": "原始反射",
+        "description": "你的本能变得敏锐，在 6 秒内使闪避几率提高 50%。"
       },
       "mortal_strike": {
         "name": "致死打击",
@@ -5897,6 +6121,18 @@ export const zh_CN: EnTranslations = {
         "name": "刻痕碎片",
         "flavorText": "……以五为一组刻得极深，每数完一轮便划去一道。划去的五连一组，累计上百组，最后一行却始终没有划完……"
       },
+      "root_token_unbinding": {
+        "name": "松开的根结",
+        "flavorText": "……一面被拇指摩挲得光滑，仿佛在松开一个看不见系在何处的结。有人相信放手是一种仁慈。那人要么错了，要么为时过早，或两者皆是……"
+      },
+      "root_token_offering": {
+        "name": "小喂食石",
+        "flavorText": "……石头上刻着一个浅浅的碗，比硬币还小，仿佛是留给某个无法开口求食之物的一口残渣。这里吞食过的东西并未停止饥饿，只是不再被人看见……"
+      },
+      "root_token_verdict": {
+        "name": "刻痕裁决石",
+        "flavorText": "……刻痕以三为一组，而非五，反复裁定又反复推翻，压得极深，第三遍时石头都裂开了。仿佛有人在黑暗中，为同一个问题一次又一次地改变心意……"
+      },
       "reliquary_plate_chest": {
         "name": "圣物库守卫锁甲"
       },
@@ -6023,6 +6259,15 @@ export const zh_CN: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "唤雷者肩甲"
+      },
+      "deathless_greatblade": {
+        "name": "不朽巨剑"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "不朽王庭权杖"
+      },
+      "stormcallers_focus": {
+        "name": "唤雷者的焦点"
       },
       "unknown_alien_weaponry": {
         "name": "未知异星武器"
@@ -6262,6 +6507,15 @@ export const zh_CN: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "尼思拉克西斯，荆峰之灾"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "奥德伦之魂"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "马尔里克之魂"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "沃斯之魂"
       },
       "reliquary_ledger_wraith": {
         "name": "名册幽魂"

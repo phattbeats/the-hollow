@@ -1041,36 +1041,36 @@ export const ko_KR: EnTranslations = {
       }
     },
     "book": {
-      "title": "Book of Asphodelia",
-      "close": "Close",
-      "deedSummary": "{done} of {total} deeds complete",
-      "titleSummary": "{count,plural,=0{No titles earned}one{1 title earned}other{# titles earned}}",
-      "titlePickerHeading": "Active Title",
-      "titlePickerEmpty": "No title selected. Pick one below.",
-      "titlePickerEarnFirst": "Earn your first title by completing a deed.",
-      "titleClear": "No Title",
+      "title": "아스포델리아의 책",
+      "close": "닫기",
+      "deedSummary": "업적 {done}/{total} 완료",
+      "titleSummary": "{count,plural,=0{획득한 칭호 없음}one{칭호 1개 획득}other{칭호 #개 획득}}",
+      "titlePickerHeading": "현재 칭호",
+      "titlePickerEmpty": "선택한 칭호가 없습니다. 아래에서 골라 주세요.",
+      "titlePickerEarnFirst": "업적을 하나 완료해 첫 칭호를 획득하세요.",
+      "titleClear": "칭호 없음",
       "titleDisplay": "{display}",
-      "titleActiveTag": "Active",
-      "titlePickAria": "Equip the title {display}",
-      "titleRewardHint": "Completing this deed grants a title.",
-      "categoryEmpty": "Nothing in this category yet.",
+      "titleActiveTag": "장착 중",
+      "titlePickAria": "칭호 {display} 장착",
+      "titleRewardHint": "이 업적을 완료하면 칭호를 받습니다.",
+      "categoryEmpty": "이 분류에는 아직 항목이 없습니다.",
       "category": {
-        "chronicle": "Chronicle",
-        "collection": "Collection",
-        "combat": "Combat",
-        "delve": "Delve",
-        "dungeon": "Dungeon",
-        "exploration": "Exploration",
-        "feat": "Feats",
-        "progression": "Progression",
-        "pvp": "Player vs. Player",
-        "social": "Social",
-        "hidden": "Hidden"
+        "chronicle": "연대기",
+        "collection": "수집",
+        "combat": "전투",
+        "delve": "비경",
+        "dungeon": "던전",
+        "exploration": "탐험",
+        "feat": "위업",
+        "progression": "성장",
+        "pvp": "PvP",
+        "social": "사회",
+        "hidden": "숨겨진"
       }
     },
     "titleTracker": {
-      "unspent": "+{count} new",
-      "ariaLabel": "Active title: {display}"
+      "unspent": "신규 +{count}",
+      "ariaLabel": "현재 칭호: {display}"
     },
     "hitRating": {
       "ratingLabel": "적중 레이팅"
@@ -1713,6 +1713,8 @@ export const ko_KR: EnTranslations = {
       "typeGroupBody": "주된 이야기의 모든 장은 던전 문에서 끝납니다. 도입부는 혼자 진행할 수 있지만, 그 장의 악당에게 마지막 일격을 가하는 일은 5인 파티를 위한 것입니다.",
       "sagaTitle": "북쪽으로 자취를 좇으세요",
       "sagaBody": "주된 이야기는 하나의 긴 추격입니다. 죽음교단이 왕국의 무덤들에서 암약하고 있으며, 한 장을 매듭지을 때마다 그 자취는 한 지역씩 북쪽으로 이어집니다. 음모 전체를 한꺼번에 상대하는 일은 결코 없습니다. 실 한 가닥을 당기면, 그것이 그 가닥을 쥔 다음 손으로 이어집니다.",
+      "sagaReachesTitle": "리치즈: 등불과 달력",
+      "sagaReachesBody": "호울로 리치즈에서 브라더 그린포우가 잉버벌브로 성역의 화분을 살려 두고, 버저와 섹스턴이 달을 따라 파종을 정합니다. 첫 실마리는 작은 것입니다. 등불을 꺼뜨리지 말고, 이리저기 쫓기는 늑대를 물리치며, 이 땅을 익히십시오. 길이 트일 무렵이면 등불이 누구의 손에 있는지, 당신은 이미 알고 있을 것입니다.",
       "sagaValeTitle": "골짜기: 인장에 새겨진 이름",
       "sagaValeBody": "동부개울에서는 죽은 자가 쉬지 못하고, 그 배후의 표식은 사라진 지 오래라 여겨지던 종파의 것입니다. 자취를 좇으면 예배당 묘실에서 일하는 무덤부름에 닿고, 그의 문서가 당신을 북쪽 습지로 가리킵니다.",
       "sagaMarshTitle": "습지: 영혼의 십일조",
@@ -1730,10 +1732,10 @@ export const ko_KR: EnTranslations = {
     "lore": {
       "figuresTitle": "차차 알게 될 얼굴들",
       "figuresBody": "몇몇 사람들은 당신과 함께 이 길을 끝까지 걷습니다. 골짜기에서 봉우리까지, 이 이름들을 눈여겨보세요.",
-      "aldricRole": "골짜기의 사제",
-      "aldricBody": "동부개울에서 더럽혀진 무덤 앞에 서서 교단의 이름을 처음 밝혀낸 다음, 직접 그 자취를 좇아 습지를 지나 하이워치의 성벽까지 오르는 소박한 마을 사제. 온 원정의 굳건한 심장입니다.",
-      "marenRole": "원수의 정찰병",
-      "marenBody": "마이어펜의 갈대밭에서 만나는, 말수 적은 추적자. 조용한 발걸음과 짧은 칼이 전부입니다. 그녀 역시 북쪽으로 자취를 좇으며, 당신을 봉우리로 보내는 그 말을 알아챈 것도 바로 그녀의 귀입니다."
+      "zebediahRole": "루트 홀로우의 버저",
+      "zebediahBody": "리치즈를 달력에 맞춰 지키는, 인내심 강한 버저이며, 손은 늘 반쯤 흙에 묻혀 있습니다. 화분의 등불을 살피고, 달을 따라 파종을 정하며, 새로 온 이에게 길이 가장 먼저 들려주는 목소리입니다.",
+      "faddickRole": "팰로 에이커스의 섹스턴",
+      "faddickBody": "긴 자루의 도구를 들고, 칼보다 호미에 더 익숙한 조용한 섹스턴입니다. 숲에서 기어드는 것을 치우고, 죽은 자를 묻어 주며, 자기 땅의 모든 구획을 기억합니다. 자취가 성역을 떠날 때, 길을 알려 주는 것은 종종 그입니다."
     },
     "dungeonsPage": {
       "heading": "던전과 공격대",
@@ -2054,6 +2056,216 @@ export const ko_KR: EnTranslations = {
     "continue": "계속",
     "begin": "시작",
     "skip": "건너뛰기"
+  },
+  "editor": {
+    "appTitle": "맵 에디터",
+    "docTitle": "맵 에디터 - World of ClaudeCraft",
+    "untitledMap": "제목 없는 맵",
+    "playtestPlayerName": "맵 제작자",
+    "topbar": {
+      "label": "에디터 작업",
+      "mapNameLabel": "맵 이름",
+      "dirtyDot": "이 맵에 저장하지 않은 변경 사항이 있습니다",
+      "saving": "저장 중...",
+      "neverSaved": "아직 저장되지 않음",
+      "savedLocal": "이 브라우저에 저장됨",
+      "savedServer": "저장됨(버전 {version})",
+      "new": "New",
+      "newTitle": "기본 월드에서 새 맵 시작",
+      "open": "Open",
+      "openTitle": "저장된 맵 열기(브라우저 또는 서버)",
+      "save": "Save",
+      "saveTitle": "이 브라우저에 저장하고, 로그인 시 서버에도 저장(Ctrl+S)",
+      "saveAs": "Save As",
+      "saveAsTitle": "새 이름으로 사본 저장",
+      "fork": "Fork",
+      "forkTitle": "이 맵의 서버 측 개인 사본 만들기",
+      "forkDisabledTitle": "포크하려면 먼저 서버 맵을 여세요",
+      "import": "가져오기",
+      "importTitle": "JSON 파일에서 맵 가져오기",
+      "export": "내보내기",
+      "exportTitle": "이 맵을 JSON 파일로 다운로드",
+      "uploadAsset": "에셋 업로드",
+      "uploadAssetTitle": "GLB 모델(최대 8MiB)을 업로드하여 맵에 배치",
+      "uploadAssetDisabledTitle": "에셋을 업로드하려면 게임에서 로그인하세요",
+      "playtest": "플레이테스트",
+      "playtestTitle": "이 맵으로 게임 실행(오프라인, 현재 편집 내용 포함)",
+      "viewLabel": "보기 모드",
+      "view3d": "3D",
+      "view3dTitle": "렌더링된 월드에서 편집",
+      "view2d": "2D",
+      "view2dTitle": "기호화된 상공 맵에서 편집",
+      "undoCount": "Undo: {count}",
+      "undoCountTitle": "실행 취소 가능한 단계 {count}개(Ctrl+Z로 실행 취소, Ctrl+Y로 다시 실행)",
+      "autosave": "자동 저장",
+      "autosaveTitle": "저장하지 않은 변경 사항이 있는 동안 맵을 자동으로 저장합니다. 저장에 실패하면 자동으로 꺼집니다.",
+      "undo": "Undo",
+      "undoTitle": "마지막 변경 실행 취소(Ctrl+Z)",
+      "redo": "Redo",
+      "redoTitle": "실행 취소한 마지막 변경 다시 실행(Ctrl+Y)",
+      "offline": "오프라인",
+      "offlineTitle": "로그인하지 않음: 맵은 이 브라우저에만 저장됩니다. 온라인으로 저장하려면 게임에서 로그인하세요.",
+      "signIn": "Sign in",
+      "signInTitle": "새 탭에서 게임 로그인 화면 열기",
+      "help": "Help",
+      "helpTitle": "에디터 가이드: 도구, 단축키, 튜토리얼"
+    },
+    "tool": {
+      "listLabel": "에디터 도구",
+      "keyHint": "{name} ({key})",
+      "select": "선택",
+      "raise": "높이기",
+      "lower": "낮추기",
+      "smooth": "매끄럽게",
+      "flatten": "평탄화",
+      "paint": "바이옴 칠하기",
+      "water": "물",
+      "place": "에셋 배치",
+      "blocker": "차단벽",
+      "camp": "Camp",
+      "spawn": "스폰 지점",
+      "region": "영역",
+      "erase": "지우기"
+    },
+    "viewport": {
+      "assetsFailed": "3D 뷰포트를 불러올 수 없습니다: {error}"
+    },
+    "a11y": {
+      "stage": "맵 뷰포트",
+      "toasts": "에디터 알림"
+    },
+    "confirm": {
+      "cancel": "취소",
+      "ok": "OK",
+      "conflictTitle": "다른 사람이 이 맵을 저장했습니다",
+      "conflictBody": "서버 사본이 이제 버전 {version}이며, 회원님이 불러온 버전보다 최신입니다. 상대방의 변경 사항을 덮어쓰지 않도록 회원님의 변경 사항을 새 맵으로 저장하세요.",
+      "conflictSaveCopy": "Save As Copy",
+      "discardTitle": "저장하지 않은 변경 사항을 폐기하시겠습니까?",
+      "discardBody": "\"{name}\"에 저장하지 않은 변경 사항이 있으며, 폐기하면 사라집니다.",
+      "discard": "폐기"
+    },
+    "prompt": {
+      "saveAsTitle": "Save As",
+      "nameLabel": "맵 이름"
+    },
+    "status": {
+      "saveFailedLocal": "이 브라우저에 저장할 수 없습니다(저장 공간이 가득 찼을 수 있습니다).",
+      "savedLocalOnly": "\"{name}\"이(가) 이 브라우저에 저장되었습니다. 로그인하면 서버에도 저장할 수 있습니다.",
+      "savedServer": "\"{name}\"이(가) 저장되었습니다(버전 {version}).",
+      "autosaveOff": "자동 저장이 꺼졌습니다: {reason}",
+      "autosaveFailed": "자동 저장 초안을 기록할 수 없습니다(저장 공간이 가득 찼을 수 있습니다).",
+      "forked": "나만의 사본을 만들었습니다: \"{name}\".",
+      "opened": "\"{name}\"이(가) 열렸습니다.",
+      "newMap": "새 맵을 시작했습니다.",
+      "imported": "\"{name}\"을(를) 가져왔습니다.",
+      "importFailed": "해당 파일을 가져올 수 없습니다.",
+      "exported": "맵을 내보냈습니다.",
+      "playtestLaunch": "플레이테스트를 시작하는 중……",
+      "playtestFailed": "플레이테스트를 시작할 수 없습니다(저장소가 차단되었을 수 있습니다)."
+    },
+    "upload": {
+      "notGlb": ".glb 파일만 업로드할 수 있습니다.",
+      "tooLarge": "해당 파일이 8MiB보다 큽니다.",
+      "uploading": "업로드 중...",
+      "uploaded": "\"{name}\"이(가) 업로드되었습니다.",
+      "uploadedExisting": "이미 이 파일을 업로드했습니다. 기존 파일을 재사용합니다."
+    },
+    "serverError": {
+      "invalid_map_name": "해당 맵 이름은 유효하지 않습니다.",
+      "map_name_not_allowed": "해당 맵 이름은 허용되지 않습니다.",
+      "invalid_map_doc": "이 맵 문서는 유효하지 않습니다.",
+      "invalid_version": "해당 저장이 오래되었습니다. 맵을 다시 열고 다시 시도하세요.",
+      "map_limit_reached": "계정의 저장된 맵 한도에 도달했습니다.",
+      "map_not_found": "해당 맵이 더 이상 존재하지 않습니다.",
+      "version_conflict": "다른 사람이 먼저 이 맵을 저장했습니다.",
+      "slug_unavailable": "해당 맵 이름은 이미 사용 중입니다. 다른 이름을 시도하세요.",
+      "map_too_large": "이 맵은 너무 커서 저장할 수 없습니다.",
+      "invalid_glb": "해당 파일은 유효한 GLB 모델이 아닙니다.",
+      "asset_blocked": "해당 에셋은 모더레이터에 의해 제거되었습니다.",
+      "asset_limit_reached": "계정의 업로드된 에셋 한도에 도달했습니다.",
+      "asset_storage_limit_reached": "업로드된 에셋의 저장 공간 한도에 도달했습니다.",
+      "asset_too_large": "해당 에셋이 8MiB보다 큽니다.",
+      "asset_not_found": "해당 에셋이 더 이상 존재하지 않습니다.",
+      "rate_limited": "요청이 너무 많습니다. 잠시 후 다시 시도하세요.",
+      "unauthorized": "이 작업을 하려면 게임에서 로그인하세요.",
+      "network": "서버에 연결할 수 없습니다. 연결 상태를 확인하세요.",
+      "timeout": "서버 응답 시간이 너무 오래 걸렸습니다.",
+      "unknown": "문제가 발생했습니다. 다시 시도하세요."
+    },
+    "assets": {
+      "label": "에셋 브라우저",
+      "title": "에셋",
+      "search": "에셋 검색",
+      "searchPlaceholder": "검색...",
+      "categoryTab": "{category} ({count})",
+      "uploadedTab": "업로드됨",
+      "uploadedSignIn": "자신의 에셋을 보고 업로드하려면 게임에서 로그인하세요.",
+      "uploadedLoadFailed": "업로드한 에셋을 불러올 수 없습니다.",
+      "uploadedEmpty": "아직 업로드한 에셋이 없습니다.",
+      "loading": "불러오는 중...",
+      "empty": "일치하는 에셋이 없습니다.",
+      "pick": "{name} 배치",
+      "deleteAsset": "에셋 삭제",
+      "deleteAssetConfirm": "\"{name}\"을(를) 삭제하시겠습니까? 이 에셋을 사용하는 맵의 배치는 렌더링되지 않습니다.",
+      "category": {
+        "biome": "바이옴",
+        "chars": "캐릭터",
+        "creatures": "크리처",
+        "dungeon": "던전",
+        "foliage": "식물",
+        "props": "소품",
+        "quest": "퀘스트",
+        "resources": "자원",
+        "tools": "도구",
+        "weapons": "무기"
+      }
+    },
+    "help": {
+      "title": "에디터 도움말",
+      "mouseTitle": "마우스",
+      "flowTitle": "저장 및 초안",
+      "beginTutorial": "튜토리얼 시작",
+      "close": "닫기",
+      "mouse": {
+        "orbit3d": "3D 뷰: 왼쪽 드래그로 회전, 오른쪽 드래그로 이동",
+        "fly3d": "3D 뷰: 스크롤로 확대/축소, WASD로 비행",
+        "pan2d": "2D 뷰: 빈 공간을 드래그하여 이동, 스크롤로 확대/축소"
+      },
+      "flow": {
+        "save": "저장은 이 브라우저에 기록되며, 로그인하면 서버에도 기록됩니다",
+        "draft": "자동 저장 초안은 탭이 예기치 않게 닫혀도 저장하지 않은 편집 내용을 보호합니다"
+      }
+    },
+    "tutorial": {
+      "title": "에디터 튜토리얼",
+      "counter": "Step {current} of {total}",
+      "back": "Back",
+      "next": "Next",
+      "finish": "완료",
+      "skip": "Skip",
+      "steps": {
+        "toolbar": {
+          "title": "도구",
+          "body": "여기서 도구를 선택하세요. 배치는 지금 바로 사용할 수 있으며, 더 많은 도구가 곧 추가됩니다."
+        },
+        "stage": {
+          "title": "뷰포트",
+          "body": "이것이 회원님의 맵입니다. 언제든지 3D 뷰와 2D 뷰를 전환할 수 있습니다."
+        },
+        "viewToggle": {
+          "title": "3D / 2D 전환",
+          "body": "정확한 배치를 위해 2D 상공 뷰로 전환하거나, 결과를 보려면 3D로 전환하세요."
+        },
+        "save": {
+          "title": "Save",
+          "body": "저장은 이 브라우저에 사본을 보관하며, 로그인하면 서버에도 저장됩니다."
+        },
+        "help": {
+          "title": "Help",
+          "body": "이 투어는 언제든지 여기로 돌아와 다시 볼 수 있습니다."
+        }
+      }
+    }
   },
   "apiError": {
     "crossSiteRejected": "교차 사이트 요청이 거부되었습니다.",
@@ -4329,6 +4541,10 @@ export const ko_KR: EnTranslations = {
         "name": "도발",
         "description": "대상을 도발합니다. 자신의 위협 수준이 대상이 가장 증오하는 적과 같아지며, 3초 동안 자신을 공격하게 만듭니다."
       },
+      "ironhold": {
+        "name": "아이언홀드",
+        "description": "방패 뒤에 웅크려 8초 동안 받는 모든 피해를 40% 감소시킵니다."
+      },
       "fireball": {
         "name": "화염구",
         "description": "불덩이를 날려 {damage}의 화염 피해와 추가 지속 피해를 입힙니다."
@@ -4520,6 +4736,10 @@ export const ko_KR: EnTranslations = {
       "retribution_aura": {
         "name": "응징의 오라",
         "description": "30분 동안 신성한 기운으로 자신을 감싸 근접 공격으로 자신을 타격하는 모든 적에게 5의 신성 피해를 입힙니다."
+      },
+      "sacred_bulwark": {
+        "name": "신성한 보루",
+        "description": "10초 동안, 당신을 죽일 다음 공격이 무효화되며 대신 체력을 35%로 회복시킵니다."
       },
       "tame_beast": {
         "name": "야수 길들이기",
@@ -4804,6 +5024,10 @@ export const ko_KR: EnTranslations = {
       "rip": {
         "name": "찢기",
         "description": "12초에 걸쳐 출혈 피해를 입히는 결정타입니다. 연계 점수를 소모합니다. 늑대 변신 전용."
+      },
+      "primal_reflexes": {
+        "name": "원시 반사신경",
+        "description": "본능이 예민해져 6초 동안 회피 확률이 50% 증가합니다."
       },
       "mortal_strike": {
         "name": "죽음의 일격",
@@ -5897,6 +6121,18 @@ export const ko_KR: EnTranslations = {
         "name": "눈금이 새겨진 파편",
         "flavorText": "...다섯 개씩 한 묶음으로 깊이 새겨져, 셀 때마다 하나씩 그어 지워졌다. 지워진 다섯 묶음이 수백에 이르는데, 그 지움이 멈춘 마지막 줄만은 끝내 채워지지 않았다..."
       },
+      "root_token_unbinding": {
+        "name": "풀린 뿌리 매듭",
+        "flavorText": "...보이지 않는 무언가에 묶인 매듭을 풀듯, 엄지손가락에 계속 문질러져 매끄러워졌다. 누군가는 놓아주는 것이 친절이라 믿었다. 그 사람은 틀렸거나, 너무 일렀거나, 아니면 둘 다였을 것이다..."
+      },
+      "root_token_offering": {
+        "name": "작은 먹이돌",
+        "flavorText": "...동전보다도 작은 얕은 그릇 모양이 돌에 새겨져 있다. 물어볼 수조차 없는 무언가에게 부스러기를 남겨주기 위한 것이었으리라. 이곳에서 먹던 무언가는 배고픔을 멈춘 것이 아니라, 그저 보이지 않게 되었을 뿐이다..."
+      },
+      "root_token_verdict": {
+        "name": "심판이 새겨진 돌",
+        "flavorText": "...다섯이 아니라 셋으로 새겨진 눈금이, 판결되고 또 뒤집히며, 세 번째에는 돌이 갈라질 만큼 세게 눌려 있다. 누군가 어둠 속에서 같은 질문을 두고 몇 번이고 마음을 바꾸었던 것 같다..."
+      },
       "reliquary_plate_chest": {
         "name": "성물실 수호 갑옷"
       },
@@ -6023,6 +6259,15 @@ export const ko_KR: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "폭풍소환사의 어깨갑옷"
+      },
+      "deathless_greatblade": {
+        "name": "죽지 않는 대검"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "죽지 않는 궁정의 홀"
+      },
+      "stormcallers_focus": {
+        "name": "폭풍소환사의 초점"
       },
       "unknown_alien_weaponry": {
         "name": "알 수 없는 외계 무기"
@@ -6262,6 +6507,15 @@ export const ko_KR: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "나이트락시스, 손피크의 재앙"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "알드렌의 영혼"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "말릭의 영혼"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "보스의 영혼"
       },
       "reliquary_ledger_wraith": {
         "name": "명부의 망령"

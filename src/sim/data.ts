@@ -139,7 +139,7 @@ export {
 } from './content/delves';
 
 import { DELVE_ITEMS } from './content/delves/items';
-import { HEROIC_DELVE_MARK } from './content/heroic_loot';
+import { HEROIC_DELVE_MARK, HEROIC_NYTHRAXIS_ITEMS } from './content/heroic_loot';
 import { buildHeroicVariants } from './content/heroic_variants';
 import { FURY_NPC, WARFARE_ITEMS } from './content/pvp_honor';
 import { DELVE_MODULE_LAYOUTS, type DelveModuleId, delveModuleSpan } from './delve_layout';
@@ -200,6 +200,8 @@ export const ITEMS: Record<string, ItemDef> = mergeItems(
   // a derived table entry) so the loot swap and the mark fan-out both resolve
   // to the same id at data-evaluation time.
   { delve_heroic_mark: HEROIC_DELVE_MARK },
+  // The three heroic-only Nythraxis raid weapons (PHAA-714).
+  HEROIC_NYTHRAXIS_ITEMS,
   WARFARE_ITEMS,
 );
 
@@ -447,6 +449,13 @@ export function zoneAt(z: number): ZoneDef {
     if (z < zone.zMax) return zone;
   }
   return ZONES[ZONES.length - 1];
+}
+
+// Zone by id (gather nodes carry a zoneId, not a position band). Undefined for
+// an unknown id rather than a fallback zone: callers key XP/level lookups off
+// this and a silent wrong-zone fallback would be worse than a missing value.
+export function zoneById(id: string): ZoneDef | undefined {
+  return ZONES.find((z) => z.id === id);
 }
 
 export function zoneWelcomeText(

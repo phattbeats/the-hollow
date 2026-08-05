@@ -218,6 +218,10 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
         "name": "Taunt"
       },
       {
+        "id": "ironhold",
+        "name": "Ironhold"
+      },
+      {
         "id": "pummel",
         "name": "Jawcrack"
       }
@@ -332,6 +336,10 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
       {
         "id": "retribution_aura",
         "name": "Retribution Aura"
+      },
+      {
+        "id": "sacred_bulwark",
+        "name": "Sacred Bulwark"
       },
       {
         "id": "rebuke",
@@ -1233,6 +1241,10 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
       {
         "id": "rip",
         "name": "Rip"
+      },
+      {
+        "id": "primal_reflexes",
+        "name": "Primal Reflexes"
       },
       {
         "id": "skull_bash",

@@ -1212,7 +1212,7 @@ export const fr_FR: EnTranslations = {
         "levels": "Niveaux {min} à {max}",
         "cta": "Découvrir le monde",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Val d'Eastbrook",
         "valeBlurb": "Collines verdoyantes et bois anciens où débute chaque aventure.",
         "marshName": "Marais de Mirefen",
@@ -1713,6 +1713,8 @@ export const fr_FR: EnTranslations = {
       "typeGroupBody": "Chaque chapitre de l'histoire principale s'achève à la porte d'un donjon. L'introduction se fait en solo, mais le coup de grâce contre le scélérat du chapitre est prévu pour un groupe de cinq.",
       "sagaTitle": "Suivre la piste vers le nord",
       "sagaBody": "L'histoire principale est une longue traque. Un culte de la mort est à l'œuvre sur les tombes du royaume, et chaque chapitre que vous bouclez vous mène une zone plus haut sur la route. Vous n'affrontez jamais toute la conspiration d'un coup ; vous tirez un fil, et il conduit à la main suivante qui le tient.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "Le Val : un nom sur un sceau",
       "sagaValeBody": "À Eastbrook, les morts ne reposent pas, et le sceau qui en est la cause appartient à une secte que l'on croyait disparue depuis longtemps. Remontez-en la trace jusqu'à un Appelant des tombes œuvrant dans la crypte de la chapelle, et ses propres papiers vous orientent vers la fagne au nord.",
       "sagaMarshTitle": "Le marais : un tribut d'âmes",
@@ -1730,10 +1732,10 @@ export const fr_FR: EnTranslations = {
     "lore": {
       "figuresTitle": "Des visages que vous apprendrez à connaître",
       "figuresBody": "Une poignée de gens parcourent toute la route à vos côtés. Guettez ces noms, de la vallée jusqu'aux sommets.",
-      "aldricRole": "Prêtre du Val",
-      "aldricBody": "Un humble prêtre de village qui, le premier, nomme le culte au-dessus d'une tombe profanée à Eastbrook, puis suit sa piste en personne à travers le marais jusqu'au rempart de Highwatch. Il est le cœur constant de toute la campagne.",
-      "marenRole": "L'éclaireuse du maréchal",
-      "marenBody": "Une traqueuse à la voix basse que vous croisez dans les roseaux de Mirefen, tout en pas feutrés et en lame courte. Elle suit la piste vers le nord, elle aussi, et c'est son oreille qui saisit les mots qui vous envoient vers les sommets."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Donjons et raids",
@@ -2054,6 +2056,216 @@ export const fr_FR: EnTranslations = {
     "continue": "Continue",
     "begin": "Begin",
     "skip": "Skip"
+  },
+  "editor": {
+    "appTitle": "Map Editor",
+    "docTitle": "Map Editor - World of ClaudeCraft",
+    "untitledMap": "Untitled Map",
+    "playtestPlayerName": "Mapmaker",
+    "topbar": {
+      "label": "Editor actions",
+      "mapNameLabel": "Map name",
+      "dirtyDot": "This map has unsaved changes",
+      "saving": "Saving...",
+      "neverSaved": "Not saved yet",
+      "savedLocal": "Saved to this browser",
+      "savedServer": "Saved (version {version})",
+      "new": "New",
+      "newTitle": "Start a new map from the built-in world",
+      "open": "Open",
+      "openTitle": "Open a saved map (browser or server)",
+      "save": "Save",
+      "saveTitle": "Save to this browser, and to the server when signed in (Ctrl+S)",
+      "saveAs": "Save As",
+      "saveAsTitle": "Save a copy under a new name",
+      "fork": "Fork",
+      "forkTitle": "Create your own server-side copy of this map",
+      "forkDisabledTitle": "Open a server map first to fork it",
+      "import": "Import",
+      "importTitle": "Import a map from a JSON file",
+      "export": "Export",
+      "exportTitle": "Download this map as a JSON file",
+      "uploadAsset": "Upload Asset",
+      "uploadAssetTitle": "Upload a GLB model (up to 8 MiB) to place in your maps",
+      "uploadAssetDisabledTitle": "Sign in from the game to upload assets",
+      "playtest": "Playtest",
+      "playtestTitle": "Boot the game on this map (offline, current edits included)",
+      "viewLabel": "View mode",
+      "view3d": "3D",
+      "view3dTitle": "Edit in the rendered world",
+      "view2d": "2D",
+      "view2dTitle": "Edit on the symbolic overhead map",
+      "undoCount": "Undo: {count}",
+      "undoCountTitle": "{count} undoable steps (Ctrl+Z to undo, Ctrl+Y to redo)",
+      "autosave": "Autosave",
+      "autosaveTitle": "Automatically save the map while there are unsaved changes. Turns itself off if a save fails.",
+      "undo": "Undo",
+      "undoTitle": "Undo the last change (Ctrl+Z)",
+      "redo": "Redo",
+      "redoTitle": "Redo the last undone change (Ctrl+Y)",
+      "offline": "Offline",
+      "offlineTitle": "Not signed in: maps save to this browser only. Sign in from the game to save online.",
+      "signIn": "Sign in",
+      "signInTitle": "Open the game login screen in a new tab",
+      "help": "Help",
+      "helpTitle": "Editor guide: tools, shortcuts, and the tutorial"
+    },
+    "tool": {
+      "listLabel": "Editor tools",
+      "keyHint": "{name} ({key})",
+      "select": "Select",
+      "raise": "Raise",
+      "lower": "Lower",
+      "smooth": "Smooth",
+      "flatten": "Flatten",
+      "paint": "Paint Biome",
+      "water": "Water",
+      "place": "Place Asset",
+      "blocker": "Blocker Wall",
+      "camp": "Camp",
+      "spawn": "Spawn Point",
+      "region": "Region",
+      "erase": "Erase"
+    },
+    "viewport": {
+      "assetsFailed": "Could not load the 3D viewport: {error}"
+    },
+    "a11y": {
+      "stage": "Map viewport",
+      "toasts": "Editor notifications"
+    },
+    "confirm": {
+      "cancel": "Cancel",
+      "ok": "OK",
+      "conflictTitle": "Someone else saved this map",
+      "conflictBody": "The server copy is now version {version}, newer than the one you loaded. Save your changes as a new map to avoid overwriting theirs.",
+      "conflictSaveCopy": "Save As Copy",
+      "discardTitle": "Discard unsaved changes?",
+      "discardBody": "\"{name}\" has unsaved changes that will be lost.",
+      "discard": "Discard"
+    },
+    "prompt": {
+      "saveAsTitle": "Save As",
+      "nameLabel": "Map name"
+    },
+    "status": {
+      "saveFailedLocal": "Could not save to this browser (storage may be full).",
+      "savedLocalOnly": "\"{name}\" saved to this browser. Sign in to also save it to the server.",
+      "savedServer": "\"{name}\" saved (version {version}).",
+      "autosaveOff": "Autosave turned off: {reason}",
+      "autosaveFailed": "Autosave draft could not be written (storage may be full).",
+      "forked": "Created your own copy: \"{name}\".",
+      "opened": "\"{name}\" opened.",
+      "newMap": "Started a new map.",
+      "imported": "\"{name}\" imported.",
+      "importFailed": "Could not import that file.",
+      "exported": "Map exported.",
+      "playtestLaunch": "Launching playtest...",
+      "playtestFailed": "Could not launch playtest (storage may be blocked)."
+    },
+    "upload": {
+      "notGlb": "Only .glb files can be uploaded.",
+      "tooLarge": "That file is larger than 8 MiB.",
+      "uploading": "Uploading...",
+      "uploaded": "\"{name}\" uploaded.",
+      "uploadedExisting": "You already uploaded this file; reusing it."
+    },
+    "serverError": {
+      "invalid_map_name": "That map name is not valid.",
+      "map_name_not_allowed": "That map name is not allowed.",
+      "invalid_map_doc": "This map document is not valid.",
+      "invalid_version": "That save is out of date. Reopen the map and try again.",
+      "map_limit_reached": "You've reached the limit of saved maps for your account.",
+      "map_not_found": "That map no longer exists.",
+      "version_conflict": "Someone else saved this map first.",
+      "slug_unavailable": "That map name is already taken. Try another.",
+      "map_too_large": "This map is too large to save.",
+      "invalid_glb": "That file is not a valid GLB model.",
+      "asset_blocked": "That asset was removed by a moderator.",
+      "asset_limit_reached": "You've reached the limit of uploaded assets for your account.",
+      "asset_storage_limit_reached": "You've reached your uploaded-asset storage limit.",
+      "asset_too_large": "That asset is larger than 8 MiB.",
+      "asset_not_found": "That asset no longer exists.",
+      "rate_limited": "Too many requests. Wait a moment and try again.",
+      "unauthorized": "Sign in from the game to do that.",
+      "network": "Could not reach the server. Check your connection.",
+      "timeout": "The server took too long to respond.",
+      "unknown": "Something went wrong. Try again."
+    },
+    "assets": {
+      "label": "Asset browser",
+      "title": "Assets",
+      "search": "Search assets",
+      "searchPlaceholder": "Search...",
+      "categoryTab": "{category} ({count})",
+      "uploadedTab": "Uploaded",
+      "uploadedSignIn": "Sign in from the game to see and upload your own assets.",
+      "uploadedLoadFailed": "Could not load your uploaded assets.",
+      "uploadedEmpty": "You haven't uploaded any assets yet.",
+      "loading": "Loading...",
+      "empty": "No assets match.",
+      "pick": "Place {name}",
+      "deleteAsset": "Delete asset",
+      "deleteAssetConfirm": "Delete \"{name}\"? Any map placement using it will fail to render.",
+      "category": {
+        "biome": "Biome",
+        "chars": "Characters",
+        "creatures": "Creatures",
+        "dungeon": "Dungeon",
+        "foliage": "Foliage",
+        "props": "Props",
+        "quest": "Quest",
+        "resources": "Resources",
+        "tools": "Tools",
+        "weapons": "Weapons"
+      }
+    },
+    "help": {
+      "title": "Editor Help",
+      "mouseTitle": "Mouse",
+      "flowTitle": "Save and draft",
+      "beginTutorial": "Begin tutorial",
+      "close": "Close",
+      "mouse": {
+        "orbit3d": "3D view: left-drag to orbit, right-drag to pan",
+        "fly3d": "3D view: scroll to zoom, WASD to fly",
+        "pan2d": "2D view: drag empty space to pan, scroll to zoom"
+      },
+      "flow": {
+        "save": "Save writes to this browser, and to the server once you are signed in",
+        "draft": "An autosave draft protects unsaved edits if the tab closes unexpectedly"
+      }
+    },
+    "tutorial": {
+      "title": "Editor tutorial",
+      "counter": "Step {current} of {total}",
+      "back": "Back",
+      "next": "Next",
+      "finish": "Finish",
+      "skip": "Skip",
+      "steps": {
+        "toolbar": {
+          "title": "Tools",
+          "body": "Pick a tool here. Place is ready to use today; more tools are coming soon."
+        },
+        "stage": {
+          "title": "Viewport",
+          "body": "This is your map. Switch between the 3D and 2D views any time."
+        },
+        "viewToggle": {
+          "title": "3D / 2D toggle",
+          "body": "Switch to the 2D overhead view for precise placement, or 3D to see the result."
+        },
+        "save": {
+          "title": "Save",
+          "body": "Save keeps a copy in this browser, and on the server once you sign in."
+        },
+        "help": {
+          "title": "Help",
+          "body": "Come back here any time for this tour."
+        }
+      }
+    }
   },
   "apiError": {
     "crossSiteRejected": "Cross-site request rejected.",
@@ -4329,6 +4541,10 @@ export const fr_FR: EnTranslations = {
         "name": "Provocation",
         "description": "Provoque la cible: votre menace rejoint celle de son ennemi le plus haï et elle est forcée de vous attaquer pendant 3 s."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
       "fireball": {
         "name": "Boule de feu",
         "description": "Lance une boule enflammée qui inflige {damage} points de dégâts de Feu plus des dégâts supplémentaires sur la durée."
@@ -4520,6 +4736,10 @@ export const fr_FR: EnTranslations = {
       "retribution_aura": {
         "name": "Aura de châtiment",
         "description": "Vous entoure d'énergie sacrée pendant 30 min, infligeant 5 points de dégâts Sacrés à tout ennemi qui vous frappe en mêlée."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
       },
       "tame_beast": {
         "name": "Apprivoiser une bête",
@@ -4804,6 +5024,10 @@ export const fr_FR: EnTranslations = {
       "rip": {
         "name": "Lacération",
         "description": "Coup de grâce qui inflige des dégâts de saignement sur 12 s. Consomme les points de combo. Forme de loup uniquement."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
       },
       "mortal_strike": {
         "name": "Frappe mortelle",
@@ -5897,6 +6121,18 @@ export const fr_FR: EnTranslations = {
         "name": "Éclat aux Marques de Compte",
         "flavorText": "...des marques par cinq, gravées profond, barrées chaque fois que le compte revenait. des centaines de cinq avant que les barres ne cessent, et la dernière rangée ne fut jamais finie..."
       },
+      "root_token_unbinding": {
+        "name": "Nœud de Racine Dénoué",
+        "flavorText": "...usé et lisse là où un pouce a pressé encore et encore, comme pour dénouer un nœud attaché autour de rien que l'on puisse voir. quelqu'un croyait que lâcher prise était une bonté. quelqu'un avait tort, ou trop tôt, ou les deux..."
+      },
+      "root_token_offering": {
+        "name": "Petite Pierre à Offrande",
+        "flavorText": "...un creux peu profond gravé dans la pierre, pas plus grand qu'une pièce, du genre où l'on laisserait une miette pour quelque chose qui ne pouvait pas demander. ce qui mangeait ici n'a pas cessé d'avoir faim. il a seulement cessé d'être vu..."
+      },
+      "root_token_verdict": {
+        "name": "Pierre du Jugement Marquée",
+        "flavorText": "...un compte marqué par trois, non par cinq, jugé et rejugé, pressé si fort que le troisième passage a fendu la pierre. quelqu'un n'arrêtait pas de changer d'avis sur la même question, encore et encore, dans le noir..."
+      },
       "reliquary_plate_chest": {
         "name": "Haubert de la garde du reliquaire"
       },
@@ -6023,6 +6259,15 @@ export const fr_FR: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "Spallières d'Appel-tempête"
+      },
+      "deathless_greatblade": {
+        "name": "Grande Lame immortelle"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Sceptre de la Cour immortelle"
+      },
+      "stormcallers_focus": {
+        "name": "Point focal de l'Appel-tempête"
       },
       "unknown_alien_weaponry": {
         "name": "Armement alien inconnu"
@@ -6262,6 +6507,15 @@ export const fr_FR: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Fléau de Thornpeak"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Esprit d'Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Esprit de Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Esprit de Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Spectre du registre"

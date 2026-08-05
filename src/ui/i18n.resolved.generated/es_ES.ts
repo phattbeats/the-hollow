@@ -1212,7 +1212,7 @@ export const es_ES: EnTranslations = {
         "levels": "Niveles {min} a {max}",
         "cta": "Conoce el mundo",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Valle de Eastbrook",
         "valeBlurb": "Verdes colinas y bosques antiguos donde comienza toda aventura.",
         "marshName": "Ciénaga de Mirefen",
@@ -1713,6 +1713,8 @@ export const es_ES: EnTranslations = {
       "typeGroupBody": "Cada capítulo de la historia principal termina en la puerta de una mazmorra. La fase previa se puede hacer en solitario, pero el golpe final contra el villano de un capítulo está pensado para un grupo de cinco.",
       "sagaTitle": "Sigue el rastro hacia el norte",
       "sagaBody": "La historia principal es una larga persecución. Un culto de la muerte está actuando sobre las tumbas del reino, y cada capítulo que cierras apunta una zona más arriba en el camino. Nunca te enfrentas a toda la conspiración a la vez; tiras de un hilo, y este conduce a la siguiente mano que lo sostiene.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "El Valle: un nombre en un sello",
       "sagaValeBody": "En Eastbrook los muertos no descansan, y la marca tras ello pertenece a una secta que se creía desaparecida hace mucho. Síguela hasta un Llamatumbas que trabaja en la cripta de la capilla, y sus propios papeles te señalan la ciénaga del norte.",
       "sagaMarshTitle": "La ciénaga: un diezmo de almas",
@@ -1730,10 +1732,10 @@ export const es_ES: EnTranslations = {
     "lore": {
       "figuresTitle": "Rostros que llegarás a conocer",
       "figuresBody": "Un puñado de personas recorren contigo el camino entero. Atento a estos nombres del valle a los picos.",
-      "aldricRole": "Sacerdote del Valle",
-      "aldricBody": "Un humilde sacerdote de aldea que es el primero en nombrar al culto ante una tumba profanada en Eastbrook, y luego sigue su rastro en persona a través de la ciénaga y hasta el muro de Highwatch. Es el corazón firme de toda la campaña.",
-      "marenRole": "La exploradora del mariscal",
-      "marenBody": "Una rastreadora de hablar quedo a la que conoces entre los juncos de Mirefen, pura sigilosa de pies ligeros y una hoja corta. También sigue el rastro hacia el norte, y es su oído el que capta las palabras que te envían a los picos."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Mazmorras y bandas",
@@ -2054,6 +2056,216 @@ export const es_ES: EnTranslations = {
     "continue": "Continue",
     "begin": "Begin",
     "skip": "Skip"
+  },
+  "editor": {
+    "appTitle": "Map Editor",
+    "docTitle": "Map Editor - World of ClaudeCraft",
+    "untitledMap": "Untitled Map",
+    "playtestPlayerName": "Mapmaker",
+    "topbar": {
+      "label": "Editor actions",
+      "mapNameLabel": "Map name",
+      "dirtyDot": "This map has unsaved changes",
+      "saving": "Saving...",
+      "neverSaved": "Not saved yet",
+      "savedLocal": "Saved to this browser",
+      "savedServer": "Saved (version {version})",
+      "new": "New",
+      "newTitle": "Start a new map from the built-in world",
+      "open": "Open",
+      "openTitle": "Open a saved map (browser or server)",
+      "save": "Save",
+      "saveTitle": "Save to this browser, and to the server when signed in (Ctrl+S)",
+      "saveAs": "Save As",
+      "saveAsTitle": "Save a copy under a new name",
+      "fork": "Fork",
+      "forkTitle": "Create your own server-side copy of this map",
+      "forkDisabledTitle": "Open a server map first to fork it",
+      "import": "Import",
+      "importTitle": "Import a map from a JSON file",
+      "export": "Export",
+      "exportTitle": "Download this map as a JSON file",
+      "uploadAsset": "Upload Asset",
+      "uploadAssetTitle": "Upload a GLB model (up to 8 MiB) to place in your maps",
+      "uploadAssetDisabledTitle": "Sign in from the game to upload assets",
+      "playtest": "Playtest",
+      "playtestTitle": "Boot the game on this map (offline, current edits included)",
+      "viewLabel": "View mode",
+      "view3d": "3D",
+      "view3dTitle": "Edit in the rendered world",
+      "view2d": "2D",
+      "view2dTitle": "Edit on the symbolic overhead map",
+      "undoCount": "Undo: {count}",
+      "undoCountTitle": "{count} undoable steps (Ctrl+Z to undo, Ctrl+Y to redo)",
+      "autosave": "Autosave",
+      "autosaveTitle": "Automatically save the map while there are unsaved changes. Turns itself off if a save fails.",
+      "undo": "Undo",
+      "undoTitle": "Undo the last change (Ctrl+Z)",
+      "redo": "Redo",
+      "redoTitle": "Redo the last undone change (Ctrl+Y)",
+      "offline": "Offline",
+      "offlineTitle": "Not signed in: maps save to this browser only. Sign in from the game to save online.",
+      "signIn": "Sign in",
+      "signInTitle": "Open the game login screen in a new tab",
+      "help": "Help",
+      "helpTitle": "Editor guide: tools, shortcuts, and the tutorial"
+    },
+    "tool": {
+      "listLabel": "Editor tools",
+      "keyHint": "{name} ({key})",
+      "select": "Select",
+      "raise": "Raise",
+      "lower": "Lower",
+      "smooth": "Smooth",
+      "flatten": "Flatten",
+      "paint": "Paint Biome",
+      "water": "Water",
+      "place": "Place Asset",
+      "blocker": "Blocker Wall",
+      "camp": "Camp",
+      "spawn": "Spawn Point",
+      "region": "Region",
+      "erase": "Erase"
+    },
+    "viewport": {
+      "assetsFailed": "Could not load the 3D viewport: {error}"
+    },
+    "a11y": {
+      "stage": "Map viewport",
+      "toasts": "Editor notifications"
+    },
+    "confirm": {
+      "cancel": "Cancel",
+      "ok": "OK",
+      "conflictTitle": "Someone else saved this map",
+      "conflictBody": "The server copy is now version {version}, newer than the one you loaded. Save your changes as a new map to avoid overwriting theirs.",
+      "conflictSaveCopy": "Save As Copy",
+      "discardTitle": "Discard unsaved changes?",
+      "discardBody": "\"{name}\" has unsaved changes that will be lost.",
+      "discard": "Discard"
+    },
+    "prompt": {
+      "saveAsTitle": "Save As",
+      "nameLabel": "Map name"
+    },
+    "status": {
+      "saveFailedLocal": "Could not save to this browser (storage may be full).",
+      "savedLocalOnly": "\"{name}\" saved to this browser. Sign in to also save it to the server.",
+      "savedServer": "\"{name}\" saved (version {version}).",
+      "autosaveOff": "Autosave turned off: {reason}",
+      "autosaveFailed": "Autosave draft could not be written (storage may be full).",
+      "forked": "Created your own copy: \"{name}\".",
+      "opened": "\"{name}\" opened.",
+      "newMap": "Started a new map.",
+      "imported": "\"{name}\" imported.",
+      "importFailed": "Could not import that file.",
+      "exported": "Map exported.",
+      "playtestLaunch": "Launching playtest...",
+      "playtestFailed": "Could not launch playtest (storage may be blocked)."
+    },
+    "upload": {
+      "notGlb": "Only .glb files can be uploaded.",
+      "tooLarge": "That file is larger than 8 MiB.",
+      "uploading": "Uploading...",
+      "uploaded": "\"{name}\" uploaded.",
+      "uploadedExisting": "You already uploaded this file; reusing it."
+    },
+    "serverError": {
+      "invalid_map_name": "That map name is not valid.",
+      "map_name_not_allowed": "That map name is not allowed.",
+      "invalid_map_doc": "This map document is not valid.",
+      "invalid_version": "That save is out of date. Reopen the map and try again.",
+      "map_limit_reached": "You've reached the limit of saved maps for your account.",
+      "map_not_found": "That map no longer exists.",
+      "version_conflict": "Someone else saved this map first.",
+      "slug_unavailable": "That map name is already taken. Try another.",
+      "map_too_large": "This map is too large to save.",
+      "invalid_glb": "That file is not a valid GLB model.",
+      "asset_blocked": "That asset was removed by a moderator.",
+      "asset_limit_reached": "You've reached the limit of uploaded assets for your account.",
+      "asset_storage_limit_reached": "You've reached your uploaded-asset storage limit.",
+      "asset_too_large": "That asset is larger than 8 MiB.",
+      "asset_not_found": "That asset no longer exists.",
+      "rate_limited": "Too many requests. Wait a moment and try again.",
+      "unauthorized": "Sign in from the game to do that.",
+      "network": "Could not reach the server. Check your connection.",
+      "timeout": "The server took too long to respond.",
+      "unknown": "Something went wrong. Try again."
+    },
+    "assets": {
+      "label": "Asset browser",
+      "title": "Assets",
+      "search": "Search assets",
+      "searchPlaceholder": "Search...",
+      "categoryTab": "{category} ({count})",
+      "uploadedTab": "Uploaded",
+      "uploadedSignIn": "Sign in from the game to see and upload your own assets.",
+      "uploadedLoadFailed": "Could not load your uploaded assets.",
+      "uploadedEmpty": "You haven't uploaded any assets yet.",
+      "loading": "Loading...",
+      "empty": "No assets match.",
+      "pick": "Place {name}",
+      "deleteAsset": "Delete asset",
+      "deleteAssetConfirm": "Delete \"{name}\"? Any map placement using it will fail to render.",
+      "category": {
+        "biome": "Biome",
+        "chars": "Characters",
+        "creatures": "Creatures",
+        "dungeon": "Dungeon",
+        "foliage": "Foliage",
+        "props": "Props",
+        "quest": "Quest",
+        "resources": "Resources",
+        "tools": "Tools",
+        "weapons": "Weapons"
+      }
+    },
+    "help": {
+      "title": "Editor Help",
+      "mouseTitle": "Mouse",
+      "flowTitle": "Save and draft",
+      "beginTutorial": "Begin tutorial",
+      "close": "Close",
+      "mouse": {
+        "orbit3d": "3D view: left-drag to orbit, right-drag to pan",
+        "fly3d": "3D view: scroll to zoom, WASD to fly",
+        "pan2d": "2D view: drag empty space to pan, scroll to zoom"
+      },
+      "flow": {
+        "save": "Save writes to this browser, and to the server once you are signed in",
+        "draft": "An autosave draft protects unsaved edits if the tab closes unexpectedly"
+      }
+    },
+    "tutorial": {
+      "title": "Editor tutorial",
+      "counter": "Step {current} of {total}",
+      "back": "Back",
+      "next": "Next",
+      "finish": "Finish",
+      "skip": "Skip",
+      "steps": {
+        "toolbar": {
+          "title": "Tools",
+          "body": "Pick a tool here. Place is ready to use today; more tools are coming soon."
+        },
+        "stage": {
+          "title": "Viewport",
+          "body": "This is your map. Switch between the 3D and 2D views any time."
+        },
+        "viewToggle": {
+          "title": "3D / 2D toggle",
+          "body": "Switch to the 2D overhead view for precise placement, or 3D to see the result."
+        },
+        "save": {
+          "title": "Save",
+          "body": "Save keeps a copy in this browser, and on the server once you sign in."
+        },
+        "help": {
+          "title": "Help",
+          "body": "Come back here any time for this tour."
+        }
+      }
+    }
   },
   "apiError": {
     "crossSiteRejected": "Cross-site request rejected.",
@@ -4329,6 +4541,10 @@ export const es_ES: EnTranslations = {
         "name": "Provocar",
         "description": "Provoca al objetivo: tu amenaza sube hasta igualar la de su enemigo más odiado y queda obligado a atacarte durante 3 s."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
       "fireball": {
         "name": "Bola de Fuego",
         "description": "Lanza una bola ígnea que causa {damage} de daño de Fuego y daño adicional en el tiempo."
@@ -4520,6 +4736,10 @@ export const es_ES: EnTranslations = {
       "retribution_aura": {
         "name": "Aura de represalia",
         "description": "Te rodea de energía sagrada durante 30 min y causa 5 de daño Sagrado a cualquier enemigo que te golpee cuerpo a cuerpo."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
       },
       "tame_beast": {
         "name": "Domesticar bestia",
@@ -4804,6 +5024,10 @@ export const es_ES: EnTranslations = {
       "rip": {
         "name": "Desgarrar",
         "description": "Remate que causa daño de sangrado durante 12 s. Consume puntos de combo. Solo en Forma de lobo."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
       },
       "mortal_strike": {
         "name": "Golpe mortal",
@@ -5897,6 +6121,18 @@ export const es_ES: EnTranslations = {
         "name": "Esquirla con Marcas de Cuenta",
         "flavorText": "...marcas de cinco en cinco, grabadas hondo, tachadas cada vez que la cuenta daba la vuelta. cientos de cincos antes de que el tachado se detenga, y la última fila nunca se terminó..."
       },
+      "root_token_unbinding": {
+        "name": "Nudo de Raíz Aflojado",
+        "flavorText": "...desgastado y suave donde un pulgar presionó una y otra vez, como si aflojara un nudo atado alrededor de nada que pudieras ver. alguien creyó que soltar era un acto de bondad. alguien se equivocó, o se adelantó, o ambas cosas..."
+      },
+      "root_token_offering": {
+        "name": "Pequeña Piedra de Alimentación",
+        "flavorText": "...un cuenco poco profundo tallado en piedra, no más grande que una moneda, del tipo en el que dejarías una migaja para algo que no podía pedirla. lo que comía aquí no dejó de tener hambre. solo dejó de ser visto..."
+      },
+      "root_token_verdict": {
+        "name": "Piedra Marcada de Juicio",
+        "flavorText": "...una cuenta marcada de tres en tres, no de cinco en cinco, juzgada y rejuzgada, presionada con tanta fuerza que la tercera marca partió la piedra. alguien seguía cambiando de opinión sobre la misma pregunta, una y otra vez, en la oscuridad..."
+      },
       "reliquary_plate_chest": {
         "name": "Loriga de la Guardia del Relicario"
       },
@@ -6023,6 +6259,15 @@ export const es_ES: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "Bufas del Invocatormentas"
+      },
+      "deathless_greatblade": {
+        "name": "Espadón de los Eternos"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Cetro de la Corte Eterna"
+      },
+      "stormcallers_focus": {
+        "name": "Foco del Invocatormentas"
       },
       "unknown_alien_weaponry": {
         "name": "Armamento alienígena desconocido"
@@ -6262,6 +6507,15 @@ export const es_ES: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Azote de Thornpeak"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Alma de Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Alma de Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Alma de Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Espectro del registro"

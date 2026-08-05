@@ -1781,6 +1781,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.taunt.name': 'Провокация',
   'entities.abilities.taunt.description':
     'Провоцирует цель: ваша угроза повышается до уровня самого ненавистного ей врага, и она вынуждена атаковать вас 3 сек.',
+  'entities.abilities.ironhold.name': 'Железная защита',
+  'entities.abilities.ironhold.description':
+    'Вы укрываетесь за щитом, снижая весь получаемый урон на 40% в течение 8 сек.',
   'entities.abilities.fireball.name': 'Огненный шар',
   'entities.abilities.fireball.description':
     'Бросает огненный шар, наносящий {damage} ед. урона от огня и дополнительный периодический урон.',
@@ -1919,6 +1922,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.retribution_aura.name': 'Аура воздаяния',
   'entities.abilities.retribution_aura.description':
     'Окружает вас священной энергией на 30 мин и наносит 5 ед. урона светлой магией любому врагу, атакующему вас в ближнем бою.',
+  'entities.abilities.sacred_bulwark.name': 'Священный бастион',
+  'entities.abilities.sacred_bulwark.description':
+    'В течение 10 сек. следующий смертельный удар по вам будет отменен, а здоровье восстановлено до 35%.',
   'entities.abilities.tame_beast.name': 'Приручение зверя',
   'entities.abilities.tame_beast.description':
     'Начинает приручать зверя в качестве спутника. Он должен быть не выше вашего уровня и не элитным. Ваш питомец следует за вами, атакует врагов и удерживает собственную угрозу. Одновременно можно иметь одного питомца.',
@@ -2121,6 +2127,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.rip.name': 'Разрывание',
   'entities.abilities.rip.description':
     'Завершающий прием, наносящий урон от кровотечения в течение 12 сек. Расходует приемы серии. Только в облике волка.',
+  'entities.abilities.primal_reflexes.name': 'Первобытные рефлексы',
+  'entities.abilities.primal_reflexes.description':
+    'Ваши инстинкты обостряются, повышая шанс уклонения на 50% в течение 6 сек.',
   'entities.abilities.mortal_strike.name': 'Смертельный удар',
   'entities.abilities.mortal_strike.description':
     'Жестокий удар, наносящий урон оружием плюс {damage}. (ключевая способность ветки «Оружие»)',
@@ -3757,6 +3766,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hud.tutorial.returnBody':
     'Вы несете то, что горит. Вернитесь к Брату Зеленолапу и нажмите {interactKey}, чтобы сдать его.',
   'entities.mobs.nythraxis_skeleton_warrior.name': 'Восставший королевский страж',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': 'Дух Алдрена',
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'Дух Малрика',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'Дух Восса',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'Нитраксис, Бич Торнпика',
   'itemUi.quality.legendary': 'Легендарное',
   'entities.items.deathless_heartwood.name': 'Сердцевина бессмертной короны',
@@ -3769,6 +3781,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': 'Оплечье Пламени души',
   'entities.items.stormcallers_crown.name': 'Корона призывателя бурь',
   'entities.items.stormcallers_spaulders.name': 'Наплечники призывателя бурь',
+  'entities.items.deathless_greatblade.name': 'Бессмертный большой меч',
+  'entities.items.scepter_of_the_deathless_court.name': 'Скипетр бессмертного двора',
+  'entities.items.stormcallers_focus.name': 'Фокус призывателя бурь',
   'hud.chat.context.convertToRaid': 'Преобразовать в рейд',
   'hud.chat.context.convertToParty': 'Преобразовать в группу',
   'hudChrome.raidConvert.leaderOnly': 'Только лидер рейда может преобразовать рейд в группу.',
@@ -4823,15 +4838,15 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     'Заменить старую вещь свежим улучшением даст вам больше, чем безупречная игра в снаряжении, из которого вы выросли. Когда выпадает что-то получше или это предлагает задание, берите. Не приберегайте хорошие вещи на потом.',
   'guide.gear.upgradeTitle': 'Держите снаряжение свежим',
-  'guide.lore.aldricBody':
-    'Скромный деревенский жрец, что первым называет культ над осквернённой могилой в Иствруке, а затем лично идёт по его следу через топь и до самой стены в Хайвотче. Он, незыблемое сердце всей кампании.',
-  'guide.lore.aldricRole': 'Жрец Долины',
+  'guide.lore.faddickBody':
+    'Тихий секстон с длинным инструментом в руках, которому лопата ближе меча. Он вычищает то, что подбирается из леса, предаёт мёртвых земле и помнит каждый надел на своей земле. Когда след уходит от святилища, чаще всего дорогу указывает он.',
+  'guide.lore.faddickRole': 'Секстон Фаллоу-Эйкерс',
   'guide.lore.figuresBody':
     'Горстка людей пройдёт с вами всю дорогу. Запоминайте эти имена от долины до самых вершин.',
   'guide.lore.figuresTitle': 'Лица, что станут вам знакомы',
-  'guide.lore.marenBody':
-    'Немногословная следопытка, которую вы встречаете в камышах Мирефена, вся тихий шаг и короткий клинок. Она тоже идёт по следу на север, и именно её слух улавливает слова, что отправляют вас к вершинам.',
-  'guide.lore.marenRole': 'Разведчица маршала',
+  'guide.lore.zebediahBody':
+    'Терпеливый вергер, что держит Ричес по своему календарю, его руки всегда наполовину в земле. Он следит за лампадой у сосуда, правит посев по луне и оказывается первым голосом, которым дорога заговаривает с новоприбывшим.',
+  'guide.lore.zebediahRole': 'Вергер Рут-Холлоу',
   'guide.models.count': 'Моделей: {count}',
   'guide.models.groupClasses': 'Классы',
   'guide.models.groupCreatures': 'Существа',
@@ -4880,6 +4895,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'На Thornpeak весь замысел проясняется. Каждая душа, украденная ещё со времён Vale, была податью, что лилась на мрачное дело культа в сердце горы. След, что начался во дворе часовни, кончается здесь — в спуске на пятерых игроков навстречу той руке, что стоит за всем этим. А кто ждёт на самом дне, мы дадим вам узнать самим.',
   'guide.questsPage.sagaPeaksTitle': 'Пики: для чего была подать',
   'guide.questsPage.sagaTitle': 'Следуйте по следу на север',
+  'guide.questsPage.sagaReachesBody':
+    'В Холлоу-Ричес Брат Гринпоу поддерживает живую лампаду у святилищного сосуда, а вергер и секстон правят посев по луне. Первая нить здесь невелика: не дать лампаде погаснуть, вычистить волков, узнать эту землю. Когда дорога наконец откроется, вы уже будете знать, в чьих руках лампада.',
+  'guide.questsPage.sagaReachesTitle': 'Ричес: лампада и календарь',
   'guide.questsPage.sagaValeBody':
     'В Иствруке мёртвым нет покоя, а печать за этим принадлежит секте, что давно считалась сгинувшей. Проследите её до Зовущего Могилу, трудящегося в крипте часовни, и его собственные бумаги укажут вам путь к топи на севере.',
   'guide.questsPage.sagaValeTitle': 'Долина: имя на печати',
@@ -5087,6 +5105,15 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Осколок с зарубками',
   'entities.items.tally_shard.flavorText':
     '...зарубки по пять, глубокие, каждая вычеркнута по завершении счёта. сотни пятёрок вычеркнуты, прежде чем вычёркивание прекращается, а последний ряд так и остался незавершённым...',
+  'entities.items.root_token_unbinding.name': 'Развязанный корневой узел',
+  'entities.items.root_token_unbinding.flavorText':
+    '...отполирован с одной стороны большим пальцем, снова и снова, будто развязывая узел, привязанный неизвестно к чему. кто-то верил, что отпустить - это милосердие. этот кто-то ошибался, или поторопился, или и то и другое...',
+  'entities.items.root_token_offering.name': 'Маленький камень кормления',
+  'entities.items.root_token_offering.flavorText':
+    '...в камне выцарапана мелкая чаша, не больше монеты, оставить крошку тому, что не может попросить. то, что здесь ело, не перестало голодать. оно просто перестало быть видимым...',
+  'entities.items.root_token_verdict.name': 'Камень с зарубками приговора',
+  'entities.items.root_token_verdict.flavorText':
+    '...зарубки нанесены по три, а не по пять, приговор выносился и пересматривался снова, вдавлен так глубоко, что на третий раз камень треснул. будто кто-то во тьме снова и снова менял решение об одном и том же вопросе...',
   'entities.mobs.acolyte_tessa.name': 'Послушница Тесса',
   'entities.mobs.deacon_varric.name': 'Дьякон Варрик',
   'entities.mobs.reliquary_bonewalker.name': 'Поднятый костеход',
@@ -5956,4 +5983,170 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.bramble.name': 'Брэмбл',
   'entities.npcs.bramble.title': 'Квартирмейстер чести',
   'entities.npcs.bramble.greeting': 'Пески помнят каждую победу. Трать свою честь с умом.',
+  'editor.viewport.assetsFailed': 'Не удалось загрузить 3D-вид: {error}',
+  'editor.appTitle': 'Редактор карт',
+  'editor.docTitle': 'Редактор карт - World of ClaudeCraft',
+  'editor.untitledMap': 'Карта без названия',
+  'editor.playtestPlayerName': 'Автор карты',
+  'editor.topbar.label': 'Действия редактора',
+  'editor.topbar.mapNameLabel': 'Название карты',
+  'editor.topbar.dirtyDot': 'На этой карте есть несохранённые изменения',
+  'editor.topbar.saving': 'Сохранение...',
+  'editor.topbar.neverSaved': 'Ещё не сохранено',
+  'editor.topbar.newTitle': 'Начать новую карту со встроенного мира',
+  'editor.topbar.openTitle': 'Открыть сохранённую карту (браузер или сервер)',
+  'editor.topbar.saveTitle':
+    'Сохранить в этом браузере, а при входе в систему - также на сервере (Ctrl+S)',
+  'editor.topbar.saveAsTitle': 'Сохранить копию под новым именем',
+  'editor.topbar.forkTitle': 'Создать собственную серверную копию этой карты',
+  'editor.topbar.forkDisabledTitle': 'Сначала откройте серверную карту, чтобы создать её копию',
+  'editor.topbar.import': 'Импорт',
+  'editor.topbar.importTitle': 'Импортировать карту из файла JSON',
+  'editor.topbar.export': 'Экспорт',
+  'editor.topbar.exportTitle': 'Скачать эту карту как файл JSON',
+  'editor.topbar.uploadAsset': 'Загрузить ассет',
+  'editor.topbar.uploadAssetTitle':
+    'Загрузите модель GLB (до 8 МиБ), чтобы разместить её на своих картах',
+  'editor.topbar.uploadAssetDisabledTitle': 'Войдите в игру, чтобы загружать ассеты',
+  'editor.topbar.playtest': 'Плейтест',
+  'editor.topbar.playtestTitle': 'Запустить игру на этой карте (офлайн, с текущими правками)',
+  'editor.topbar.viewLabel': 'Режим просмотра',
+  'editor.topbar.view3dTitle': 'Редактировать в отрисованном мире',
+  'editor.topbar.view2dTitle': 'Редактировать на условной карте сверху',
+  'editor.topbar.undoCountTitle': 'Доступно отмен: {count} (Ctrl+Z - отменить, Ctrl+Y - повторить)',
+  'editor.topbar.autosave': 'Автосохранение',
+  'editor.topbar.autosaveTitle':
+    'Автоматически сохранять карту при наличии несохранённых изменений. Отключается само при ошибке сохранения.',
+  'editor.topbar.undoTitle': 'Отменить последнее изменение (Ctrl+Z)',
+  'editor.topbar.redoTitle': 'Повторить последнее отменённое изменение (Ctrl+Y)',
+  'editor.topbar.offline': 'Офлайн',
+  'editor.topbar.offlineTitle':
+    'Вы не вошли в систему: карты сохраняются только в этом браузере. Войдите в игру, чтобы сохранять онлайн.',
+  'editor.topbar.signInTitle': 'Открыть экран входа в игру в новой вкладке',
+  'editor.topbar.helpTitle': 'Руководство по редактору: инструменты, горячие клавиши и обучение',
+  'editor.tool.listLabel': 'Инструменты редактора',
+  'editor.tool.select': 'Выбор',
+  'editor.tool.raise': 'Поднять',
+  'editor.tool.lower': 'Опустить',
+  'editor.tool.smooth': 'Сгладить',
+  'editor.tool.flatten': 'Выровнять',
+  'editor.tool.paint': 'Покрасить биом',
+  'editor.tool.water': 'Вода',
+  'editor.tool.place': 'Разместить ассет',
+  'editor.tool.blocker': 'Стена-блокиратор',
+  'editor.tool.spawn': 'Точка появления',
+  'editor.tool.region': 'Область',
+  'editor.tool.erase': 'Стереть',
+  'editor.topbar.savedLocal': 'Сохранено в этом браузере',
+  'editor.topbar.savedServer': 'Сохранено (версия {version})',
+  'editor.a11y.stage': 'Область карты',
+  'editor.a11y.toasts': 'Уведомления редактора',
+  'editor.confirm.cancel': 'Отмена',
+  'editor.confirm.conflictTitle': 'Кто-то другой уже сохранил эту карту',
+  'editor.confirm.conflictBody':
+    'Серверная копия теперь имеет версию {version}, новее той, что вы загрузили. Сохраните свои изменения как новую карту, чтобы не перезаписать чужие.',
+  'editor.confirm.discardTitle': 'Отменить несохранённые изменения?',
+  'editor.confirm.discardBody':
+    '"{name}" содержит несохранённые изменения, которые будут потеряны.',
+  'editor.confirm.discard': 'Отменить',
+  'editor.prompt.nameLabel': 'Название карты',
+  'editor.status.saveFailedLocal':
+    'Не удалось сохранить в этом браузере (возможно, хранилище переполнено).',
+  'editor.status.savedLocalOnly':
+    '"{name}" сохранена в этом браузере. Войдите в систему, чтобы также сохранить на сервере.',
+  'editor.status.savedServer': '"{name}" сохранена (версия {version}).',
+  'editor.status.autosaveOff': 'Автосохранение отключено: {reason}',
+  'editor.status.autosaveFailed':
+    'Не удалось записать черновик автосохранения (возможно, хранилище переполнено).',
+  'editor.status.forked': 'Создана ваша собственная копия: "{name}".',
+  'editor.status.opened': '"{name}" открыта.',
+  'editor.status.newMap': 'Начата новая карта.',
+  'editor.status.imported': '"{name}" импортирована.',
+  'editor.status.importFailed': 'Не удалось импортировать этот файл.',
+  'editor.status.exported': 'Карта экспортирована.',
+  'editor.status.playtestLaunch': 'Запуск плейтеста…',
+  'editor.status.playtestFailed': 'Не удалось запустить плейтест (хранилище может быть заблокировано).',
+  'editor.upload.notGlb': 'Можно загружать только файлы .glb.',
+  'editor.upload.tooLarge': 'Этот файл больше 8 МиБ.',
+  'editor.upload.uploading': 'Загрузка...',
+  'editor.upload.uploaded': '"{name}" загружен.',
+  'editor.upload.uploadedExisting': 'Вы уже загружали этот файл; он будет использован повторно.',
+  'editor.serverError.invalid_map_name': 'Это название карты недопустимо.',
+  'editor.serverError.map_name_not_allowed': 'Это название карты запрещено.',
+  'editor.serverError.invalid_map_doc': 'Этот документ карты недействителен.',
+  'editor.serverError.invalid_version':
+    'Это сохранение устарело. Откройте карту заново и повторите попытку.',
+  'editor.serverError.map_limit_reached':
+    'Вы достигли лимита сохранённых карт для своего аккаунта.',
+  'editor.serverError.map_not_found': 'Эта карта больше не существует.',
+  'editor.serverError.version_conflict': 'Кто-то другой уже сохранил эту карту первым.',
+  'editor.serverError.slug_unavailable': 'Это название карты уже занято. Попробуйте другое.',
+  'editor.serverError.map_too_large': 'Эта карта слишком велика для сохранения.',
+  'editor.serverError.invalid_glb': 'Этот файл не является допустимой моделью GLB.',
+  'editor.serverError.asset_blocked': 'Этот ассет был удалён модератором.',
+  'editor.serverError.asset_limit_reached':
+    'Вы достигли лимита загруженных ассетов для своего аккаунта.',
+  'editor.serverError.asset_storage_limit_reached':
+    'Вы достигли лимита хранилища для загруженных ассетов.',
+  'editor.serverError.asset_too_large': 'Этот ассет больше 8 МиБ.',
+  'editor.serverError.asset_not_found': 'Этот ассет больше не существует.',
+  'editor.serverError.rate_limited':
+    'Слишком много запросов. Подождите немного и повторите попытку.',
+  'editor.serverError.unauthorized': 'Войдите в игру, чтобы сделать это.',
+  'editor.serverError.network': 'Не удалось подключиться к серверу. Проверьте соединение.',
+  'editor.serverError.timeout': 'Сервер слишком долго не отвечал.',
+  'editor.serverError.unknown': 'Что-то пошло не так. Попробуйте ещё раз.',
+  'editor.assets.label': 'Обозреватель ассетов',
+  'editor.assets.title': 'Ассеты',
+  'editor.assets.search': 'Поиск ассетов',
+  'editor.assets.searchPlaceholder': 'Поиск...',
+  'editor.assets.uploadedTab': 'Загруженные',
+  'editor.assets.uploadedSignIn':
+    'Войдите в игру, чтобы видеть и загружать свои собственные ассеты.',
+  'editor.assets.uploadedLoadFailed': 'Не удалось загрузить список ваших ассетов.',
+  'editor.assets.uploadedEmpty': 'Вы ещё не загрузили ни одного ассета.',
+  'editor.assets.loading': 'Загрузка...',
+  'editor.assets.empty': 'Нет подходящих ассетов.',
+  'editor.assets.pick': 'Разместить {name}',
+  'editor.assets.deleteAsset': 'Удалить ассет',
+  'editor.assets.deleteAssetConfirm':
+    'Удалить "{name}"? Все размещения на карте, использующие этот ассет, перестанут отображаться.',
+  'editor.assets.category.biome': 'Биом',
+  'editor.assets.category.chars': 'Персонажи',
+  'editor.assets.category.creatures': 'Существа',
+  'editor.assets.category.dungeon': 'Подземелье',
+  'editor.assets.category.foliage': 'Растительность',
+  'editor.assets.category.props': 'Реквизит',
+  'editor.assets.category.quest': 'Задание',
+  'editor.assets.category.resources': 'Ресурсы',
+  'editor.assets.category.tools': 'Инструменты',
+  'editor.assets.category.weapons': 'Оружие',
+  'editor.help.title': 'Справка редактора',
+  'editor.help.mouseTitle': 'Мышь',
+  'editor.help.flowTitle': 'Сохранение и черновик',
+  'editor.help.beginTutorial': 'Начать обучение',
+  'editor.help.close': 'Закрыть',
+  'editor.help.mouse.orbit3d':
+    '3D-вид: перетаскивание левой кнопкой - вращение, правой - панорамирование',
+  'editor.help.mouse.fly3d': '3D-вид: прокрутка - масштаб, WASD - полёт',
+  'editor.help.mouse.pan2d':
+    '2D-вид: перетаскивание пустого места - панорамирование, прокрутка - масштаб',
+  'editor.help.flow.save':
+    'Сохранение записывает в этот браузер, а после входа в систему - и на сервер',
+  'editor.help.flow.draft':
+    'Черновик автосохранения защищает несохранённые правки при неожиданном закрытии вкладки',
+  'editor.tutorial.title': 'Обучение редактору',
+  'editor.tutorial.finish': 'Готово',
+  'editor.tutorial.steps.toolbar.title': 'Инструменты',
+  'editor.tutorial.steps.toolbar.body':
+    'Выбирайте инструмент здесь. Размещение уже доступно; другие инструменты появятся позже.',
+  'editor.tutorial.steps.stage.title': 'Область просмотра',
+  'editor.tutorial.steps.stage.body':
+    'Это ваша карта. Вы можете в любой момент переключаться между 3D- и 2D-видом.',
+  'editor.tutorial.steps.viewToggle.title': 'Переключение 3D / 2D',
+  'editor.tutorial.steps.viewToggle.body':
+    'Переключитесь на 2D-вид сверху для точного размещения или на 3D, чтобы увидеть результат.',
+  'editor.tutorial.steps.save.body':
+    'Сохранение оставляет копию в этом браузере, а после входа в систему - и на сервере.',
+  'editor.tutorial.steps.help.body': 'Вы можете в любой момент вернуться сюда за этим туром.',
 };

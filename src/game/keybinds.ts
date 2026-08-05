@@ -111,6 +111,13 @@ export const BIND_ACTIONS: BindAction[] = [
     kind: 'edge',
     defaults: ['KeyR'],
   },
+  {
+    id: 'weaponStow',
+    label: 'Sheathe Weapon',
+    category: 'Movement',
+    kind: 'edge',
+    defaults: ['KeyZ'],
+  },
   // Targeting / interaction
   {
     id: 'target',

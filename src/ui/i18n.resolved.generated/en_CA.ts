@@ -1187,15 +1187,15 @@ export const en_CA: EnTranslations = {
       "typeTerm": "Term"
     },
     "home": {
-      "eyebrow": "Classic-style browser MMO",
+      "eyebrow": "A shrine, a god, and the friends who keep the lamp lit",
       "title": "The Hollow",
-      "subtitle": "Settle in at the shrine, quest with friends, and explore a hand-built world, free in your browser.",
+      "subtitle": "Walk the Reaches, hear the Plant, and tend the shrine it is bound to. Quest, group up, and grow your own corner of a hand-built world, free in your browser.",
       "ctaPlay": "Play Now",
       "ctaLearn": "How to Play",
       "what": {
         "heading": "A classic MMO, made to be picked up",
         "pillarPlayTitle": "Play in your browser",
-        "pillarPlayBody": "No download, no launcher. Make a character and you are in the world in seconds, on desktop or phone.",
+        "pillarPlayBody": "No download, no launcher. Make a character and you are at the Gate in seconds, on desktop or phone.",
         "pillarClassesTitle": "Nine classes, three roles",
         "pillarClassesBody": "Tank, heal, or deal the damage. Every class plays the way its archetype should, with talents to make it yours.",
         "pillarOpenTitle": "Free to play",
@@ -1207,14 +1207,14 @@ export const en_CA: EnTranslations = {
         "cta": "Explore the classes"
       },
       "world": {
-        "heading": "Explore the world",
-        "sub": "The Hollow Reaches, where every adventure begins now, plus three more zones waiting beyond it.",
+        "heading": "From the Gate, into the world",
+        "sub": "Begin at the shrine in the Hollow Reaches, then follow the road north through the Vale, the Marsh, and on to the cold peaks.",
         "levels": "Levels {min} to {max}",
         "cta": "See the world",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Eastbrook Vale",
-        "valeBlurb": "Green hills and old woods where every adventure begins.",
+        "valeBlurb": "Green hills and old woods where every adventure beyond the shrine begins.",
         "marshName": "Mirefen Marsh",
         "marshBlurb": "Sunken fens and tide-worn ruins, home to murlocs and worse.",
         "peaksName": "Thornpeak Heights",
@@ -1711,14 +1711,16 @@ export const en_CA: EnTranslations = {
       "typeMusterBody": "Some quests have you rally a town before a push north: thin the threat at the gates and gather what the defenders need. These are slay and gather objectives in service of the people whose story you are in, and they keep you moving with them.",
       "typeGroupTitle": "Group finales",
       "typeGroupBody": "Each chapter of the main story ends at a dungeon door. The lead-in is soloable, but the final blow against a chapter's villain is meant for a party of five.",
-      "sagaTitle": "Follow the trail north",
-      "sagaBody": "The main story is one long chase. A death-cult is at work on the realm's graves, and every chapter you close points one zone further up the road. You never fight the whole conspiracy at once; you pull one thread, and it leads to the next hand holding it.",
-      "sagaValeTitle": "The Vale: a name on a sigil",
-      "sagaValeBody": "In Eastbrook the dead will not rest, and the mark behind it belongs to a sect long thought gone. Trace it to a Gravecaller working the chapel crypt, and his own papers point you toward the fen in the north.",
-      "sagaMarshTitle": "The marsh: a tithe of souls",
-      "sagaMarshBody": "In Mirefen the drownings are no accident. Someone is filling the fen like a tithing box, raising obedient dead from every traveler the water takes. Chase the orders up the chain to a Mistcaller in the drowned bastion, whose last words name something older still, stirring beneath the peaks.",
-      "sagaPeaksTitle": "The peaks: what the tithe was for",
-      "sagaPeaksBody": "On Thornpeak the whole scheme comes clear. Every soul stolen since the Vale was a tithe poured toward the cult's grim work in the mountain's heart. The trail that began in a chapel yard ends here, in a five-player descent to face the hand behind it all. We will let you find out who waits at the bottom.",
+      "sagaTitle": "From the shrine, into the wood",
+      "sagaBody": "The main thread of the story starts in the Hollow Reaches, at the vase, and follows the road north. The Plant keeps the shrine's lamp lit, and the friends who keep it standing pass the trail on to the next. You never face the whole weight of it at once; you take one step, and it shows you the next.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
+      "sagaValeTitle": "The Vale: the lamp at the gate",
+      "sagaValeBody": "Eastbrook is the first town you reach on the road north. The marshal there knows the Plant by name, even if the town is slow to say it. Stand the watch, hunt the cultists who would have the lamp out, and the marshal will point you to the marsh and to the warden who holds the bridge there.",
+      "sagaMarshTitle": "The marsh: a hand of drowned roots",
+      "sagaMarshBody": "In Mirefen, the water has begun to remember the Plant in a wrong way. Someone is filling the fen like a tithing box, growing obedient dead from every traveler the water takes, and the warden at the bridge has been holding them at the gate as long as her arms allow. Chase the orders up the chain to the drowned bastion, and you will learn whose roots are reaching up from beneath the peaks.",
+      "sagaPeaksTitle": "The peaks: what the roots were for",
+      "sagaPeaksBody": "On Thornpeak the whole scheme comes clear. Every soul drowned since the Vale was a tithing poured toward the cult's grim work in the mountain's heart, and the wall at Highwatch is all that has held the lamp up to now. The trail that began at a vase ends here, in a ten-player descent to face the hand behind it all. We will let you find out what waits at the bottom.",
       "sideTitle": "Threads off the main road",
       "sideWardenTitle": "Earning your name",
       "sideWardenBody": "Alongside the story, the marshals and wardens of the Vale and the fen hand out a standing bounty ladder. Work your way up it, foe by foe, the way every bounty hunter before you earned their place. It is honest leveling and a tour of each zone's worst troublemakers.",
@@ -1729,11 +1731,11 @@ export const en_CA: EnTranslations = {
     },
     "lore": {
       "figuresTitle": "Faces you will come to know",
-      "figuresBody": "A handful of people walk the whole road with you. Watch for these names from the valley to the peaks.",
-      "aldricRole": "Priest of the Vale",
-      "aldricBody": "A humble village priest who first names the cult over a defiled grave in Eastbrook, then follows its trail in person through the marsh and up to the wall at Highwatch. He is the steady heart of the whole campaign.",
-      "marenRole": "The Marshal's Scout",
-      "marenBody": "A low-talking tracker you meet in the reeds of Mirefen, all quiet feet and a short blade. She follows the trail north too, and it is her ear that catches the words that send you to the peaks."
+      "figuresBody": "Begin at the shrine: the sexton and the verger who keep the Reaches to a calendar. The road north will hand you the marshal, the warden, and the captain in their turn.",
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Dungeons and Raids",
@@ -2054,6 +2056,216 @@ export const en_CA: EnTranslations = {
     "continue": "Continue",
     "begin": "Begin",
     "skip": "Skip"
+  },
+  "editor": {
+    "appTitle": "Map Editor",
+    "docTitle": "Map Editor - World of ClaudeCraft",
+    "untitledMap": "Untitled Map",
+    "playtestPlayerName": "Mapmaker",
+    "topbar": {
+      "label": "Editor actions",
+      "mapNameLabel": "Map name",
+      "dirtyDot": "This map has unsaved changes",
+      "saving": "Saving...",
+      "neverSaved": "Not saved yet",
+      "savedLocal": "Saved to this browser",
+      "savedServer": "Saved (version {version})",
+      "new": "New",
+      "newTitle": "Start a new map from the built-in world",
+      "open": "Open",
+      "openTitle": "Open a saved map (browser or server)",
+      "save": "Save",
+      "saveTitle": "Save to this browser, and to the server when signed in (Ctrl+S)",
+      "saveAs": "Save As",
+      "saveAsTitle": "Save a copy under a new name",
+      "fork": "Fork",
+      "forkTitle": "Create your own server-side copy of this map",
+      "forkDisabledTitle": "Open a server map first to fork it",
+      "import": "Import",
+      "importTitle": "Import a map from a JSON file",
+      "export": "Export",
+      "exportTitle": "Download this map as a JSON file",
+      "uploadAsset": "Upload Asset",
+      "uploadAssetTitle": "Upload a GLB model (up to 8 MiB) to place in your maps",
+      "uploadAssetDisabledTitle": "Sign in from the game to upload assets",
+      "playtest": "Playtest",
+      "playtestTitle": "Boot the game on this map (offline, current edits included)",
+      "viewLabel": "View mode",
+      "view3d": "3D",
+      "view3dTitle": "Edit in the rendered world",
+      "view2d": "2D",
+      "view2dTitle": "Edit on the symbolic overhead map",
+      "undoCount": "Undo: {count}",
+      "undoCountTitle": "{count} undoable steps (Ctrl+Z to undo, Ctrl+Y to redo)",
+      "autosave": "Autosave",
+      "autosaveTitle": "Automatically save the map while there are unsaved changes. Turns itself off if a save fails.",
+      "undo": "Undo",
+      "undoTitle": "Undo the last change (Ctrl+Z)",
+      "redo": "Redo",
+      "redoTitle": "Redo the last undone change (Ctrl+Y)",
+      "offline": "Offline",
+      "offlineTitle": "Not signed in: maps save to this browser only. Sign in from the game to save online.",
+      "signIn": "Sign in",
+      "signInTitle": "Open the game login screen in a new tab",
+      "help": "Help",
+      "helpTitle": "Editor guide: tools, shortcuts, and the tutorial"
+    },
+    "tool": {
+      "listLabel": "Editor tools",
+      "keyHint": "{name} ({key})",
+      "select": "Select",
+      "raise": "Raise",
+      "lower": "Lower",
+      "smooth": "Smooth",
+      "flatten": "Flatten",
+      "paint": "Paint Biome",
+      "water": "Water",
+      "place": "Place Asset",
+      "blocker": "Blocker Wall",
+      "camp": "Camp",
+      "spawn": "Spawn Point",
+      "region": "Region",
+      "erase": "Erase"
+    },
+    "viewport": {
+      "assetsFailed": "Could not load the 3D viewport: {error}"
+    },
+    "a11y": {
+      "stage": "Map viewport",
+      "toasts": "Editor notifications"
+    },
+    "confirm": {
+      "cancel": "Cancel",
+      "ok": "OK",
+      "conflictTitle": "Someone else saved this map",
+      "conflictBody": "The server copy is now version {version}, newer than the one you loaded. Save your changes as a new map to avoid overwriting theirs.",
+      "conflictSaveCopy": "Save As Copy",
+      "discardTitle": "Discard unsaved changes?",
+      "discardBody": "\"{name}\" has unsaved changes that will be lost.",
+      "discard": "Discard"
+    },
+    "prompt": {
+      "saveAsTitle": "Save As",
+      "nameLabel": "Map name"
+    },
+    "status": {
+      "saveFailedLocal": "Could not save to this browser (storage may be full).",
+      "savedLocalOnly": "\"{name}\" saved to this browser. Sign in to also save it to the server.",
+      "savedServer": "\"{name}\" saved (version {version}).",
+      "autosaveOff": "Autosave turned off: {reason}",
+      "autosaveFailed": "Autosave draft could not be written (storage may be full).",
+      "forked": "Created your own copy: \"{name}\".",
+      "opened": "\"{name}\" opened.",
+      "newMap": "Started a new map.",
+      "imported": "\"{name}\" imported.",
+      "importFailed": "Could not import that file.",
+      "exported": "Map exported.",
+      "playtestLaunch": "Launching playtest...",
+      "playtestFailed": "Could not launch playtest (storage may be blocked)."
+    },
+    "upload": {
+      "notGlb": "Only .glb files can be uploaded.",
+      "tooLarge": "That file is larger than 8 MiB.",
+      "uploading": "Uploading...",
+      "uploaded": "\"{name}\" uploaded.",
+      "uploadedExisting": "You already uploaded this file; reusing it."
+    },
+    "serverError": {
+      "invalid_map_name": "That map name is not valid.",
+      "map_name_not_allowed": "That map name is not allowed.",
+      "invalid_map_doc": "This map document is not valid.",
+      "invalid_version": "That save is out of date. Reopen the map and try again.",
+      "map_limit_reached": "You've reached the limit of saved maps for your account.",
+      "map_not_found": "That map no longer exists.",
+      "version_conflict": "Someone else saved this map first.",
+      "slug_unavailable": "That map name is already taken. Try another.",
+      "map_too_large": "This map is too large to save.",
+      "invalid_glb": "That file is not a valid GLB model.",
+      "asset_blocked": "That asset was removed by a moderator.",
+      "asset_limit_reached": "You've reached the limit of uploaded assets for your account.",
+      "asset_storage_limit_reached": "You've reached your uploaded-asset storage limit.",
+      "asset_too_large": "That asset is larger than 8 MiB.",
+      "asset_not_found": "That asset no longer exists.",
+      "rate_limited": "Too many requests. Wait a moment and try again.",
+      "unauthorized": "Sign in from the game to do that.",
+      "network": "Could not reach the server. Check your connection.",
+      "timeout": "The server took too long to respond.",
+      "unknown": "Something went wrong. Try again."
+    },
+    "assets": {
+      "label": "Asset browser",
+      "title": "Assets",
+      "search": "Search assets",
+      "searchPlaceholder": "Search...",
+      "categoryTab": "{category} ({count})",
+      "uploadedTab": "Uploaded",
+      "uploadedSignIn": "Sign in from the game to see and upload your own assets.",
+      "uploadedLoadFailed": "Could not load your uploaded assets.",
+      "uploadedEmpty": "You haven't uploaded any assets yet.",
+      "loading": "Loading...",
+      "empty": "No assets match.",
+      "pick": "Place {name}",
+      "deleteAsset": "Delete asset",
+      "deleteAssetConfirm": "Delete \"{name}\"? Any map placement using it will fail to render.",
+      "category": {
+        "biome": "Biome",
+        "chars": "Characters",
+        "creatures": "Creatures",
+        "dungeon": "Dungeon",
+        "foliage": "Foliage",
+        "props": "Props",
+        "quest": "Quest",
+        "resources": "Resources",
+        "tools": "Tools",
+        "weapons": "Weapons"
+      }
+    },
+    "help": {
+      "title": "Editor Help",
+      "mouseTitle": "Mouse",
+      "flowTitle": "Save and draft",
+      "beginTutorial": "Begin tutorial",
+      "close": "Close",
+      "mouse": {
+        "orbit3d": "3D view: left-drag to orbit, right-drag to pan",
+        "fly3d": "3D view: scroll to zoom, WASD to fly",
+        "pan2d": "2D view: drag empty space to pan, scroll to zoom"
+      },
+      "flow": {
+        "save": "Save writes to this browser, and to the server once you are signed in",
+        "draft": "An autosave draft protects unsaved edits if the tab closes unexpectedly"
+      }
+    },
+    "tutorial": {
+      "title": "Editor tutorial",
+      "counter": "Step {current} of {total}",
+      "back": "Back",
+      "next": "Next",
+      "finish": "Finish",
+      "skip": "Skip",
+      "steps": {
+        "toolbar": {
+          "title": "Tools",
+          "body": "Pick a tool here. Place is ready to use today; more tools are coming soon."
+        },
+        "stage": {
+          "title": "Viewport",
+          "body": "This is your map. Switch between the 3D and 2D views any time."
+        },
+        "viewToggle": {
+          "title": "3D / 2D toggle",
+          "body": "Switch to the 2D overhead view for precise placement, or 3D to see the result."
+        },
+        "save": {
+          "title": "Save",
+          "body": "Save keeps a copy in this browser, and on the server once you sign in."
+        },
+        "help": {
+          "title": "Help",
+          "body": "Come back here any time for this tour."
+        }
+      }
+    }
   },
   "apiError": {
     "crossSiteRejected": "Cross-site request rejected.",
@@ -4329,6 +4541,10 @@ export const en_CA: EnTranslations = {
         "name": "Taunt",
         "description": "Taunts the target: your threat rises to match its most hated enemy and it is compelled to attack you for 3 sec."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
       "fireball": {
         "name": "Fireball",
         "description": "Hurls a fiery ball that causes {damage} Fire damage plus additional damage over time."
@@ -4520,6 +4736,10 @@ export const en_CA: EnTranslations = {
       "retribution_aura": {
         "name": "Retribution Aura",
         "description": "Surrounds you with holy energy for 30 min, dealing 5 Holy damage to any enemy that strikes you in melee."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
       },
       "tame_beast": {
         "name": "Tame Beast",
@@ -4804,6 +5024,10 @@ export const en_CA: EnTranslations = {
       "rip": {
         "name": "Rip",
         "description": "Finishing move that causes Bleed damage over 12 sec. Consumes combo points. Wolf Form only."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
       },
       "mortal_strike": {
         "name": "Mortal Strike",
@@ -5897,6 +6121,18 @@ export const en_CA: EnTranslations = {
         "name": "Tally-Marked Shard",
         "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
       },
+      "root_token_unbinding": {
+        "name": "Loosened Root-Knot",
+        "flavorText": "...worn smooth where a thumb pressed and pressed, like loosening a knot tied around nothing you could see. someone believed letting go was a kindness. someone was wrong, or early, or both..."
+      },
+      "root_token_offering": {
+        "name": "Small Feeding Stone",
+        "flavorText": "...a shallow bowl scratched into stone no bigger than a coin, the kind you'd leave a crumb in for something that couldn't ask. whatever ate here didn't stop being hungry. it just stopped being seen..."
+      },
+      "root_token_verdict": {
+        "name": "Judgment-Scored Stone",
+        "flavorText": "...a tally scored in threes, not fives, judged and rejudged, pressed so hard the third pass split the stone. somebody kept changing their mind about the same question, over and over, in the dark..."
+      },
       "reliquary_plate_chest": {
         "name": "Reliquary Guard Hauberk"
       },
@@ -6023,6 +6259,15 @@ export const en_CA: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "Stormcaller's Spaulders"
+      },
+      "deathless_greatblade": {
+        "name": "Deathless Greatblade"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Scepter of the Deathless Court"
+      },
+      "stormcallers_focus": {
+        "name": "Stormcaller's Focus"
       },
       "unknown_alien_weaponry": {
         "name": "Unknown Alien Weaponry"
@@ -6262,6 +6507,15 @@ export const en_CA: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Scourge of Thornpeak"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Spirit of Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Spirit of Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Spirit of Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Ledger Wraith"

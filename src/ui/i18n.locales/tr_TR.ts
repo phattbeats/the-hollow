@@ -920,6 +920,15 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Çetele İşaretli Parça',
   'entities.items.tally_shard.flavorText':
     '...beşerli işaretler, derin kazınmış, sayım her döndüğünde üstü çizilmiş. çizmeler durmadan önce yüzlerce beşli, ve son sıra hiç bitirilmemiş...',
+  'entities.items.root_token_unbinding.name': 'Gevşetilmiş Kök Düğümü',
+  'entities.items.root_token_unbinding.flavorText':
+    '...bir başparmağın defalarca bastırdığı yerde pürüzsüzleşmiş, görülemeyen bir şeyin etrafına bağlanmış bir düğümü çözermişçesine. birisi bırakmanın bir iyilik olduğuna inanıyordu. birisi yanılıyordu, ya da erkendi, ya da ikisi de...',
+  'entities.items.root_token_offering.name': 'Küçük Besleme Taşı',
+  'entities.items.root_token_offering.flavorText':
+    '...taşa kazınmış, bir bozuk paradan büyük olmayan sığ bir çukur, isteyemeyen bir şey için kırıntı bırakılacak türden. burada besleneni yemeyi bırakmadı. sadece görülmeyi bıraktı...',
+  'entities.items.root_token_verdict.name': 'Yargıyla İşaretlenmiş Taş',
+  'entities.items.root_token_verdict.flavorText':
+    '...beşerli değil, üçerli işaretlenmiş bir hesap, yargılanmış ve yeniden yargılanmış, üçüncü geçişte taşı çatlatacak kadar sert bastırılmış. biri karanlıkta aynı soru üzerinde defalarca fikrini değiştirip durdu...',
   'entities.items.linen_pouch.name': 'Keten Kese',
   'entities.items.travelers_knapsack.name': 'Gezginin Sırt Çantası',
   'entities.items.wolfhide_satchel.name': 'Kurt Derisi Heybe',
@@ -1119,6 +1128,9 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.items.storm_core.name': 'Fırtına Çekirdeği',
   'entities.items.stormcallers_crown.name': 'Fırtınaçağıranın Tacı',
   'entities.items.stormcallers_spaulders.name': 'Fırtınaçağıranın Omuzlukları',
+  'entities.items.deathless_greatblade.name': 'Ölümsüz Büyük Kılıç',
+  'entities.items.scepter_of_the_deathless_court.name': 'Ölümsüz Sarayın Asası',
+  'entities.items.stormcallers_focus.name': 'Fırtınaçağıranın Odağı',
   'entities.items.stormshard_leggings.name': 'Fırtınaparçası Tozlukları',
   'entities.items.sturdy_belt.name': 'Sağlam Yolcu Kemeri',
   'entities.items.supply_crate.name': 'Çalınmış Erzak Sandığı',
@@ -1234,6 +1246,9 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.nhalia_mourner.name': 'Nhalia Yas Tutanı',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'Nythraxis, Dikenzirve Belası',
   'entities.mobs.nythraxis_skeleton_warrior.name': 'Dirilen Kraliyet Muhafızı',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': "Aldren'in Ruhu",
+  'entities.mobs.nythraxis_heroic_priest_add.name': "Malric'in Ruhu",
+  'entities.mobs.nythraxis_heroic_rogue_add.name': "Voss'un Ruhu",
   'entities.mobs.ogre_crusher.name': 'Dikenzirve Ezicisi',
   'entities.mobs.old_cragmaw.name': 'İhtiyar Cragmaw',
   'entities.mobs.old_greyjaw.name': 'İhtiyar Greyjaw',
@@ -2820,15 +2835,9 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'guide.language.label': 'Dil',
   'guide.language.select': 'Bir dil seç',
   'guide.loading': 'Yükleniyor...',
-  'guide.lore.aldricBody':
-    "Önce Doğudere'de kirletilmiş bir mezar başında tarikatı adlandıran, sonra onun izini bizzat bataklık boyunca ve Yüksetnöbet'teki surlara dek süren mütevazı bir köy rahibi. Tüm seferin sağlam yüreğidir.",
-  'guide.lore.aldricRole': "Vadi'nin Rahibi",
   'guide.lore.figuresBody':
     'Bir avuç insan tüm yolu seninle birlikte yürür. Vadiden zirvelere bu adlara dikkat et.',
   'guide.lore.figuresTitle': 'Tanışacağın yüzler',
-  'guide.lore.marenBody':
-    "Mirefen'in sazlıklarında karşılaştığın, az konuşan bir iz sürücü; tamamı sessiz adımlar ve kısa bir bıçak. O da izi kuzeye doğru takip eder ve seni zirvelere gönderen sözleri yakalayan onun kulağıdır.",
-  'guide.lore.marenRole': "Mareşal'in İzcisi",
   'guide.models.count': '{count} model',
   'guide.models.groupClasses': 'Sınıflar',
   'guide.models.groupCreatures': 'Yaratıklar',

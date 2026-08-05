@@ -88,7 +88,7 @@ describe('Keybinds defaults', () => {
     expect(kb.actionForCode('Equal')).toBe('slot11');
     expect(kb.actionForCode('KeyH')).toBe('targetFriendly');
     expect(kb.actionForCode('KeyJ')).toBe('targetFriendlyNext');
-    expect(kb.actionForCode('KeyZ')).toBe(null);
+    expect(kb.actionForCode('KeyZ')).toBe('weaponStow');
   });
 
   it('exposes primary/secondary codes and labels', () => {
@@ -278,13 +278,13 @@ describe('per-character scope', () => {
     alice.bind('jump', 0, 'KeyZ'); // KeyZ is unbound by default
     const bob = new Keybinds('char:bob');
     // Bob never inherits Alice's change; he starts from defaults.
-    expect(bob.actionForCode('KeyZ')).toBe(null);
+    expect(bob.actionForCode('KeyZ')).toBe('weaponStow');
     expect(bob.codeAt('jump', 0)).toBe('Space');
     bob.bind('jump', 0, 'KeyU'); // also unbound by default
     // Reloading each scope reads back only its own profile.
     expect(new Keybinds('char:alice').actionForCode('KeyZ')).toBe('jump');
     expect(new Keybinds('char:bob').actionForCode('KeyU')).toBe('jump');
-    expect(new Keybinds('char:bob').actionForCode('KeyZ')).toBe(null);
+    expect(new Keybinds('char:bob').actionForCode('KeyZ')).toBe('weaponStow');
   });
 
   it('writes to a namespaced key, not the legacy global key', () => {
@@ -349,7 +349,7 @@ describe('per-character scope', () => {
     expect(localStorage.getItem('woc_keybinds:offline:warrior:Aldric')).not.toBeNull();
     expect(localStorage.getItem('woc_keybinds')).toBeNull();
     // A different offline character starts from defaults, not Aldric's binding.
-    expect(new Keybinds('offline:mage:Brenna').actionForCode('KeyZ')).toBe(null);
+    expect(new Keybinds('offline:mage:Brenna').actionForCode('KeyZ')).toBe('weaponStow');
     expect(new Keybinds('offline:mage:Brenna').codeAt('jump', 0)).toBe('Space');
     // The same scope reads back its own profile.
     expect(new Keybinds('offline:warrior:Aldric').actionForCode('KeyZ')).toBe('jump');
@@ -361,7 +361,7 @@ describe('per-character scope', () => {
     // profile. A different name does not.
     new Keybinds('offline:warrior:Aldric').bind('jump', 0, 'KeyZ');
     expect(new Keybinds('offline:warrior:Aldric').actionForCode('KeyZ')).toBe('jump');
-    expect(new Keybinds('offline:warrior:Borin').actionForCode('KeyZ')).toBe(null);
+    expect(new Keybinds('offline:warrior:Borin').actionForCode('KeyZ')).toBe('weaponStow');
   });
 
   it('seeds from the legacy blob when the scoped value is corrupt JSON', () => {
@@ -389,7 +389,7 @@ describe('per-character scope', () => {
     alice.reset();
     // Alice's scoped profile is back to defaults...
     expect(new Keybinds('char:alice').codeAt('jump', 0)).toBe('Space');
-    expect(new Keybinds('char:alice').actionForCode('KeyZ')).toBe(null);
+    expect(new Keybinds('char:alice').actionForCode('KeyZ')).toBe('weaponStow');
     // ...and reset never wrote the legacy key.
     expect(JSON.parse(localStorage.getItem('woc_keybinds')!).jump).toEqual(['KeyJ', null]);
   });

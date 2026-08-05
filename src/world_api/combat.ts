@@ -9,5 +9,6 @@ export interface IWorldCombat {
   cancelAura(auraId: string): void;
   startAutoAttack(): void;
   stopAutoAttack(): void;
+  toggleWeaponStow(): void;
   releaseSpirit(): void;
 }
