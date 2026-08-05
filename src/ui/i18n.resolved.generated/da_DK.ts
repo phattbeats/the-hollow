@@ -2187,48 +2187,18 @@ export const da_DK: EnTranslations = {
     },
     "help": {
       "title": "Editor Help",
-      "toolsTitle": "Tools",
-      "shortcutsTitle": "Keyboard shortcuts",
       "mouseTitle": "Mouse",
-      "flowTitle": "Save, draft, and playtest",
+      "flowTitle": "Save and draft",
       "beginTutorial": "Begin tutorial",
       "close": "Close",
-      "key": {
-        "tools": "Number keys or letters shown next to each tool: switch tools",
-        "brush": "[ and ]: shrink / grow the brush",
-        "undo": "Ctrl+Z / Ctrl+Y: undo / redo",
-        "save": "Ctrl+S: save",
-        "duplicate": "Ctrl+D: duplicate the selected placement",
-        "nudge": "Arrow keys: nudge the selection",
-        "wheel": "Scroll wheel: rotate or scale the selected placement",
-        "delete": "Delete: remove the selection",
-        "escape": "Escape: cancel the current action"
-      },
       "mouse": {
         "orbit3d": "3D view: left-drag to orbit, right-drag to pan",
         "fly3d": "3D view: scroll to zoom, WASD to fly",
-        "move": "Drag a marker or placement to move it",
         "pan2d": "2D view: drag empty space to pan, scroll to zoom"
       },
       "flow": {
         "save": "Save writes to this browser, and to the server once you are signed in",
-        "draft": "An autosave draft protects unsaved edits if the tab closes unexpectedly",
-        "playtest": "Playtest boots the game on this map, including your current edits"
-      },
-      "tool": {
-        "select": "Select and edit an existing placement or marker.",
-        "raise": "Raise the terrain under the brush.",
-        "lower": "Lower the terrain under the brush.",
-        "smooth": "Smooth out bumps under the brush.",
-        "flatten": "Flatten the terrain to one height under the brush.",
-        "paint": "Paint the biome under the brush.",
-        "water": "Set the water level.",
-        "place": "Place an asset from the asset browser.",
-        "blocker": "Draw an invisible collision wall.",
-        "camp": "Place a monster camp.",
-        "spawn": "Set the player start point.",
-        "region": "Select a region to copy or clear.",
-        "erase": "Erase placements or terrain edits under the brush."
+        "draft": "An autosave draft protects unsaved edits if the tab closes unexpectedly"
       }
     },
     "tutorial": {
@@ -2241,15 +2211,11 @@ export const da_DK: EnTranslations = {
       "steps": {
         "toolbar": {
           "title": "Tools",
-          "body": "Pick a tool here to sculpt terrain, paint biomes, or place assets."
+          "body": "Pick a tool here. Place is ready to use today; more tools are coming soon."
         },
         "stage": {
           "title": "Viewport",
           "body": "This is your map. Switch between the 3D and 2D views any time."
-        },
-        "inspector": {
-          "title": "Inspector",
-          "body": "Selecting a placement or marker shows its details and options here."
         },
         "viewToggle": {
           "title": "3D / 2D toggle",
@@ -2259,13 +2225,9 @@ export const da_DK: EnTranslations = {
           "title": "Save",
           "body": "Save keeps a copy in this browser, and on the server once you sign in."
         },
-        "playtest": {
-          "title": "Playtest",
-          "body": "Boot the game on this map to try it out, including your current edits."
-        },
         "help": {
           "title": "Help",
-          "body": "Come back here any time for the tool list, shortcuts, and this tour."
+          "body": "Come back here any time for this tour."
         }
       }
     }

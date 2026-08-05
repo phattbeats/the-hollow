@@ -13,7 +13,6 @@
 
 import { formatNumber, t } from '../ui/i18n';
 import { button, el } from './dom';
-import { TOOL_DEFS } from './toolbar';
 import {
   type SeenStore,
   TUTORIAL_SEEN_KEY,
@@ -106,51 +105,18 @@ export class EditorTutorial {
     panel.setAttribute('aria-labelledby', title.id);
     panel.appendChild(title);
 
-    // Tools: one line each, name + key + description.
-    panel.appendChild(el('h3', 'ed-help-section-title', t('editor.help.toolsTitle')));
-    const tools = el('ul', 'ed-help-list');
-    for (const def of TOOL_DEFS) {
-      const li = el('li');
-      li.appendChild(
-        el(
-          'span',
-          'ed-help-term',
-          t('editor.tool.keyHint', { name: t(def.labelKey), key: def.key.toUpperCase() }),
-        ),
-      );
-      li.appendChild(el('span', undefined, t(`editor.help.tool.${def.tool}` as TKey)));
-      tools.appendChild(li);
-    }
-    panel.appendChild(tools);
-
     const section = (titleKey: TKey, lineKeys: TKey[]): void => {
       panel.appendChild(el('h3', 'ed-help-section-title', t(titleKey)));
       const list = el('ul', 'ed-help-list');
       for (const key of lineKeys) list.appendChild(el('li', undefined, t(key)));
       panel.appendChild(list);
     };
-    section('editor.help.shortcutsTitle', [
-      'editor.help.key.tools',
-      'editor.help.key.brush',
-      'editor.help.key.undo',
-      'editor.help.key.save',
-      'editor.help.key.duplicate',
-      'editor.help.key.nudge',
-      'editor.help.key.wheel',
-      'editor.help.key.delete',
-      'editor.help.key.escape',
-    ]);
     section('editor.help.mouseTitle', [
       'editor.help.mouse.orbit3d',
       'editor.help.mouse.fly3d',
-      'editor.help.mouse.move',
       'editor.help.mouse.pan2d',
     ]);
-    section('editor.help.flowTitle', [
-      'editor.help.flow.save',
-      'editor.help.flow.draft',
-      'editor.help.flow.playtest',
-    ]);
+    section('editor.help.flowTitle', ['editor.help.flow.save', 'editor.help.flow.draft']);
 
     const actions = el('div', 'ed-modal-actions');
     const begin = button(

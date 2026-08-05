@@ -31,12 +31,6 @@ export const TUTORIAL_STEPS: readonly TutorialStepDef[] = [
     bodyKey: 'editor.tutorial.steps.stage.body',
   },
   {
-    id: 'inspector',
-    anchor: '.ed-inspector',
-    titleKey: 'editor.tutorial.steps.inspector.title',
-    bodyKey: 'editor.tutorial.steps.inspector.body',
-  },
-  {
     id: 'viewToggle',
     anchor: '.ed-view-toggle',
     titleKey: 'editor.tutorial.steps.viewToggle.title',
@@ -47,12 +41,6 @@ export const TUTORIAL_STEPS: readonly TutorialStepDef[] = [
     anchor: '.ed-actions',
     titleKey: 'editor.tutorial.steps.save.title',
     bodyKey: 'editor.tutorial.steps.save.body',
-  },
-  {
-    id: 'playtest',
-    anchor: '.ed-playtest',
-    titleKey: 'editor.tutorial.steps.playtest.title',
-    bodyKey: 'editor.tutorial.steps.playtest.body',
   },
   {
     id: 'help',

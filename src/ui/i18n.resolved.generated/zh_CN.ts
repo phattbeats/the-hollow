@@ -2035,8 +2035,8 @@ export const zh_CN: EnTranslations = {
       "dirtyDot": "此地图有未保存的更改",
       "saving": "保存中……",
       "neverSaved": "尚未保存",
-      "savedLocal": "Saved to this browser",
-      "savedServer": "Saved (version {version})",
+      "savedLocal": "已保存到此浏览器",
+      "savedServer": "已保存（版本 {version}）",
       "new": "New",
       "newTitle": "从内置世界开始新地图",
       "open": "Open",
@@ -2098,174 +2098,136 @@ export const zh_CN: EnTranslations = {
       "assetsFailed": "无法加载 3D 视图：{error}"
     },
     "a11y": {
-      "stage": "Map viewport",
-      "toasts": "Editor notifications"
+      "stage": "地图视口",
+      "toasts": "编辑器通知"
     },
     "confirm": {
-      "cancel": "Cancel",
+      "cancel": "取消",
       "ok": "OK",
-      "conflictTitle": "Someone else saved this map",
-      "conflictBody": "The server copy is now version {version}, newer than the one you loaded. Save your changes as a new map to avoid overwriting theirs.",
+      "conflictTitle": "其他人已保存此地图",
+      "conflictBody": "服务器上的副本现在是版本 {version}，比你加载的版本更新。请将你的更改另存为新地图，以免覆盖对方的更改。",
       "conflictSaveCopy": "Save As Copy",
-      "discardTitle": "Discard unsaved changes?",
-      "discardBody": "\"{name}\" has unsaved changes that will be lost.",
-      "discard": "Discard"
+      "discardTitle": "放弃未保存的更改？",
+      "discardBody": "“{name}” 有未保存的更改，这些更改将会丢失。",
+      "discard": "放弃"
     },
     "prompt": {
       "saveAsTitle": "Save As",
-      "nameLabel": "Map name"
+      "nameLabel": "地图名称"
     },
     "status": {
-      "saveFailedLocal": "Could not save to this browser (storage may be full).",
-      "savedLocalOnly": "\"{name}\" saved to this browser. Sign in to also save it to the server.",
-      "savedServer": "\"{name}\" saved (version {version}).",
-      "autosaveOff": "Autosave turned off: {reason}",
-      "autosaveFailed": "Autosave draft could not be written (storage may be full).",
-      "forked": "Created your own copy: \"{name}\".",
-      "opened": "\"{name}\" opened.",
-      "newMap": "Started a new map.",
-      "imported": "\"{name}\" imported.",
-      "importFailed": "Could not import that file.",
-      "exported": "Map exported."
+      "saveFailedLocal": "无法保存到此浏览器（存储空间可能已满）。",
+      "savedLocalOnly": "“{name}” 已保存到此浏览器。登录后即可同时保存到服务器。",
+      "savedServer": "“{name}” 已保存（版本 {version}）。",
+      "autosaveOff": "自动保存已关闭：{reason}",
+      "autosaveFailed": "无法写入自动保存草稿（存储空间可能已满）。",
+      "forked": "已创建你自己的副本：“{name}”。",
+      "opened": "“{name}” 已打开。",
+      "newMap": "已开始新地图。",
+      "imported": "“{name}” 已导入。",
+      "importFailed": "无法导入该文件。",
+      "exported": "地图已导出。"
     },
     "upload": {
-      "notGlb": "Only .glb files can be uploaded.",
-      "tooLarge": "That file is larger than 8 MiB.",
-      "uploading": "Uploading...",
-      "uploaded": "\"{name}\" uploaded.",
-      "uploadedExisting": "You already uploaded this file; reusing it."
+      "notGlb": "只能上传 .glb 文件。",
+      "tooLarge": "该文件大于 8 MiB。",
+      "uploading": "正在上传……",
+      "uploaded": "“{name}” 已上传。",
+      "uploadedExisting": "你已上传过此文件；将重复使用它。"
     },
     "serverError": {
-      "invalid_map_name": "That map name is not valid.",
-      "map_name_not_allowed": "That map name is not allowed.",
-      "invalid_map_doc": "This map document is not valid.",
-      "invalid_version": "That save is out of date. Reopen the map and try again.",
-      "map_limit_reached": "You've reached the limit of saved maps for your account.",
-      "map_not_found": "That map no longer exists.",
-      "version_conflict": "Someone else saved this map first.",
-      "slug_unavailable": "That map name is already taken. Try another.",
-      "map_too_large": "This map is too large to save.",
-      "invalid_glb": "That file is not a valid GLB model.",
-      "asset_blocked": "That asset was removed by a moderator.",
-      "asset_limit_reached": "You've reached the limit of uploaded assets for your account.",
-      "asset_storage_limit_reached": "You've reached your uploaded-asset storage limit.",
-      "asset_too_large": "That asset is larger than 8 MiB.",
-      "asset_not_found": "That asset no longer exists.",
-      "rate_limited": "Too many requests. Wait a moment and try again.",
-      "unauthorized": "Sign in from the game to do that.",
-      "network": "Could not reach the server. Check your connection.",
-      "timeout": "The server took too long to respond.",
-      "unknown": "Something went wrong. Try again."
+      "invalid_map_name": "该地图名称无效。",
+      "map_name_not_allowed": "不允许使用该地图名称。",
+      "invalid_map_doc": "此地图文档无效。",
+      "invalid_version": "该保存已过期。请重新打开地图并重试。",
+      "map_limit_reached": "你的账号已达到已保存地图数量上限。",
+      "map_not_found": "该地图已不存在。",
+      "version_conflict": "其他人已先保存了此地图。",
+      "slug_unavailable": "该地图名称已被占用，请换一个。",
+      "map_too_large": "此地图过大，无法保存。",
+      "invalid_glb": "该文件不是有效的 GLB 模型。",
+      "asset_blocked": "该素材已被管理员移除。",
+      "asset_limit_reached": "你的账号已达到已上传素材数量上限。",
+      "asset_storage_limit_reached": "你已达到上传素材的存储空间上限。",
+      "asset_too_large": "该素材大于 8 MiB。",
+      "asset_not_found": "该素材已不存在。",
+      "rate_limited": "请求过于频繁，请稍候再试。",
+      "unauthorized": "请在游戏中登录后再执行此操作。",
+      "network": "无法连接到服务器，请检查你的网络连接。",
+      "timeout": "服务器响应超时。",
+      "unknown": "出了点问题，请重试。"
     },
     "assets": {
-      "label": "Asset browser",
-      "title": "Assets",
-      "search": "Search assets",
-      "searchPlaceholder": "Search...",
+      "label": "素材浏览器",
+      "title": "素材",
+      "search": "搜索素材",
+      "searchPlaceholder": "搜索……",
       "categoryTab": "{category} ({count})",
-      "uploadedTab": "Uploaded",
-      "uploadedSignIn": "Sign in from the game to see and upload your own assets.",
-      "uploadedLoadFailed": "Could not load your uploaded assets.",
-      "uploadedEmpty": "You haven't uploaded any assets yet.",
-      "loading": "Loading...",
-      "empty": "No assets match.",
-      "pick": "Place {name}",
-      "deleteAsset": "Delete asset",
-      "deleteAssetConfirm": "Delete \"{name}\"? Any map placement using it will fail to render.",
+      "uploadedTab": "已上传",
+      "uploadedSignIn": "请在游戏中登录以查看和上传你自己的素材。",
+      "uploadedLoadFailed": "无法加载你上传的素材。",
+      "uploadedEmpty": "你还没有上传过任何素材。",
+      "loading": "加载中……",
+      "empty": "没有匹配的素材。",
+      "pick": "放置 {name}",
+      "deleteAsset": "删除素材",
+      "deleteAssetConfirm": "删除 “{name}”？使用该素材的地图放置项将无法渲染。",
       "category": {
-        "biome": "Biome",
-        "chars": "Characters",
-        "creatures": "Creatures",
-        "dungeon": "Dungeon",
-        "foliage": "Foliage",
-        "props": "Props",
-        "quest": "Quest",
-        "resources": "Resources",
-        "tools": "Tools",
-        "weapons": "Weapons"
+        "biome": "生态群系",
+        "chars": "角色",
+        "creatures": "生物",
+        "dungeon": "地下城",
+        "foliage": "植被",
+        "props": "道具",
+        "quest": "任务",
+        "resources": "资源",
+        "tools": "工具",
+        "weapons": "武器"
       }
     },
     "help": {
-      "title": "Editor Help",
-      "toolsTitle": "Tools",
-      "shortcutsTitle": "Keyboard shortcuts",
-      "mouseTitle": "Mouse",
-      "flowTitle": "Save, draft, and playtest",
-      "beginTutorial": "Begin tutorial",
-      "close": "Close",
-      "key": {
-        "tools": "Number keys or letters shown next to each tool: switch tools",
-        "brush": "[ and ]: shrink / grow the brush",
-        "undo": "Ctrl+Z / Ctrl+Y: undo / redo",
-        "save": "Ctrl+S: save",
-        "duplicate": "Ctrl+D: duplicate the selected placement",
-        "nudge": "Arrow keys: nudge the selection",
-        "wheel": "Scroll wheel: rotate or scale the selected placement",
-        "delete": "Delete: remove the selection",
-        "escape": "Escape: cancel the current action"
-      },
+      "title": "编辑器帮助",
+      "mouseTitle": "鼠标",
+      "flowTitle": "保存与草稿",
+      "beginTutorial": "开始教程",
+      "close": "关闭",
       "mouse": {
-        "orbit3d": "3D view: left-drag to orbit, right-drag to pan",
-        "fly3d": "3D view: scroll to zoom, WASD to fly",
-        "move": "Drag a marker or placement to move it",
-        "pan2d": "2D view: drag empty space to pan, scroll to zoom"
+        "orbit3d": "3D 视图：左键拖动以环绕，右键拖动以平移",
+        "fly3d": "3D 视图：滚动以缩放，使用 WASD 飞行",
+        "pan2d": "2D 视图：拖动空白处以平移，滚动以缩放"
       },
       "flow": {
-        "save": "Save writes to this browser, and to the server once you are signed in",
-        "draft": "An autosave draft protects unsaved edits if the tab closes unexpectedly",
-        "playtest": "Playtest boots the game on this map, including your current edits"
-      },
-      "tool": {
-        "select": "Select and edit an existing placement or marker.",
-        "raise": "Raise the terrain under the brush.",
-        "lower": "Lower the terrain under the brush.",
-        "smooth": "Smooth out bumps under the brush.",
-        "flatten": "Flatten the terrain to one height under the brush.",
-        "paint": "Paint the biome under the brush.",
-        "water": "Set the water level.",
-        "place": "Place an asset from the asset browser.",
-        "blocker": "Draw an invisible collision wall.",
-        "camp": "Place a monster camp.",
-        "spawn": "Set the player start point.",
-        "region": "Select a region to copy or clear.",
-        "erase": "Erase placements or terrain edits under the brush."
+        "save": "保存会写入此浏览器；登录后还会写入服务器",
+        "draft": "自动保存草稿可在标签页意外关闭时保护未保存的编辑"
       }
     },
     "tutorial": {
-      "title": "Editor tutorial",
+      "title": "编辑器教程",
       "counter": "Step {current} of {total}",
       "back": "Back",
       "next": "Next",
-      "finish": "Finish",
+      "finish": "完成",
       "skip": "Skip",
       "steps": {
         "toolbar": {
-          "title": "Tools",
-          "body": "Pick a tool here to sculpt terrain, paint biomes, or place assets."
+          "title": "工具",
+          "body": "在这里选择工具。放置功能现已可用；更多工具即将推出。"
         },
         "stage": {
-          "title": "Viewport",
-          "body": "This is your map. Switch between the 3D and 2D views any time."
-        },
-        "inspector": {
-          "title": "Inspector",
-          "body": "Selecting a placement or marker shows its details and options here."
+          "title": "视口",
+          "body": "这是你的地图。可随时在 3D 与 2D 视图之间切换。"
         },
         "viewToggle": {
-          "title": "3D / 2D toggle",
-          "body": "Switch to the 2D overhead view for precise placement, or 3D to see the result."
+          "title": "3D / 2D 切换",
+          "body": "切换到 2D 俯视图以精确放置，或切换到 3D 查看效果。"
         },
         "save": {
           "title": "Save",
-          "body": "Save keeps a copy in this browser, and on the server once you sign in."
-        },
-        "playtest": {
-          "title": "Playtest",
-          "body": "Boot the game on this map to try it out, including your current edits."
+          "body": "保存会在此浏览器中留存副本，登录后还会保存到服务器。"
         },
         "help": {
           "title": "Help",
-          "body": "Come back here any time for the tool list, shortcuts, and this tour."
+          "body": "你可以随时回到这里查看本教程。"
         }
       }
     }

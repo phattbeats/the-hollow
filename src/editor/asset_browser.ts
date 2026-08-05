@@ -93,7 +93,7 @@ function thumbCanvas(entry: Entry): HTMLCanvasElement {
   // Category tag along the bottom.
   ctx.font = '600 8px system-ui, sans-serif';
   ctx.fillStyle = 'rgba(255,255,255,0.55)';
-  ctx.fillText(entry.category.toUpperCase().slice(0, 10), c.width / 2, c.height - 8);
+  ctx.fillText(categoryLabel(entry.category).toUpperCase().slice(0, 10), c.width / 2, c.height - 8);
   return c;
 }
 

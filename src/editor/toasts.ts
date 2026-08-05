@@ -68,15 +68,33 @@ function buildModal(parent: HTMLElement, title: string, onClose: () => void): Mo
   panel.appendChild(el('h2', 'ed-modal-title', title));
   overlay.appendChild(panel);
   parent.appendChild(overlay);
+  const returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   const close = (): void => {
     overlay.remove();
     window.removeEventListener('keydown', onKey, true);
+    returnFocus?.focus();
     onClose();
   };
   const onKey = (ev: KeyboardEvent): void => {
     if (ev.key === 'Escape') {
       ev.stopPropagation();
       close();
+      return;
+    }
+    if (ev.key === 'Tab') {
+      // Keep Tab inside the dialog (wrap at the ends).
+      const focusables = panel.querySelectorAll<HTMLElement>('button, input, a[href]');
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement;
+      if (ev.shiftKey && active === first) {
+        ev.preventDefault();
+        last.focus();
+      } else if (!ev.shiftKey && active === last) {
+        ev.preventDefault();
+        first.focus();
+      }
     }
   };
   window.addEventListener('keydown', onKey, true);

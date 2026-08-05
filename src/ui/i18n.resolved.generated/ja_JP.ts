@@ -2035,8 +2035,8 @@ export const ja_JP: EnTranslations = {
       "dirtyDot": "このマップには未保存の変更があります",
       "saving": "保存中...",
       "neverSaved": "未保存",
-      "savedLocal": "Saved to this browser",
-      "savedServer": "Saved (version {version})",
+      "savedLocal": "このブラウザに保存済み",
+      "savedServer": "保存済み（バージョン {version}）",
       "new": "New",
       "newTitle": "組み込みワールドから新しいマップを開始",
       "open": "Open",
@@ -2098,174 +2098,136 @@ export const ja_JP: EnTranslations = {
       "assetsFailed": "3Dビューポートを読み込めませんでした: {error}"
     },
     "a11y": {
-      "stage": "Map viewport",
-      "toasts": "Editor notifications"
+      "stage": "マップビューポート",
+      "toasts": "エディター通知"
     },
     "confirm": {
-      "cancel": "Cancel",
+      "cancel": "キャンセル",
       "ok": "OK",
-      "conflictTitle": "Someone else saved this map",
-      "conflictBody": "The server copy is now version {version}, newer than the one you loaded. Save your changes as a new map to avoid overwriting theirs.",
+      "conflictTitle": "他の誰かがこのマップを保存しました",
+      "conflictBody": "サーバー上のコピーは現在バージョン {version} で、あなたが読み込んだものより新しくなっています。相手の変更を上書きしないよう、あなたの変更は新しいマップとして保存してください。",
       "conflictSaveCopy": "Save As Copy",
-      "discardTitle": "Discard unsaved changes?",
-      "discardBody": "\"{name}\" has unsaved changes that will be lost.",
-      "discard": "Discard"
+      "discardTitle": "未保存の変更を破棄しますか？",
+      "discardBody": "「{name}」には失われる未保存の変更があります。",
+      "discard": "破棄"
     },
     "prompt": {
       "saveAsTitle": "Save As",
-      "nameLabel": "Map name"
+      "nameLabel": "マップ名"
     },
     "status": {
-      "saveFailedLocal": "Could not save to this browser (storage may be full).",
-      "savedLocalOnly": "\"{name}\" saved to this browser. Sign in to also save it to the server.",
-      "savedServer": "\"{name}\" saved (version {version}).",
-      "autosaveOff": "Autosave turned off: {reason}",
-      "autosaveFailed": "Autosave draft could not be written (storage may be full).",
-      "forked": "Created your own copy: \"{name}\".",
-      "opened": "\"{name}\" opened.",
-      "newMap": "Started a new map.",
-      "imported": "\"{name}\" imported.",
-      "importFailed": "Could not import that file.",
-      "exported": "Map exported."
+      "saveFailedLocal": "このブラウザに保存できませんでした（ストレージが不足している可能性があります）。",
+      "savedLocalOnly": "「{name}」をこのブラウザに保存しました。サインインするとサーバーにも保存されます。",
+      "savedServer": "「{name}」を保存しました（バージョン {version}）。",
+      "autosaveOff": "自動保存がオフになりました：{reason}",
+      "autosaveFailed": "自動保存の下書きを書き込めませんでした（ストレージが不足している可能性があります）。",
+      "forked": "自分用のコピーを作成しました：「{name}」。",
+      "opened": "「{name}」を開きました。",
+      "newMap": "新しいマップを開始しました。",
+      "imported": "「{name}」をインポートしました。",
+      "importFailed": "そのファイルをインポートできませんでした。",
+      "exported": "マップをエクスポートしました。"
     },
     "upload": {
-      "notGlb": "Only .glb files can be uploaded.",
-      "tooLarge": "That file is larger than 8 MiB.",
-      "uploading": "Uploading...",
-      "uploaded": "\"{name}\" uploaded.",
-      "uploadedExisting": "You already uploaded this file; reusing it."
+      "notGlb": "アップロードできるのは .glb ファイルのみです。",
+      "tooLarge": "そのファイルは8 MiBを超えています。",
+      "uploading": "アップロード中...",
+      "uploaded": "「{name}」をアップロードしました。",
+      "uploadedExisting": "このファイルは既にアップロード済みです。再利用します。"
     },
     "serverError": {
-      "invalid_map_name": "That map name is not valid.",
-      "map_name_not_allowed": "That map name is not allowed.",
-      "invalid_map_doc": "This map document is not valid.",
-      "invalid_version": "That save is out of date. Reopen the map and try again.",
-      "map_limit_reached": "You've reached the limit of saved maps for your account.",
-      "map_not_found": "That map no longer exists.",
-      "version_conflict": "Someone else saved this map first.",
-      "slug_unavailable": "That map name is already taken. Try another.",
-      "map_too_large": "This map is too large to save.",
-      "invalid_glb": "That file is not a valid GLB model.",
-      "asset_blocked": "That asset was removed by a moderator.",
-      "asset_limit_reached": "You've reached the limit of uploaded assets for your account.",
-      "asset_storage_limit_reached": "You've reached your uploaded-asset storage limit.",
-      "asset_too_large": "That asset is larger than 8 MiB.",
-      "asset_not_found": "That asset no longer exists.",
-      "rate_limited": "Too many requests. Wait a moment and try again.",
-      "unauthorized": "Sign in from the game to do that.",
-      "network": "Could not reach the server. Check your connection.",
-      "timeout": "The server took too long to respond.",
-      "unknown": "Something went wrong. Try again."
+      "invalid_map_name": "そのマップ名は無効です。",
+      "map_name_not_allowed": "そのマップ名は許可されていません。",
+      "invalid_map_doc": "このマップドキュメントは無効です。",
+      "invalid_version": "その保存は古くなっています。マップを開き直してもう一度お試しください。",
+      "map_limit_reached": "アカウントの保存済みマップの上限に達しました。",
+      "map_not_found": "そのマップは既に存在しません。",
+      "version_conflict": "他の誰かが先にこのマップを保存しました。",
+      "slug_unavailable": "そのマップ名は既に使用されています。別の名前をお試しください。",
+      "map_too_large": "このマップは大きすぎて保存できません。",
+      "invalid_glb": "そのファイルは有効なGLBモデルではありません。",
+      "asset_blocked": "そのアセットはモデレーターによって削除されました。",
+      "asset_limit_reached": "アカウントのアップロード済みアセットの上限に達しました。",
+      "asset_storage_limit_reached": "アップロードアセットのストレージ上限に達しました。",
+      "asset_too_large": "そのアセットは8 MiBを超えています。",
+      "asset_not_found": "そのアセットは既に存在しません。",
+      "rate_limited": "リクエストが多すぎます。少し待ってからもう一度お試しください。",
+      "unauthorized": "それを行うにはゲームでサインインしてください。",
+      "network": "サーバーに接続できませんでした。接続を確認してください。",
+      "timeout": "サーバーの応答に時間がかかりすぎました。",
+      "unknown": "問題が発生しました。もう一度お試しください。"
     },
     "assets": {
-      "label": "Asset browser",
-      "title": "Assets",
-      "search": "Search assets",
-      "searchPlaceholder": "Search...",
+      "label": "アセットブラウザ",
+      "title": "アセット",
+      "search": "アセットを検索",
+      "searchPlaceholder": "検索...",
       "categoryTab": "{category} ({count})",
-      "uploadedTab": "Uploaded",
-      "uploadedSignIn": "Sign in from the game to see and upload your own assets.",
-      "uploadedLoadFailed": "Could not load your uploaded assets.",
-      "uploadedEmpty": "You haven't uploaded any assets yet.",
-      "loading": "Loading...",
-      "empty": "No assets match.",
-      "pick": "Place {name}",
-      "deleteAsset": "Delete asset",
-      "deleteAssetConfirm": "Delete \"{name}\"? Any map placement using it will fail to render.",
+      "uploadedTab": "アップロード済み",
+      "uploadedSignIn": "自分のアセットを表示・アップロードするにはゲームでサインインしてください。",
+      "uploadedLoadFailed": "アップロード済みのアセットを読み込めませんでした。",
+      "uploadedEmpty": "まだアセットをアップロードしていません。",
+      "loading": "読み込み中...",
+      "empty": "一致するアセットがありません。",
+      "pick": "{name} を配置",
+      "deleteAsset": "アセットを削除",
+      "deleteAssetConfirm": "「{name}」を削除しますか？このアセットを使用しているマップ上の配置は表示されなくなります。",
       "category": {
-        "biome": "Biome",
-        "chars": "Characters",
-        "creatures": "Creatures",
-        "dungeon": "Dungeon",
-        "foliage": "Foliage",
-        "props": "Props",
-        "quest": "Quest",
-        "resources": "Resources",
-        "tools": "Tools",
-        "weapons": "Weapons"
+        "biome": "バイオーム",
+        "chars": "キャラクター",
+        "creatures": "クリーチャー",
+        "dungeon": "ダンジョン",
+        "foliage": "植物",
+        "props": "小道具",
+        "quest": "クエスト",
+        "resources": "リソース",
+        "tools": "ツール",
+        "weapons": "武器"
       }
     },
     "help": {
-      "title": "Editor Help",
-      "toolsTitle": "Tools",
-      "shortcutsTitle": "Keyboard shortcuts",
-      "mouseTitle": "Mouse",
-      "flowTitle": "Save, draft, and playtest",
-      "beginTutorial": "Begin tutorial",
-      "close": "Close",
-      "key": {
-        "tools": "Number keys or letters shown next to each tool: switch tools",
-        "brush": "[ and ]: shrink / grow the brush",
-        "undo": "Ctrl+Z / Ctrl+Y: undo / redo",
-        "save": "Ctrl+S: save",
-        "duplicate": "Ctrl+D: duplicate the selected placement",
-        "nudge": "Arrow keys: nudge the selection",
-        "wheel": "Scroll wheel: rotate or scale the selected placement",
-        "delete": "Delete: remove the selection",
-        "escape": "Escape: cancel the current action"
-      },
+      "title": "エディターヘルプ",
+      "mouseTitle": "マウス",
+      "flowTitle": "保存と下書き",
+      "beginTutorial": "チュートリアルを開始",
+      "close": "閉じる",
       "mouse": {
-        "orbit3d": "3D view: left-drag to orbit, right-drag to pan",
-        "fly3d": "3D view: scroll to zoom, WASD to fly",
-        "move": "Drag a marker or placement to move it",
-        "pan2d": "2D view: drag empty space to pan, scroll to zoom"
+        "orbit3d": "3Dビュー：左ドラッグで周回、右ドラッグでパン",
+        "fly3d": "3Dビュー：スクロールでズーム、WASDで飛行",
+        "pan2d": "2Dビュー：空白部分をドラッグしてパン、スクロールでズーム"
       },
       "flow": {
-        "save": "Save writes to this browser, and to the server once you are signed in",
-        "draft": "An autosave draft protects unsaved edits if the tab closes unexpectedly",
-        "playtest": "Playtest boots the game on this map, including your current edits"
-      },
-      "tool": {
-        "select": "Select and edit an existing placement or marker.",
-        "raise": "Raise the terrain under the brush.",
-        "lower": "Lower the terrain under the brush.",
-        "smooth": "Smooth out bumps under the brush.",
-        "flatten": "Flatten the terrain to one height under the brush.",
-        "paint": "Paint the biome under the brush.",
-        "water": "Set the water level.",
-        "place": "Place an asset from the asset browser.",
-        "blocker": "Draw an invisible collision wall.",
-        "camp": "Place a monster camp.",
-        "spawn": "Set the player start point.",
-        "region": "Select a region to copy or clear.",
-        "erase": "Erase placements or terrain edits under the brush."
+        "save": "保存はこのブラウザに書き込まれ、サインイン後はサーバーにも書き込まれます",
+        "draft": "自動保存の下書きは、タブが予期せず閉じられた場合に未保存の編集を保護します"
       }
     },
     "tutorial": {
-      "title": "Editor tutorial",
+      "title": "エディターチュートリアル",
       "counter": "Step {current} of {total}",
       "back": "Back",
       "next": "Next",
-      "finish": "Finish",
+      "finish": "完了",
       "skip": "Skip",
       "steps": {
         "toolbar": {
-          "title": "Tools",
-          "body": "Pick a tool here to sculpt terrain, paint biomes, or place assets."
+          "title": "ツール",
+          "body": "ここでツールを選びます。配置は今すぐ使用できます。他のツールは近日公開予定です。"
         },
         "stage": {
-          "title": "Viewport",
-          "body": "This is your map. Switch between the 3D and 2D views any time."
-        },
-        "inspector": {
-          "title": "Inspector",
-          "body": "Selecting a placement or marker shows its details and options here."
+          "title": "ビューポート",
+          "body": "これがあなたのマップです。3Dビューと2Dビューはいつでも切り替えられます。"
         },
         "viewToggle": {
-          "title": "3D / 2D toggle",
-          "body": "Switch to the 2D overhead view for precise placement, or 3D to see the result."
+          "title": "3D / 2D 切り替え",
+          "body": "正確な配置には2D俯瞰ビューに、結果を見るには3Dに切り替えてください。"
         },
         "save": {
           "title": "Save",
-          "body": "Save keeps a copy in this browser, and on the server once you sign in."
-        },
-        "playtest": {
-          "title": "Playtest",
-          "body": "Boot the game on this map to try it out, including your current edits."
+          "body": "保存はこのブラウザにコピーを残し、サインイン後はサーバーにも保存します。"
         },
         "help": {
           "title": "Help",
-          "body": "Come back here any time for the tool list, shortcuts, and this tour."
+          "body": "このツアーはいつでもここに戻って確認できます。"
         }
       }
     }

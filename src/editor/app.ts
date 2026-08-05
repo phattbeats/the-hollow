@@ -169,11 +169,7 @@ export class EditorApp {
 
     this.toasts = new Toasts(root);
 
-    window.addEventListener('beforeunload', (ev) => {
-      if (!this.dirty) return;
-      ev.preventDefault();
-      ev.returnValue = '';
-    });
+    window.addEventListener('beforeunload', this.onBeforeUnload);
     this.autosaveTimer = window.setInterval(() => this.autosave(), AUTOSAVE_MS);
 
     this.map = newCustomMap(t('editor.untitledMap'), genId(), Date.now());
@@ -386,12 +382,20 @@ export class EditorApp {
       this.topbar.setSaveState(t('editor.topbar.savedLocal'));
       return;
     }
-    // A copy is a new document identity: new meta.id, no server link yet.
-    this.io.setLink(this.map.meta.id, null);
-    this.map.meta.id = genId();
+    // A copy is a new document identity: new meta.id, no server link yet. Mint
+    // and commit the new id only after the server accepts the copy, so a
+    // failed fork never orphans the document under way (see resolveConflict's
+    // caller: this runs on a 409 from a plain save, not a fresh document).
+    const oldId = this.map.meta.id;
+    const newId = genId();
     try {
       const generation = this.editGen.current;
-      const link = await this.io.saveServerAsCopy(this.map);
+      const link = await this.io.saveServerAsCopy({
+        ...this.map,
+        meta: { ...this.map.meta, id: newId },
+      });
+      this.map.meta.id = newId;
+      this.io.setLink(oldId, null);
       this.io.saveLocal(this.map);
       this.finishSave(
         t('editor.status.savedServer', { name: this.map.meta.name, version: link.version }),
@@ -590,7 +594,14 @@ export class EditorApp {
     );
   }
 
+  private readonly onBeforeUnload = (ev: BeforeUnloadEvent): void => {
+    if (!this.dirty) return;
+    ev.preventDefault();
+    ev.returnValue = '';
+  };
+
   dispose(): void {
+    window.removeEventListener('beforeunload', this.onBeforeUnload);
     window.clearInterval(this.autosaveTimer);
     this.resizeObserver.disconnect();
     this.viewport3d?.dispose();

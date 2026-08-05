@@ -126,7 +126,7 @@ describe('TutorialModel', () => {
 
 describe('shipped step definitions', () => {
   it('every step has an anchor and editor.tutorial i18n keys', () => {
-    expect(TUTORIAL_STEPS.length).toBeGreaterThanOrEqual(6);
+    expect(TUTORIAL_STEPS.length).toBeGreaterThanOrEqual(4);
     expect(TUTORIAL_STEPS.length).toBeLessThanOrEqual(9);
     for (const step of TUTORIAL_STEPS) {
       expect(step.anchor.startsWith('.')).toBe(true);
