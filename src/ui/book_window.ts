@@ -23,7 +23,7 @@ import type {
 import { bookCategorySummary } from './book_view';
 import { tEntity } from './entity_i18n';
 import { esc } from './esc';
-import { t } from './i18n';
+import { formatNumber, t } from './i18n';
 import { svgIcon } from './ui_icons';
 
 export interface BookWindowDeps {
@@ -224,8 +224,9 @@ function renderObjectiveRow(obj: BookObjectiveView): HTMLElement {
 
 function formatInt(n: number): string {
   // Locale-aware integer formatting for the summary + objective counts.
-  // Math.floor guards against a sub-integer count slipping through from a
-  // future collect objective variant; the engine's deed counts are integers
-  // today but the view stays defensive.
-  return Math.floor(n).toLocaleString();
+  // Routes through formatNumber so the active player locale (set via
+  // src/ui/i18n.ts) drives grouping rather than the host default; the engine
+  // deed counts are integers today but the view stays defensive against
+  // future collect-objective variants by flooring first.
+  return formatNumber(Math.floor(n), { maximumFractionDigits: 0 });
 }
