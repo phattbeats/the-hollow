@@ -20,6 +20,7 @@ import {
 } from './game/click_move';
 import { getClientSeed } from './game/client_seed';
 import { shouldClearAutorunOnDeath } from './game/death_input_reset';
+import { takeEditorPlaytestRequest } from './game/editor_playtest';
 import { GamepadManager } from './game/gamepad';
 import { GamepadBindings } from './game/gamepad_bindings';
 import { Input } from './game/input';
@@ -83,12 +84,20 @@ import type { SelfMotionFrame } from './render/self_motion';
 import { navigatorSaveData } from './render/sky';
 import { pathCrossesFence } from './sim/colliders';
 import { ABILITIES, CLASSES } from './sim/content/classes';
-import { ITEMS, isDelvePos } from './sim/data';
+import { ITEMS, isDelvePos, setActiveWorldContent } from './sim/data';
 import { canEquipItem } from './sim/equipment_rules';
 import { findPlayerPath, resolvePlayerDestination } from './sim/pathfind';
 import { Sim } from './sim/sim';
 import { TAB_NEAR_RADIUS, TAB_QUERY_RADIUS, tabConeHalfAt } from './sim/tab_target';
-import { DT, dist2d, INTERACT_RANGE, MELEE_RANGE, type PlayerClass, RUN_SPEED } from './sim/types';
+import {
+  DT,
+  dist2d,
+  INTERACT_RANGE,
+  MELEE_RANGE,
+  type PlayerClass,
+  RUN_SPEED,
+  type WorldContent,
+} from './sim/types';
 import { zoneBiomeAt } from './sim/world';
 import { startSitePresence } from './site_presence';
 import {
@@ -2545,15 +2554,24 @@ async function startOffline(
   name: string,
   skin = 0,
   sex: 'm' | 'f' = 'm',
+  // Editor play-test (PHAA-679): a custom world + its seed, in place of the
+  // persistent Hollow. When set, the character spawns at the map's own
+  // playerStart rather than the Hollow hub (hollowStart is for the real
+  // persistent world only, an unrelated fixed instance a custom map has no
+  // connection to).
+  world?: WorldContent,
+  seed = WORLD_SEED,
 ): Promise<void> {
   if (!(await prepareWorldEntry())) return;
   enterLoadingState(t('loading.world'));
+  if (world) setActiveWorldContent(world);
   const sim = new Sim({
-    seed: WORLD_SEED,
+    seed,
     playerClass,
     playerName: name,
     devCommands: import.meta.env.DEV,
-    hollowStart: true,
+    hollowStart: !world,
+    world,
   });
   sim.setPlayerSkin(sim.playerId, skin);
   // PHAA-501: honour the chosen sex so the offline character matches the
@@ -6328,6 +6346,24 @@ function fadeOutHomepageMusic(durationMs = 1600): void {
   }
 })();
 
-startSitePresence('home');
-wireStartScreens();
-initHomepageMusic();
+// A pending editor play-test (PHAA-679) takes over the boot instead of the
+// normal home flow: the map editor (its own /editor entry) stashed a custom
+// WorldContent and navigated here, so boot straight into that offline world
+// and skip the start screen. Any malformed/absent request falls through to
+// the normal home flow.
+const editorPlaytest = takeEditorPlaytestRequest();
+if (editorPlaytest) {
+  startSitePresence('home');
+  void startOffline(
+    editorPlaytest.playerClass,
+    editorPlaytest.playerName,
+    0,
+    'm',
+    editorPlaytest.content,
+    editorPlaytest.seed,
+  );
+} else {
+  startSitePresence('home');
+  wireStartScreens();
+  initHomepageMusic();
+}

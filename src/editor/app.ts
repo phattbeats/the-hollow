@@ -1,19 +1,18 @@
-// The map-editor application coordinator (PHAA-676, slice 4/8, "core viewport").
+// The map-editor application coordinator (PHAA-676 slice 4/8 "core viewport",
+// extended by PHAA-678 slice 6/8 "persistence + UX polish").
 //
 // Scope: boot the editor chrome, show a MapDoc in the 3D viewport and the 2D
-// top-down view, and load a saved map (read-only). Authoring (terrain paint,
-// asset placement, undo) is slice 5; persistence/UX polish (real save, fork,
-// import/export, asset upload, playtest, tutorial) is slice 6 - every Topbar
-// action for those stays an explicit no-op stub here, wired up in its slice.
-//
-// No asset catalogue exists in this fork yet (see custom_map.ts), so placed
-// assets resolve to nothing (a built-in-world map has none regardless).
+// top-down view, and load/save it against the server (this slice) or a saved
+// browser copy. Authoring (terrain paint, asset placement, undo) is a later
+// slice - every Topbar action for it stays an explicit no-op stub here.
 
 import { invalidateStaticColliders } from '../sim/colliders';
 import { setActiveWorldContent } from '../sim/data';
 import { invalidateTerrainEditIndex } from '../sim/world';
 import { t } from '../ui/i18n';
 import { Editor3DViewport } from './3d/viewport';
+import { AssetBrowser } from './asset_browser';
+import { assetById } from './asset_catalog.generated';
 import { draw } from './canvas';
 import {
   type AssetPathResolver,
@@ -22,16 +21,37 @@ import {
   newCustomMap,
 } from './custom_map';
 import { el } from './dom';
+import { downloadMap, pickMapFile } from './file_io';
+import { MapIO } from './map_io';
 import { buildEntities, type EditorEntity } from './model';
-import { EditorApiError, getMap, listMyMaps, signedIn } from './net';
+import {
+  EditorApiError,
+  forkMap,
+  getMap,
+  listMyMaps,
+  type MapFullWire,
+  signedIn,
+  uploadAsset,
+} from './net';
+import { parseMap } from './persist';
+import { launchPlaytest } from './playtest';
+import { EditGeneration, shouldAutosave } from './save_lifecycle_core';
+import { editorErrorKey } from './server_errors_core';
+import { confirmDialog, promptDialog, Toasts } from './toasts';
 import { type EditorTool, Toolbar } from './toolbar';
 import { Topbar } from './topbar';
+import { EditorTutorial } from './tutorial';
+import { registerUserAssets, userAssetIdFor, userAssetPath } from './user_assets';
 import { Camera } from './view';
 
-// Placeholder resolver: this fork has no generated asset-id -> path catalogue
-// yet (see custom_map.ts's own note). A fresh/built-in map has zero placements,
-// so this is never exercised before slice 5/6 wire in the real catalogue.
-const NO_ASSET_CATALOG: AssetPathResolver = () => undefined;
+const AUTOSAVE_MS = 30_000;
+const AUTOSAVE_PREF_KEY = 'woc_editor_autosave';
+const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
+
+// The real placement asset id -> GLB path resolver: the generated catalogue
+// first, falling back to a signed-in user's own uploads.
+const resolveAssetPath: AssetPathResolver = (assetId) =>
+  assetById(assetId)?.path ?? userAssetPath(assetId) ?? undefined;
 
 function genId(): string {
   return typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : String(Date.now());
@@ -43,7 +63,11 @@ export class EditorApp {
 
   private readonly topbar: Topbar;
   private readonly toolbar: Toolbar;
+  private readonly toasts: Toasts;
+  private readonly tutorial: EditorTutorial;
+  private readonly assets: AssetBrowser;
 
+  private readonly root: HTMLElement;
   private readonly stage: HTMLElement;
   private readonly stage3dHost: HTMLElement;
   private readonly stage2dHost: HTMLElement;
@@ -56,33 +80,51 @@ export class EditorApp {
 
   private drag2d: { x: number; y: number } | null = null;
   private readonly resizeObserver: ResizeObserver;
+  private readonly autosaveTimer: number;
+
+  // ---- persistence state --------------------------------------------------
+  private readonly io = new MapIO();
+  private readonly editGen = new EditGeneration();
+  private dirty = false;
+  private saving = false;
+  private autosaveOn = false;
+  private autosaveWarned = false;
+  private placeAssetId: string | null = null;
+  private placeAssetLabel: string | null = null;
 
   constructor(mount: HTMLElement) {
     const root = el('div', 'ed-root');
     mount.appendChild(root);
+    this.root = root;
 
     this.topbar = new Topbar(root, {
       onNameChange: (name) => {
         this.map.meta.name = name;
+        this.markDirty();
       },
-      onNew: () => void this.loadMap(newCustomMap(t('editor.untitledMap'), genId(), Date.now())),
+      onNew: () => void this.newMap(),
       onOpen: () => void this.openFromServer(),
-      onSave: () => {},
-      onSaveAs: () => {},
-      onAutosaveToggle: () => {},
-      onFork: () => {},
-      onImport: () => {},
-      onExport: () => {},
-      onUploadAsset: () => {},
-      onPlaytest: () => {},
+      onSave: () => void this.save(),
+      onSaveAs: () => void this.saveAs(),
+      onAutosaveToggle: () => this.setAutosave(!this.autosaveOn),
+      onFork: () => void this.forkCurrent(),
+      onImport: () => void this.importFile(),
+      onExport: () => this.exportFile(),
+      onUploadAsset: () => void this.uploadAsset(),
+      onPlaytest: () => this.playtest(),
       onViewMode: (mode) => this.setViewMode(mode),
       onUndo: () => {},
       onRedo: () => {},
-      onHelp: () => {},
+      onHelp: () => this.tutorial.openHelp(),
     });
     this.topbar.setOffline(!signedIn());
     this.topbar.setForkEnabled(false);
-    this.topbar.setAutosave(false);
+    try {
+      this.autosaveOn = localStorage.getItem(AUTOSAVE_PREF_KEY) === '1';
+    } catch {
+      this.autosaveOn = false;
+    }
+    this.topbar.setAutosave(this.autosaveOn);
     this.topbar.setUndoState(false, false);
     this.topbar.setSaveState(t('editor.topbar.neverSaved'));
     this.topbar.setViewMode(this.viewMode);
@@ -93,6 +135,7 @@ export class EditorApp {
     this.toolbar = new Toolbar(main, (tool) => {
       this.tool = tool;
       this.toolbar.setActive(tool);
+      this.assets.setVisible(tool === 'place');
     });
     this.toolbar.setActive(this.tool);
 
@@ -111,16 +154,41 @@ export class EditorApp {
     this.resizeObserver = new ResizeObserver(() => this.resize2d());
     this.resizeObserver.observe(this.stage2dHost);
 
+    this.assets = new AssetBrowser(this.stage, {
+      onPick: (assetId, label) => {
+        this.placeAssetId = assetId;
+        this.placeAssetLabel = label;
+        if (this.tool !== 'place') {
+          this.tool = 'place';
+          this.toolbar.setActive('place');
+          this.assets.setVisible(true);
+        }
+      },
+      confirm: (title, body) => confirmDialog(root, { title, body, danger: true }),
+      toastError: (m) => this.toasts.error(m),
+    });
+
+    this.toasts = new Toasts(root);
+
+    window.addEventListener('beforeunload', this.onBeforeUnload);
+    this.autosaveTimer = window.setInterval(() => this.autosave(), AUTOSAVE_MS);
+
     this.map = newCustomMap(t('editor.untitledMap'), genId(), Date.now());
     void this.loadMap(this.map);
     this.setViewMode(this.viewMode);
+
+    this.tutorial = new EditorTutorial(root);
+    this.tutorial.maybeAutoStart();
   }
 
   private async loadMap(map: CustomMap): Promise<void> {
     this.map = map;
+    this.dirty = false;
     this.topbar.setMapName(map.meta.name);
     this.topbar.setDirty(false);
-    const world = customMapToWorldContent(map, NO_ASSET_CATALOG);
+    this.topbar.setForkEnabled(this.io.linkFor(map.meta.id) !== null);
+    this.topbar.setSaveState(t('editor.topbar.neverSaved'));
+    const world = customMapToWorldContent(map, resolveAssetPath);
     setActiveWorldContent(world);
     invalidateTerrainEditIndex();
     invalidateStaticColliders();
@@ -129,9 +197,28 @@ export class EditorApp {
     if (this.viewport3d) {
       await this.viewport3d.reload(map);
     } else {
-      this.viewport3d = new Editor3DViewport(this.stage3dHost, map, NO_ASSET_CATALOG);
+      this.viewport3d = new Editor3DViewport(this.stage3dHost, map, resolveAssetPath);
       await this.viewport3d.start();
     }
+  }
+
+  // ---- open / new / import / export ------------------------------------------
+
+  /** True when it is safe to replace the working document (confirms if dirty). */
+  private async confirmDiscard(): Promise<boolean> {
+    if (!this.dirty) return true;
+    return confirmDialog(this.root, {
+      title: t('editor.confirm.discardTitle'),
+      body: t('editor.confirm.discardBody', { name: this.map.meta.name }),
+      confirmLabel: t('editor.confirm.discard'),
+      danger: true,
+    });
+  }
+
+  private async newMap(): Promise<void> {
+    if (!(await this.confirmDiscard())) return;
+    await this.loadMap(newCustomMap(t('editor.untitledMap'), genId(), Date.now()));
+    this.toasts.info(t('editor.status.newMap'));
   }
 
   private async openFromServer(): Promise<void> {
@@ -140,13 +227,315 @@ export class EditorApp {
       const mine = await listMyMaps();
       if (mine.length === 0) return;
       const full = await getMap(mine[0].id);
-      await this.loadMap(full.doc);
+      await this.openServerMap(full, true);
     } catch (err) {
-      if (!(err instanceof EditorApiError)) throw err;
-      // A failed load leaves the current document untouched; slice 6 (persistence
-      // UX) surfaces this to the user via toasts.ts.
+      const key =
+        err instanceof EditorApiError ? editorErrorKey(err.code, err.status) : editorErrorKey(null);
+      this.toasts.error(t(key));
     }
   }
+
+  private async openServerMap(full: MapFullWire, mine: boolean): Promise<void> {
+    if (!(await this.confirmDiscard())) return;
+    // Re-run the shared sanitizer over the wire document (defense in depth; the
+    // server stores sanitizer output, but the editor never trusts a wire byte).
+    const parsed = parseMap(full.doc);
+    if (!parsed) {
+      this.toasts.error(t('editor.serverError.invalid_map_doc'));
+      return;
+    }
+    parsed.meta.name = full.name;
+    await this.loadMap(parsed);
+    if (mine) {
+      this.io.setLink(parsed.meta.id, { serverId: full.id, version: full.version });
+      this.topbar.setForkEnabled(true);
+      this.topbar.setSaveState(t('editor.topbar.savedServer', { version: full.version }));
+    } else {
+      this.io.setLink(parsed.meta.id, null);
+      this.topbar.setForkEnabled(false);
+    }
+    this.toasts.success(t('editor.status.opened', { name: full.name }));
+  }
+
+  private async importFile(): Promise<void> {
+    if (!(await this.confirmDiscard())) return;
+    const map = await pickMapFile();
+    if (map) {
+      await this.loadMap(map);
+      this.toasts.success(t('editor.status.imported', { name: map.meta.name }));
+    } else {
+      this.toasts.error(t('editor.status.importFailed'));
+    }
+  }
+
+  private exportFile(): void {
+    this.map.meta.updatedAt = Date.now();
+    downloadMap(this.map);
+    this.toasts.success(t('editor.status.exported', { name: this.map.meta.name }));
+  }
+
+  // ---- playtest -----------------------------------------------------------------
+
+  private playtest(): void {
+    // Playtest navigates away; back an unsaved doc up to its draft slot first.
+    if (this.dirty) this.io.draftSave(this.map);
+    const world = customMapToWorldContent(this.map, resolveAssetPath);
+    this.toasts.info(t('editor.status.playtestLaunch'));
+    const ok = launchPlaytest(world, {
+      seed: this.map.meta.seed,
+      playerClass: 'warrior',
+      playerName: t('editor.playtestPlayerName'),
+    });
+    if (!ok) this.toasts.error(t('editor.status.playtestFailed'));
+  }
+
+  // ---- save / autosave / fork -------------------------------------------------
+
+  private markDirty(): void {
+    this.dirty = true;
+    this.editGen.bump();
+    this.topbar.setDirty(true);
+  }
+
+  /**
+   * Save locally + to the server. `auto` = fired by the autosave tick: it must
+   * stay silent on success and must never open a dialog; any failure (conflict
+   * included) turns autosave off with one explanatory toast.
+   */
+  private async save(auto = false): Promise<void> {
+    if (this.saving) return;
+    this.map.meta.updatedAt = Date.now();
+    const generation = this.editGen.current;
+    const okLocal = this.io.saveLocal(this.map);
+    if (!okLocal) {
+      if (auto) {
+        this.autosaveErrored(t('editor.status.saveFailedLocal'));
+        return;
+      }
+      this.toasts.error(t('editor.status.saveFailedLocal'));
+    }
+    if (!signedIn()) {
+      if (okLocal) {
+        this.finishSave(
+          t('editor.status.savedLocalOnly', { name: this.map.meta.name }),
+          null,
+          generation,
+          auto,
+        );
+      }
+      return;
+    }
+    this.saving = true;
+    this.topbar.setSaving(true);
+    try {
+      const link = await this.io.saveServer(this.map);
+      this.finishSave(
+        t('editor.status.savedServer', { name: this.map.meta.name, version: link.version }),
+        link.version,
+        generation,
+        auto,
+      );
+    } catch (err) {
+      if (auto) {
+        this.autosaveErrored(
+          t(
+            err instanceof EditorApiError
+              ? editorErrorKey(err.code, err.status)
+              : editorErrorKey(null),
+          ),
+        );
+        this.topbar.setSaveState(t('editor.topbar.savedLocal'));
+      } else if (err instanceof EditorApiError && err.code === 'version_conflict') {
+        await this.resolveConflict(err.serverVersion ?? 0);
+      } else {
+        const key =
+          err instanceof EditorApiError
+            ? editorErrorKey(err.code, err.status)
+            : editorErrorKey(null);
+        this.toasts.error(t(key));
+        this.topbar.setSaveState(t('editor.topbar.savedLocal'));
+      }
+    } finally {
+      this.saving = false;
+      this.topbar.setSaving(false);
+    }
+  }
+
+  /** An automatic save failed: turn the feature off and say why, once. */
+  private autosaveErrored(reason: string): void {
+    this.setAutosave(false);
+    this.toasts.error(t('editor.status.autosaveOff', { reason }));
+  }
+
+  private finishSave(
+    message: string,
+    serverVersion: number | null,
+    generation: number,
+    quiet = false,
+  ): void {
+    const fin = this.editGen.finalize(generation);
+    if (fin.clearDirty) {
+      this.dirty = false;
+      this.topbar.setDirty(false);
+    }
+    this.topbar.setSaveState(
+      serverVersion === null
+        ? t('editor.topbar.savedLocal')
+        : t('editor.topbar.savedServer', { version: serverVersion }),
+    );
+    this.topbar.setForkEnabled(this.io.linkFor(this.map.meta.id) !== null);
+    if (fin.clearDraft) this.io.draftClear(this.map.meta.id);
+    if (!quiet) this.toasts.success(message);
+  }
+
+  private async resolveConflict(serverVersion: number): Promise<void> {
+    const copy = await confirmDialog(this.root, {
+      title: t('editor.confirm.conflictTitle'),
+      body: t('editor.confirm.conflictBody', { version: serverVersion }),
+      confirmLabel: t('editor.confirm.conflictSaveCopy'),
+    });
+    if (!copy) {
+      this.topbar.setSaveState(t('editor.topbar.savedLocal'));
+      return;
+    }
+    // A copy is a new document identity: new meta.id, no server link yet. Mint
+    // and commit the new id only after the server accepts the copy, so a
+    // failed fork never orphans the document under way (see resolveConflict's
+    // caller: this runs on a 409 from a plain save, not a fresh document).
+    const oldId = this.map.meta.id;
+    const newId = genId();
+    try {
+      const generation = this.editGen.current;
+      const link = await this.io.saveServerAsCopy({
+        ...this.map,
+        meta: { ...this.map.meta, id: newId },
+      });
+      this.map.meta.id = newId;
+      this.io.setLink(oldId, null);
+      this.io.saveLocal(this.map);
+      this.finishSave(
+        t('editor.status.savedServer', { name: this.map.meta.name, version: link.version }),
+        link.version,
+        generation,
+      );
+    } catch (err) {
+      const key =
+        err instanceof EditorApiError ? editorErrorKey(err.code, err.status) : editorErrorKey(null);
+      this.toasts.error(t(key));
+    }
+  }
+
+  private async saveAs(): Promise<void> {
+    const name = await promptDialog(
+      this.root,
+      t('editor.prompt.saveAsTitle'),
+      t('editor.prompt.nameLabel'),
+      this.map.meta.name,
+    );
+    if (!name) return;
+    this.map.meta.name = name;
+    this.map.meta.id = genId();
+    this.map.meta.createdAt = Date.now();
+    this.topbar.setMapName(name);
+    this.topbar.setForkEnabled(false);
+    await this.save();
+  }
+
+  private async forkCurrent(): Promise<void> {
+    const link = this.io.linkFor(this.map.meta.id);
+    if (!link) return;
+    try {
+      const forked = await forkMap(link.serverId);
+      this.toasts.success(t('editor.status.forked', { name: forked.name }));
+      await this.openServerMap(forked, true);
+    } catch (err) {
+      const key =
+        err instanceof EditorApiError ? editorErrorKey(err.code, err.status) : editorErrorKey(null);
+      this.toasts.error(t(key));
+    }
+  }
+
+  private setAutosave(on: boolean): void {
+    this.autosaveOn = on;
+    this.topbar.setAutosave(on);
+    try {
+      localStorage.setItem(AUTOSAVE_PREF_KEY, on ? '1' : '0');
+    } catch {
+      // Blocked storage: the toggle still works for this session.
+    }
+  }
+
+  private autosave(): void {
+    if (!this.dirty) return;
+    const ok = this.io.draftSave(this.map);
+    if (ok) {
+      this.autosaveWarned = false;
+    } else if (!this.autosaveWarned) {
+      this.autosaveWarned = true;
+      this.toasts.error(t('editor.status.autosaveFailed'));
+    }
+    if (
+      shouldAutosave({
+        enabled: this.autosaveOn,
+        dirty: this.dirty,
+        saving: this.saving,
+        editing: false,
+      })
+    ) {
+      void this.save(true);
+    }
+  }
+
+  // ---- asset upload -------------------------------------------------------------
+
+  private async uploadAsset(): Promise<void> {
+    if (!signedIn()) return;
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.glb,model/gltf-binary';
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      if (!file.name.toLowerCase().endsWith('.glb')) {
+        this.toasts.error(t('editor.upload.notGlb'));
+        return;
+      }
+      if (file.size > MAX_UPLOAD_BYTES) {
+        this.toasts.error(t('editor.upload.tooLarge'));
+        return;
+      }
+      this.toasts.info(t('editor.upload.uploading'));
+      try {
+        const bytes = await file.arrayBuffer();
+        const name = file.name.replace(/\.glb$/i, '');
+        const { asset, existing } = await uploadAsset(bytes, name);
+        registerUserAssets([
+          { id: asset.id, sha256: asset.sha256, name: asset.name, byteSize: asset.byteSize },
+        ]);
+        const assetId = userAssetIdFor(asset.sha256);
+        this.placeAssetId = assetId;
+        this.placeAssetLabel = asset.name ?? asset.sha256.slice(0, 8);
+        this.tool = 'place';
+        this.toolbar.setActive('place');
+        this.assets.setVisible(true);
+        this.assets.showUploaded(assetId);
+        this.toasts.success(
+          existing
+            ? t('editor.upload.uploadedExisting')
+            : t('editor.upload.uploaded', { name: this.placeAssetLabel }),
+        );
+      } catch (err) {
+        const key =
+          err instanceof EditorApiError
+            ? editorErrorKey(err.code, err.status)
+            : editorErrorKey(null);
+        this.toasts.error(t(key));
+      }
+    };
+    input.click();
+  }
+
+  // ---- view mode ----------------------------------------------------------------
 
   private setViewMode(mode: '3d' | '2d'): void {
     this.viewMode = mode;
@@ -221,8 +610,17 @@ export class EditorApp {
     );
   }
 
+  private readonly onBeforeUnload = (ev: BeforeUnloadEvent): void => {
+    if (!this.dirty) return;
+    ev.preventDefault();
+    ev.returnValue = '';
+  };
+
   dispose(): void {
+    window.removeEventListener('beforeunload', this.onBeforeUnload);
+    window.clearInterval(this.autosaveTimer);
     this.resizeObserver.disconnect();
     this.viewport3d?.dispose();
+    this.tutorial.dispose();
   }
 }
