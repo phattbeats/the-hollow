@@ -2029,7 +2029,7 @@ export const zh_CN: EnTranslations = {
     "appTitle": "地图编辑器",
     "docTitle": "地图编辑器 - World of ClaudeCraft",
     "untitledMap": "未命名地图",
-    "playtestPlayerName": "Mapmaker",
+    "playtestPlayerName": "地图作者",
     "topbar": {
       "label": "编辑器操作",
       "mapNameLabel": "地图名称",
@@ -2128,8 +2128,8 @@ export const zh_CN: EnTranslations = {
       "imported": "“{name}” 已导入。",
       "importFailed": "无法导入该文件。",
       "exported": "地图已导出。",
-      "playtestLaunch": "Launching playtest...",
-      "playtestFailed": "Could not launch playtest (storage may be blocked)."
+      "playtestLaunch": "正在启动试玩……",
+      "playtestFailed": "无法启动试玩（存储空间可能已被阻止）。"
     },
     "upload": {
       "notGlb": "只能上传 .glb 文件。",

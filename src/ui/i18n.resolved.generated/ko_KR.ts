@@ -2029,7 +2029,7 @@ export const ko_KR: EnTranslations = {
     "appTitle": "맵 에디터",
     "docTitle": "맵 에디터 - World of ClaudeCraft",
     "untitledMap": "제목 없는 맵",
-    "playtestPlayerName": "Mapmaker",
+    "playtestPlayerName": "맵 제작자",
     "topbar": {
       "label": "에디터 작업",
       "mapNameLabel": "맵 이름",
@@ -2128,8 +2128,8 @@ export const ko_KR: EnTranslations = {
       "imported": "\"{name}\"을(를) 가져왔습니다.",
       "importFailed": "해당 파일을 가져올 수 없습니다.",
       "exported": "맵을 내보냈습니다.",
-      "playtestLaunch": "Launching playtest...",
-      "playtestFailed": "Could not launch playtest (storage may be blocked)."
+      "playtestLaunch": "플레이테스트를 시작하는 중……",
+      "playtestFailed": "플레이테스트를 시작할 수 없습니다(저장소가 차단되었을 수 있습니다)."
     },
     "upload": {
       "notGlb": ".glb 파일만 업로드할 수 있습니다.",
