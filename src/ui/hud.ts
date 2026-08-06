@@ -61,7 +61,7 @@ import {
   zoneAt,
 } from '../sim/data';
 import { specialRoleColor } from '../sim/discord_roles';
-import { armorTypeForItem, canEquipItem, weaponArchetypeForItem } from '../sim/equipment_rules';
+import { armorTypeForItem, canEquipItem } from '../sim/equipment_rules';
 import { HOUSE_SLOT_COUNT } from '../sim/housing';
 import { isItemLevelEligible, itemLevel, itemScore } from '../sim/item_level';
 import type { Ante, PickAction } from '../sim/lockpick';
@@ -211,6 +211,7 @@ import {
 } from './i18n';
 import { iconDataUrl, QUALITY_COLOR, raidMarkerDataUrl } from './icons';
 import { itemArmorTypeLabelKey } from './item_armor_type';
+import { requiredClassesForTooltip } from './item_class_restriction';
 import { itemStatDeltas } from './item_compare';
 import { itemSetMemberCounts, itemSetTooltipModel } from './item_set_tooltip_view';
 import { LeaderboardWindow } from './leaderboard_window';
@@ -3209,8 +3210,9 @@ export class Hud {
       html += `<div class="tt-desc">${esc(t('itemUi.tooltip.questItem'))}</div>`;
     if (item.kind === 'bag' && item.bagSlots)
       html += `<div class="tt-stat">${esc(t('itemUi.tooltip.bagSlots', { slots: itemNumber(item.bagSlots) }))}</div>`;
-    if (item.requiredClass && !armorTypeForItem(item) && !weaponArchetypeForItem(item)) {
-      html += `<div class="tt-sub">${esc(t('itemUi.tooltip.classes', { classes: item.requiredClass.map(classDisplayName).join(', ') }))}</div>`;
+    const requiredClasses = requiredClassesForTooltip(item);
+    if (requiredClasses) {
+      html += `<div class="tt-sub">${esc(t('itemUi.tooltip.classes', { classes: requiredClasses.map(classDisplayName).join(', ') }))}</div>`;
     }
     html += this.itemSetBlock(item);
     const flavor = itemFlavorText(item);
