@@ -174,6 +174,10 @@ const UI_PURE_CORES = [
   'src/ui/roving_index.ts',
   'src/ui/live_region_politeness.ts',
   'src/ui/discord_widget_view.ts',
+  // PHAA-747: Book of Asphodelia panel + HUD title tracker (pure-core halves;
+  // DOM-touching consumers live in book_window.ts / title_tracker_painter.ts).
+  'src/ui/book_view.ts',
+  'src/ui/title_tracker_view.ts',
   'src/game/ui_effects_profile.ts',
   'src/game/ui_tier_knobs.ts',
 ].map((rel) => join(repoRoot, rel));

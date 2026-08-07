@@ -1040,6 +1040,38 @@ export const ja_JP: EnTranslations = {
         "fiestaWin": "フィエスタ勝利"
       }
     },
+    "book": {
+      "title": "アスフォデリアの書",
+      "close": "閉じる",
+      "deedSummary": "実績 {done}/{total} 完了",
+      "titleSummary": "{count,plural,=0{称号未取得}one{称号 1 個取得}other{称号 # 個取得}}",
+      "titlePickerHeading": "現在の称号",
+      "titlePickerEmpty": "称号が未選択です。以下から選んでください。",
+      "titlePickerEarnFirst": "実績を達成して最初の称号を獲得しましょう。",
+      "titleClear": "称号なし",
+      "titleDisplay": "{display}",
+      "titleActiveTag": "装備中",
+      "titlePickAria": "称号 {display} を装備する",
+      "titleRewardHint": "この実績を達成すると称号を獲得できます。",
+      "categoryEmpty": "この分類にはまだ項目がありません。",
+      "category": {
+        "chronicle": "年代記",
+        "collection": "コレクション",
+        "combat": "戦闘",
+        "delve": "秘境",
+        "dungeon": "ダンジョン",
+        "exploration": "探索",
+        "feat": "偉業",
+        "progression": "成長",
+        "pvp": "対人戦",
+        "social": "社交",
+        "hidden": "隠し"
+      }
+    },
+    "titleTracker": {
+      "unspent": "新規 +{count}",
+      "ariaLabel": "現在の称号: {display}"
+    },
     "hitRating": {
       "ratingLabel": "命中レーティング"
     }

@@ -233,6 +233,12 @@ const HOT_PAINTERS: ReadonlyArray<{
     allow: { '.className': 4, '.setAttribute': 1, '.style': 1, '.dataset': 2 },
     reflowAllow: {},
   },
+  // title_tracker_painter (PHAA-747): per-frame HUD chip for the active title +
+  // unspent-titles badge. Pure-core view in title_tracker_view; the painter is
+  // a thin DOM consumer routing every write through PainterHostWriters
+  // (setText / setDisplay / toggleClass). No raw DOM writes, no per-frame
+  // reflow reads, so it slots into the facet-routed arm like unit_frame.
+  { file: 'title_tracker_painter.ts', allow: {}, reflowAllow: {} },
 ];
 
 // The OTHER src/ui/*_painter.ts modules, NOT facet-routed, so deliberately not in the

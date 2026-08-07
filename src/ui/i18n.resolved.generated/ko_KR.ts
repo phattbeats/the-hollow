@@ -1040,6 +1040,38 @@ export const ko_KR: EnTranslations = {
         "fiestaWin": "피에스타 승리"
       }
     },
+    "book": {
+      "title": "아스포델리아의 책",
+      "close": "닫기",
+      "deedSummary": "업적 {done}/{total} 완료",
+      "titleSummary": "{count,plural,=0{획득한 칭호 없음}one{칭호 1개 획득}other{칭호 #개 획득}}",
+      "titlePickerHeading": "현재 칭호",
+      "titlePickerEmpty": "선택한 칭호가 없습니다. 아래에서 골라 주세요.",
+      "titlePickerEarnFirst": "업적을 하나 완료해 첫 칭호를 획득하세요.",
+      "titleClear": "칭호 없음",
+      "titleDisplay": "{display}",
+      "titleActiveTag": "장착 중",
+      "titlePickAria": "칭호 {display} 장착",
+      "titleRewardHint": "이 업적을 완료하면 칭호를 받습니다.",
+      "categoryEmpty": "이 분류에는 아직 항목이 없습니다.",
+      "category": {
+        "chronicle": "연대기",
+        "collection": "수집",
+        "combat": "전투",
+        "delve": "비경",
+        "dungeon": "던전",
+        "exploration": "탐험",
+        "feat": "위업",
+        "progression": "성장",
+        "pvp": "PvP",
+        "social": "사회",
+        "hidden": "숨겨진"
+      }
+    },
+    "titleTracker": {
+      "unspent": "신규 +{count}",
+      "ariaLabel": "현재 칭호: {display}"
+    },
     "hitRating": {
       "ratingLabel": "적중 레이팅"
     }

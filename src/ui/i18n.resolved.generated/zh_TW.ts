@@ -1040,6 +1040,38 @@ export const zh_TW: EnTranslations = {
         "fiestaWin": "狂歡勝利"
       }
     },
+    "book": {
+      "title": "阿斯福德里亞之書",
+      "close": "關閉",
+      "deedSummary": "已完成 {done}/{total} 項事蹟",
+      "titleSummary": "{count,plural,=0{尚未獲得稱號}one{獲得 1 個稱號}other{獲得 # 個稱號}}",
+      "titlePickerHeading": "目前稱號",
+      "titlePickerEmpty": "尚未選擇稱號，請於下方挑選。",
+      "titlePickerEarnFirst": "完成一項事蹟以獲得你的第一個稱號。",
+      "titleClear": "無稱號",
+      "titleDisplay": "{display}",
+      "titleActiveTag": "已裝備",
+      "titlePickAria": "裝備稱號 {display}",
+      "titleRewardHint": "完成此事蹟可獲得稱號。",
+      "categoryEmpty": "此分類下尚無內容。",
+      "category": {
+        "chronicle": "編年史",
+        "collection": "收集",
+        "combat": "戰鬥",
+        "delve": "秘境",
+        "dungeon": "地下城",
+        "exploration": "探索",
+        "feat": "壯舉",
+        "progression": "進程",
+        "pvp": "玩家對決",
+        "social": "社交",
+        "hidden": "隱藏"
+      }
+    },
+    "titleTracker": {
+      "unspent": "+{count} 項待選",
+      "ariaLabel": "目前稱號：{display}"
+    },
     "hitRating": {
       "ratingLabel": "命中等級"
     }

@@ -1040,6 +1040,38 @@ export const ru_RU: EnTranslations = {
         "fiestaWin": "Победа на фиесте"
       }
     },
+    "book": {
+      "title": "Книга Асфоделии",
+      "close": "Закрыть",
+      "deedSummary": "Выполнено {done} из {total} деяний",
+      "titleSummary": "{count,plural,=0{Звания не получены}one{Получено 1 звание}few{Получено # звания}many{Получено # званий}other{Получено # звания}}",
+      "titlePickerHeading": "Активное звание",
+      "titlePickerEmpty": "Звание не выбрано. Выберите ниже.",
+      "titlePickerEarnFirst": "Получите первое звание, выполнив деяние.",
+      "titleClear": "Без звания",
+      "titleDisplay": "{display}",
+      "titleActiveTag": "Активно",
+      "titlePickAria": "Надеть звание {display}",
+      "titleRewardHint": "За это деяние полагается звание.",
+      "categoryEmpty": "В этой категории пока ничего нет.",
+      "category": {
+        "chronicle": "Летопись",
+        "collection": "Коллекция",
+        "combat": "Бой",
+        "delve": "Обитель",
+        "dungeon": "Подземелье",
+        "exploration": "Исследование",
+        "feat": "Свершения",
+        "progression": "Прогресс",
+        "pvp": "PvP",
+        "social": "Общение",
+        "hidden": "Скрытое"
+      }
+    },
+    "titleTracker": {
+      "unspent": "+{count} новых",
+      "ariaLabel": "Активное звание: {display}"
+    },
     "hitRating": {
       "ratingLabel": "Рейтинг меткости"
     }
