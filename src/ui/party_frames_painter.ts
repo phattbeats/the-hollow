@@ -17,6 +17,7 @@
 // :first-child / :not(:first-child) rules still match; appendChild moves a node
 // without dropping its keyboard focus or its listeners.
 
+import { tEntity } from './entity_i18n';
 import { formatNumber, t } from './i18n';
 import type { PainterHostWriters } from './painter_host';
 import {
@@ -211,6 +212,13 @@ export class PartyFramesPainter {
     // classes) through the family instance, byte-faithful to the inline markup. The
     // family writes ONLY the level number into .lead-num now; the leader star is the
     // separate aria-hidden write below.
+    // PHAA-748: Book of Asphodelia titles on the party-frame surface. The
+    // server-resolved atitle (or offline Sim's PlayerMeta.activeTitle) resolves
+    // here through tEntity (the same call shape the nameplate painter uses);
+    // a null atitle renders the bare name unchanged, so the elided writer
+    // still skips a same-named, no-title repaint.
+    const memberTitle = m.atitle ? tEntity({ kind: 'title', id: m.atitle, field: 'display' }) : '';
+    const memberDisplayName = memberTitle ? `${memberTitle} ${m.name}` : m.name;
     row.painter.paint(
       unitFrameView({
         present: true,
@@ -220,7 +228,7 @@ export class PartyFramesPainter {
         resFrac: m.res / Math.max(1, m.mres),
         resText: '',
         levelText: String(m.level),
-        name: m.name,
+        name: memberDisplayName,
         portraitKey: `${PARTY_CREST_KEY_PREFIX}${m.cls}`,
         absorb: { hp: m.hp, maxHp: m.mhp, total: m.absorb },
         dead: !!m.dead,

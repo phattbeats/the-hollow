@@ -1,15 +1,13 @@
 // W0c: the IWorld structural-parity gate.
 //
-// `IWorld` (src/world_api.ts, 197 members) is the ONE seam render/ui depend
+// `IWorld` (src/world_api.ts, 198 members) is the ONE seam render/ui depend
 // on. `tsc` already proves both the offline `Sim` and the online `ClientWorld` satisfy
 // it structurally, but the interface is erased at build: there is NO runtime member
 // list, so nothing catches a present-but-throws stub or a kind flip (method vs read).
-// This file adds that runtime layer.
-//
 // IWORLD_MEMBERS below is the hand-maintained member list, the W0c analog of the
 // append-only CALLBACK_KEYS in tests/sim_context.test.ts. It is APPEND-ONLY WITH THE
 // INTERFACE: whenever a future slice adds (or removes/renames) a member on `IWorld`,
-// it lands the matching edit here in the SAME commit. The count pins (197 / 59 / 138)
+// it lands the matching edit here in the SAME commit. The count pins (198 / 59 / 139)
 // plus the sorted-name `toEqual` snapshots (modeled on the anti-loosening exclude-set
 // pin in tests/parity/harness.test.ts:131-162) are what force that: a dropped or
 // renamed member reddens deliberately, never silently.
@@ -76,8 +74,8 @@ interface IWorldMember {
   readonly kind: IWorldMemberKind;
 }
 
-// The 197 members of `interface IWorld`, in interface order (world_api.ts).
-// Partition: 59 `data` + 138 `method` (read-returning + command-void + 3 async).
+// The 198 members of `interface IWorld`, in interface order (world_api.ts).
+// Partition: 59 `data` + 139 `method` (read-returning + command-void + 3 async).
 // biome-ignore lint/suspicious/noExportsInTest: IWORLD_MEMBERS is the W0c pinned structural-parity contract (the authoritative IWorld member list)
 export const IWORLD_MEMBERS = [
   // --- core world / player roster + economy reads (data) ---
@@ -134,6 +132,11 @@ export const IWORLD_MEMBERS = [
   { name: 'refuseQuest', kind: 'method' },
   { name: 'acceptLinkedQuest', kind: 'method' },
   { name: 'setActiveTitle', kind: 'method' },
+  // PHAA-748 (Book of Asphodelia child 5: title cross-surface rendering):
+  // per-pid reads for the title surfaces (nameplate / unit frame / chat /
+  // inspect card / leaderboard). Both worlds return null for unknown pids.
+  { name: 'activeTitleFor', kind: 'method' },
+  { name: 'earnedTitlesFor', kind: 'method' },
   { name: 'equipItem', kind: 'method' },
   { name: 'equipItemToSlot', kind: 'method' },
   { name: 'unequipItem', kind: 'method' },
@@ -405,9 +408,9 @@ beforeAll(() => {
 
 describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => {
   it('pins total / data / method counts', () => {
-    expect(IWORLD_MEMBERS.length).toBe(197);
+    expect(IWORLD_MEMBERS.length).toBe(198);
     expect(DATA_MEMBERS.length).toBe(59);
-    expect(METHOD_MEMBERS.length).toBe(138);
+    expect(METHOD_MEMBERS.length).toBe(139);
   });
 
   it('has no duplicate member names', () => {
@@ -417,7 +420,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
 
   // Sorted-name `toEqual` snapshots: a dropped, renamed, or kind-flipped member reddens
   // these deliberately, forcing a reviewed edit. NOT length-only.
-  it('the full sorted member set is exactly the pinned 196', () => {
+  it('the full sorted member set is exactly the pinned 198', () => {
     expect(IWORLD_MEMBERS.map((m) => m.name).sort()).toEqual([
       'abandonPet',
       'abandonQuest',
@@ -428,6 +431,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'activeLoadout',
       'activeLootRolls',
       'activeTitle',
+      'activeTitleFor',
       'applyEnchant',
       'applyTalents',
       'arenaAugmentPick',
@@ -477,6 +481,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'duelInfo',
       'duelRequest',
       'earnedTitles',
+      'earnedTitlesFor',
       'enchants',
       'enterDelve',
       'enterDungeon',
@@ -619,7 +624,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
     ]);
   });
 
-  it('the sorted data-kind set is exactly the pinned 57', () => {
+  it('the sorted data-kind set is exactly the pinned 58', () => {
     expect(DATA_MEMBERS.map((m) => m.name).sort()).toEqual([
       'accountCosmetics',
       'achievementPoints',
@@ -683,13 +688,14 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
     ]);
   });
 
-  it('the sorted method-kind set is exactly the pinned 133', () => {
+  it('the sorted method-kind set is exactly the pinned 136', () => {
     expect(METHOD_MEMBERS.map((m) => m.name).sort()).toEqual([
       'abandonPet',
       'abandonQuest',
       'acceptLinkedQuest',
       'acceptQuest',
       'activeLootRolls',
+      'activeTitleFor',
       'applyEnchant',
       'applyTalents',
       'arenaAugmentPick',
@@ -722,6 +728,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'duelAccept',
       'duelDecline',
       'duelRequest',
+      'earnedTitlesFor',
       'enterDelve',
       'enterDungeon',
       'equipBag',
@@ -988,6 +995,14 @@ const FACET_DEEDS = [
   'earnedTitles',
   'activeTitle',
   'setActiveTitle',
+  // PHAA-748 (Book of Asphodelia child 5: title cross-surface rendering):
+  // per-pid title reads so render/ui can pull another player's active title
+  // for nameplate/unit-frame/chat/inspect/leaderboard surfaces through the
+  // IWorld seam. Both worlds return null for unknown pids; the online
+  // ClientWorld additionally returns null for any non-self pid until the wire
+  // grows per-entity titles.
+  'activeTitleFor',
+  'earnedTitlesFor',
 ] as const satisfies readonly (keyof IWorldDeeds)[];
 type _ExhaustDeeds = AssertNever<Exclude<keyof IWorldDeeds, (typeof FACET_DEEDS)[number]>>;
 
@@ -1293,11 +1308,11 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the 32 fa
     expect(overlaps, `members filed in more than one facet:\n${overlaps.join('\n')}`).toEqual([]);
   });
 
-  it('the union of the 32 facets equals the pinned 197-member IWORLD_MEMBERS set', () => {
+  it('the union of the 32 facets equals the pinned 198-member IWORLD_MEMBERS set', () => {
     const union = Object.values(FACET_MEMBER_ARRAYS).flatMap((arr) => [...arr]);
-    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(197);
+    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(198);
     expect(new Set(union).size, 'union size after dedup (catches a duplicate across facets)').toBe(
-      197,
+      198,
     );
     const sortedUnion = [...union].sort();
     const pinned = IWORLD_MEMBERS.map((m) => m.name).sort();

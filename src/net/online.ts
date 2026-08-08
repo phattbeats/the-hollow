@@ -2085,6 +2085,17 @@ export class ClientWorld implements IWorld {
     this.activeTitle = titleId;
     this.cmd({ cmd: 'setTitle', title: titleId });
   }
+  // IWorldDeeds (PHAA-748): per-pid title queries. The wire only carries the
+  // local player's title (self.atitle); other players' titles are not on the
+  // browser side until the wire grows per-entity titles, so the honest read
+  // here is "null / empty" for non-self pids. Surfaces (nameplate, unit
+  // frames, chat, inspect, leaderboard) call these through IWorld.
+  activeTitleFor(pid: number): string | null {
+    return pid === this.playerId ? this.activeTitle : null;
+  }
+  earnedTitlesFor(pid: number): Set<string> {
+    return pid === this.playerId ? this.earnedTitles : new Set<string>();
+  }
   // IWorldInventory facet (W2): the eight item/vendor command senders. Each is a thin
   // cmd() emit whose offline counterpart is the moved src/sim/items.ts body resolved on
   // the server. The move changes no wire field or command string.
