@@ -784,6 +784,76 @@ describe('rogue', () => {
     expect(sim.playerGcd).toBe(1.0);
     expect(makeSim('warrior').playerGcd).toBe(1.5);
   });
+
+  // PHAA-739 row F / upstream #1906: Sap used to break the caster's own
+  // stealth on use (the opener mistakenly fell under the
+  // breaksStealth set alongside Cheap Shot / Ambush / Garrote). Now Sap is
+  // the classic no-reveal opener (incapacitate from range, no melee swing),
+  // so it must NOT blow Stealth or Vanish; the player should still carry a
+  // kind:'stealth' aura after the cast + a tick.
+  it('Sap does not break the caster stealth (issue #1890)', () => {
+    const sim = makeSim('rogue');
+    sim.setPlayerLevel(10); // Sap learns at level 10
+    const mob = nearestMob(sim, 'forest_wolf');
+    mob.level = 1;
+    mob.inCombat = false;
+    mob.aggroTargetId = null;
+    teleportTo(sim, mob.pos.x + 2, mob.pos.z);
+    sim.player.inCombat = false;
+    sim.castAbility('stealth');
+    expect(sim.player.auras.some((a) => a.kind === 'stealth')).toBe(true);
+    sim.targetEntity(mob.id);
+    facePlayerAt(sim, mob);
+    sim.castAbility('sap');
+    sim.tick();
+    expect((mob as any).auras.some((a: any) => a.kind === 'incapacitate')).toBe(true);
+    expect(sim.player.auras.some((a) => a.kind === 'stealth')).toBe(true);
+  });
+
+  // PHAA-739 row F / upstream #1906: Kidney Shot (the combo finisher that
+  // stuns the target) requires no melee swing and was historically usable
+  // only from stealth. After the fixes, Kidney Shot works while invisible
+  // from Vanish, which is the rotation this was gated for. The buildup loop
+  // can finish off a starter-level wolf, so revive it before the assertion
+  // so the test is about Kidney Shot, not an incidental kill.
+  it('Low Blow (kidney_shot) works while invisible from Vanish (issue #1890)', () => {
+    const sim = makeSim('rogue');
+    // Build combo points at the default level (rank-1 Sinister Strike = +3
+    // weapon damage, vs. rank-4 = +18 at level 20). A level-20 Sinister Strike
+    // will one-shot a same-level forest wolf, so the build-up loop can never
+    // accrue 2 combo points before the wolf dies. We set the player to level
+    // 20 right before Vanish so the ability gates under test are exercised
+    // at the right level.
+    const wolf = nearestMob(sim, 'forest_wolf');
+    wolf.level = 1;
+    teleportTo(sim, wolf.pos.x + 2, wolf.pos.z);
+    sim.targetEntity(wolf.id);
+    facePlayerAt(sim, wolf);
+    let guard = 0;
+    while (sim.player.comboPoints < 2 && guard++ < 20 * 120 && !wolf.dead) {
+      if (sim.player.resource >= 45 && sim.player.gcdRemaining <= 0)
+        sim.castAbility('sinister_strike');
+      sim.tick();
+      facePlayerAt(sim, wolf);
+    }
+    expect(sim.player.comboPoints).toBeGreaterThanOrEqual(2);
+    // Bump to level 20 so Vanish (18) and Low Blow (14) are both known.
+    sim.setPlayerLevel(20);
+    // Stop the auto-attack so Vanish and Kidney Shot are the only thing under
+    // test below (auto-attack would otherwise tick down the wolf's hp and
+    // could race the stun application).
+    sim.stopAutoAttack();
+    sim.castAbility('vanish');
+    expect(sim.player.auras.some((a) => a.kind === 'stealth')).toBe(true);
+    facePlayerAt(sim, wolf);
+    for (let i = 0; i < 30 && sim.player.gcdRemaining > 0; i++) {
+      sim.tick();
+      facePlayerAt(sim, wolf);
+    }
+    sim.castAbility('kidney_shot');
+    sim.tick();
+    expect((wolf as any).auras.some((a: any) => a.kind === 'stun')).toBe(true);
+  });
 });
 
 describe('food, drink, vendor', () => {

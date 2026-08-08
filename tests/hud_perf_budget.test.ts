@@ -559,6 +559,8 @@ function idleWorld(): ActionBarWorldInput {
       potionCooldownRemaining: 0,
       gcdRemaining: 0,
       queuedOnSwing: null,
+      // PHAA-739 row F / upstream #1906: idle world is not stealthed.
+      stealthed: false,
       pos: { x: 0, y: 0, z: 0 },
     },
     target: null,
