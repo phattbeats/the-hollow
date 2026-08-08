@@ -264,6 +264,7 @@ import {
 } from './player_card_share';
 import { chatPlayerContextActions } from './player_context_menu';
 import { buildPlayerInfoCardViewModel, type PublicCharacterSheet } from './player_info_card_view';
+import { playerStealthed } from './player_stealthed';
 import { hydratePortraits, portraitChipHtml } from './portrait_chip';
 import { maskProfanity } from './profanity';
 import { encodeQuestLink, parseChatSegments } from './quest_link';
@@ -677,6 +678,8 @@ export class Hud {
     null;
   // Set while dragging an equipped piece out of the paperdoll onto the bags window.
   private dragUnequipSlot: EquipSlot | null = null;
+  // Set while dragging gear from the bags onto an exact paperdoll socket.
+  private dragEquipItemId: string | null = null;
   private mobileHotbarDrag: MobileHotbarDrag | null = null;
   private suppressNextActionClick = false;
   private optionsHooks: OptionsHooks | null = null;
@@ -2724,6 +2727,15 @@ export class Hud {
       this.dragAction = action ? { action, sourceIndex: null } : null;
     },
     clearActionDropTargets: () => this.clearActionDropTargets(),
+    beginEquipDrag: (itemId) => {
+      this.dragEquipItemId = itemId;
+    },
+    endEquipDrag: () => {
+      this.dragEquipItemId = null;
+      for (const row of document.querySelectorAll('.equip-slot.drop-target')) {
+        row.classList.remove('drop-target');
+      }
+    },
   });
   // World Market window painter (market_view.ts core + market_window.ts painter).
   // It composes the shared presentation bag (icon/money/tooltip) and owns the
@@ -2824,6 +2836,8 @@ export class Hud {
       this.dragUnequipSlot = null;
       $('#bags').classList.remove('drop-target');
     },
+    draggedEquipItemId: () => this.dragEquipItemId,
+    renderBags: () => this.renderBags(),
     renderPreview: () => this.renderCharPreview(),
     renderSkinPicker: () => this.renderCharSkinPicker(),
     openPlayerCard: () => {
@@ -4470,6 +4484,14 @@ export class Hud {
     // className swap on the player hot path). updateLowHealthVignette +
     // updateLowResource are player-only side effects with their own cores and stay
     // here, OUT of the shared family (target/party must not inherit them).
+    // PHAA-748: the local player's active title renders as a prefix on every
+    // surface. The wire's self-only atitle is enough for this frame (the IWorld
+    // seam resolves the local player through activeTitleFor(sim.playerId) which
+    // is byte-equivalent to sim.activeTitle on the offline side too).
+    const selfTitleId = this.sim.activeTitleFor(p.id);
+    const selfTitle = selfTitleId
+      ? tEntity({ kind: 'title', id: selfTitleId, field: 'display' })
+      : '';
     this.playerFramePainter.paint(
       unitFrameView({
         present: true,
@@ -4480,7 +4502,7 @@ export class Hud {
         resFrac: p.resource / Math.max(1, p.maxResource),
         resText: `${Math.round(p.resource)} / ${p.maxResource}`,
         levelText: String(p.level),
-        name: p.name,
+        name: selfTitle ? `${selfTitle} ${p.name}` : p.name,
         portraitKey: PLAYER_PORTRAIT_KEY,
         absorb: p,
         dead: false,
@@ -4545,6 +4567,17 @@ export class Hud {
       ) {
         this.lastTargetFramePaintAt = now;
         this.lastTargetFrameId = target.id;
+        // PHAA-748: Book of Asphodelia titles (the local player's earned + set
+        // active title) render across all surfaces. The target frame is one of
+        // them; on the online ClientWorld only the local player's title is on
+        // the wire today, so a non-self target's title resolves to null and the
+        // name renders bare. Mobs don't carry a player title; the early-return
+        // gate above keeps this to player targets.
+        const targetTitleId = target.kind === 'player' ? this.sim.activeTitleFor(target.id) : null;
+        const targetTitle = targetTitleId
+          ? tEntity({ kind: 'title', id: targetTitleId, field: 'display' })
+          : '';
+        const targetName = entityDisplayName(target);
         this.targetFramePainter.paint(
           unitFrameView({
             present: true,
@@ -4555,7 +4588,7 @@ export class Hud {
             resFrac: 0,
             resText: '',
             levelText: isBoss ? BOSS_SKULL_GLYPH : String(target.level),
-            name: entityDisplayName(target),
+            name: targetTitle ? `${targetTitle} ${targetName}` : targetName,
             // id-keyed gate, byte-faithful to the old lastPortraitTarget !== target.id;
             // the painter resets it on hide so an id reused by a new mob still redraws.
             portraitKey: String(target.id),
@@ -4672,8 +4705,23 @@ export class Hud {
     // call IN the core while the painter elides the DOM setAttribute (Top risk 4).
     this.renderPetBar();
     if (this.spellbookWindow.isOpen) this.spellbookWindow.refreshHotbarControls();
+    // PHAA-739 row F / upstream #1906: derive `stealthed` from the mirrored
+    // auras (playerStealthed) rather than trust the raw entity field. Offline
+    // the entity IS the live Sim Entity, whose `stealthed` field stays current
+    // via Sim.updateAuras; online it is the ClientWorld mirror, constructed
+    // with `stealthed: false` and never updated (server-local
+    // interest-filtering cache not encoded on the wire; see src/net/online.ts
+    // and server/game.ts). The auras ARE mirrored, so this is correct on both
+    // hosts. Without it the bar never dimmed Cheap Shot / Ambush / Garrote
+    // out of stealth, so they looked equally "ready" whether or not the cast
+    // would actually succeed (issue #1890).
+    const abPlayer = { ...p, stealthed: playerStealthed(p.auras) };
     this.actionBarPainter.paint(
-      this.actionBarView.tick({ player: p, target: target ?? null, inventory: sim.inventory }),
+      this.actionBarView.tick({
+        player: abPlayer,
+        target: target ?? null,
+        inventory: sim.inventory,
+      }),
     );
 
     // xp bar: pre-cap shows the level bar; post-cap fills toward the next virtual
@@ -6917,9 +6965,20 @@ export class Hud {
     div.dataset.chan = chan;
     this.hideIfFiltered(div, chan);
     this.prependTimestamp(div);
+    // PHAA-748: Book of Asphodelia titles surface in chat next to the sender
+    // name. The IWorld seam returns the local player's title and null for
+    // any other pid (the wire does not carry per-entity titles yet), so an
+    // unknown / non-self pid renders the bare name. Identity-bound operations
+    // (right-click menu, aria-label) keep the raw name; the title is a
+    // cosmetic prefix, never part of the player's identity.
+    const senderTitleId = fromPid !== undefined ? this.sim.activeTitleFor(fromPid) : null;
+    const senderTitle = senderTitleId
+      ? tEntity({ kind: 'title', id: senderTitleId, field: 'display' })
+      : '';
+    const senderName = senderTitle ? `${senderTitle} ${name}` : name;
     const sender = document.createElement('span');
     sender.className = 'chat-player-name';
-    sender.textContent = name;
+    sender.textContent = senderName;
     sender.title = t('hud.chat.rightClickName', { name });
     sender.setAttribute('role', 'button');
     sender.setAttribute('aria-label', t('hud.chat.rightClickName', { name }));
@@ -10705,6 +10764,17 @@ export class Hud {
     const className = classDisplayName(cls);
     const el = $('#inspect-window');
     this.closeOtherWindows('#inspect-window');
+    // PHAA-748: Book of Asphodelia titles on the inspect card. The IWorld
+    // seam returns the local player's title and null for any other pid (the
+    // wire has not yet grown per-entity titles), so a non-self target renders
+    // the bare name unchanged. The title is cosmetic: it renders above the
+    // name in the same line so the inspect card stays one panel-section
+    // tall.
+    const inspectTitleId = this.sim.activeTitleFor(pid);
+    const inspectTitle = inspectTitleId
+      ? tEntity({ kind: 'title', id: inspectTitleId, field: 'display' })
+      : '';
+    const inspectName = inspectTitle ? `${inspectTitle} ${e.name}` : e.name;
     // Linked-Discord flair: avatar, nickname, "member since", role.
     const discordTierIdx = e.discordTier ?? 0;
     const discordImg = e.discordAvatar
@@ -10752,7 +10822,7 @@ export class Hud {
       `<button type="button" class="x-btn" data-close aria-label="${esc(t('character.closeProfile'))}">${svgIcon('close')}</button></div>` +
       `<div class="inspect-card">` +
       portraitChipHtml({ cls, skin: e.skin ?? 0, name: e.name, variant: 'lg' }) +
-      `<div class="inspect-name">${esc(e.name)}</div>` +
+      `<div class="inspect-name">${esc(inspectName)}</div>` +
       `<div class="inspect-meta">${esc(t('itemUi.equipment.levelClass', { level: formatNumber(e.level, { maximumFractionDigits: 0 }), className }))}</div>` +
       discordHtml +
       `</div>` +

@@ -3585,8 +3585,8 @@ export class Renderer {
   // instead of standing out crisp when viewed from the zone's hub.
   // beach/desert/volcano/cave are paint-only biomes (see render/foliage.ts).
   // Fog is one global color/near/far per frame, keyed by the player's 1D
-  // z-band biome (see the accessor below), never a 2D biomePaint cell -- a
-  // painted patch stays whatever fog its zone band already has. Values match
+  // z-band biome (see the accessor below), never a 2D biomePaint cell (a
+  // painted patch stays whatever fog its zone band already has). Values match
   // the upstream reference port.
   private static BIOME_FOG: Record<BiomeId, { color: number; near: number; far: number }> = {
     vale: { color: 0xa6c6e0, near: 130, far: 470 },

@@ -10,7 +10,11 @@ const dbMock = vi.hoisted(() => {
 });
 vi.mock('pg', () => ({
   Pool: vi.fn(function Pool() {
-    return { query: dbMock.query, connect: async () => ({ query: dbMock.query, release() {} }) };
+    return {
+      query: dbMock.query,
+      connect: async () => ({ query: dbMock.query, release() {} }),
+      on: vi.fn(),
+    };
   }),
 }));
 

@@ -1040,6 +1040,38 @@ export const ja_JP: EnTranslations = {
         "fiestaWin": "フィエスタ勝利"
       }
     },
+    "book": {
+      "title": "アスフォデリアの書",
+      "close": "閉じる",
+      "deedSummary": "実績 {done}/{total} 完了",
+      "titleSummary": "{count,plural,=0{称号未取得}one{称号 1 個取得}other{称号 # 個取得}}",
+      "titlePickerHeading": "現在の称号",
+      "titlePickerEmpty": "称号が未選択です。以下から選んでください。",
+      "titlePickerEarnFirst": "実績を達成して最初の称号を獲得しましょう。",
+      "titleClear": "称号なし",
+      "titleDisplay": "{display}",
+      "titleActiveTag": "装備中",
+      "titlePickAria": "称号 {display} を装備する",
+      "titleRewardHint": "この実績を達成すると称号を獲得できます。",
+      "categoryEmpty": "この分類にはまだ項目がありません。",
+      "category": {
+        "chronicle": "年代記",
+        "collection": "コレクション",
+        "combat": "戦闘",
+        "delve": "秘境",
+        "dungeon": "ダンジョン",
+        "exploration": "探索",
+        "feat": "偉業",
+        "progression": "成長",
+        "pvp": "対人戦",
+        "social": "社交",
+        "hidden": "隠し"
+      }
+    },
+    "titleTracker": {
+      "unspent": "新規 +{count}",
+      "ariaLabel": "現在の称号: {display}"
+    },
     "hitRating": {
       "ratingLabel": "命中レーティング"
     }
@@ -2025,6 +2057,216 @@ export const ja_JP: EnTranslations = {
     "begin": "はじめる",
     "skip": "スキップ"
   },
+  "editor": {
+    "appTitle": "マップエディター",
+    "docTitle": "マップエディター - World of ClaudeCraft",
+    "untitledMap": "名称未設定のマップ",
+    "playtestPlayerName": "マップ作者",
+    "topbar": {
+      "label": "エディター操作",
+      "mapNameLabel": "マップ名",
+      "dirtyDot": "このマップには未保存の変更があります",
+      "saving": "保存中...",
+      "neverSaved": "未保存",
+      "savedLocal": "このブラウザに保存済み",
+      "savedServer": "保存済み（バージョン {version}）",
+      "new": "New",
+      "newTitle": "組み込みワールドから新しいマップを開始",
+      "open": "Open",
+      "openTitle": "保存済みのマップを開く（ブラウザまたはサーバー）",
+      "save": "Save",
+      "saveTitle": "このブラウザに保存し、サインイン時はサーバーにも保存（Ctrl+S）",
+      "saveAs": "Save As",
+      "saveAsTitle": "新しい名前でコピーを保存",
+      "fork": "Fork",
+      "forkTitle": "このマップの自分用サーバー側コピーを作成",
+      "forkDisabledTitle": "フォークするにはまずサーバーマップを開いてください",
+      "import": "インポート",
+      "importTitle": "JSONファイルからマップをインポート",
+      "export": "エクスポート",
+      "exportTitle": "このマップをJSONファイルとしてダウンロード",
+      "uploadAsset": "アセットをアップロード",
+      "uploadAssetTitle": "GLBモデル（最大8MiB）をアップロードしてマップに配置",
+      "uploadAssetDisabledTitle": "アセットをアップロードするにはゲームでサインインしてください",
+      "playtest": "プレイテスト",
+      "playtestTitle": "このマップでゲームを起動（オフライン、現在の編集を含む）",
+      "viewLabel": "表示モード",
+      "view3d": "3D",
+      "view3dTitle": "レンダリングされたワールドで編集",
+      "view2d": "2D",
+      "view2dTitle": "記号化された俯瞰マップで編集",
+      "undoCount": "Undo: {count}",
+      "undoCountTitle": "{count} 件の元に戻せる操作（Ctrl+Zで元に戻す、Ctrl+Yでやり直す）",
+      "autosave": "自動保存",
+      "autosaveTitle": "未保存の変更がある間、マップを自動的に保存します。保存に失敗すると自動的にオフになります。",
+      "undo": "Undo",
+      "undoTitle": "直前の変更を元に戻す（Ctrl+Z）",
+      "redo": "Redo",
+      "redoTitle": "元に戻した変更をやり直す（Ctrl+Y）",
+      "offline": "オフライン",
+      "offlineTitle": "サインインしていません：マップはこのブラウザにのみ保存されます。オンラインで保存するにはゲームでサインインしてください。",
+      "signIn": "Sign in",
+      "signInTitle": "新しいタブでゲームのサインイン画面を開く",
+      "help": "Help",
+      "helpTitle": "エディターガイド：ツール、ショートカット、チュートリアル"
+    },
+    "tool": {
+      "listLabel": "エディターツール",
+      "keyHint": "{name} ({key})",
+      "select": "選択",
+      "raise": "隆起",
+      "lower": "沈下",
+      "smooth": "スムーズ",
+      "flatten": "平坦化",
+      "paint": "バイオームを塗る",
+      "water": "水域",
+      "place": "アセットを配置",
+      "blocker": "遮断壁",
+      "camp": "Camp",
+      "spawn": "スポーン地点",
+      "region": "領域",
+      "erase": "消去"
+    },
+    "viewport": {
+      "assetsFailed": "3Dビューポートを読み込めませんでした: {error}"
+    },
+    "a11y": {
+      "stage": "マップビューポート",
+      "toasts": "エディター通知"
+    },
+    "confirm": {
+      "cancel": "キャンセル",
+      "ok": "OK",
+      "conflictTitle": "他の誰かがこのマップを保存しました",
+      "conflictBody": "サーバー上のコピーは現在バージョン {version} で、あなたが読み込んだものより新しくなっています。相手の変更を上書きしないよう、あなたの変更は新しいマップとして保存してください。",
+      "conflictSaveCopy": "Save As Copy",
+      "discardTitle": "未保存の変更を破棄しますか？",
+      "discardBody": "「{name}」には失われる未保存の変更があります。",
+      "discard": "破棄"
+    },
+    "prompt": {
+      "saveAsTitle": "Save As",
+      "nameLabel": "マップ名"
+    },
+    "status": {
+      "saveFailedLocal": "このブラウザに保存できませんでした（ストレージが不足している可能性があります）。",
+      "savedLocalOnly": "「{name}」をこのブラウザに保存しました。サインインするとサーバーにも保存されます。",
+      "savedServer": "「{name}」を保存しました（バージョン {version}）。",
+      "autosaveOff": "自動保存がオフになりました：{reason}",
+      "autosaveFailed": "自動保存の下書きを書き込めませんでした（ストレージが不足している可能性があります）。",
+      "forked": "自分用のコピーを作成しました：「{name}」。",
+      "opened": "「{name}」を開きました。",
+      "newMap": "新しいマップを開始しました。",
+      "imported": "「{name}」をインポートしました。",
+      "importFailed": "そのファイルをインポートできませんでした。",
+      "exported": "マップをエクスポートしました。",
+      "playtestLaunch": "プレイテストを起動しています……",
+      "playtestFailed": "プレイテストを起動できませんでした（ストレージがブロックされている可能性があります）。"
+    },
+    "upload": {
+      "notGlb": "アップロードできるのは .glb ファイルのみです。",
+      "tooLarge": "そのファイルは8 MiBを超えています。",
+      "uploading": "アップロード中...",
+      "uploaded": "「{name}」をアップロードしました。",
+      "uploadedExisting": "このファイルは既にアップロード済みです。再利用します。"
+    },
+    "serverError": {
+      "invalid_map_name": "そのマップ名は無効です。",
+      "map_name_not_allowed": "そのマップ名は許可されていません。",
+      "invalid_map_doc": "このマップドキュメントは無効です。",
+      "invalid_version": "その保存は古くなっています。マップを開き直してもう一度お試しください。",
+      "map_limit_reached": "アカウントの保存済みマップの上限に達しました。",
+      "map_not_found": "そのマップは既に存在しません。",
+      "version_conflict": "他の誰かが先にこのマップを保存しました。",
+      "slug_unavailable": "そのマップ名は既に使用されています。別の名前をお試しください。",
+      "map_too_large": "このマップは大きすぎて保存できません。",
+      "invalid_glb": "そのファイルは有効なGLBモデルではありません。",
+      "asset_blocked": "そのアセットはモデレーターによって削除されました。",
+      "asset_limit_reached": "アカウントのアップロード済みアセットの上限に達しました。",
+      "asset_storage_limit_reached": "アップロードアセットのストレージ上限に達しました。",
+      "asset_too_large": "そのアセットは8 MiBを超えています。",
+      "asset_not_found": "そのアセットは既に存在しません。",
+      "rate_limited": "リクエストが多すぎます。少し待ってからもう一度お試しください。",
+      "unauthorized": "それを行うにはゲームでサインインしてください。",
+      "network": "サーバーに接続できませんでした。接続を確認してください。",
+      "timeout": "サーバーの応答に時間がかかりすぎました。",
+      "unknown": "問題が発生しました。もう一度お試しください。"
+    },
+    "assets": {
+      "label": "アセットブラウザ",
+      "title": "アセット",
+      "search": "アセットを検索",
+      "searchPlaceholder": "検索...",
+      "categoryTab": "{category} ({count})",
+      "uploadedTab": "アップロード済み",
+      "uploadedSignIn": "自分のアセットを表示・アップロードするにはゲームでサインインしてください。",
+      "uploadedLoadFailed": "アップロード済みのアセットを読み込めませんでした。",
+      "uploadedEmpty": "まだアセットをアップロードしていません。",
+      "loading": "読み込み中...",
+      "empty": "一致するアセットがありません。",
+      "pick": "{name} を配置",
+      "deleteAsset": "アセットを削除",
+      "deleteAssetConfirm": "「{name}」を削除しますか？このアセットを使用しているマップ上の配置は表示されなくなります。",
+      "category": {
+        "biome": "バイオーム",
+        "chars": "キャラクター",
+        "creatures": "クリーチャー",
+        "dungeon": "ダンジョン",
+        "foliage": "植物",
+        "props": "小道具",
+        "quest": "クエスト",
+        "resources": "リソース",
+        "tools": "ツール",
+        "weapons": "武器"
+      }
+    },
+    "help": {
+      "title": "エディターヘルプ",
+      "mouseTitle": "マウス",
+      "flowTitle": "保存と下書き",
+      "beginTutorial": "チュートリアルを開始",
+      "close": "閉じる",
+      "mouse": {
+        "orbit3d": "3Dビュー：左ドラッグで周回、右ドラッグでパン",
+        "fly3d": "3Dビュー：スクロールでズーム、WASDで飛行",
+        "pan2d": "2Dビュー：空白部分をドラッグしてパン、スクロールでズーム"
+      },
+      "flow": {
+        "save": "保存はこのブラウザに書き込まれ、サインイン後はサーバーにも書き込まれます",
+        "draft": "自動保存の下書きは、タブが予期せず閉じられた場合に未保存の編集を保護します"
+      }
+    },
+    "tutorial": {
+      "title": "エディターチュートリアル",
+      "counter": "Step {current} of {total}",
+      "back": "Back",
+      "next": "Next",
+      "finish": "完了",
+      "skip": "Skip",
+      "steps": {
+        "toolbar": {
+          "title": "ツール",
+          "body": "ここでツールを選びます。配置は今すぐ使用できます。他のツールは近日公開予定です。"
+        },
+        "stage": {
+          "title": "ビューポート",
+          "body": "これがあなたのマップです。3Dビューと2Dビューはいつでも切り替えられます。"
+        },
+        "viewToggle": {
+          "title": "3D / 2D 切り替え",
+          "body": "正確な配置には2D俯瞰ビューに、結果を見るには3Dに切り替えてください。"
+        },
+        "save": {
+          "title": "Save",
+          "body": "保存はこのブラウザにコピーを残し、サインイン後はサーバーにも保存します。"
+        },
+        "help": {
+          "title": "Help",
+          "body": "このツアーはいつでもここに戻って確認できます。"
+        }
+      }
+    }
+  },
   "apiError": {
     "crossSiteRejected": "クロスサイトリクエストは拒否されました。",
     "notAuthenticated": "認証されていません。",
@@ -2991,6 +3233,7 @@ export const ja_JP: EnTranslations = {
       "accountSuspended": "このアカウントは {date} まで停止されています。",
       "alreadyInWorld": "キャラクターは既に世界にいます。",
       "tooManyOnline": "一度に世界にいられるキャラクターは1人だけです。",
+      "realmFull": "このレルムは現在満員です。しばらくしてからもう一度お試しください。",
       "takenOver": "あなたのキャラクターは別のセッションに引き継がれました。",
       "renameBeforeEntering": "このキャラクターは世界に入る前に名前変更が必要です。",
       "renameNotPermitted": "このキャラクターの名前変更は許可されていません。"

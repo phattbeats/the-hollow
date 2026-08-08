@@ -424,8 +424,10 @@ describe('GameServer sessions', () => {
     const server = new GameServer();
     const ws = fakeWs();
     expectJoined(server.join(ws, 70, 700, 'Takeoverme', 'warrior', null));
-    // A second join for the same character is rejected while it is online.
-    expect(server.join(fakeWs(), 70, 700, 'Takeoverme', 'warrior', null)).toEqual({
+    // A different account can never take over (only the owning account's
+    // explicit takeover below, or its own automatic reconnect, can displace
+    // it; see tests/linkdead.test.ts for the same-account auto-takeover path).
+    expect(server.join(fakeWs(), 71, 700, 'Takeoverme', 'warrior', null)).toEqual({
       error: 'character already in world',
     });
 

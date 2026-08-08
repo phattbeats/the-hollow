@@ -79,6 +79,7 @@ import {
   type SocialInfo,
   type TradeInfo,
 } from '../world_api';
+import { computeBackoffDelay } from './backoff';
 import { isTransientReconnectRejection } from './reconnect_policy';
 
 // ---------------------------------------------------------------------------
@@ -1104,9 +1105,10 @@ export class ClientWorld implements IWorld {
     }
     this.reconnectAttempts++;
     this.onConnectionLost?.();
-    const delayMs = Math.min(
+    const delayMs = computeBackoffDelay(
+      this.reconnectAttempts,
+      RECONNECT_BASE_DELAY_MS,
       RECONNECT_MAX_DELAY_MS,
-      RECONNECT_BASE_DELAY_MS * 2 ** (this.reconnectAttempts - 1),
     );
     this.reconnectTimer = window.setTimeout(() => this.openSocket(), delayMs);
   }
@@ -2089,11 +2091,29 @@ export class ClientWorld implements IWorld {
     this.activeTitle = titleId;
     this.cmd({ cmd: 'setTitle', title: titleId });
   }
+  // IWorldDeeds (PHAA-748): per-pid title queries. The wire only carries the
+  // local player's title (self.atitle); other players' titles are not on the
+  // browser side until the wire grows per-entity titles, so the honest read
+  // here is "null / empty" for non-self pids. Surfaces (nameplate, unit
+  // frames, chat, inspect, leaderboard) call these through IWorld.
+  activeTitleFor(pid: number): string | null {
+    return pid === this.playerId ? this.activeTitle : null;
+  }
+  earnedTitlesFor(pid: number): Set<string> {
+    return pid === this.playerId ? this.earnedTitles : new Set<string>();
+  }
   // IWorldInventory facet (W2): the eight item/vendor command senders. Each is a thin
   // cmd() emit whose offline counterpart is the moved src/sim/items.ts body resolved on
   // the server. The move changes no wire field or command string.
   equipItem(itemId: string): void {
     this.cmd({ cmd: 'equip', item: itemId });
+  }
+  // Aimed-slot equip: the paperdoll drop target. The server re-validates the
+  // slot against the item, so a forged 'equip' with a wrong slot is refused,
+  // not coerced. The wire shape reuses the 'equip' command (additive 'slot'
+  // field), so existing clients stay byte-identical.
+  equipItemToSlot(itemId: string, slot: EquipSlot): void {
+    this.cmd({ cmd: 'equip', item: itemId, slot });
   }
   unequipItem(slot: EquipSlot): void {
     this.cmd({ cmd: 'unequip_item', slot });

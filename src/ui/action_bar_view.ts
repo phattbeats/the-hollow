@@ -122,6 +122,15 @@ export interface ActionBarPlayerInput {
   potionCooldownRemaining: number;
   gcdRemaining: number;
   queuedOnSwing: string | null;
+  // PHAA-739 row F / upstream #1906: whether the player currently carries a
+  // `kind:'stealth'` aura (Stealth or Vanish). Gates a `requiresStealth`
+  // ability's usable state (issue #1890): without this the bar never dimmed
+  // Cheap Shot / Ambush / Garrote out of stealth, so they looked equally
+  // "ready" whether or not the cast would actually succeed. The host derives
+  // this from the mirrored auras (see src/ui/player_stealthed.ts) so it stays
+  // correct both offline (Sim Entity cache) and online (ClientWorld mirror
+  // that never encodes its `stealthed` field on the wire).
+  stealthed: boolean;
   pos: Vec3;
 }
 
@@ -334,6 +343,13 @@ export function createActionBarView(
         slot.cdText = cd > COOLDOWN_TEXT_THRESHOLD ? deps.formatCount(Math.ceil(cd)) : '';
         slot.count = '';
         slot.usable = !(player.resource < ability.cost);
+        // PHAA-739 row F / upstream #1906 -- Stealth action-bar gating:
+        // dim Gut Punch / Ambush / Garrote out of Stealth (these openers
+        // require the caster to be stealthed). Sap is the inverse: it
+        // PRESERVES stealth (the sim change in effect_dispatch.ts), so the
+        // slot stays usable while stealthed. Other abilities ignore the
+        // stealth gate.
+        if (def.requiresStealth && !world.player.stealthed) slot.usable = false;
         slot.outOfRange =
           def.requiresTarget &&
           tgtDist !== null &&

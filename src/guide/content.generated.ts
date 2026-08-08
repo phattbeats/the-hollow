@@ -1885,6 +1885,10 @@ export const GUIDE_MODELS: Record<string, GuideModelSpec> = {
     "url": "models/chars/players/paladin.glb",
     "idle": "Idle",
     "height": 2.6,
+    "show": [
+      "Paladin_Helmet",
+      "Paladin_Cape"
+    ],
     "attach": [
       {
         "url": "models/weapons/axe_1handed.glb",
