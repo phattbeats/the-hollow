@@ -20,7 +20,7 @@
 import { LEADERBOARD_PAGE_SIZE } from '../sim/leaderboard_page';
 import type { GuildLeaderboardPage, IWorld, LeaderboardPage } from '../world_api';
 import { markDialogRoot } from './dialog_root';
-import { classDisplayName } from './entity_i18n';
+import { classDisplayName, tEntity } from './entity_i18n';
 import { esc } from './esc';
 import { buildGuildLeaderboardView, type GuildLeaderboardRow } from './guild_leaderboard_view';
 import { formatNumber, t } from './i18n';
@@ -151,6 +151,13 @@ export class LeaderboardWindow {
               name: world.player.name,
               level: world.player.level,
               lifetimeXp: world.lifetimeXp,
+              // PHAA-748: Book of Asphodelia titles on the leaderboard. The
+              // viewer is always self, so the IWorld seam resolves the local
+              // player's title deterministically; the sticky "your standing"
+              // row renders the title prefix the same way as the surface
+              // nameplate/unit-frame/chat/inspect. Other players' titles stay
+              // null until the wire grows per-entity titles.
+              titleId: world.activeTitleFor(world.playerId),
             },
           },
     );
@@ -330,9 +337,18 @@ export class LeaderboardWindow {
         : '';
     const title = r.knownClass ? ` title="${esc(classDisplayName(r.cls))}"` : '';
     const you = r.me ? ` <span class="lb-you">(${esc(t('game.leaderboard.you'))})</span>` : '';
+    // PHAA-748: Book of Asphodelia title prefix on the leaderboard row. The
+    // self row carries the viewer's title (the viewer is self, resolved via
+    // IWorld.activeTitleFor at build time); non-self rows render bare until
+    // the server snapshots the field. Same prefix shape as the nameplate and
+    // unit-frame surfaces. The title text is server-authored (entity roster)
+    // and is interpolated raw; only r.name is escaped, matching the sibling
+    // surface rule and the leaderboard_window source pin in the test.
+    const rowTitle = r.titleId ? tEntity({ kind: 'title', id: r.titleId, field: 'display' }) : '';
+    const rowTitlePrefix = rowTitle ? `${rowTitle} ` : '';
     return (
       `<div class="lb-row${r.me ? ' lb-mine' : ''}"><span class="lb-rank">${r.rank}</span>` +
-      `<span class="lb-name"${title}>${star}${esc(r.name)}${you}</span>` +
+      `<span class="lb-name"${title}>${star}${rowTitlePrefix}${esc(r.name)}${you}</span>` +
       `<span class="lb-lvl">${r.level}</span><span class="lb-vlvl">${r.virtualLevel}</span>` +
       `<span class="lb-xp">${formatXp(r.lifetimeXp)}</span></div>`
     );
@@ -343,9 +359,17 @@ export class LeaderboardWindow {
   // carries no literal em dash (project style rule).
   private stickyHtml(standing: LeaderboardStanding | null): string {
     if (!standing) return '';
+    // PHAA-748: the sticky row carries the viewer's title prefix (same call
+    // shape as rowHtml); null / undefined renders the bare name unchanged.
+    // Only standing.name is escaped (the title text comes from the server-
+    // authored entity roster), matching the rowHtml rule above.
+    const stickyTitle = standing.titleId
+      ? tEntity({ kind: 'title', id: standing.titleId, field: 'display' })
+      : '';
+    const stickyTitlePrefix = stickyTitle ? `${stickyTitle} ` : '';
     return (
       `<div class="lb-sticky"><div class="lb-row lb-mine"><span class="lb-rank">&mdash;</span>` +
-      `<span class="lb-name">${esc(standing.name)} <span class="lb-you">(${esc(t('game.leaderboard.you'))})</span></span>` +
+      `<span class="lb-name">${stickyTitlePrefix}${esc(standing.name)} <span class="lb-you">(${esc(t('game.leaderboard.you'))})</span></span>` +
       `<span class="lb-lvl">${standing.level}</span><span class="lb-vlvl">${standing.virtualLevel}</span>` +
       `<span class="lb-xp">${formatXp(standing.lifetimeXp)}</span></div></div>`
     );

@@ -41,7 +41,12 @@ function isStealthToggle(ability: AbilityDef): boolean {
 }
 
 function preservesStealth(ability: AbilityDef): boolean {
-  return isStealthToggle(ability) || ability.id === 'sprint';
+  // PHAA-739 row F / upstream #1906 -- Stealth action-bar gating:
+  // - Stealth/Vanish toggles stay stealthed (classic).
+  // - Sprint (the rogue run-speed buff) is usable while hidden.
+  // - Sap (incapacitate opener) used to break Stealth on use; it no longer
+  //   does, so a sap -> re-stealth rotation stays consistent on the host.
+  return isStealthToggle(ability) || ability.id === 'sprint' || ability.id === 'sap';
 }
 
 // Cold Blood (Assassination signature): consumes a guaranteed-crit buff off the caster,

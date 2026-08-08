@@ -1040,6 +1040,38 @@ export const zh_TW: EnTranslations = {
         "fiestaWin": "狂歡勝利"
       }
     },
+    "book": {
+      "title": "阿斯福德里亞之書",
+      "close": "關閉",
+      "deedSummary": "已完成 {done}/{total} 項事蹟",
+      "titleSummary": "{count,plural,=0{尚未獲得稱號}one{獲得 1 個稱號}other{獲得 # 個稱號}}",
+      "titlePickerHeading": "目前稱號",
+      "titlePickerEmpty": "尚未選擇稱號，請於下方挑選。",
+      "titlePickerEarnFirst": "完成一項事蹟以獲得你的第一個稱號。",
+      "titleClear": "無稱號",
+      "titleDisplay": "{display}",
+      "titleActiveTag": "已裝備",
+      "titlePickAria": "裝備稱號 {display}",
+      "titleRewardHint": "完成此事蹟可獲得稱號。",
+      "categoryEmpty": "此分類下尚無內容。",
+      "category": {
+        "chronicle": "編年史",
+        "collection": "收集",
+        "combat": "戰鬥",
+        "delve": "秘境",
+        "dungeon": "地下城",
+        "exploration": "探索",
+        "feat": "壯舉",
+        "progression": "進程",
+        "pvp": "玩家對決",
+        "social": "社交",
+        "hidden": "隱藏"
+      }
+    },
+    "titleTracker": {
+      "unspent": "+{count} 項待選",
+      "ariaLabel": "目前稱號：{display}"
+    },
     "hitRating": {
       "ratingLabel": "命中等級"
     },
@@ -2037,6 +2069,216 @@ export const zh_TW: EnTranslations = {
     "begin": "開始",
     "skip": "跳過"
   },
+  "editor": {
+    "appTitle": "地圖編輯器",
+    "docTitle": "地圖編輯器 - World of ClaudeCraft",
+    "untitledMap": "未命名地圖",
+    "playtestPlayerName": "地圖作者",
+    "topbar": {
+      "label": "編輯器操作",
+      "mapNameLabel": "地圖名稱",
+      "dirtyDot": "此地圖有未儲存的變更",
+      "saving": "儲存中……",
+      "neverSaved": "尚未儲存",
+      "savedLocal": "已儲存到此瀏覽器",
+      "savedServer": "已儲存（版本 {version}）",
+      "new": "New",
+      "newTitle": "從內建世界開始新地圖",
+      "open": "Open",
+      "openTitle": "開啟已儲存的地圖（瀏覽器或伺服器）",
+      "save": "Save",
+      "saveTitle": "儲存到此瀏覽器；登入後同時儲存到伺服器（Ctrl+S）",
+      "saveAs": "Save As",
+      "saveAsTitle": "另存為新名稱的副本",
+      "fork": "Fork",
+      "forkTitle": "建立此地圖的伺服器端個人副本",
+      "forkDisabledTitle": "請先開啟一個伺服器地圖再復刻",
+      "import": "匯入",
+      "importTitle": "從 JSON 檔案匯入地圖",
+      "export": "匯出",
+      "exportTitle": "將此地圖下載為 JSON 檔案",
+      "uploadAsset": "上傳素材",
+      "uploadAssetTitle": "上傳 GLB 模型（最大 8 MiB）以放置到你的地圖中",
+      "uploadAssetDisabledTitle": "請在遊戲中登入後再上傳素材",
+      "playtest": "試玩",
+      "playtestTitle": "在此地圖上啟動遊戲（離線，包含目前編輯）",
+      "viewLabel": "檢視模式",
+      "view3d": "3D",
+      "view3dTitle": "在渲染世界中編輯",
+      "view2d": "2D",
+      "view2dTitle": "在符號化俯視地圖上編輯",
+      "undoCount": "Undo: {count}",
+      "undoCountTitle": "{count} 步可復原（Ctrl+Z 復原，Ctrl+Y 重做）",
+      "autosave": "自動儲存",
+      "autosaveTitle": "在有未儲存變更時自動儲存地圖。儲存失敗時會自動關閉。",
+      "undo": "Undo",
+      "undoTitle": "復原上一次變更（Ctrl+Z）",
+      "redo": "Redo",
+      "redoTitle": "重做上一次復原的變更（Ctrl+Y）",
+      "offline": "離線",
+      "offlineTitle": "未登入：地圖僅儲存到此瀏覽器。請在遊戲中登入以線上儲存。",
+      "signIn": "Sign in",
+      "signInTitle": "在新分頁中開啟遊戲登入畫面",
+      "help": "Help",
+      "helpTitle": "編輯器指南：工具、快捷鍵與教學"
+    },
+    "tool": {
+      "listLabel": "編輯器工具",
+      "keyHint": "{name} ({key})",
+      "select": "選擇",
+      "raise": "抬高",
+      "lower": "降低",
+      "smooth": "平滑",
+      "flatten": "剷平",
+      "paint": "繪製生態群落",
+      "water": "水域",
+      "place": "放置素材",
+      "blocker": "阻擋牆",
+      "camp": "Camp",
+      "spawn": "重生點",
+      "region": "區域",
+      "erase": "擦除"
+    },
+    "viewport": {
+      "assetsFailed": "無法載入 3D 檢視：{error}"
+    },
+    "a11y": {
+      "stage": "地圖檢視區",
+      "toasts": "編輯器通知"
+    },
+    "confirm": {
+      "cancel": "取消",
+      "ok": "OK",
+      "conflictTitle": "其他人已儲存此地圖",
+      "conflictBody": "伺服器上的副本現在是版本 {version}，比你載入的版本更新。請將你的變更另存為新地圖，以免覆蓋對方的變更。",
+      "conflictSaveCopy": "Save As Copy",
+      "discardTitle": "放棄未儲存的變更？",
+      "discardBody": "「{name}」有未儲存的變更，這些變更將會遺失。",
+      "discard": "放棄"
+    },
+    "prompt": {
+      "saveAsTitle": "Save As",
+      "nameLabel": "地圖名稱"
+    },
+    "status": {
+      "saveFailedLocal": "無法儲存到此瀏覽器（儲存空間可能已滿）。",
+      "savedLocalOnly": "「{name}」已儲存到此瀏覽器。登入後即可同時儲存到伺服器。",
+      "savedServer": "「{name}」已儲存（版本 {version}）。",
+      "autosaveOff": "自動儲存已關閉：{reason}",
+      "autosaveFailed": "無法寫入自動儲存草稿（儲存空間可能已滿）。",
+      "forked": "已建立你自己的副本：「{name}」。",
+      "opened": "「{name}」已開啟。",
+      "newMap": "已開始新地圖。",
+      "imported": "「{name}」已匯入。",
+      "importFailed": "無法匯入該檔案。",
+      "exported": "地圖已匯出。",
+      "playtestLaunch": "正在啟動試玩……",
+      "playtestFailed": "無法啟動試玩（儲存空間可能已被封鎖）。"
+    },
+    "upload": {
+      "notGlb": "只能上傳 .glb 檔案。",
+      "tooLarge": "該檔案大於 8 MiB。",
+      "uploading": "正在上傳……",
+      "uploaded": "「{name}」已上傳。",
+      "uploadedExisting": "你已上傳過此檔案；將重複使用它。"
+    },
+    "serverError": {
+      "invalid_map_name": "該地圖名稱無效。",
+      "map_name_not_allowed": "不允許使用該地圖名稱。",
+      "invalid_map_doc": "此地圖文件無效。",
+      "invalid_version": "該儲存已過期。請重新開啟地圖並再試一次。",
+      "map_limit_reached": "你的帳號已達到已儲存地圖數量上限。",
+      "map_not_found": "該地圖已不存在。",
+      "version_conflict": "其他人已先儲存了此地圖。",
+      "slug_unavailable": "該地圖名稱已被使用，請換一個。",
+      "map_too_large": "此地圖過大，無法儲存。",
+      "invalid_glb": "該檔案不是有效的 GLB 模型。",
+      "asset_blocked": "該素材已被管理員移除。",
+      "asset_limit_reached": "你的帳號已達到已上傳素材數量上限。",
+      "asset_storage_limit_reached": "你已達到上傳素材的儲存空間上限。",
+      "asset_too_large": "該素材大於 8 MiB。",
+      "asset_not_found": "該素材已不存在。",
+      "rate_limited": "請求過於頻繁，請稍候再試。",
+      "unauthorized": "請在遊戲中登入後再執行此操作。",
+      "network": "無法連線到伺服器，請檢查你的網路連線。",
+      "timeout": "伺服器回應逾時。",
+      "unknown": "發生錯誤，請再試一次。"
+    },
+    "assets": {
+      "label": "素材瀏覽器",
+      "title": "素材",
+      "search": "搜尋素材",
+      "searchPlaceholder": "搜尋……",
+      "categoryTab": "{category} ({count})",
+      "uploadedTab": "已上傳",
+      "uploadedSignIn": "請在遊戲中登入以檢視和上傳你自己的素材。",
+      "uploadedLoadFailed": "無法載入你上傳的素材。",
+      "uploadedEmpty": "你還沒有上傳過任何素材。",
+      "loading": "載入中……",
+      "empty": "沒有符合的素材。",
+      "pick": "放置 {name}",
+      "deleteAsset": "刪除素材",
+      "deleteAssetConfirm": "刪除「{name}」？使用該素材的地圖放置項將無法顯示。",
+      "category": {
+        "biome": "生態群落",
+        "chars": "角色",
+        "creatures": "生物",
+        "dungeon": "地城",
+        "foliage": "植被",
+        "props": "道具",
+        "quest": "任務",
+        "resources": "資源",
+        "tools": "工具",
+        "weapons": "武器"
+      }
+    },
+    "help": {
+      "title": "編輯器說明",
+      "mouseTitle": "滑鼠",
+      "flowTitle": "儲存與草稿",
+      "beginTutorial": "開始教學",
+      "close": "關閉",
+      "mouse": {
+        "orbit3d": "3D 檢視：左鍵拖曳以環繞，右鍵拖曳以平移",
+        "fly3d": "3D 檢視：捲動以縮放，使用 WASD 飛行",
+        "pan2d": "2D 檢視：拖曳空白處以平移，捲動以縮放"
+      },
+      "flow": {
+        "save": "儲存會寫入此瀏覽器；登入後還會寫入伺服器",
+        "draft": "自動儲存草稿可在分頁意外關閉時保護未儲存的編輯"
+      }
+    },
+    "tutorial": {
+      "title": "編輯器教學",
+      "counter": "Step {current} of {total}",
+      "back": "Back",
+      "next": "Next",
+      "finish": "完成",
+      "skip": "Skip",
+      "steps": {
+        "toolbar": {
+          "title": "工具",
+          "body": "在這裡選擇工具。放置功能現已可用；更多工具即將推出。"
+        },
+        "stage": {
+          "title": "檢視區",
+          "body": "這是你的地圖。可隨時在 3D 與 2D 檢視之間切換。"
+        },
+        "viewToggle": {
+          "title": "3D / 2D 切換",
+          "body": "切換到 2D 俯視圖以精確放置，或切換到 3D 檢視結果。"
+        },
+        "save": {
+          "title": "Save",
+          "body": "儲存會在此瀏覽器中留存副本，登入後還會儲存到伺服器。"
+        },
+        "help": {
+          "title": "Help",
+          "body": "你可以隨時回到這裡查看本教學。"
+        }
+      }
+    }
+  },
   "apiError": {
     "crossSiteRejected": "跨站請求已被拒絕。",
     "notAuthenticated": "尚未驗證。",
@@ -3016,6 +3258,7 @@ export const zh_TW: EnTranslations = {
       "accountSuspended": "此帳號停權至 {date}。",
       "alreadyInWorld": "角色已在世界中。",
       "tooManyOnline": "同一時間只能有一個角色在世界中。",
+      "realmFull": "此伺服器目前已滿，請稍後再試。",
       "takenOver": "你的角色已被另一個工作階段接管。",
       "renameBeforeEntering": "此角色必須先更名才能進入世界。",
       "renameNotPermitted": "不允許為此角色更名。"

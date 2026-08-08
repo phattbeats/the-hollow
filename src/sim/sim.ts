@@ -2355,6 +2355,12 @@ export class Sim {
   get activeTitle(): string | null {
     return this.primary.activeTitle;
   }
+  activeTitleFor(pid: number): string | null {
+    return this.meta(pid)?.activeTitle ?? null;
+  }
+  earnedTitlesFor(pid: number): Set<string> {
+    return this.meta(pid)?.earnedTitles ?? new Set<string>();
+  }
   setActiveTitle(titleId: string | null, pid?: number): void {
     const meta = this.meta(pid ?? this.primaryId);
     if (meta) setActiveTitleImpl(meta, titleId);
@@ -5134,6 +5140,15 @@ export class Sim {
     items.equipItem(this.ctx, itemId, pid);
   }
 
+  // Equip into the exact equipment key the player aimed at (the paperdoll drop
+  // target). Server-authoritative: the sim re-validates the slot against the
+  // item through slotAcceptsItem, so a hand-crafted 'equip' packet cannot put
+  // a helm on a ring finger. Aimed slot is honored once validated, so a ring
+  // dropped on the ring2 socket fills ring2 even while ring1 is free.
+  equipItemToSlot(itemId: string, slot: EquipSlot, pid?: number): void {
+    items.equipItem(this.ctx, itemId, pid, slot);
+  }
+
   unequipItem(slot: EquipSlot, pid?: number): boolean {
     return items.unequipItem(this.ctx, slot, pid);
   }
@@ -6563,6 +6578,11 @@ export class Sim {
                 dead: e.dead ? 1 : 0,
                 inCombat: e.inCombat ? 1 : 0,
                 group: party.raidGroups.get(mPid) ?? 1,
+                // PHAA-748: Book of Asphodelia active title per party member.
+                // Server-side this would carry the resolved title id from the
+                // player's PlayerMeta.earnedTitles/activeTitle; offline Sim has
+                // every member's title in-process and surfaces it directly.
+                atitle: meta.activeTitle,
               },
             ]
           : [];

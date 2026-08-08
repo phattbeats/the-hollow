@@ -54,6 +54,77 @@ describe('baked-armor visibility (PHAA-502 T2a) - manifest contract', () => {
       }
     }
   });
+
+  it('player_paladin gates its built-in cape but leaves the helmet always-on (PHAA-609 batch 1)', () => {
+    // Unlike knight.glb (which ships a separate always-on Knight_Head under the
+    // Knight_Helmet toggle), paladin.glb has no standalone head mesh: gating
+    // Paladin_Helmet behind the helmet slot leaves an unhelmed paladin fully
+    // headless (confirmed via render screenshot). So Paladin_Helmet stays
+    // ungated (always visible, matching pre-PR behavior) while the cape still
+    // reads off the chest slot.
+    expect(VISUALS.player_paladin.bakedArmorSlots).toEqual({
+      Paladin_Cape: 'chest',
+    });
+  });
+
+  it('player_paladin never gates Paladin_Helmet (no fallback head mesh exists)', () => {
+    // Regression guard for the headless-paladin bug: paladin.glb has no
+    // Paladin_Head-style node the way knight.glb has Knight_Head, so
+    // Paladin_Helmet must never be added to bakedArmorSlots until this model
+    // ships a separate head mesh.
+    expect(VISUALS.player_paladin.bakedArmorSlots?.Paladin_Helmet).toBeUndefined();
+  });
+
+  it('player_warrior_f and player_paladin_f gate the chibi knight outfit armor pieces (PHAA-609 batch 1)', () => {
+    const expected = {
+      armorhelmet: 'helmet',
+      amorplastron: 'chest',
+      amorshoulders: 'shoulder',
+      amorarm: 'shoulder',
+      armorceinturethighs: 'waist',
+      armorskirt: 'waist',
+      armorknees: 'legs',
+      armorlegs: 'legs',
+      armorthights: 'legs',
+      armorshoe: 'feet',
+    };
+    expect(VISUALS.player_warrior_f.bakedArmorSlots).toEqual(expected);
+    expect(VISUALS.player_paladin_f.bakedArmorSlots).toEqual(expected);
+  });
+});
+
+// Guards the PHAA-609 batch-1 node names against the real GLBs: a rename or a
+// re-export that drops a mesh would silently no-op the toggle (setBakedArmorVisibility
+// skips missing nodes rather than throwing), so this asserts the wired names actually
+// exist as mesh nodes in the shipped files.
+describe('baked-armor visibility (PHAA-609 batch 1) - GLB node names exist', () => {
+  function meshNodeNames(relPath: string): Set<string> {
+    const buf = readFileSync(new URL(`../public/${relPath}`, import.meta.url));
+    const jsonLen = buf.readUInt32LE(12);
+    const json = JSON.parse(buf.subarray(20, 20 + jsonLen).toString('utf8'));
+    const names = new Set<string>();
+    for (const node of json.nodes ?? []) {
+      if (node.mesh !== undefined && node.name) names.add(node.name);
+    }
+    return names;
+  }
+
+  it('paladin.glb contains Paladin_Helmet and Paladin_Cape', () => {
+    const nodes = meshNodeNames('models/chars/players/paladin.glb');
+    for (const key of [
+      'Paladin_Helmet',
+      ...Object.keys(VISUALS.player_paladin.bakedArmorSlots ?? {}),
+    ]) {
+      expect(nodes.has(key), `paladin.glb missing node ${key}`).toBe(true);
+    }
+  });
+
+  it('chibi_female_knight.glb contains every wired armor node', () => {
+    const nodes = meshNodeNames('models/chars/players/chibi_female_knight.glb');
+    for (const key of Object.keys(VISUALS.player_warrior_f.bakedArmorSlots ?? {})) {
+      expect(nodes.has(key), `chibi_female_knight.glb missing node ${key}`).toBe(true);
+    }
+  });
 });
 
 // The toggle helper + its two call sites (assembleModel on construction, setArmor

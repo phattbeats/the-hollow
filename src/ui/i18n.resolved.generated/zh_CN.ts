@@ -1040,6 +1040,38 @@ export const zh_CN: EnTranslations = {
         "fiestaWin": "狂欢胜利"
       }
     },
+    "book": {
+      "title": "阿斯福德里亚之书",
+      "close": "关闭",
+      "deedSummary": "已完成 {done}/{total} 项事迹",
+      "titleSummary": "{count,plural,=0{尚未获得称号}one{获得 1 个称号}other{获得 # 个称号}}",
+      "titlePickerHeading": "当前称号",
+      "titlePickerEmpty": "尚未选择称号，请在下方挑选。",
+      "titlePickerEarnFirst": "完成一项事迹以获得你的第一个称号。",
+      "titleClear": "无称号",
+      "titleDisplay": "{display}",
+      "titleActiveTag": "已装备",
+      "titlePickAria": "装备称号 {display}",
+      "titleRewardHint": "完成此事迹可获得称号。",
+      "categoryEmpty": "此分类下尚无内容。",
+      "category": {
+        "chronicle": "编年史",
+        "collection": "收集",
+        "combat": "战斗",
+        "delve": "秘境",
+        "dungeon": "地下城",
+        "exploration": "探索",
+        "feat": "壮举",
+        "progression": "进程",
+        "pvp": "玩家对决",
+        "social": "社交",
+        "hidden": "隐藏"
+      }
+    },
+    "titleTracker": {
+      "unspent": "+{count} 项待选",
+      "ariaLabel": "当前称号：{display}"
+    },
     "hitRating": {
       "ratingLabel": "命中等级"
     },
@@ -2037,6 +2069,216 @@ export const zh_CN: EnTranslations = {
     "begin": "开始",
     "skip": "跳过"
   },
+  "editor": {
+    "appTitle": "地图编辑器",
+    "docTitle": "地图编辑器 - World of ClaudeCraft",
+    "untitledMap": "未命名地图",
+    "playtestPlayerName": "地图作者",
+    "topbar": {
+      "label": "编辑器操作",
+      "mapNameLabel": "地图名称",
+      "dirtyDot": "此地图有未保存的更改",
+      "saving": "保存中……",
+      "neverSaved": "尚未保存",
+      "savedLocal": "已保存到此浏览器",
+      "savedServer": "已保存（版本 {version}）",
+      "new": "New",
+      "newTitle": "从内置世界开始新地图",
+      "open": "Open",
+      "openTitle": "打开已保存的地图（浏览器或服务器）",
+      "save": "Save",
+      "saveTitle": "保存到此浏览器；登录后同时保存到服务器（Ctrl+S）",
+      "saveAs": "Save As",
+      "saveAsTitle": "另存为新名称的副本",
+      "fork": "Fork",
+      "forkTitle": "创建此地图的服务器端个人副本",
+      "forkDisabledTitle": "请先打开一个服务器地图再复刻",
+      "import": "导入",
+      "importTitle": "从 JSON 文件导入地图",
+      "export": "导出",
+      "exportTitle": "将此地图下载为 JSON 文件",
+      "uploadAsset": "上传素材",
+      "uploadAssetTitle": "上传 GLB 模型（最大 8 MiB）以放置到你的地图中",
+      "uploadAssetDisabledTitle": "请在游戏中登录后再上传素材",
+      "playtest": "试玩",
+      "playtestTitle": "在此地图上启动游戏（离线，包含当前编辑）",
+      "viewLabel": "视图模式",
+      "view3d": "3D",
+      "view3dTitle": "在渲染世界中编辑",
+      "view2d": "2D",
+      "view2dTitle": "在符号化俯视地图上编辑",
+      "undoCount": "Undo: {count}",
+      "undoCountTitle": "{count} 步可撤销（Ctrl+Z 撤销，Ctrl+Y 重做）",
+      "autosave": "自动保存",
+      "autosaveTitle": "在有未保存更改时自动保存地图。保存失败时会自动关闭。",
+      "undo": "Undo",
+      "undoTitle": "撤销上一次更改（Ctrl+Z）",
+      "redo": "Redo",
+      "redoTitle": "重做上一次撤销的更改（Ctrl+Y）",
+      "offline": "离线",
+      "offlineTitle": "未登录：地图仅保存到此浏览器。请在游戏中登录以在线保存。",
+      "signIn": "Sign in",
+      "signInTitle": "在新标签页中打开游戏登录界面",
+      "help": "Help",
+      "helpTitle": "编辑器指南：工具、快捷键与教程"
+    },
+    "tool": {
+      "listLabel": "编辑器工具",
+      "keyHint": "{name} ({key})",
+      "select": "选择",
+      "raise": "抬高",
+      "lower": "降低",
+      "smooth": "平滑",
+      "flatten": "铲平",
+      "paint": "绘制生态群系",
+      "water": "水域",
+      "place": "放置素材",
+      "blocker": "阻挡墙",
+      "camp": "Camp",
+      "spawn": "出生点",
+      "region": "区域",
+      "erase": "擦除"
+    },
+    "viewport": {
+      "assetsFailed": "无法加载 3D 视图：{error}"
+    },
+    "a11y": {
+      "stage": "地图视口",
+      "toasts": "编辑器通知"
+    },
+    "confirm": {
+      "cancel": "取消",
+      "ok": "OK",
+      "conflictTitle": "其他人已保存此地图",
+      "conflictBody": "服务器上的副本现在是版本 {version}，比你加载的版本更新。请将你的更改另存为新地图，以免覆盖对方的更改。",
+      "conflictSaveCopy": "Save As Copy",
+      "discardTitle": "放弃未保存的更改？",
+      "discardBody": "“{name}” 有未保存的更改，这些更改将会丢失。",
+      "discard": "放弃"
+    },
+    "prompt": {
+      "saveAsTitle": "Save As",
+      "nameLabel": "地图名称"
+    },
+    "status": {
+      "saveFailedLocal": "无法保存到此浏览器（存储空间可能已满）。",
+      "savedLocalOnly": "“{name}” 已保存到此浏览器。登录后即可同时保存到服务器。",
+      "savedServer": "“{name}” 已保存（版本 {version}）。",
+      "autosaveOff": "自动保存已关闭：{reason}",
+      "autosaveFailed": "无法写入自动保存草稿（存储空间可能已满）。",
+      "forked": "已创建你自己的副本：“{name}”。",
+      "opened": "“{name}” 已打开。",
+      "newMap": "已开始新地图。",
+      "imported": "“{name}” 已导入。",
+      "importFailed": "无法导入该文件。",
+      "exported": "地图已导出。",
+      "playtestLaunch": "正在启动试玩……",
+      "playtestFailed": "无法启动试玩（存储空间可能已被阻止）。"
+    },
+    "upload": {
+      "notGlb": "只能上传 .glb 文件。",
+      "tooLarge": "该文件大于 8 MiB。",
+      "uploading": "正在上传……",
+      "uploaded": "“{name}” 已上传。",
+      "uploadedExisting": "你已上传过此文件；将重复使用它。"
+    },
+    "serverError": {
+      "invalid_map_name": "该地图名称无效。",
+      "map_name_not_allowed": "不允许使用该地图名称。",
+      "invalid_map_doc": "此地图文档无效。",
+      "invalid_version": "该保存已过期。请重新打开地图并重试。",
+      "map_limit_reached": "你的账号已达到已保存地图数量上限。",
+      "map_not_found": "该地图已不存在。",
+      "version_conflict": "其他人已先保存了此地图。",
+      "slug_unavailable": "该地图名称已被占用，请换一个。",
+      "map_too_large": "此地图过大，无法保存。",
+      "invalid_glb": "该文件不是有效的 GLB 模型。",
+      "asset_blocked": "该素材已被管理员移除。",
+      "asset_limit_reached": "你的账号已达到已上传素材数量上限。",
+      "asset_storage_limit_reached": "你已达到上传素材的存储空间上限。",
+      "asset_too_large": "该素材大于 8 MiB。",
+      "asset_not_found": "该素材已不存在。",
+      "rate_limited": "请求过于频繁，请稍候再试。",
+      "unauthorized": "请在游戏中登录后再执行此操作。",
+      "network": "无法连接到服务器，请检查你的网络连接。",
+      "timeout": "服务器响应超时。",
+      "unknown": "出了点问题，请重试。"
+    },
+    "assets": {
+      "label": "素材浏览器",
+      "title": "素材",
+      "search": "搜索素材",
+      "searchPlaceholder": "搜索……",
+      "categoryTab": "{category} ({count})",
+      "uploadedTab": "已上传",
+      "uploadedSignIn": "请在游戏中登录以查看和上传你自己的素材。",
+      "uploadedLoadFailed": "无法加载你上传的素材。",
+      "uploadedEmpty": "你还没有上传过任何素材。",
+      "loading": "加载中……",
+      "empty": "没有匹配的素材。",
+      "pick": "放置 {name}",
+      "deleteAsset": "删除素材",
+      "deleteAssetConfirm": "删除 “{name}”？使用该素材的地图放置项将无法渲染。",
+      "category": {
+        "biome": "生态群系",
+        "chars": "角色",
+        "creatures": "生物",
+        "dungeon": "地下城",
+        "foliage": "植被",
+        "props": "道具",
+        "quest": "任务",
+        "resources": "资源",
+        "tools": "工具",
+        "weapons": "武器"
+      }
+    },
+    "help": {
+      "title": "编辑器帮助",
+      "mouseTitle": "鼠标",
+      "flowTitle": "保存与草稿",
+      "beginTutorial": "开始教程",
+      "close": "关闭",
+      "mouse": {
+        "orbit3d": "3D 视图：左键拖动以环绕，右键拖动以平移",
+        "fly3d": "3D 视图：滚动以缩放，使用 WASD 飞行",
+        "pan2d": "2D 视图：拖动空白处以平移，滚动以缩放"
+      },
+      "flow": {
+        "save": "保存会写入此浏览器；登录后还会写入服务器",
+        "draft": "自动保存草稿可在标签页意外关闭时保护未保存的编辑"
+      }
+    },
+    "tutorial": {
+      "title": "编辑器教程",
+      "counter": "Step {current} of {total}",
+      "back": "Back",
+      "next": "Next",
+      "finish": "完成",
+      "skip": "Skip",
+      "steps": {
+        "toolbar": {
+          "title": "工具",
+          "body": "在这里选择工具。放置功能现已可用；更多工具即将推出。"
+        },
+        "stage": {
+          "title": "视口",
+          "body": "这是你的地图。可随时在 3D 与 2D 视图之间切换。"
+        },
+        "viewToggle": {
+          "title": "3D / 2D 切换",
+          "body": "切换到 2D 俯视图以精确放置，或切换到 3D 查看效果。"
+        },
+        "save": {
+          "title": "Save",
+          "body": "保存会在此浏览器中留存副本，登录后还会保存到服务器。"
+        },
+        "help": {
+          "title": "Help",
+          "body": "你可以随时回到这里查看本教程。"
+        }
+      }
+    }
+  },
   "apiError": {
     "crossSiteRejected": "跨站请求被拒绝。",
     "notAuthenticated": "尚未认证。",
@@ -3016,6 +3258,7 @@ export const zh_CN: EnTranslations = {
       "accountSuspended": "此账号被停用至 {date}。",
       "alreadyInWorld": "角色已在世界中。",
       "tooManyOnline": "同一时间只能有一个角色在世界中。",
+      "realmFull": "该服务器当前已满，请稍后再试。",
       "takenOver": "你的角色已被另一个会话接管。",
       "renameBeforeEntering": "此角色必须先改名才能进入世界。",
       "renameNotPermitted": "不允许为此角色改名。"

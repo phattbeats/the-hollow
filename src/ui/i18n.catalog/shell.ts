@@ -71,6 +71,7 @@ export const shellStrings = {
         accountSuspended: 'This account is suspended until {date}.',
         alreadyInWorld: 'Character is already in world.',
         tooManyOnline: 'Only one of your characters may be in the world at a time.',
+        realmFull: 'This realm is full right now. Please try again in a few minutes.',
         takenOver: 'Your character was taken over by another session.',
         renameBeforeEntering: 'This character must be renamed before entering the world.',
         renameNotPermitted: 'Renaming this character is not allowed.',

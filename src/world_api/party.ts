@@ -21,6 +21,12 @@ export interface PartyMemberInfo {
   dead: number;
   inCombat: number;
   group: 1 | 2;
+  // PHAA-748: Book of Asphodelia active title id for the member, resolved
+  // server-side for the online ClientWorld. Optional for back-compat with any
+  // cached snapshot that did not carry the field; absent / null renders as no
+  // prefix (the IWorld seam returns null for non-self pids when the wire has
+  // not yet grown per-entity titles).
+  atitle?: string | null;
 }
 
 export interface PartyInfo {

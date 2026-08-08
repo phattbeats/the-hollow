@@ -13,10 +13,11 @@
 // `public/models/armor/` (helm_plate.glb, chest_cape.glb, legs_plate.glb,
 // extracted from the already-vendored KayKit Knight pack via
 // `scripts/phaa609_extract_armor_glbs.mjs` and smoke-tested in
-// `tests/phaa609_armor_glb_smoke.test.ts`), but the table stays empty pending a
-// board decision on the chest/legs attach approach recorded in
-// `docs/design/armor-per-slot-sourcing.md` (rigid per-bone prop clips on the
-// run cycle vs the T2a baked-mesh `.visible`-swap path vs a split two-bone leg
-// attach). Once that decision lands, this table gets real entries alongside
-// per-body VisualDef wiring (armorSlots + armorByAttachIndex) in the same PR.
+// `tests/phaa609_armor_glb_smoke.test.ts`). The attach-approach question is
+// resolved (rigid helm/chest only, see `docs/design/armor-per-slot-sourcing.md`);
+// the table stays empty pending a separate content call (which classes should
+// read as plate-armored vs get a Blender-authored cloth/leather look in
+// batch 2), also recorded in that doc. Once that lands, this table gets real
+// entries alongside per-body VisualDef wiring (armorSlots + armorByAttachIndex)
+// in the same PR.
 export const ITEM_ARMOR_VARIANTS: Record<string, string> = {};

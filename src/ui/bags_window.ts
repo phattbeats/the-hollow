@@ -128,6 +128,10 @@ export interface BagsWindowDeps extends PainterHostPresentation {
   isHotbarItemId(itemId: string): boolean;
   setDragAction(action: { type: 'item'; id: string } | null): void;
   clearActionDropTargets(): void;
+  /** Publish a gear drag so paperdoll sockets can validate it during dragover. */
+  beginEquipDrag(itemId: string): void;
+  /** Clear the shared gear drag after the browser finishes the gesture. */
+  endEquipDrag(): void;
 }
 
 export class BagsWindow {
@@ -442,16 +446,26 @@ export class BagsWindow {
         ev.preventDefault();
         this.sellBagItem(s, ev);
       });
-      if (!this.deps.tradeOpen() && !this.deps.vendorOpen() && this.deps.isHotbarItemId(s.itemId)) {
+      const canDragToHotbar = this.deps.isHotbarItemId(s.itemId);
+      const canDragToPaperdoll = (item.kind === 'weapon' || item.kind === 'armor') && !!item.slot;
+      if (
+        !this.deps.tradeOpen() &&
+        !this.deps.vendorOpen() &&
+        (canDragToHotbar || canDragToPaperdoll)
+      ) {
         row.draggable = true;
         row.addEventListener('dragstart', (e) => {
-          const action = { type: 'item' as const, id: s.itemId };
-          this.deps.setDragAction(action);
-          this.writeDraggedAction(e.dataTransfer, action);
-          if (e.dataTransfer) e.dataTransfer.effectAllowed = 'copy';
+          if (canDragToPaperdoll) this.deps.beginEquipDrag(s.itemId);
+          if (canDragToHotbar) {
+            const action = { type: 'item' as const, id: s.itemId };
+            this.deps.setDragAction(action);
+            this.writeDraggedAction(e.dataTransfer, action);
+          }
+          if (e.dataTransfer) e.dataTransfer.effectAllowed = canDragToPaperdoll ? 'move' : 'copy';
           this.deps.hideTooltip();
         });
         row.addEventListener('dragend', () => {
+          this.deps.endEquipDrag();
           this.deps.setDragAction(null);
           this.deps.clearActionDropTargets();
         });

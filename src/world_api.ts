@@ -9,7 +9,7 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 33 domain facets (each IWorld member assigned exactly once; 199
+// FACET MAP: the 34 domain facets (each IWorld member assigned exactly once; 199
 // total; this count was previously stale at 23/155, corrected alongside the
 // PHAA-482 feedGreenpaw command addition, again at 24/161 with the PHAA-511
 // guild-calendar-events addition, again at 25/162 with PHAA-504's gathering.ts
@@ -21,11 +21,9 @@
 // facet, again at 30/190 with the PHAA-744 deeds.ts facet (5 members:
 // Book of Asphodelia deed/title read state + setActiveTitle), again with the
 // PHAA-649 enchanting.ts facet (3 members), reaching the verified 32/196
-// pinned by tests/world_api_parity.test.ts, and again here at 33/199 with the
-// PHAA-736 Dungeon Finder facet (3 members: dungeonFinderInfo read +
-// dungeonFinderQueueJoin/Leave commands). One interface per file under
-// ./world_api/; aux types travel with their facet. The authoritative
-// member-per-facet split is the W0c parity test (tests/world_api_parity.test.ts).
+// pinned by tests/world_api_parity.test.ts, with the PHAA-736 Dungeon Finder facet
+// and PHAA-748 per-pid title queries included. One interface per file under ./world_api/;
+// aux types travel with their facet. The authoritative member-per-facet split is the W0c parity test.
 // NOTE: this running count tracks only the facets registered in the W0c gate
 // (tests/world_api_parity.test.ts); IWorldReadables/IWorldDialog predate this
 // count and are pre-existing gaps in that gate, not tracked here.

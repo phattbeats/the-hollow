@@ -205,14 +205,23 @@ export class NameplatePainter {
         const nameDisplay = suppressSelf ? 'none' : '';
         const hpDisplay = e.dead || suppressSelf ? 'none' : '';
         const guild = suppressSelf ? '' : e.guild;
+        // Book of Asphodelia title (PHAA-748): localized title id surfaced via
+        // IWorldDeeds.activeTitleFor (only the local player's title is on the
+        // wire today; other pids return null).
+        const titleId = suppressSelf ? null : this.world.activeTitleFor(e.id);
+        const title = titleId ? tEntity({ kind: 'title', id: titleId, field: 'display' }) : '';
         // Staff/special Discord role: tint the name + prefix a tag.
         const roleKey = suppressSelf ? undefined : e.discordRole;
         const roleColor = specialRoleColor(roleKey);
         const roleTag = discordRoleTag(roleKey);
-        const displayName = roleTag ? `[${roleTag}] ${e.name}` : e.name;
+        const displayName = title
+          ? `${title} ${e.name}`
+          : roleTag
+            ? `[${roleTag}] ${e.name}`
+            : e.name;
         this.setNameplateStatic(
           v,
-          `player|${displayName}|${roleColor ?? ''}|${guild}|${nameDisplay}|${hpDisplay}|${opacity}`,
+          `player|${displayName}|${roleColor ?? ''}|${guild}|${title}|${nameDisplay}|${hpDisplay}|${opacity}`,
           displayName,
           roleColor ?? '#7fb8ff',
           hpDisplay,

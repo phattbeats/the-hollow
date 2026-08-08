@@ -25,6 +25,13 @@ export function spellResistChance(casterLevel: number, targetLevel: number, hitB
 // the global draw order is identical to the previous spell-hit roll: only the
 // emitted event label changes from 'miss' to 'resist'. With hitBonus 0 the argument
 // equals spellHitChance(...) exactly, keeping the ungeared draw byte-identical.
+//
+// Taunts and other hate-forcing abilities bypass this function entirely at the
+// call site (upstream #1913): a resisted taunt silently breaks tanking, so a
+// taunt ability never rolls a resist -- the `ability.effects.some(taunt)` gate
+// lives in casting_lifecycle.ts and short-circuits the call. We do NOT take
+// the draw for the skipped path; doing so would shift the shared-rng draw
+// order for every other downstream call site and break the parity goldens.
 export function isSpellResisted(
   rng: { chance(p: number): boolean },
   casterLevel: number,
