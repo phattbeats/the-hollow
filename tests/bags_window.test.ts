@@ -40,4 +40,11 @@ describe('bags_window: load-bearing behaviors preserved', () => {
     expect(painter).toContain(".bag-grid')?.scrollTop");
     expect(painter).toContain('grid.scrollTop = prevScrollTop');
   });
+
+  it('publishes every gear drag for the paperdoll, not only hotbar items', () => {
+    expect(painter).toContain('beginEquipDrag(itemId: string): void');
+    expect(painter).toContain('endEquipDrag(): void');
+    expect(painter).toContain("(item.kind === 'weapon' || item.kind === 'armor') && !!item.slot");
+    expect(painter).toContain('this.deps.beginEquipDrag(s.itemId)');
+  });
 });

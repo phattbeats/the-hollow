@@ -2858,7 +2858,14 @@ export class GameServer {
         }
         break;
       case 'equip':
-        if (typeof msg.item === 'string') sim.equipItem(msg.item, pid);
+        if (typeof msg.item === 'string') {
+          const slot =
+            typeof msg.slot === 'string' && (EQUIP_SLOTS as readonly string[]).includes(msg.slot)
+              ? (msg.slot as EquipSlot)
+              : undefined;
+          if (slot) sim.equipItemToSlot(msg.item, slot, pid);
+          else sim.equipItem(msg.item, pid);
+        }
         break;
       case 'unequip_item':
         if (typeof msg.slot === 'string' && (EQUIP_SLOTS as readonly string[]).includes(msg.slot)) {

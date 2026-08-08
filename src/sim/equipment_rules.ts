@@ -1,4 +1,4 @@
-import type { ArmorType, ItemDef, PlayerClass } from './types';
+import type { ArmorType, EquipSlot, ItemDef, PlayerClass } from './types';
 
 type WeaponArchetype = 'warrior' | 'caster' | 'rogue';
 
@@ -35,6 +35,26 @@ function sameClassSet(classes: readonly PlayerClass[], allowed: ReadonlySet<Play
 export function armorTypeForItem(item: ItemDef): ArmorType | null {
   if (item.kind !== 'armor') return null;
   return item.armorType;
+}
+
+// Resolve the concrete equipment key an item equips into. In this fork the
+// item's declared slot IS the equipment key (no 'ring' slot kind; mainhand is
+// the only weapon slot). Returns null for slotless items.
+export function resolveEquipSlot(
+  item: ItemDef,
+  _equipment: Partial<Record<EquipSlot, string>>,
+): EquipSlot | null {
+  return item.slot ?? null;
+}
+
+// Whether a concrete equipment key can hold `item`, i.e. whether an aimed slot
+// (a paperdoll drop target) is legal for the dragged piece. The item's slot
+// IS its one equipment key, so the check is a direct equality on the typed
+// EquipSlot union. Slotless items (consumables, materials) accept nothing.
+// This is the ONE rule the equip path and the HUD drop target share, so the
+// client's hover feedback and the server's re-validation can never disagree.
+export function slotAcceptsItem(item: ItemDef, slot: EquipSlot): boolean {
+  return item.slot === slot;
 }
 
 export function maxArmorTypeForClass(cls: PlayerClass): ArmorType {

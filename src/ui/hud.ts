@@ -687,6 +687,8 @@ export class Hud {
     null;
   // Set while dragging an equipped piece out of the paperdoll onto the bags window.
   private dragUnequipSlot: EquipSlot | null = null;
+  // Set while dragging gear from the bags onto an exact paperdoll socket.
+  private dragEquipItemId: string | null = null;
   private mobileHotbarDrag: MobileHotbarDrag | null = null;
   private suppressNextActionClick = false;
   private optionsHooks: OptionsHooks | null = null;
@@ -2734,6 +2736,15 @@ export class Hud {
       this.dragAction = action ? { action, sourceIndex: null } : null;
     },
     clearActionDropTargets: () => this.clearActionDropTargets(),
+    beginEquipDrag: (itemId) => {
+      this.dragEquipItemId = itemId;
+    },
+    endEquipDrag: () => {
+      this.dragEquipItemId = null;
+      for (const row of document.querySelectorAll('.equip-slot.drop-target')) {
+        row.classList.remove('drop-target');
+      }
+    },
   });
   // World Market window painter (market_view.ts core + market_window.ts painter).
   // It composes the shared presentation bag (icon/money/tooltip) and owns the
@@ -2834,6 +2845,8 @@ export class Hud {
       this.dragUnequipSlot = null;
       $('#bags').classList.remove('drop-target');
     },
+    draggedEquipItemId: () => this.dragEquipItemId,
+    renderBags: () => this.renderBags(),
     renderPreview: () => this.renderCharPreview(),
     renderSkinPicker: () => this.renderCharSkinPicker(),
     openPlayerCard: () => {
