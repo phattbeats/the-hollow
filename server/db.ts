@@ -11,7 +11,6 @@ import type { BankBonusFacts } from './bank_entitlements';
 import { seedChatFilterDefaults } from './chat_filter_db';
 import type { ChatLogRow } from './chat_log';
 import { DISCORD_SCHEMA } from './discord_db';
-import { isUniqueViolation } from './http_util';
 import { MAPS_SCHEMA } from './maps_db';
 import { OAUTH_SCHEMA } from './oauth_db';
 import { REALM } from './realm';
@@ -42,7 +41,37 @@ export const DATABASE_URL =
     );
   })();
 
-export const pool = new Pool({ connectionString: DATABASE_URL, max: 10 });
+export const pool = new Pool({
+  connectionString: DATABASE_URL,
+  max: 10,
+  // Bounded so a database brownout degrades (queued/rejected connections,
+  // retryable errors) instead of hanging every request indefinitely. 30s is
+  // deliberately conservative: this fork has not profiled every query for
+  // headroom under load, so the default leans permissive rather than risking
+  // an unaudited read timing out; tighten per-query once server/metrics.ts
+  // has real p99s to tune against.
+  connectionTimeoutMillis: 5_000, // acquiring/connecting a pool client
+  statement_timeout: 30_000, // server-side: aborts a runaway query in Postgres itself
+  query_timeout: 65_000, // client-side backstop if the server-side timeout never fires
+});
+// statement_timeout above also bounds ensureSchema()'s dedicated client (its
+// advisory-lock wait plus the DDL batch): fine today since every statement is
+// idempotent CREATE/ALTER, but a future non-CONCURRENT index build or a long
+// advisory-lock wait behind another realm's slow first boot could exceed 30s.
+// Wrap heavy first-time DDL in `SET LOCAL statement_timeout = 0` if that ever
+// applies, rather than raising the global default.
+// An idle pooled client can error outside any query (a dropped connection,
+// a server restart) with no promise to reject; without this listener that
+// surfaces as an unhandled 'error' event and crashes the process.
+//
+// Tests stub `pg.Pool` as a bare { query } object (see tests/deeds_db.test.ts
+// and tests/daily_rewards_db.test.ts) so feature-detect the listener so the
+// module is importable without a real pool in those tests.
+if (typeof (pool as { on?: unknown }).on === 'function') {
+  pool.on('error', (err) => {
+    console.error('idle Postgres client error:', err);
+  });
+}
 
 const REALM_SQL_DEFAULT = REALM.replace(/'/g, "''");
 const LIFETIME_XP_EXPR = "((state->>'lifetimeXp')::bigint)";

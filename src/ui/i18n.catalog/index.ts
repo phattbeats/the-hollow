@@ -9,6 +9,7 @@ import { abilityStrings, classAbilityNames } from './abilities';
 import { apiErrorStrings } from './api_error';
 import { coldOpenStrings } from './cold_open';
 import { dailyRewardsUiStrings } from './daily_rewards_ui';
+import { editorStrings } from './editor';
 import { gameStrings } from './game';
 import { guideStrings } from './guide';
 import { hollowEntities } from './hollow';
@@ -25,6 +26,7 @@ export { abilityStrings, classAbilityNames } from './abilities';
 export { apiErrorStrings } from './api_error';
 export { coldOpenStrings } from './cold_open';
 export { dailyRewardsUiStrings } from './daily_rewards_ui';
+export { editorStrings } from './editor';
 export {
   gameStrings,
   gameStringsDeDE,
@@ -97,6 +99,9 @@ export const en = {
   readableUi: { prompt: { read: 'Read' } },
   // One-time cold-open intro (cold_open.ts). Own domain, not hud.*, per PHAA-431.
   coldOpen: coldOpenStrings,
+  // The map-editor surface at /editor (editor.ts), a standalone dev/operator
+  // page never bundled into the game client. Own domain, not hud.*.
+  editor: editorStrings,
   // Stable API error codes (api_error.ts), the code-first matcher's target
   // (src/ui/api_error_i18n.ts). Own domain, not errors.api.*, per PHAA-528.
   apiError: apiErrorStrings,

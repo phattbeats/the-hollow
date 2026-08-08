@@ -132,6 +132,7 @@ describe('WARFARE is PvP-only: dealDamage never scales player-vs-mob or mob-vs-p
     const mob = {
       id: 999_999,
       kind: 'mob',
+      templateId: 'test_mob',
       hp: 1000,
       maxHp: 1000,
       dead: false,

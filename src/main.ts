@@ -20,6 +20,7 @@ import {
 } from './game/click_move';
 import { getClientSeed } from './game/client_seed';
 import { shouldClearAutorunOnDeath } from './game/death_input_reset';
+import { takeEditorPlaytestRequest } from './game/editor_playtest';
 import { GamepadManager } from './game/gamepad';
 import { GamepadBindings } from './game/gamepad_bindings';
 import { Input } from './game/input';
@@ -83,12 +84,20 @@ import type { SelfMotionFrame } from './render/self_motion';
 import { navigatorSaveData } from './render/sky';
 import { pathCrossesFence } from './sim/colliders';
 import { ABILITIES, CLASSES } from './sim/content/classes';
-import { ITEMS, isDelvePos } from './sim/data';
+import { ITEMS, isDelvePos, setActiveWorldContent } from './sim/data';
 import { canEquipItem } from './sim/equipment_rules';
 import { findPlayerPath, resolvePlayerDestination } from './sim/pathfind';
 import { Sim } from './sim/sim';
 import { TAB_NEAR_RADIUS, TAB_QUERY_RADIUS, tabConeHalfAt } from './sim/tab_target';
-import { DT, dist2d, INTERACT_RANGE, MELEE_RANGE, type PlayerClass, RUN_SPEED } from './sim/types';
+import {
+  DT,
+  dist2d,
+  INTERACT_RANGE,
+  MELEE_RANGE,
+  type PlayerClass,
+  RUN_SPEED,
+  type WorldContent,
+} from './sim/types';
 import { zoneBiomeAt } from './sim/world';
 import { startSitePresence } from './site_presence';
 import {
@@ -106,6 +115,7 @@ import {
   validateForm,
 } from './ui/auth_utils';
 import { assembleBugReportMeta } from './ui/bug_report';
+import { deleteCharButtonHtml } from './ui/char_delete_button';
 import { ChatCommandMenu } from './ui/chat_command_menu';
 import { chatInputSize } from './ui/chat_input_autosize';
 import { CLASS_DETAILS, classPairLabel, SIGNATURE_ABILITIES } from './ui/class_details_data';
@@ -344,6 +354,7 @@ function userFacingApiError(err: unknown): string {
   if (normalized === 'too many characters on this account are already in the world')
     return t('errors.api.tooManyOnline');
   if (normalized === 'character taken over') return t('errors.api.takenOver');
+  if (normalized === 'realm is full') return t('errors.api.realmFull');
   if (normalized === 'this character must be renamed before entering the world.')
     return t('errors.api.renameBeforeEntering');
   if (normalized === 'logins are only allowed from the game client')
@@ -2544,15 +2555,24 @@ async function startOffline(
   name: string,
   skin = 0,
   sex: 'm' | 'f' = 'm',
+  // Editor play-test (PHAA-679): a custom world + its seed, in place of the
+  // persistent Hollow. When set, the character spawns at the map's own
+  // playerStart rather than the Hollow hub (hollowStart is for the real
+  // persistent world only, an unrelated fixed instance a custom map has no
+  // connection to).
+  world?: WorldContent,
+  seed = WORLD_SEED,
 ): Promise<void> {
   if (!(await prepareWorldEntry())) return;
   enterLoadingState(t('loading.world'));
+  if (world) setActiveWorldContent(world);
   const sim = new Sim({
-    seed: WORLD_SEED,
+    seed,
     playerClass,
     playerName: name,
     devCommands: import.meta.env.DEV,
-    hollowStart: true,
+    hollowStart: !world,
+    world,
   });
   sim.setPlayerSkin(sim.playerId, skin);
   // PHAA-501: honour the chosen sex so the offline character matches the
@@ -3784,10 +3804,10 @@ async function refreshCharacters(): Promise<void> {
         </div>
         ${
           c.forceRename
-            ? `<input class="rename-input" placeholder="${escapeHtml(t('character.newNamePlaceholder'))}" maxlength="16" /><span class="char-actions"><button class="btn btn-danger delete-char-btn" ${c.online ? 'disabled' : ''}>${escapeHtml(t('character.delete'))}</button><button class="btn rename-btn">${escapeHtml(t('character.rename'))}</button></span>`
+            ? `<input class="rename-input" placeholder="${escapeHtml(t('character.newNamePlaceholder'))}" maxlength="16" /><span class="char-actions"><button class="btn rename-btn">${escapeHtml(t('character.rename'))}</button>${deleteCharButtonHtml(c.online)}</span>`
             : c.online
-              ? `<span class="char-actions"><button class="btn btn-danger delete-char-btn" disabled title="${escapeHtml(t('character.inWorldHint'))}">${escapeHtml(t('character.delete'))}</button><button class="btn take-over-btn" title="${escapeHtml(t('character.takeOverConfirm'))}" aria-label="${escapeHtml(t('character.takeOverConfirm'))}">${escapeHtml(t('character.takeOver'))}</button></span>`
-              : `<span class="char-actions"><button class="btn btn-danger delete-char-btn">${escapeHtml(t('character.delete'))}</button><button class="btn enter-world-btn">${escapeHtml(t('auth.enterWorld'))}</button></span>`
+              ? `<span class="char-actions"><button class="btn take-over-btn" title="${escapeHtml(t('character.takeOverConfirm'))}" aria-label="${escapeHtml(t('character.takeOverConfirm'))}">${escapeHtml(t('character.takeOver'))}</button>${deleteCharButtonHtml(true)}</span>`
+              : `<span class="char-actions"><button class="btn enter-world-btn">${escapeHtml(t('auth.enterWorld'))}</button>${deleteCharButtonHtml(false)}</span>`
         }`;
 
       row.querySelector('.delete-char-btn')?.addEventListener('click', (e) => {
@@ -6327,6 +6347,24 @@ function fadeOutHomepageMusic(durationMs = 1600): void {
   }
 })();
 
-startSitePresence('home');
-wireStartScreens();
-initHomepageMusic();
+// A pending editor play-test (PHAA-679) takes over the boot instead of the
+// normal home flow: the map editor (its own /editor entry) stashed a custom
+// WorldContent and navigated here, so boot straight into that offline world
+// and skip the start screen. Any malformed/absent request falls through to
+// the normal home flow.
+const editorPlaytest = takeEditorPlaytestRequest();
+if (editorPlaytest) {
+  startSitePresence('home');
+  void startOffline(
+    editorPlaytest.playerClass,
+    editorPlaytest.playerName,
+    0,
+    'm',
+    editorPlaytest.content,
+    editorPlaytest.seed,
+  );
+} else {
+  startSitePresence('home');
+  wireStartScreens();
+  initHomepageMusic();
+}

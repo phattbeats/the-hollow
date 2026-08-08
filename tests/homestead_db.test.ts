@@ -9,7 +9,7 @@ vi.hoisted(() => {
 });
 vi.mock('pg', () => ({
   Pool: function Pool() {
-    return { query: dbMock.query, connect: dbMock.connect };
+    return { query: dbMock.query, connect: dbMock.connect, on: vi.fn() };
   },
 }));
 

@@ -46,6 +46,7 @@ export type UiIconName =
   | 'nameplates'
   | 'vibrate'
   | 'lock'
+  | 'trash'
   | 'crafting';
 
 // Inner SVG markup per icon (one or more <path>). Default fill rule is nonzero
@@ -107,6 +108,8 @@ const ICONS: Record<UiIconName, string> = {
     '<path fill-rule="evenodd" d="M196 80h120a24 24 0 0 1 24 24v304a24 24 0 0 1-24 24H196a24 24 0 0 1-24-24V104a24 24 0 0 1 24-24zm4 40v272h112V120H200z"/><path d="M96 176v160h28V176zM388 176v160h28V176zM40 216v80h26v-80zM446 216v80h26v-80z"/>',
   // hand-authored padlock — shackle over a solid body (nonzero fill merges them)
   lock: '<path d="M256 96a72 72 0 0 0-72 72v64h40v-64a32 32 0 0 1 64 0v64h40v-64a72 72 0 0 0-72-72zM150 224a26 26 0 0 0-26 26v140a26 26 0 0 0 26 26h212a26 26 0 0 0 26-26V250a26 26 0 0 0-26-26z"/>',
+  trash:
+    '<path d="M200 56h112a16 16 0 0 1 16 16v16h96v40H88V88h96V72a16 16 0 0 1 16-16zm16 32h80V80h-80zM120 152h272l-20 280a32 32 0 0 1-32 30H172a32 32 0 0 1-32-30zm88 48v216h32V200zm64 0v216h32V200z"/>',
   // hand-authored mallet (crafting window, PHAA-818): a wide head block over
   // a vertical handle, matching the plain-geometric weight of jump/nameplates.
   crafting:

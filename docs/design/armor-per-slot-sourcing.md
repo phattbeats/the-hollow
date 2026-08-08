@@ -1,7 +1,20 @@
-# PHAA-604 (PHAA-502 T2b): male per-slot armor mesh sourcing and authoring plan
+# PHAA-609 (PHAA-502 T2b): male + female per-slot armor mesh sourcing and authoring plan
 
-Status: sourcing + feasibility pass complete; mesh authoring gated on two board
-decisions (see "Decisions needed") and on the T1/T2a PRs landing on main.
+Status: T1 (#171) and T2a (#179) are merged to main. T2b batch 0 (PR #193, the
+asset-search track: `helm_plate`/`chest_cape`/`legs_plate` extracted from the
+vendored KayKit knight pack) is merged, but its `ITEM_ARMOR_VARIANTS` wiring is
+still deferred (see "Decision: chest/legs attach approach" below, now resolved).
+T2b batch 1 (this PR) is a zero-new-asset discovery: `paladin.glb` and
+`chibi_female_knight.glb` already ship separable, skinned per-slot armor mesh
+nodes that nothing had wired to `bakedArmorSlots` yet -- the same T2a
+baked-toggle pattern proven on `player_warrior`'s `Knight_Helmet`/`Knight_Cape`.
+Wired here for `player_paladin` (male, cape only -- `paladin.glb` has no
+separate head mesh, so `Paladin_Helmet` stays ungated to avoid rendering an
+unhelmed paladin headless, confirmed via render screenshot) and
+`player_warrior_f` / `player_paladin_f` (female, full plate set, first-ever
+female armor visuals). Batch 2+ (bespoke Blender authoring for the 7 classes
+per sex with no built-in armor meshes) is scoped below and filed as follow-up
+issues.
 
 This is the dual-track (asset search, then Blender-author the gaps) sourcing
 dossier for per-slot armor meshes (chest / legs / helm, per tier) on the male
@@ -95,24 +108,76 @@ whole render path end to end (author -> manifest -> media-manifest build ->
 `setEquippedArmor` -> screenshot). Chest and legs follow the board's approach
 decision.
 
-## Decisions needed (board)
+## Decision: chest/legs attach approach (resolved this PR)
 
-1. **Chest/legs attach approach**: rigid per-bone props on the T1 path (cheapest,
-   legs will clip on the run cycle) vs the T2a baked-mesh `.visible`-swap approach
-   for torso/legs (no clipping, but per-character-GLB authoring, heavier) vs a
-   split two-bone leg attach. This sets the authoring shape for the whole task.
-2. **Scope of v1**: "per tier" and "male roster" -- how many tiers (1? 3?), and
-   which of the 7 male class bodies get bespoke fitting vs sharing one shape.
-   Per-slot(3) x tier(N) x per-body-fit is potentially dozens of GLBs; a bounded
-   v1 (e.g. one tier, helm+chest, shared across bodies) ships something visible
-   fast and validates the pipeline before the long tail.
+Rigid single-bone `attach` (the T1 `armorSlots` path) and the T2a baked-mesh
+`.visible` toggle (`bakedArmorSlots`) are **not composable on the same slot of
+the same class**: `bakedArmorSlots` flips visibility on a mesh already baked
+into the class GLB, while `armorSlots` parents a *separate* item-specific GLB
+under a bone. Wiring both to the same `EquipSlot` on one class would double-
+render (e.g. the knight's own helmet dome plus a standalone iron helm prop).
+So the split is by class, not by slot:
+
+- **Classes with built-in separable armor meshes** (`player_warrior`,
+  `player_paladin`, `player_warrior_f`, `player_paladin_f` as of this PR):
+  `bakedArmorSlots` only. Any item in the gating slot reveals the class's own
+  armor look; item-to-item visual variety on these classes is a v2 concern
+  (per-tier reskins of the same baked mesh via `applyMaterials`, not new GLBs).
+- **Classes with no built-in armor mesh** (the other 7 per sex): the T2b
+  standalone-attach GLBs (`helm_plate`, `chest_cape`, ...). **Helm and chest
+  only** -- both proven safe as a rigid single-bone prop (see above). **Legs
+  stays off the rigid-attach path**: a full-length rigid greave clips on the
+  run cycle every stride, and a two-bone skinned split is new render-plumbing
+  scope, not an asset-authoring task. The mitigation is on the art side
+  instead: author leg pieces as a short hip-to-mid-thigh guard (tassets, not a
+  full greave) so there's no low-leg geometry to cross the knee joint. This
+  keeps legs on the existing rigid-attach path with the same authoring cost as
+  helm/chest, at the cost of a lighter-coverage leg silhouette than plate boots
+  would give; a full greave is back on the table if/when a skinned two-bone
+  attach lands.
+- **`helm_plate`/`chest_cape` are plate-styled** (extracted from the knight
+  pack) and read right on the two remaining plate-adjacent classes
+  (`player_hunter`/ranger armor, `player_shaman` heavy sets) but not on the
+  cloth casters (`mage`/`priest`/`warlock`) or the leather rogue/druid --
+  putting a knight's iron dome and cape on a robed mage is a genuine visual
+  mismatch, not a wiring question. **Flagged for Brandon, not decided here**:
+  either ship `helm_plate`/`chest_cape` on the plate-adjacent classes only and
+  Blender-author cloth/leather equivalents for the rest (batch 2), or treat
+  `helm_plate`/`chest_cape` purely as a tier-1 placeholder for every non-baked
+  class until batch 2 lands real per-archetype looks.
+
+## Batch 2 (follow-up, filed as child issues): bespoke Blender authoring
+
+The remaining classes with zero armor mesh coverage need real new geometry,
+not reused/retoggled assets:
+
+- **Male** (5 classes once `helm_plate`/`chest_cape` cover hunter/shaman per
+  the note above): `player_rogue`, `player_mage`, `player_priest`,
+  `player_warlock`, `player_druid` -- leather (rogue/druid) and cloth
+  (mage/priest/warlock) helm + chest, Blender-authored via the proven
+  `bmcp` pipeline (`10.0.0.100:9876`, recipe in `hollow-blender-glb-export`
+  memory / PHAA-585..588), rigid-attached at `head`/`chest` on the shared
+  `Rig_Medium` bones.
+- **Female** (7 classes: everyone but `warrior_f`/`paladin_f`): none of
+  `chibi_female_archer.glb`, `chibi_female_merchant.glb`,
+  `chibi_female_ninja.glb`, `chibi_female.glb`, `chibi_female_basemesh.glb`
+  have separable armor nodes (checked this PR), so there is no baked-toggle
+  shortcut left for female -- every remaining female class needs either (a) a
+  Blender-authored standalone attach GLB rigid-attached at the female rig's
+  `head` bone (helm only; the PHAA-583 hand-grip mismatch was specific to
+  weapon grips, `head` is a normal bone on the shared 78-joint Rigify rig and
+  untested but plausible for a helm-only rigid attach), or (b) new baked-in
+  armor meshes added directly to each outfit GLB in Blender (matches the
+  knight outfit's existing pattern, higher authoring cost, no new engine
+  work). Recommend (a) for helm as the v1 slice per class, same
+  de-risk-with-the-cheapest-slot approach as the original male plan.
 
 ## Gating
 
-Mesh + manifest wiring cannot land on `main` until T1 (#171) and T2a (#179) merge
-(the `ITEM_ARMOR_VARIANTS` / `armorSlots` schema is on those branches only). This
-branch is stacked on the T2a branch so authoring can proceed in parallel and
-retarget to `main` once they land, same pattern as T2a stacked on T1.
+T1 (#171) and T2a (#179) are merged. This PR's baked-toggle wiring (batch 1)
+has no further gate. Batch 2 (new Blender geometry, both sexes) is unblocked
+and ready to start; filed as child issues rather than attempted in this PR to
+keep this change to the already-verified, zero-new-asset wins.
 
 ## Render invariant: any baked-toggle node must survive per-character rig merges (PHAA-653)
 
