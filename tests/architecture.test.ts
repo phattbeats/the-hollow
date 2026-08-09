@@ -162,6 +162,7 @@ const UI_PURE_CORES = [
   'src/ui/loot_roll_group_view.ts',
   'src/ui/npc_dialog_tree_view.ts',
   'src/ui/dungeon_finder_view.ts',
+  'src/ui/player_info_card_view.ts',
   'src/ui/swing_timer.ts',
   'src/ui/unit_frame.ts',
   'src/ui/action_bar_view.ts',
