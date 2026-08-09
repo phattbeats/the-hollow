@@ -3470,6 +3470,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'boarball.log.over': '경기 종료! 월드로 돌아갑니다…',
   'boarball.error.tooFar': '공에 충분히 가까이 있지 않습니다.',
   'boarball.error.noTeammate': '지정된 아군이 없습니다.',
+  'yumi.queue.join':
+    '프로텍트 유미 대기열에 참가했습니다. 당신의 사역마를 지키고 적의 사역마를 사냥하세요…',
+  'yumi.log.welcome': '프로텍트 유미! 당신의 사역마를 지키고 적의 사역마를 사냥하세요.',
   'fiesta.augment.aug_apex_predator.desc':
     '물리 피해 +40%, 치명타 +15%, 입힌 피해의 12%만큼 회복합니다.',
   'fiesta.augment.aug_apex_predator.name': '최상위 포식자',

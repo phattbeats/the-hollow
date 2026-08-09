@@ -21,10 +21,13 @@ import {
   instanceOrigin,
   isArenaPos,
   isDelvePos,
+  isYumiMazePos,
   MOBS,
   NPCS,
   WORLD_MAX_Z,
   WORLD_MIN_Z,
+  YUMI_MAZE_SLOT_COUNT,
+  yumiMazeOrigin,
   ZONES,
 } from '../sim/data';
 import type { DelveModuleId } from '../sim/delve_layout';
@@ -123,6 +126,7 @@ import { TravelSpeedFxPainter } from './travel_speed_fx_painter';
 import { Vfx } from './vfx';
 import { buildWater, type WaterView } from './water';
 import { Weather } from './weather';
+import { buildYumiMaze, type YumiMazeView } from './yumi_maze';
 
 // Entities further than this from the player are hidden entirely: their rigs
 // are several draw calls each and read as sub-pixel specks long before this.
@@ -3554,7 +3558,12 @@ export class Renderer {
     | 'hollow'
     | 'nythraxis'
     | 'delve'
+    | 'yumi'
     | 'underwater' = 'outdoor';
+  // Protect Yumi (PHAA-573): the built visual maze per match slot, keyed by
+  // slot index. Built once when the player streams into the band, kept for the
+  // session like the other interiors (the band is tiny and rarely visited).
+  private yumiMazeViews = new Map<number, YumiMazeView>();
 
   private buildInterior(
     interior: string,
@@ -3672,6 +3681,18 @@ export class Renderer {
     const pz = this.sim.player.pos.z;
     if (isDelvePos(px)) {
       this.ensureDelveInteriorsNear(px, pz);
+    } else if (inside && isYumiMazePos(px)) {
+      // Protect Yumi maze band: build the visual body for the slot the player
+      // streamed into (the collision is already the sim's; this is only skin).
+      for (let i = 0; i < YUMI_MAZE_SLOT_COUNT; i++) {
+        if (this.yumiMazeViews.has(i)) continue;
+        const o = yumiMazeOrigin(i);
+        if (Math.abs(px - o.x) < 200 && Math.abs(pz - o.z) < 120) {
+          const view = buildYumiMaze(o.x, o.z, groundHeight(o.x, o.z, this.sim.cfg.seed));
+          this.yumiMazeViews.set(i, view);
+          this.scene.add(view.group);
+        }
+      }
     } else if (inside && isArenaPos(px)) {
       void ensureDungeonAssets().catch(() => undefined);
       // build the Ashen Coliseum copy the player was matched into
@@ -3710,7 +3731,8 @@ export class Renderer {
     // the Drowned Temple reads as submerged: a teal murk instead of the
     // crypt's near-black, so its flooded halls feel underwater, not just dark
     const inDelve = inside && isDelvePos(px);
-    const dungeonHere = inside && !inDelve && !isArenaPos(px) ? dungeonAt(px) : null;
+    const inYumiMaze = inside && isYumiMazePos(px);
+    const dungeonHere = inside && !inDelve && !inYumiMaze && !isArenaPos(px) ? dungeonAt(px) : null;
     const interior = dungeonHere?.interior ?? null;
     // The Hollow hub shares the temple interior but breathes its own warm
     // root-and-soil murk (never the Drowned Temple's teal).
@@ -3719,17 +3741,19 @@ export class Renderer {
     const inNythraxis = interior === 'nythraxis';
     const desired = inDelve
       ? 'delve'
-      : inHollow
-        ? 'hollow'
-        : inTemple
-          ? 'temple'
-          : inNythraxis
-            ? 'nythraxis'
-            : inside
-              ? 'dungeon'
-              : camY < waterLevelAt(px, this.sim.player.pos.z) - 0.05
-                ? 'underwater'
-                : 'outdoor';
+      : inYumiMaze
+        ? 'yumi'
+        : inHollow
+          ? 'hollow'
+          : inTemple
+            ? 'temple'
+            : inNythraxis
+              ? 'nythraxis'
+              : inside
+                ? 'dungeon'
+                : camY < waterLevelAt(px, this.sim.player.pos.z) - 0.05
+                  ? 'underwater'
+                  : 'outdoor';
     // the vase smoke: on while the player is in the hub, reactive to
     // Greenpaw's hearth (PHAA-421, IWorld.hollowHearth) instead of a constant
     // column, the visible interface to the god; cheap capped additive puffs,
@@ -3778,10 +3802,14 @@ export class Renderer {
         fog.color.setHex(0x0e0705);
         fog.near = 14;
         fog.far = 74;
-      } else if (desired === 'underwater') {
-        fog.color.setHex(0x17506e);
-        fog.near = 2;
-        fog.far = 48;
+      } else if (desired === 'yumi') {
+        // Protect Yumi's maze reads as a warm open-air sand arena, not a crypt:
+        // a light dusty haze pushed well back so the corridors stay legible and
+        // the sandstone walls keep their daylight (see the underground set,
+        // which deliberately omits 'yumi' so the sun/sky ambient stays on).
+        fog.color.setHex(0xcbb890);
+        fog.near = 40;
+        fog.far = 160;
       } else {
         const preset = this.outdoorFogPreset();
         fog.color.setHex(preset.color);

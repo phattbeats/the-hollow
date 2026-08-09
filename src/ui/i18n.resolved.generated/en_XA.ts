@@ -3030,6 +3030,14 @@ export const en_XA: EnTranslations = {
       "noTeammate": "[Ñó ţéáɱɱáţé ţáŕĝéţéð.]"
     }
   },
+  "yumi": {
+    "queue": {
+      "join": "[Ýóú ĵóíñ ţĥé Þŕóţéçţ Ýúɱí ɋúéúé. Ðéƒéñð ýóúŕ ƒáɱíļíáŕ áñð ĥúñţ ţĥéíŕš…]"
+    },
+    "log": {
+      "welcome": "[Þŕóţéçţ Ýúɱí! Ðéƒéñð ýóúŕ ƒáɱíļíáŕ áñð ĥúñţ ţĥéíŕš.]"
+    }
+  },
   "fiesta": {
     "bracket": "[Ƒíéšţá]",
     "enterQueue": "[Ĵóíñ ţĥé Ƒíéšţá!]",
@@ -6566,6 +6574,9 @@ export const en_XA: EnTranslations = {
       },
       "boarball_ball": {
         "name": "[Ɓóáŕƀáļļ]"
+      },
+      "yumi_cat": {
+        "name": "[Ýúɱí]"
       },
       "ironvein_foreman": {
         "name": "[Íŕóñʋéíñ Ƒóŕéɱáñ]"

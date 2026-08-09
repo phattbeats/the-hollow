@@ -90,7 +90,12 @@ export function isPetClass(cls: PlayerClass): boolean {
 // ring), see docs/design and the Fiesta region of sim.ts. 'boarball' is the
 // unranked 2v2 sport minigame (PHAA-572, adapted from upstream's Vale Cup)
 // played on the same arena pit; see social/boarball.ts.
-export type ArenaFormat = '1v1' | '2v2' | 'fiesta' | 'boarball';
+// '1v1'/'2v2' are the ranked Ashen Coliseum ladders; 'fiesta' is the
+// dopamine-maxxed 2v2 party mode (score-based, respawns, augments, a shrinking
+// ring); see docs/design and the Fiesta region of sim.ts. 'boarball' is the
+// Vale Cup boarball core (PHAA-572), a 2v2 sport minigame. 'yumi3'/'yumi5'
+// are the Protect Yumi maze objective brackets (PHAA-573, social/yumi.ts).
+export type ArenaFormat = '1v1' | '2v2' | 'fiesta' | 'boarball' | 'yumi3' | 'yumi5';
 
 export interface ArenaStanding {
   rating: number;
@@ -2483,6 +2488,38 @@ export type SimEvent = { pid?: number } & (
   | { type: 'boarballScore'; a: number; b: number; limit: number; team: 'A' | 'B' }
   | { type: 'boarballGoal'; team: 'A' | 'B'; scorerName: string }
   | { type: 'boarballKickoff'; team: 'A' | 'B' }
+  // Protect Yumi! (PHAA-573): the 3v3 / 5v5 maze objective mode (formats
+  // 'yumi3'/'yumi5'; social/yumi.ts). All carry pid (delivered to every
+  // fighter on the live match, since only they can see the maze anyway).
+  // `yumiStatus` is the once-per-second heartbeat that drives the HUD's
+  // dynamic numbers (cat HPs, teleport countdown, sudden-death ramp). It is
+  // the rate-limited wire companion to the snapshot in arenaInfo.match.yumi.
+  // `yumiDown` is the personal bench timer (per-pid, like fiestaDown).
+  // `yumiTeleport` is the world VFX anchor for the simultaneous cat
+  // relocation (graphics, not gameplay-state). `yumiSuddenDeath` latches
+  // once at YUMI_SUDDEN_AT and freezes teleports.
+  | {
+      type: 'yumiStatus';
+      myHp: number;
+      myMax: number;
+      enemyHp: number;
+      enemyMax: number;
+      teleportIn: number;
+      suddenDeathIn: number;
+      suddenDeath: boolean;
+      mult: number;
+      team: 'A' | 'B';
+    }
+  | { type: 'yumiDown'; seconds: number }
+  | {
+      type: 'yumiTeleport';
+      catId: number;
+      fromX: number;
+      fromZ: number;
+      toX: number;
+      toZ: number;
+    }
+  | { type: 'yumiSuddenDeath' }
   | {
       type: 'heal2';
       sourceId: number;

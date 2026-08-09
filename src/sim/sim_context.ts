@@ -129,6 +129,13 @@ export interface SimContextPrimitives {
   arenaQueueFiesta: ArenaQueueUnit[];
   // Boarball (PHAA-572): a flat FIFO queue of solo pids (unranked, no premades).
   arenaQueueBoarball: number[];
+  // Protect Yumi! (PHAA-573): premade-unit FIFO queues per bracket, the enemy-cat
+  // entity-id -> live-match index (the two hostility arms read it), and the maze
+  // -band slot pool (separate from arenaBusySlots: yumi runs its own far-east band).
+  arenaQueueYumi3: ArenaQueueUnit[];
+  arenaQueueYumi5: ArenaQueueUnit[];
+  readonly yumiCatMatches: Map<number, ArenaMatch>;
+  readonly yumiBusySlots: Set<number>;
   readonly arenaBusySlots: Set<number>;
   nextArenaMatchId: number;
   // Dungeon Finder (PHAA-736): flat FIFO queue, reassigned by the matcher's
@@ -260,6 +267,23 @@ export interface SimContextCallbacks {
   boarballRestoreChar(meta: PlayerMeta, e: Entity): void;
   boarballShoot(p: Entity, power: number, loft: number): void;
   boarballPass(p: Entity, target: Entity, power: number): void;
+  // Protect Yumi! (PHAA-573): the live match lives in social/yumi.ts, reached
+  // only through these five seam callbacks (matchmaking from updateArena; the
+  // per-tick driver, the player-down bench, the cat damage hub, and teardown).
+  matchmakeYumi(): void;
+  updateYumiActive(match: ArenaMatch): void;
+  yumiPlayerDown(match: ArenaMatch, victim: Entity, killerPid: number | null): void;
+  yumiCatDamaged(
+    match: ArenaMatch,
+    source: Entity | null,
+    cat: Entity,
+    amount: number,
+    crit: boolean,
+    school: string,
+    ability: string | null,
+    kind: 'hit' | 'miss' | 'dodge',
+  ): void;
+  cleanupYumiMatch(match: ArenaMatch): void;
   readyArenaFighter(e: Entity, opts: { clearPrep: boolean }): void;
   resetForArena(e: Entity): void;
   isArenaTeamWiped(match: ArenaMatch, team: 'A' | 'B'): boolean;
@@ -798,6 +822,24 @@ export function createSimContext(host: SimContextHost): SimContext {
     set dungeonFinderQueue(v) {
       host.dungeonFinderQueue = v;
     },
+    get arenaQueueYumi3() {
+      return host.arenaQueueYumi3;
+    },
+    set arenaQueueYumi3(v) {
+      host.arenaQueueYumi3 = v;
+    },
+    get arenaQueueYumi5() {
+      return host.arenaQueueYumi5;
+    },
+    set arenaQueueYumi5(v) {
+      host.arenaQueueYumi5 = v;
+    },
+    get yumiCatMatches() {
+      return host.yumiCatMatches;
+    },
+    get yumiBusySlots() {
+      return host.yumiBusySlots;
+    },
     get arenaBusySlots() {
       return host.arenaBusySlots;
     },
@@ -880,6 +922,11 @@ export function createSimContext(host: SimContextHost): SimContext {
     boarballRestoreChar: host.boarballRestoreChar,
     boarballShoot: host.boarballShoot,
     boarballPass: host.boarballPass,
+    matchmakeYumi: host.matchmakeYumi,
+    updateYumiActive: host.updateYumiActive,
+    yumiPlayerDown: host.yumiPlayerDown,
+    yumiCatDamaged: host.yumiCatDamaged,
+    cleanupYumiMatch: host.cleanupYumiMatch,
     readyArenaFighter: host.readyArenaFighter,
     resetForArena: host.resetForArena,
     isArenaTeamWiped: host.isArenaTeamWiped,

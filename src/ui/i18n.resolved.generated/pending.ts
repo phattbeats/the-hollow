@@ -293,6 +293,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.mobs.greenpaw_cutting_moss.name",
     "entities.mobs.heartwood_colossus.name",
     "entities.mobs.training_dummy.name",
+    "entities.mobs.yumi_cat.name",
     "entities.npcs.bramble.greeting",
     "entities.npcs.bramble.name",
     "entities.npcs.bramble.title",
@@ -854,7 +855,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "es_ES": [
     "abilityUi.tooltip.selfOnly",
@@ -1140,6 +1143,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.mobs.greenpaw_cutting_moss.name",
     "entities.mobs.heartwood_colossus.name",
     "entities.mobs.training_dummy.name",
+    "entities.mobs.yumi_cat.name",
     "entities.npcs.bramble.greeting",
     "entities.npcs.bramble.name",
     "entities.npcs.bramble.title",
@@ -1701,7 +1705,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "fr_FR": [
     "abilityUi.tooltip.selfOnly",
@@ -1987,6 +1993,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.mobs.greenpaw_cutting_moss.name",
     "entities.mobs.heartwood_colossus.name",
     "entities.mobs.training_dummy.name",
+    "entities.mobs.yumi_cat.name",
     "entities.npcs.bramble.greeting",
     "entities.npcs.bramble.name",
     "entities.npcs.bramble.title",
@@ -2548,7 +2555,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "fr_CA": [
     "abilityUi.tooltip.selfOnly",
@@ -2834,6 +2843,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.mobs.greenpaw_cutting_moss.name",
     "entities.mobs.heartwood_colossus.name",
     "entities.mobs.training_dummy.name",
+    "entities.mobs.yumi_cat.name",
     "entities.npcs.bramble.greeting",
     "entities.npcs.bramble.name",
     "entities.npcs.bramble.title",
@@ -3395,7 +3405,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "en_CA": [],
   "it_IT": [
@@ -3682,6 +3694,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.mobs.greenpaw_cutting_moss.name",
     "entities.mobs.heartwood_colossus.name",
     "entities.mobs.training_dummy.name",
+    "entities.mobs.yumi_cat.name",
     "entities.npcs.bramble.greeting",
     "entities.npcs.bramble.name",
     "entities.npcs.bramble.title",
@@ -4243,7 +4256,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "de_DE": [
     "abilityUi.tooltip.selfOnly",
@@ -4529,6 +4544,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.mobs.greenpaw_cutting_moss.name",
     "entities.mobs.heartwood_colossus.name",
     "entities.mobs.training_dummy.name",
+    "entities.mobs.yumi_cat.name",
     "entities.npcs.bramble.greeting",
     "entities.npcs.bramble.name",
     "entities.npcs.bramble.title",
@@ -5090,7 +5106,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "zh_CN": [
     "dailyRewardsUi.cell.itemCount",
@@ -5118,6 +5136,7 @@ export const pending: Record<string, readonly string[]> = {
     "editor.tutorial.skip",
     "editor.tutorial.steps.help.title",
     "editor.tutorial.steps.save.title",
+    "entities.mobs.yumi_cat.name",
     "entities.quests.q_keep_him_lit.title",
     "guide.hollowPage.heading",
     "guide.hollowPage.npcFmt",
@@ -5158,6 +5177,7 @@ export const pending: Record<string, readonly string[]> = {
     "editor.tutorial.skip",
     "editor.tutorial.steps.help.title",
     "editor.tutorial.steps.save.title",
+    "entities.mobs.yumi_cat.name",
     "entities.quests.q_keep_him_lit.title",
     "guide.hollowPage.heading",
     "guide.hollowPage.npcFmt",
@@ -5198,6 +5218,7 @@ export const pending: Record<string, readonly string[]> = {
     "editor.tutorial.skip",
     "editor.tutorial.steps.help.title",
     "editor.tutorial.steps.save.title",
+    "entities.mobs.yumi_cat.name",
     "entities.quests.q_keep_him_lit.title",
     "guide.hollowPage.heading",
     "guide.hollowPage.npcFmt",
@@ -5238,6 +5259,7 @@ export const pending: Record<string, readonly string[]> = {
     "editor.tutorial.skip",
     "editor.tutorial.steps.help.title",
     "editor.tutorial.steps.save.title",
+    "entities.mobs.yumi_cat.name",
     "entities.quests.q_keep_him_lit.title",
     "guide.hollowPage.heading",
     "guide.hollowPage.npcFmt",
@@ -5536,6 +5558,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.mobs.greenpaw_cutting_moss.name",
     "entities.mobs.heartwood_colossus.name",
     "entities.mobs.training_dummy.name",
+    "entities.mobs.yumi_cat.name",
     "entities.npcs.bramble.greeting",
     "entities.npcs.bramble.name",
     "entities.npcs.bramble.title",
@@ -6097,7 +6120,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "ru_RU": [
     "dailyRewardsUi.cell.itemCount",
@@ -6125,6 +6150,7 @@ export const pending: Record<string, readonly string[]> = {
     "editor.tutorial.skip",
     "editor.tutorial.steps.help.title",
     "editor.tutorial.steps.save.title",
+    "entities.mobs.yumi_cat.name",
     "entities.quests.q_keep_him_lit.title",
     "guide.hollowPage.heading",
     "guide.hollowPage.npcFmt",
@@ -6423,6 +6449,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.mobs.greenpaw_cutting_moss.name",
     "entities.mobs.heartwood_colossus.name",
     "entities.mobs.training_dummy.name",
+    "entities.mobs.yumi_cat.name",
     "entities.npcs.bramble.greeting",
     "entities.npcs.bramble.name",
     "entities.npcs.bramble.title",
@@ -6985,7 +7012,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "pl_PL": [
     "abilityUi.tooltip.selfOnly",
@@ -7271,6 +7300,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.mobs.greenpaw_cutting_moss.name",
     "entities.mobs.heartwood_colossus.name",
     "entities.mobs.training_dummy.name",
+    "entities.mobs.yumi_cat.name",
     "entities.npcs.bramble.greeting",
     "entities.npcs.bramble.name",
     "entities.npcs.bramble.title",
@@ -7833,7 +7863,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "id_ID": [
     "abilityUi.tooltip.selfOnly",
@@ -8119,6 +8151,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.mobs.greenpaw_cutting_moss.name",
     "entities.mobs.heartwood_colossus.name",
     "entities.mobs.training_dummy.name",
+    "entities.mobs.yumi_cat.name",
     "entities.npcs.bramble.greeting",
     "entities.npcs.bramble.name",
     "entities.npcs.bramble.title",
@@ -8681,7 +8714,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "tr_TR": [
     "abilityUi.tooltip.selfOnly",
@@ -8967,6 +9002,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.mobs.greenpaw_cutting_moss.name",
     "entities.mobs.heartwood_colossus.name",
     "entities.mobs.training_dummy.name",
+    "entities.mobs.yumi_cat.name",
     "entities.npcs.bramble.greeting",
     "entities.npcs.bramble.name",
     "entities.npcs.bramble.title",
@@ -9529,7 +9565,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "sv_SE": [
     "abilityUi.tooltip.selfOnly",
@@ -9815,6 +9853,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.mobs.greenpaw_cutting_moss.name",
     "entities.mobs.heartwood_colossus.name",
     "entities.mobs.training_dummy.name",
+    "entities.mobs.yumi_cat.name",
     "entities.npcs.bramble.greeting",
     "entities.npcs.bramble.name",
     "entities.npcs.bramble.title",
@@ -10377,7 +10416,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "vi_VN": [
     "abilityUi.tooltip.selfOnly",
@@ -10663,6 +10704,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.mobs.greenpaw_cutting_moss.name",
     "entities.mobs.heartwood_colossus.name",
     "entities.mobs.training_dummy.name",
+    "entities.mobs.yumi_cat.name",
     "entities.npcs.bramble.greeting",
     "entities.npcs.bramble.name",
     "entities.npcs.bramble.title",
@@ -11225,7 +11267,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ],
   "da_DK": [
     "abilityUi.tooltip.selfOnly",
@@ -11511,6 +11555,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.mobs.greenpaw_cutting_moss.name",
     "entities.mobs.heartwood_colossus.name",
     "entities.mobs.training_dummy.name",
+    "entities.mobs.yumi_cat.name",
     "entities.npcs.bramble.greeting",
     "entities.npcs.bramble.name",
     "entities.npcs.bramble.title",
@@ -12073,6 +12118,8 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind",
     "sim.readyCheck.alreadyInProgress",
     "sim.readyCheck.mustBeInParty",
-    "sim.readyCheck.summary"
+    "sim.readyCheck.summary",
+    "yumi.log.welcome",
+    "yumi.queue.join"
   ]
 };

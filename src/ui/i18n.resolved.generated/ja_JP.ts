@@ -3030,6 +3030,14 @@ export const ja_JP: EnTranslations = {
       "noTeammate": "味方がターゲットされていません。"
     }
   },
+  "yumi": {
+    "queue": {
+      "join": "プロテクト・ユミのキューに参加しました。使い魔を守り、敵の使い魔を狩れ…"
+    },
+    "log": {
+      "welcome": "プロテクト・ユミ！使い魔を守り、敵の使い魔を狩れ。"
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "Fiestaに参加！",
@@ -6566,6 +6574,9 @@ export const ja_JP: EnTranslations = {
       },
       "boarball_ball": {
         "name": "ボアボール"
+      },
+      "yumi_cat": {
+        "name": "Yumi"
       },
       "ironvein_foreman": {
         "name": "鉄脈の現場監督"

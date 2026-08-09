@@ -3030,6 +3030,14 @@ export const pt_BR: EnTranslations = {
       "noTeammate": "No teammate targeted."
     }
   },
+  "yumi": {
+    "queue": {
+      "join": "You join the Protect Yumi queue. Defend your familiar and hunt theirs…"
+    },
+    "log": {
+      "welcome": "Protect Yumi! Defend your familiar and hunt theirs."
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "Entre na Fiesta!",
@@ -6566,6 +6574,9 @@ export const pt_BR: EnTranslations = {
       },
       "boarball_ball": {
         "name": "Boarball"
+      },
+      "yumi_cat": {
+        "name": "Yumi"
       },
       "ironvein_foreman": {
         "name": "Capataz Veio de Ferro"

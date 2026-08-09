@@ -134,6 +134,9 @@ export type {
   FiestaMatchInfo,
   FiestaPowerupView,
   FiestaScoreboardPlayer,
+  YumiCatView,
+  YumiMatchInfo,
+  YumiScoreboardPlayer,
 } from './world_api/duel_arena';
 export type { DungeonFinderInfo } from './world_api/dungeon_finder';
 export type { RaidLockout } from './world_api/dungeons';

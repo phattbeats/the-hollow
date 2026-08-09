@@ -86,6 +86,7 @@ const MOB_IDS = [
   'deacon_varric',
   'acolyte_tessa',
   'boarball_ball', // PHAA-572: the inert ball entity driving the boarball minigame
+  'yumi_cat', // PHAA-573: the Protect Yumi objective familiar
 ] as const;
 
 const NPC_IDS = [

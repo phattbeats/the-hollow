@@ -3473,6 +3473,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'boarball.log.over': '試合終了！ワールドに戻ります…',
   'boarball.error.tooFar': 'ボールに近づいていません。',
   'boarball.error.noTeammate': '味方がターゲットされていません。',
+  'yumi.queue.join': 'プロテクト・ユミのキューに参加しました。使い魔を守り、敵の使い魔を狩れ…',
+  'yumi.log.welcome': 'プロテクト・ユミ！使い魔を守り、敵の使い魔を狩れ。',
   'fiesta.augment.aug_apex_predator.desc':
     '物理ダメージ+40%、クリティカル+15%、与えたダメージの12%を回復。',
   'fiesta.augment.aug_apex_predator.name': '頂点捕食者',

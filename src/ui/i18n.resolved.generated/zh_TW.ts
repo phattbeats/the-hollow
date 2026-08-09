@@ -3030,6 +3030,14 @@ export const zh_TW: EnTranslations = {
       "noTeammate": "未選定隊友目標。"
     }
   },
+  "yumi": {
+    "queue": {
+      "join": "你加入了保衛Yumi的隊列。守護你的使魔，獵殺敵方的使魔…"
+    },
+    "log": {
+      "welcome": "保衛Yumi！守護你的使魔，獵殺敵方的使魔。"
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "加入Fiesta！",
@@ -6566,6 +6574,9 @@ export const zh_TW: EnTranslations = {
       },
       "boarball_ball": {
         "name": "野豬球"
+      },
+      "yumi_cat": {
+        "name": "Yumi"
       },
       "ironvein_foreman": {
         "name": "鐵脈工頭"

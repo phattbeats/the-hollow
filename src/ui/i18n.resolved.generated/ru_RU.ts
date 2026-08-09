@@ -3030,6 +3030,14 @@ export const ru_RU: EnTranslations = {
       "noTeammate": "Союзник не выбран."
     }
   },
+  "yumi": {
+    "queue": {
+      "join": "Вы вступаете в очередь режима «Защити Юми». Защищайте своего фамильяра и охотьтесь на вражеского…"
+    },
+    "log": {
+      "welcome": "Защити Юми! Защищайте своего фамильяра и охотьтесь на вражеского."
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "Присоединиться к Fiesta!",
@@ -6566,6 +6574,9 @@ export const ru_RU: EnTranslations = {
       },
       "boarball_ball": {
         "name": "Боарбол"
+      },
+      "yumi_cat": {
+        "name": "Yumi"
       },
       "ironvein_foreman": {
         "name": "Прораб Железной жилы"
