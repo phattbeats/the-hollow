@@ -47,7 +47,8 @@ export type UiIconName =
   | 'vibrate'
   | 'lock'
   | 'trash'
-  | 'crafting';
+  | 'crafting'
+  | 'dungeonfinder';
 
 // Inner SVG markup per icon (one or more <path>). Default fill rule is nonzero
 // (correct for game-icons.net art incl. overlaps); the two hand-authored cut-out
@@ -114,6 +115,9 @@ const ICONS: Record<UiIconName, string> = {
   // a vertical handle, matching the plain-geometric weight of jump/nameplates.
   crafting:
     '<rect x="176" y="140" width="160" height="90" rx="18"/><rect x="236" y="220" width="40" height="220" rx="14"/>',
+  // hand-authored dungeon door: an arched gate frame over a sill (Dungeon Finder)
+  dungeonfinder:
+    '<path fill-rule="evenodd" d="M176 456V232a80 80 0 0 1 160 0v224h32V232a112 112 0 0 0-224 0v224z"/><rect x="152" y="440" width="208" height="32"/>',
 };
 
 export function hasUiIcon(name: string): name is UiIconName {

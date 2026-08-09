@@ -32,7 +32,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { ClientWorld } from '../src/net/online';
 import { Sim } from '../src/sim/sim';
 import type { PlayerClass } from '../src/sim/types';
-// The 30 facet interfaces the W1 split produced (src/world_api/<facet>.ts). Imported
+// The 33 facet interfaces the W1 split produced (src/world_api/<facet>.ts). Imported
 // type-only to pin each facet's runtime member array to its interface key-set below.
 import type { IWorldAchievements } from '../src/world_api/achievements';
 import type { IWorldChat } from '../src/world_api/chat';
@@ -44,6 +44,7 @@ import type { IWorldDailyRewards } from '../src/world_api/daily_rewards';
 import type { IWorldDeeds } from '../src/world_api/deeds';
 import type { IWorldDelves } from '../src/world_api/delves';
 import type { IWorldDuelArena } from '../src/world_api/duel_arena';
+import type { IWorldDungeonFinder } from '../src/world_api/dungeon_finder';
 import type { IWorldDungeons } from '../src/world_api/dungeons';
 import type { IWorldEnchanting } from '../src/world_api/enchanting';
 import type { IWorldEntityRoster } from '../src/world_api/entity_roster';
@@ -279,6 +280,10 @@ export const IWORLD_MEMBERS = [
   { name: 'companionUpgrades', kind: 'data' },
   { name: 'delveDaily', kind: 'data' },
   { name: 'raidLockouts', kind: 'method' }, // read-returning (5/6)
+  // --- Dungeon Finder solo-role queue (PHAA-736, phase 1) ---
+  { name: 'dungeonFinderInfo', kind: 'data' },
+  { name: 'dungeonFinderQueueJoin', kind: 'method' },
+  { name: 'dungeonFinderQueueLeave', kind: 'method' },
   { name: 'leaderboard', kind: 'method' }, // async
   { name: 'guildLeaderboard', kind: 'method' }, // async
   { name: 'prestige', kind: 'method' },
@@ -420,7 +425,11 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
 
   // Sorted-name `toEqual` snapshots: a dropped, renamed, or kind-flipped member reddens
   // these deliberately, forcing a reviewed edit. NOT length-only.
+<<<<<<< HEAD
+  it('the full sorted member set is exactly the pinned 199', () => {
+=======
   it('the full sorted member set is exactly the pinned 198', () => {
+>>>>>>> origin/main
     expect(IWORLD_MEMBERS.map((m) => m.name).sort()).toEqual([
       'abandonPet',
       'abandonQuest',
@@ -480,6 +489,9 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'duelDecline',
       'duelInfo',
       'duelRequest',
+      'dungeonFinderInfo',
+      'dungeonFinderQueueJoin',
+      'dungeonFinderQueueLeave',
       'earnedTitles',
       'earnedTitlesFor',
       'enchants',
@@ -624,7 +636,11 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
     ]);
   });
 
+<<<<<<< HEAD
+  it('the sorted data-kind set is exactly the pinned 60', () => {
+=======
   it('the sorted data-kind set is exactly the pinned 58', () => {
+>>>>>>> origin/main
     expect(DATA_MEMBERS.map((m) => m.name).sort()).toEqual([
       'accountCosmetics',
       'achievementPoints',
@@ -646,6 +662,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'delveMarks',
       'delveRun',
       'duelInfo',
+      'dungeonFinderInfo',
       'earnedTitles',
       'enchants',
       'entities',
@@ -688,7 +705,11 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
     ]);
   });
 
+<<<<<<< HEAD
+  it('the sorted method-kind set is exactly the pinned 139', () => {
+=======
   it('the sorted method-kind set is exactly the pinned 136', () => {
+>>>>>>> origin/main
     expect(METHOD_MEMBERS.map((m) => m.name).sort()).toEqual([
       'abandonPet',
       'abandonQuest',
@@ -728,7 +749,12 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'duelAccept',
       'duelDecline',
       'duelRequest',
+<<<<<<< HEAD
+      'dungeonFinderQueueJoin',
+      'dungeonFinderQueueLeave',
+=======
       'earnedTitlesFor',
+>>>>>>> origin/main
       'enterDelve',
       'enterDungeon',
       'equipBag',
@@ -865,7 +891,7 @@ describe('membership, not equality: world extras do not fail the gate', () => {
   });
 });
 
-// --- W1: aggregate == disjoint union of the 30 facet member sets --------------------
+// --- W1: aggregate == disjoint union of the 33 facet member sets --------------------
 // After the facet split (W1), `interface IWorld extends` 20 domain facet interfaces
 // (src/world_api/<facet>.ts; the 19 owner-backed facets plus IWorldTelemetry). This
 // block proves the split dropped nothing and duplicated nothing:
@@ -874,8 +900,8 @@ describe('membership, not equality: world extras do not fail the gate', () => {
 //   (2) a type-level AssertNever<Exclude<keyof IWorldX, array[number]>> per facet rejects
 //       a MISSING name (if the array omits a key, Exclude<> is a non-never union and tsc
 //       fails) -- (1)+(2) together make each array EXACTLY its facet key-set;
-//   (3) the 30 arrays are pairwise DISJOINT (a member filed in two facets reddens);
-//   (4) their union, sorted, equals the pinned 190-name IWORLD_MEMBERS set (a member
+//   (3) the 33 arrays are pairwise DISJOINT (a member filed in two facets reddens);
+//   (4) their union, sorted, equals the pinned 199-name IWORLD_MEMBERS set (a member
 //       dropped from the split reddens).
 // This is the rigorous form, NOT the tautological `keyof IWorld === keyof (A & B & ...)`
 // (IWorld extends them, so that self-equality proves nothing): it asserts against the
@@ -1203,6 +1229,15 @@ const FACET_DUNGEONS = [
 ] as const satisfies readonly (keyof IWorldDungeons)[];
 type _ExhaustDungeons = AssertNever<Exclude<keyof IWorldDungeons, (typeof FACET_DUNGEONS)[number]>>;
 
+const FACET_DUNGEON_FINDER = [
+  'dungeonFinderInfo',
+  'dungeonFinderQueueJoin',
+  'dungeonFinderQueueLeave',
+] as const satisfies readonly (keyof IWorldDungeonFinder)[];
+type _ExhaustDungeonFinder = AssertNever<
+  Exclude<keyof IWorldDungeonFinder, (typeof FACET_DUNGEON_FINDER)[number]>
+>;
+
 const FACET_DELVES = [
   'enterDelve',
   'leaveDelve',
@@ -1244,7 +1279,7 @@ type _ExhaustAchievements = AssertNever<
   Exclude<keyof IWorldAchievements, (typeof FACET_ACHIEVEMENTS)[number]>
 >;
 
-// The 30-facet partition, keyed by facet for legible failure messages.
+// The 33-facet partition, keyed by facet for legible failure messages.
 const FACET_MEMBER_ARRAYS: Readonly<Record<string, readonly string[]>> = {
   entityRoster: FACET_ENTITY_ROSTER,
   combat: FACET_COMBAT,
@@ -1268,6 +1303,7 @@ const FACET_MEMBER_ARRAYS: Readonly<Record<string, readonly string[]>> = {
   market: FACET_MARKET,
   mail: FACET_MAIL,
   dungeons: FACET_DUNGEONS,
+  dungeonFinder: FACET_DUNGEON_FINDER,
   delves: FACET_DELVES,
   housing: FACET_HOUSING,
   greenpawHearth: FACET_GREENPAW_HEARTH,
@@ -1280,9 +1316,9 @@ const FACET_MEMBER_ARRAYS: Readonly<Record<string, readonly string[]>> = {
   achievements: FACET_ACHIEVEMENTS,
 };
 
-describe('W1: aggregate IWorld member set equals the disjoint union of the 32 facets', () => {
-  it('pins the facet count at 32', () => {
-    expect(Object.keys(FACET_MEMBER_ARRAYS).length).toBe(32);
+describe('W1: aggregate IWorld member set equals the disjoint union of the 33 facets', () => {
+  it('pins the facet count at 33', () => {
+    expect(Object.keys(FACET_MEMBER_ARRAYS).length).toBe(33);
   });
 
   it('each facet array is non-empty and internally duplicate-free', () => {
@@ -1292,7 +1328,7 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the 32 fa
     }
   });
 
-  it('the 30 facet arrays are pairwise disjoint (no member filed in two facets)', () => {
+  it('the 33 facet arrays are pairwise disjoint (no member filed in two facets)', () => {
     const entries = Object.entries(FACET_MEMBER_ARRAYS);
     const overlaps: string[] = [];
     for (let i = 0; i < entries.length; i++) {
@@ -1308,7 +1344,11 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the 32 fa
     expect(overlaps, `members filed in more than one facet:\n${overlaps.join('\n')}`).toEqual([]);
   });
 
+<<<<<<< HEAD
+  it('the union of the 33 facets equals the pinned 199-member IWORLD_MEMBERS set', () => {
+=======
   it('the union of the 32 facets equals the pinned 199-member IWORLD_MEMBERS set', () => {
+>>>>>>> origin/main
     const union = Object.values(FACET_MEMBER_ARRAYS).flatMap((arr) => [...arr]);
     expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(199);
     expect(new Set(union).size, 'union size after dedup (catches a duplicate across facets)').toBe(

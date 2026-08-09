@@ -59,6 +59,7 @@ import {
   type DelveShopOfferView,
   type DialogStateView,
   type DuelInfo,
+  type DungeonFinderInfo,
   type FriendInfo,
   type GreenpawHearthInfo,
   type GuildLeaderboardPage,
@@ -919,6 +920,9 @@ export class ClientWorld implements IWorld {
   // arenaInfo.match.fiesta and its dynamics flow over the events queue. ---
   duelInfo: DuelInfo | null = null;
   arenaInfo: ArenaInfo | null = null;
+  // --- IWorldDungeonFinder: solo Dungeon Finder queue state, mirrored from the
+  // snapshot self (`s.dfinder`, delta-omitted; PHAA-736). ---
+  dungeonFinderInfo: DungeonFinderInfo | null = null;
   honor = 0;
   lifetimeHonor = 0;
   // --- IWorldSocialGraph: persistent friends/blocks/guild, set ONLY by the
@@ -1782,6 +1786,7 @@ export class ClientWorld implements IWorld {
       if (s.trade !== undefined) this.tradeInfo = s.trade;
       if (s.duel !== undefined) this.duelInfo = s.duel;
       if (s.arena !== undefined) this.arenaInfo = s.arena;
+      if (s.dfinder !== undefined) this.dungeonFinderInfo = s.dfinder;
       if (s.honor !== undefined) this.honor = s.honor ?? 0;
       if (s.lhonor !== undefined) this.lifetimeHonor = s.lhonor ?? 0;
       if (s.market !== undefined) this.marketInfo = s.market;
@@ -2319,6 +2324,14 @@ export class ClientWorld implements IWorld {
   }
   arenaAugmentPick(augmentId: string): void {
     this.cmd({ cmd: 'arena_augment', augment: augmentId });
+  }
+  // --- IWorldDungeonFinder: solo Dungeon Finder queue sends (PHAA-736;
+  // dungeonFinderInfo is a snapshot read, see applySnapshot's `s.dfinder`). ---
+  dungeonFinderQueueJoin(role: Role, dungeonId?: string): void {
+    this.cmd({ cmd: 'dungeonFinderQueue', role, dungeonId });
+  }
+  dungeonFinderQueueLeave(): void {
+    this.cmd({ cmd: 'dungeonFinderLeave' });
   }
   // --- IWorldSocialGraph: persistent social command sends (resolved server-side by
   // character name) + the REST character typeahead. socialInfo arrives via the

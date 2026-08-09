@@ -1179,4 +1179,17 @@ export const hudChromeStrings = {
   hitRating: {
     ratingLabel: 'Hit Rating',
   },
+  // Dungeon Finder (PHAA-736), phase 1: the solo-role queue window.
+  dungeonFinder: {
+    title: 'Dungeon Finder',
+    close: 'Close',
+    offlineNote: 'Dungeon Finder is unavailable offline.',
+    roleTank: 'Tank',
+    roleHealer: 'Healer',
+    roleDps: 'Damage',
+    queueButton: 'Queue',
+    leaveButton: 'Leave Queue',
+    idleHint: 'Choose a role to queue for {dungeon}.',
+    queuedStatus: 'Queued as {role} for {dungeon} (position {position})',
+  },
 };

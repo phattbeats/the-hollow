@@ -504,6 +504,21 @@ export const en = {
       wayOutNotOpen: 'The way out is not yet open.',
       moveCloserStairs: 'Move closer to the stairs.',
     },
+    // Dungeon Finder (PHAA-736) sim-emitted player text, same English-only /
+    // pending-fill convention as the delve block above.
+    dungeonFinder: {
+      cannotQueueDead: 'You cannot queue for the Dungeon Finder while dead.',
+      dungeonUnavailable: 'That dungeon is not available through the Dungeon Finder yet.',
+      roleUnavailable: 'Your class cannot queue for that role.',
+      leaveParty: 'Leave your party before queueing for the Dungeon Finder.',
+      cannotQueueDueling: 'You cannot queue for the Dungeon Finder while dueling.',
+      finishTrade: 'Finish your trade before queueing for the Dungeon Finder.',
+      cannotQueueInstance: 'You cannot queue for the Dungeon Finder from inside an instance.',
+      joined: 'You join the Dungeon Finder queue as {role}. Stand by for a group...',
+      left: 'You leave the Dungeon Finder queue.',
+      ready: 'Your Dungeon Finder group is ready: {dungeon}!',
+      removed: 'You were removed from the Dungeon Finder queue.',
+    },
     lockpick: {
       lockYields: 'The lock yields! {tier} spoils.',
       tierPremium: 'Premium',

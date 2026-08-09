@@ -5845,6 +5845,31 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.titleTracker.unspent': '新規 +{count}',
   'hudChrome.titleTracker.ariaLabel': '現在の称号: {display}',
   'hudChrome.hitRating.ratingLabel': '命中レーティング',
+  'hudChrome.dungeonFinder.title': 'ダンジョンファインダー',
+  'hudChrome.dungeonFinder.close': '閉じる',
+  'hudChrome.dungeonFinder.offlineNote': 'ダンジョンファインダーはオフラインでは利用できません。',
+  'hudChrome.dungeonFinder.roleTank': 'タンク',
+  'hudChrome.dungeonFinder.roleHealer': 'ヒーラー',
+  'hudChrome.dungeonFinder.roleDps': 'ダメージ',
+  'hudChrome.dungeonFinder.queueButton': '参加する',
+  'hudChrome.dungeonFinder.leaveButton': 'キューを離れる',
+  'hudChrome.dungeonFinder.idleHint': '{dungeon}に参加するロールを選んでください。',
+  'hudChrome.dungeonFinder.queuedStatus': '{role}として{dungeon}に登録中（{position}番目）',
+  'sim.dungeonFinder.cannotQueueDead': '死亡中はダンジョンファインダーに参加登録できません。',
+  'sim.dungeonFinder.dungeonUnavailable':
+    'そのダンジョンはまだダンジョンファインダーで利用できません。',
+  'sim.dungeonFinder.roleUnavailable': 'あなたのクラスはそのロールで登録できません。',
+  'sim.dungeonFinder.leaveParty':
+    'ダンジョンファインダーに登録する前にパーティーを抜けてください。',
+  'sim.dungeonFinder.cannotQueueDueling': '決闘中はダンジョンファインダーに登録できません。',
+  'sim.dungeonFinder.finishTrade': 'ダンジョンファインダーに登録する前に取引を終えてください。',
+  'sim.dungeonFinder.cannotQueueInstance':
+    'インスタンス内からはダンジョンファインダーに登録できません。',
+  'sim.dungeonFinder.joined':
+    '{role}としてダンジョンファインダーに登録しました。グループ結成をお待ちください...',
+  'sim.dungeonFinder.left': 'ダンジョンファインダーの登録を解除しました。',
+  'sim.dungeonFinder.ready': 'ダンジョンファインダーのグループが揃いました：{dungeon}！',
+  'sim.dungeonFinder.removed': 'ダンジョンファインダーの登録から外されました。',
   'entities.npcs.bramble.name': 'ブランブル',
   'entities.npcs.bramble.title': '名誉調達官',
   'entities.npcs.bramble.greeting':

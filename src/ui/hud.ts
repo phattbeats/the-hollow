@@ -163,6 +163,7 @@ import { DelveMapPainter } from './delve_map_painter';
 import { markDialogRoot } from './dialog_root';
 import { DISCORD_SURFACES_ENABLED } from './discord_flags';
 import { dropdownKeyNav } from './dropdown_nav';
+import { DungeonFinderWindow } from './dungeon_finder_window';
 import { emoteIconUrl } from './emote_icons';
 import {
   classDisplayName,
@@ -1286,6 +1287,7 @@ export class Hud {
     $('#mm-social').addEventListener('click', () => this.toggleSocial());
     $('#mm-options')?.addEventListener('click', () => this.toggleOptionsMenu());
     $('#mm-arena').addEventListener('click', () => this.toggleArena());
+    $('#mm-dungeon-finder').addEventListener('click', () => this.toggleDungeonFinder());
     $('#mm-leaderboard').addEventListener('click', () => this.toggleLeaderboard());
     const emoteBtn = $('#mm-emote');
     emoteBtn.addEventListener('click', (ev) => {
@@ -1637,6 +1639,11 @@ export class Hud {
         // Route through the painter so focus returns to the opener (WCAG 2.2 AA),
         // consistent with the toggle / X close path.
         this.arenaWindow.close();
+        break;
+      case 'dungeon-finder-window':
+        // Route through the painter so focus returns to the opener (WCAG 2.2 AA),
+        // consistent with the toggle / X close path.
+        this.dungeonFinderWindow.close();
         break;
       case 'vendor-window':
         this.closeVendor();
@@ -2792,6 +2799,15 @@ export class Hud {
     closeOthers: () => this.closeOtherWindows('#arena-window'),
     ...this.windowFocus('#arena-window'),
   });
+  // Dungeon Finder window painter (dungeon_finder_view.ts offline/idle/queued
+  // model + dungeon_finder_window.ts painter). PHAA-736 phase 1: a single
+  // pre-10 dungeon, solo-role queue.
+  private readonly dungeonFinderWindow = new DungeonFinderWindow({
+    root: () => $('#dungeon-finder-window'),
+    world: () => this.sim,
+    closeOthers: () => this.closeOtherWindows('#dungeon-finder-window'),
+    ...this.windowFocus('#dungeon-finder-window'),
+  });
   // Character window painter (char_view.ts paperdoll core + char_window.ts painter).
   // It composes the presentation bag (icon/tooltip) for the equip slots and routes
   // the HUD-built stat / talent / progression fragments plus the unequip + drag
@@ -3346,6 +3362,7 @@ export class Hud {
     // JSON of ids/numbers), so a language switch alone never moves it; relocalize() forces
     // one rebuild with fresh t() (self-gated on isOpen).
     this.arenaWindow.relocalize();
+    this.dungeonFinderWindow.relocalize();
     const dialog = $('#quest-dialog');
     if (dialog.style.display !== 'block' || this.openGossipNpcId === null) return;
     const npc = this.sim.entities.get(this.openGossipNpcId);
@@ -4867,6 +4884,7 @@ export class Hud {
       this.updateFiestaHud();
       if ($('#map-window').style.display === 'block') this.updateMapWindow();
       if ($('#arena-window').style.display === 'block') this.arenaWindow.render();
+      if ($('#dungeon-finder-window').style.display === 'block') this.dungeonFinderWindow.render();
       if (this.openLootMobId !== null) {
         const mob = sim.entities.get(this.openLootMobId);
         if (!mob?.lootable || dist2d(p.pos, mob.pos) > 7) this.closeLoot();
@@ -5805,6 +5823,10 @@ export class Hud {
   // band while open. The in-match auto-close + the pinned banner stay here.
   toggleArena(): void {
     this.arenaWindow.toggle();
+  }
+
+  toggleDungeonFinder(): void {
+    this.dungeonFinderWindow.toggle();
   }
 
   // The pinned in-match banner: opponent name + countdown / live match timer.

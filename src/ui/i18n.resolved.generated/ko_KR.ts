@@ -1074,6 +1074,18 @@ export const ko_KR: EnTranslations = {
     },
     "hitRating": {
       "ratingLabel": "적중 레이팅"
+    },
+    "dungeonFinder": {
+      "title": "던전 찾기",
+      "close": "닫기",
+      "offlineNote": "던전 찾기는 오프라인에서 사용할 수 없습니다.",
+      "roleTank": "탱커",
+      "roleHealer": "힐러",
+      "roleDps": "딜러",
+      "queueButton": "대기열 등록",
+      "leaveButton": "대기열 나가기",
+      "idleHint": "{dungeon}에 참가할 역할을 선택하세요.",
+      "queuedStatus": "{role}로 {dungeon} 대기 중 ({position}번째)"
     }
   },
   "mailUi": {
@@ -2698,6 +2710,19 @@ export const ko_KR: EnTranslations = {
       "nothingToTake": "이제 가져갈 것이 없습니다.",
       "wayOutNotOpen": "나가는 길이 아직 열리지 않았습니다.",
       "moveCloserStairs": "계단에 더 가까이 다가가세요."
+    },
+    "dungeonFinder": {
+      "cannotQueueDead": "사망 상태에서는 던전 찾기에 등록할 수 없습니다.",
+      "dungeonUnavailable": "해당 던전은 아직 던전 찾기에서 이용할 수 없습니다.",
+      "roleUnavailable": "당신의 직업은 해당 역할로 등록할 수 없습니다.",
+      "leaveParty": "던전 찾기에 등록하려면 먼저 파티에서 나가세요.",
+      "cannotQueueDueling": "결투 중에는 던전 찾기에 등록할 수 없습니다.",
+      "finishTrade": "던전 찾기에 등록하려면 먼저 거래를 마치세요.",
+      "cannotQueueInstance": "인스턴스 안에서는 던전 찾기에 등록할 수 없습니다.",
+      "joined": "{role} 역할로 던전 찾기에 등록했습니다. 그룹 결성을 기다려 주세요...",
+      "left": "던전 찾기 대기열에서 나갔습니다.",
+      "ready": "던전 찾기 그룹이 준비되었습니다: {dungeon}!",
+      "removed": "던전 찾기 대기열에서 제외되었습니다."
     },
     "lockpick": {
       "lockYields": "자물쇠가 열립니다! {tier} 전리품.",

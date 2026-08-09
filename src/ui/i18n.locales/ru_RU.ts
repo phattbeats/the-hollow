@@ -5983,6 +5983,33 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.titleTracker.unspent': '+{count} новых',
   'hudChrome.titleTracker.ariaLabel': 'Активное звание: {display}',
   'hudChrome.hitRating.ratingLabel': 'Рейтинг меткости',
+  'hudChrome.dungeonFinder.title': 'Поиск подземелий',
+  'hudChrome.dungeonFinder.close': 'Закрыть',
+  'hudChrome.dungeonFinder.offlineNote': 'Поиск подземелий недоступен в автономном режиме.',
+  'hudChrome.dungeonFinder.roleTank': 'Танк',
+  'hudChrome.dungeonFinder.roleHealer': 'Лекарь',
+  'hudChrome.dungeonFinder.roleDps': 'Урон',
+  'hudChrome.dungeonFinder.queueButton': 'В очередь',
+  'hudChrome.dungeonFinder.leaveButton': 'Покинуть очередь',
+  'hudChrome.dungeonFinder.idleHint': 'Выберите роль для очереди в {dungeon}.',
+  'hudChrome.dungeonFinder.queuedStatus': 'В очереди как {role} в {dungeon} (позиция {position})',
+  'sim.dungeonFinder.cannotQueueDead':
+    'Вы не можете встать в очередь Поиска подземелий, будучи мертвы.',
+  'sim.dungeonFinder.dungeonUnavailable': 'Это подземелье пока недоступно через Поиск подземелий.',
+  'sim.dungeonFinder.roleUnavailable': 'Ваш класс не может встать в очередь на эту роль.',
+  'sim.dungeonFinder.leaveParty':
+    'Покиньте группу, прежде чем вставать в очередь Поиска подземелий.',
+  'sim.dungeonFinder.cannotQueueDueling':
+    'Нельзя встать в очередь Поиска подземелий во время дуэли.',
+  'sim.dungeonFinder.finishTrade':
+    'Завершите обмен, прежде чем вставать в очередь Поиска подземелий.',
+  'sim.dungeonFinder.cannotQueueInstance':
+    'Нельзя встать в очередь Поиска подземелий, находясь в подземелье.',
+  'sim.dungeonFinder.joined':
+    'Вы встали в очередь Поиска подземелий как {role}. Ожидайте группу...',
+  'sim.dungeonFinder.left': 'Вы покинули очередь Поиска подземелий.',
+  'sim.dungeonFinder.ready': 'Ваша группа Поиска подземелий готова: {dungeon}!',
+  'sim.dungeonFinder.removed': 'Вы были удалены из очереди Поиска подземелий.',
   'entities.npcs.bramble.name': 'Брэмбл',
   'entities.npcs.bramble.title': 'Квартирмейстер чести',
   'entities.npcs.bramble.greeting': 'Пески помнят каждую победу. Трать свою честь с умом.',

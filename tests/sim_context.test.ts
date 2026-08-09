@@ -71,6 +71,7 @@ const CALLBACK_KEYS = [
   'dropPartyMarkers',
   // PHAA-641: the "/ready" chat command's leader-gated start (social/ready_check.ts).
   'readyCheckStart',
+  'formPartyFromRoster',
   // Q1 quest-credit trio + the countItem it consumes; onGreenpawFedForQuests
   // (PHAA-484) is the hearth's own feed-credit callback.
   'onMobKilledForQuests',
@@ -275,6 +276,7 @@ function makeFakeHost() {
     arenaQueue2v2: [],
     arenaQueueFiesta: [],
     arenaQueueBoarball: [],
+    dungeonFinderQueue: [],
     arenaBusySlots: new Set(),
     nextArenaMatchId: 1,
     delveRuns: [],
@@ -351,6 +353,7 @@ function makeFakeHost() {
     setRaidDifficulty: vi.fn(),
     dropPartyMarkers: vi.fn(),
     readyCheckStart: vi.fn(),
+    formPartyFromRoster: vi.fn(),
     onMobKilledForQuests: vi.fn(),
     onInventoryChangedForQuests: vi.fn(),
     onGreenpawFedForQuests: vi.fn(),

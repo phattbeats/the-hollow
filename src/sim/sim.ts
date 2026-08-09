@@ -299,6 +299,8 @@ export { eloDelta } from './social/arena';
 
 import type { BbBallKinematics } from './boarball_ball';
 import * as boarballMod from './social/boarball';
+import type { DungeonFinderInfo, DungeonFinderQueueEntry } from './social/dungeon_finder';
+import * as dungeonFinderMod from './social/dungeon_finder';
 import * as fiestaMod from './social/fiesta';
 // A3: Fiesta tuning consts moved to social/fiesta.ts; these five are read back here
 // by the fiestaMatchInfo presentation accessor (which STAYS on Sim).
@@ -1163,6 +1165,9 @@ export class Sim {
   arenaMatches = new Map<number, ArenaMatch>(); // pid -> shared match (both pids)
   private arenaBusySlots = new Set<number>();
   private nextArenaMatchId = 1;
+  // Dungeon Finder (PHAA-736) solo-role queue, one flat FIFO list filtered by
+  // role/dungeonId at match time (see social/dungeon_finder.ts).
+  dungeonFinderQueue: DungeonFinderQueueEntry[] = [];
   // per-player chat token bucket (anti-spam); refilled lazily by sim time
   private chatTokens = new Map<number, { tokens: number; at: number }>();
   // per-player set of opt-in global channels (world, lfg) joined via /join
@@ -2573,6 +2578,12 @@ export class Sim {
       set arenaQueueBoarball(v) {
         sim.arenaQueueBoarball = v;
       },
+      get dungeonFinderQueue() {
+        return sim.dungeonFinderQueue;
+      },
+      set dungeonFinderQueue(v) {
+        sim.dungeonFinderQueue = v;
+      },
       get arenaBusySlots() {
         return sim.arenaBusySlots;
       },
@@ -2716,6 +2727,9 @@ export class Sim {
       // leader-gated start; readyCheckRespond is a direct Sim delegate below, not on
       // the seam, since nothing inside sim internals calls it).
       readyCheckStart: (pid?: number) => readyCheckMod.readyCheckStart(sim.ctx, pid),
+      // Dungeon Finder (PHAA-736): forms a party directly from a matched
+      // roster, bypassing the invite/accept dance (social/party.ts).
+      formPartyFromRoster: (pids: number[]) => sim.party.formPartyFromRoster(pids),
       // dropPartyMarkers flips to the T1 marker store (targeting); lazy arrow since
       // sim.targeting is built after ctx. The T1 selectors consume isHostileTo/
       // isFriendlyTo/pvpController/stopFollow, which are already bound above (C4a/C1) and
@@ -3242,6 +3256,7 @@ export class Sim {
     readyCheckMod.updateReadyChecks(this.ctx);
     this.updateLootRolls();
     this.updateInstances();
+    this.updateDungeonFinder();
     this.updateDelveRuns();
     this.market.update();
     this.postOffice.update();
@@ -5820,6 +5835,30 @@ export class Sim {
 
   arenaQueueLeave(pid?: number): void {
     arenaMod.arenaQueueLeave(this.ctx, pid);
+  }
+
+  // -------------------------------------------------------------------------
+  // Dungeon Finder (PHAA-736), phase 1: pre-10 fixed-capability matcher.
+  // -------------------------------------------------------------------------
+
+  dungeonFinderQueueJoin(role: Role, dungeonId?: string, pid?: number): void {
+    dungeonFinderMod.dungeonFinderQueueJoin(this.ctx, role, dungeonId, pid);
+  }
+
+  dungeonFinderQueueLeave(pid?: number): void {
+    dungeonFinderMod.dungeonFinderQueueLeave(this.ctx, pid);
+  }
+
+  dungeonFinderInfoFor(pid: number): DungeonFinderInfo {
+    return dungeonFinderMod.dungeonFinderInfoFor(this.ctx, pid);
+  }
+
+  get dungeonFinderInfo(): DungeonFinderInfo | null {
+    return this.primaryId === -1 ? null : this.dungeonFinderInfoFor(this.primaryId);
+  }
+
+  private updateDungeonFinder(): void {
+    dungeonFinderMod.updateDungeonFinder(this.ctx);
   }
 
   private isArenaQueued(pid: number): boolean {

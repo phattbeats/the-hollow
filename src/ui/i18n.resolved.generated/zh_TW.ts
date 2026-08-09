@@ -1074,6 +1074,18 @@ export const zh_TW: EnTranslations = {
     },
     "hitRating": {
       "ratingLabel": "命中等級"
+    },
+    "dungeonFinder": {
+      "title": "地下城搜尋器",
+      "close": "關閉",
+      "offlineNote": "地下城搜尋器在離線模式下不可用。",
+      "roleTank": "坦克",
+      "roleHealer": "治療",
+      "roleDps": "輸出",
+      "queueButton": "排隊",
+      "leaveButton": "離開隊列",
+      "idleHint": "選擇一個角色以排隊進入{dungeon}。",
+      "queuedStatus": "已排隊：{role}，目標{dungeon}（第{position}位）"
     }
   },
   "mailUi": {
@@ -2698,6 +2710,19 @@ export const zh_TW: EnTranslations = {
       "nothingToTake": "這裡已沒有任何可拿取之物了。",
       "wayOutNotOpen": "出路尚未開啟。",
       "moveCloserStairs": "再靠近階梯一些。"
+    },
+    "dungeonFinder": {
+      "cannotQueueDead": "你死亡時無法加入地下城搜尋器隊列。",
+      "dungeonUnavailable": "該地下城尚未開放地下城搜尋器功能。",
+      "roleUnavailable": "你的職業無法以該角色排隊。",
+      "leaveParty": "請先離開隊伍，才能加入地下城搜尋器排隊。",
+      "cannotQueueDueling": "決鬥時無法加入地下城搜尋器排隊。",
+      "finishTrade": "請先完成交易，才能加入地下城搜尋器排隊。",
+      "cannotQueueInstance": "在副本內無法加入地下城搜尋器排隊。",
+      "joined": "你以{role}身分加入地下城搜尋器隊列，等待組隊...",
+      "left": "你已離開地下城搜尋器隊列。",
+      "ready": "你的地下城搜尋器隊伍已就緒：{dungeon}！",
+      "removed": "你已被移出地下城搜尋器隊列。"
     },
     "lockpick": {
       "lockYields": "鎖開了！{tier}戰利品。",

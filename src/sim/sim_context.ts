@@ -36,6 +36,7 @@ import type {
   ResolvedAbility,
   TradeSession,
 } from './sim';
+import type { DungeonFinderQueueEntry } from './social/dungeon_finder';
 import type { SpatialGrid } from './spatial';
 import type {
   AbilityDef,
@@ -130,6 +131,9 @@ export interface SimContextPrimitives {
   arenaQueueBoarball: number[];
   readonly arenaBusySlots: Set<number>;
   nextArenaMatchId: number;
+  // Dungeon Finder (PHAA-736): flat FIFO queue, reassigned by the matcher's
+  // filter (mirrors the arenaQueue* shape above).
+  dungeonFinderQueue: DungeonFinderQueueEntry[];
   // I2a delve runs: the live run pool (seeded in the Sim ctor, never reassigned) and
   // the transient pet stash both stay Sim-owned (the disconnect path + serializePet
   // poke them); exposed here as live views the run module reads/mutates in place.
@@ -330,6 +334,9 @@ export interface SimContextCallbacks {
   setRaidDifficulty(difficulty: 'normal' | 'heroic', pid?: number): void;
   // Drop a disbanded party's whole raid-marker set (points at T1's targeting store).
   dropPartyMarkers(partyId: number): void;
+  // Dungeon Finder (PHAA-736): builds a Party directly from a matched roster,
+  // skipping the invite/accept dance (social/party.ts formPartyFromRoster).
+  formPartyFromRoster(pids: number[]): Party;
   onMobKilledForQuests(mob: Entity, meta: PlayerMeta): void;
   onInventoryChangedForQuests(meta: PlayerMeta): void;
   // PHAA-484: Greenpaw's hearth credits a 'feed' quest objective (one call per
@@ -785,6 +792,12 @@ export function createSimContext(host: SimContextHost): SimContext {
     set arenaQueueBoarball(v) {
       host.arenaQueueBoarball = v;
     },
+    get dungeonFinderQueue() {
+      return host.dungeonFinderQueue;
+    },
+    set dungeonFinderQueue(v) {
+      host.dungeonFinderQueue = v;
+    },
     get arenaBusySlots() {
       return host.arenaBusySlots;
     },
@@ -899,6 +912,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     removeFromParty: host.removeFromParty,
     setRaidDifficulty: host.setRaidDifficulty,
     dropPartyMarkers: host.dropPartyMarkers,
+    formPartyFromRoster: host.formPartyFromRoster,
     onMobKilledForQuests: host.onMobKilledForQuests,
     onInventoryChangedForQuests: host.onInventoryChangedForQuests,
     onGreenpawFedForQuests: host.onGreenpawFedForQuests,
