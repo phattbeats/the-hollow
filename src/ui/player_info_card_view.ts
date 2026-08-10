@@ -36,6 +36,21 @@ export interface PlayerInfoCardViewModel {
   guildLine: string | null;
 }
 
+// The outcome of a "View Profile" lookup, decided here rather than inline in the
+// fetch chain so the not-found and transport-failure paths are testable without a
+// DOM: openPlayerInfoByName resolves the fetch to `sheet | null` and asks this for
+// what to show. A null sheet covers both a non-ok response (unknown or hidden
+// character) and a rejected fetch (offline, CORS, server down); a player cannot
+// act on the difference, so both render the same message.
+export type PlayerInfoCardOutcome =
+  | { kind: 'card'; vm: PlayerInfoCardViewModel }
+  | { kind: 'error'; messageKey: 'hud.system.playerInfoNotFound' };
+
+export function resolvePlayerInfoCard(sheet: PublicCharacterSheet | null): PlayerInfoCardOutcome {
+  if (!sheet) return { kind: 'error', messageKey: 'hud.system.playerInfoNotFound' };
+  return { kind: 'card', vm: buildPlayerInfoCardViewModel(sheet) };
+}
+
 export function buildPlayerInfoCardViewModel(sheet: PublicCharacterSheet): PlayerInfoCardViewModel {
   return {
     name: sheet.name,

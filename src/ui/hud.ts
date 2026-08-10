@@ -264,7 +264,12 @@ import {
   publishCard,
 } from './player_card_share';
 import { chatPlayerContextActions } from './player_context_menu';
-import { buildPlayerInfoCardViewModel, type PublicCharacterSheet } from './player_info_card_view';
+import {
+  type PlayerInfoCardOutcome,
+  type PlayerInfoCardViewModel,
+  type PublicCharacterSheet,
+  resolvePlayerInfoCard,
+} from './player_info_card_view';
 import { playerStealthed } from './player_stealthed';
 import { hydratePortraits, portraitChipHtml } from './portrait_chip';
 import { maskProfanity } from './profanity';
@@ -10878,20 +10883,25 @@ export class Hud {
   private openPlayerInfoByName(name: string): void {
     fetch(`/api/public/characters/${encodeURIComponent(name)}/sheet`)
       .then((r) => (r.ok ? r.json() : null))
-      .then((sheet: PublicCharacterSheet | null) => {
-        if (!sheet) {
-          this.showError(t('hud.system.playerInfoNotFound'));
-          return;
-        }
-        this.renderPlayerInfoCard(sheet);
-      })
-      .catch(() => this.showError(t('hud.system.playerInfoNotFound')));
+      .then((sheet: PublicCharacterSheet | null) =>
+        this.applyPlayerInfoOutcome(resolvePlayerInfoCard(sheet)),
+      )
+      .catch(() => this.applyPlayerInfoOutcome(resolvePlayerInfoCard(null)));
   }
 
-  private renderPlayerInfoCard(sheet: PublicCharacterSheet): void {
+  // Thin consumer of the pure resolver: the not-found / transport-failure choice
+  // lives in player_info_card_view.ts so it is covered without a DOM.
+  private applyPlayerInfoOutcome(outcome: PlayerInfoCardOutcome): void {
+    if (outcome.kind === 'error') {
+      this.showError(t(outcome.messageKey));
+      return;
+    }
+    this.renderPlayerInfoCard(outcome.vm);
+  }
+
+  private renderPlayerInfoCard(vm: PlayerInfoCardViewModel): void {
     const el = $('#inspect-window');
     this.closeOtherWindows('#inspect-window');
-    const vm = buildPlayerInfoCardViewModel(sheet);
     const guildHtml = vm.guildLine
       ? `<div class="inspect-holder-sub">${esc(vm.guildLine)}</div>`
       : '';

@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 import {
   buildPlayerInfoCardViewModel,
   type PublicCharacterSheet,
+  resolvePlayerInfoCard,
 } from '../src/ui/player_info_card_view';
 
 const BASE_SHEET: PublicCharacterSheet = {
@@ -53,5 +54,24 @@ describe('buildPlayerInfoCardViewModel', () => {
     expect(Object.keys(vm).sort()).toEqual(['cls', 'guildLine', 'metaLine', 'name', 'skin'].sort());
     const serialized = JSON.stringify(vm);
     expect(serialized).not.toMatch(/gear|wallet|thousand_truths|999999/i);
+  });
+});
+
+// The lookup outcome (PHAA-821 item 3): a 404 / hidden character and a rejected
+// fetch both reach the resolver as a null sheet, and both must surface the same
+// not-found message rather than opening an empty card.
+describe('resolvePlayerInfoCard', () => {
+  it('a missing sheet (non-ok response, unknown or hidden character) resolves to the not-found message', () => {
+    const outcome = resolvePlayerInfoCard(null);
+    expect(outcome.kind).toBe('error');
+    if (outcome.kind !== 'error') throw new Error('expected an error outcome');
+    expect(outcome.messageKey).toBe('hud.system.playerInfoNotFound');
+  });
+
+  it('a present sheet resolves to a card carrying the same view model the builder produces', () => {
+    const outcome = resolvePlayerInfoCard(BASE_SHEET);
+    expect(outcome.kind).toBe('card');
+    if (outcome.kind !== 'card') throw new Error('expected a card outcome');
+    expect(outcome.vm).toEqual(buildPlayerInfoCardViewModel(BASE_SHEET));
   });
 });
