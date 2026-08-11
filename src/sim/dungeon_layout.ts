@@ -55,6 +55,13 @@ export interface DungeonLayout {
   doorZ?: number;
   /** floor scatter positions, renderer places props here AND collision circles back them */
   clutter?: GridPoint[];
+  /** Irregular room shell (The Drowned Litany): the walkable outline in instance-local
+   * room space. When set, the rectangular side/end wall slabs above are advisory only:
+   * the polygon-shell OBBs already enclose the room, so module-bounds clamping
+   * early-returns (see delves/runs.ts clampDelveModuleBounds). */
+  shellPolygon?: GridPoint[];
+  /** Star-shaping pole for `shellPolygon` (see geometry2d.polygonIsStarShaped). */
+  shellPole?: GridPoint;
 }
 
 function grid(zFrom: number, zTo: number, zStep: number, xs: readonly number[]): GridPoint[] {
