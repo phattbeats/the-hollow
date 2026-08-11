@@ -2,7 +2,7 @@
 // modular 10 to 20 minute instances (~40yd wide, ~80yd deep). Sim layer: no
 // three.js imports.
 import type { Collider } from './colliders';
-import { litanyModuleLayout } from './delve_litany_layout';
+import { isLitanyModuleId, litanyModuleColliders, litanyModuleLayout } from './delve_litany_layout';
 import { type DungeonLayout, layoutColliders } from './dungeon_layout';
 
 export type DelveModuleId =
@@ -174,6 +174,12 @@ export const DELVE_MODULE_LAYOUTS: Record<DelveModuleId, DungeonLayout> = {
 
 /** Interior collision set for a delve module, in instance-local coordinates. */
 export function delveModuleColliders(moduleId: DelveModuleId): Collider[] {
+  // Litany rooms are irregular: layoutColliders only knows how to emit the four
+  // rectangular wall slabs, which would leave every authored alcove unsealed.
+  // Their shell OBBs come from the polygon outline instead. This is also what
+  // earns clampDelveModuleBounds its shellPolygon early-return (delves/runs.ts):
+  // the shell, not a bounding box, is what confines the player.
+  if (isLitanyModuleId(moduleId)) return litanyModuleColliders(moduleId);
   return layoutColliders(DELVE_MODULE_LAYOUTS[moduleId]);
 }
 

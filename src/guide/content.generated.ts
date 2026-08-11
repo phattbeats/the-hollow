@@ -1861,6 +1861,18 @@ export const GUIDE_DELVES: GuideDelve[] = [
       "Unstable Roof",
       "Cult Remnants"
     ]
+  },
+  {
+    "id": "drowned_litany",
+    "name": "The Drowned Litany",
+    "theme": "ruin",
+    "minLevel": 12,
+    "suggestedPlayers": 2,
+    "tiers": [
+      "Normal",
+      "Heroic"
+    ],
+    "affixes": []
   }
 ];
 
