@@ -94,13 +94,15 @@ beforeEach(() => {
   // Footsteps are off by default (the footstepSfx setting); enable them so the
   // play-path behaviours below are exercised. The gate itself is tested separately.
   sfx.setFootstepsEnabled(true);
-  // Inject decoded buffers directly (skip async fetch/decode in preload).
+  // Inject decoded buffers directly (skip async fetch/decode in preload). The
+  // sfx runtime caches buffers by URL (the manifest's `url` plus any `variants`
+  // URLs) rather than by sound key, so inject under the canonical URL.
   const buffers = (sfx as unknown as { buffers: Map<string, { duration: number }> }).buffers;
-  buffers.set('foot_grass', { duration: 0.48 });
-  buffers.set('amb_wind_vale', { duration: 8 });
-  buffers.set('amb_birds', { duration: 8 });
-  buffers.set('amb_wind_marsh', { duration: 8 });
-  buffers.set('amb_wind_peaks', { duration: 8 });
+  buffers.set('/audio/sfx/foot_grass.mp3', { duration: 0.48 });
+  buffers.set('/audio/sfx/amb_wind_vale.mp3', { duration: 8 });
+  buffers.set('/audio/sfx/amb_birds.mp3', { duration: 8 });
+  buffers.set('/audio/sfx/amb_wind_marsh.mp3', { duration: 8 });
+  buffers.set('/audio/sfx/amb_wind_peaks.mp3', { duration: 8 });
 });
 
 describe('footstep audio', () => {
