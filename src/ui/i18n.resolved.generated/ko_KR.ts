@@ -2709,7 +2709,17 @@ export const ko_KR: EnTranslations = {
       "moveCloserChest": "상자에 더 가까이 다가가세요.",
       "nothingToTake": "이제 가져갈 것이 없습니다.",
       "wayOutNotOpen": "나가는 길이 아직 열리지 않았습니다.",
-      "moveCloserStairs": "계단에 더 가까이 다가가세요."
+      "moveCloserStairs": "계단에 더 가까이 다가가세요.",
+      "litany": {
+        "cantorsHoldNote": "Cantors, hold the note!",
+        "blackwaterMark": "{boss} marks {target} with Blackwater!",
+        "finalBell": "{boss} unleashes Final Bell!",
+        "tollingBells": "{boss} tolls the bells!",
+        "bellRopeSnaps": "The bell rope snaps taut. Drowned Cantors reel from the shock.",
+        "eggSacBursts": "The egg-sac bursts. Spiderlings skitter free across the baptistry rim.",
+        "baptistryQuiet": "The baptistry falls quiet. Spider egg-sacs cling wetly to the rim.",
+        "baptistryStirs": "Something stirs in the black baptistry water."
+      }
     },
     "dungeonFinder": {
       "cannotQueueDead": "사망 상태에서는 던전 찾기에 등록할 수 없습니다.",

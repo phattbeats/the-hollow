@@ -2709,7 +2709,17 @@ export const ru_RU: EnTranslations = {
       "moveCloserChest": "Подойдите ближе к сундуку.",
       "nothingToTake": "Забирать больше нечего.",
       "wayOutNotOpen": "Выход ещё не открыт.",
-      "moveCloserStairs": "Подойдите ближе к лестнице."
+      "moveCloserStairs": "Подойдите ближе к лестнице.",
+      "litany": {
+        "cantorsHoldNote": "Cantors, hold the note!",
+        "blackwaterMark": "{boss} marks {target} with Blackwater!",
+        "finalBell": "{boss} unleashes Final Bell!",
+        "tollingBells": "{boss} tolls the bells!",
+        "bellRopeSnaps": "The bell rope snaps taut. Drowned Cantors reel from the shock.",
+        "eggSacBursts": "The egg-sac bursts. Spiderlings skitter free across the baptistry rim.",
+        "baptistryQuiet": "The baptistry falls quiet. Spider egg-sacs cling wetly to the rim.",
+        "baptistryStirs": "Something stirs in the black baptistry water."
+      }
     },
     "dungeonFinder": {
       "cannotQueueDead": "Вы не можете встать в очередь Поиска подземелий, будучи мертвы.",

@@ -6,7 +6,9 @@ import type { DungeonInteriors, DungeonInteriorVariant } from './dungeon';
 
 // Each reliquary module dresses the shared crypt kit differently (ossuary
 // shelves, handbell alcoves, defaced saint colonnade, the boss bell-chamber).
-const DELVE_MODULE_VARIANT: Record<DelveModuleId, DungeonInteriorVariant> = {
+// Partial: Drowned Litany modules use the 'cave' interior kit (no reliquary
+// dressing variant yet) and fall back to 'delve_ossuary' below.
+const DELVE_MODULE_VARIANT: Partial<Record<DelveModuleId, DungeonInteriorVariant>> = {
   reliquary_sunken_ossuary: 'delve_ossuary',
   reliquary_bell_niche: 'delve_bell',
   reliquary_saintless_hall: 'delve_hall',

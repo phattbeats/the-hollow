@@ -2709,7 +2709,17 @@ export const ja_JP: EnTranslations = {
       "moveCloserChest": "宝箱にもっと近づけ。",
       "nothingToTake": "もう取れるものは何も残っていない。",
       "wayOutNotOpen": "出口はまだ開いていない。",
-      "moveCloserStairs": "階段にもっと近づけ。"
+      "moveCloserStairs": "階段にもっと近づけ。",
+      "litany": {
+        "cantorsHoldNote": "Cantors, hold the note!",
+        "blackwaterMark": "{boss} marks {target} with Blackwater!",
+        "finalBell": "{boss} unleashes Final Bell!",
+        "tollingBells": "{boss} tolls the bells!",
+        "bellRopeSnaps": "The bell rope snaps taut. Drowned Cantors reel from the shock.",
+        "eggSacBursts": "The egg-sac bursts. Spiderlings skitter free across the baptistry rim.",
+        "baptistryQuiet": "The baptistry falls quiet. Spider egg-sacs cling wetly to the rim.",
+        "baptistryStirs": "Something stirs in the black baptistry water."
+      }
     },
     "dungeonFinder": {
       "cannotQueueDead": "死亡中はダンジョンファインダーに参加登録できません。",

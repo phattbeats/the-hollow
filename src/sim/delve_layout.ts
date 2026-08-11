@@ -2,13 +2,21 @@
 // modular 10 to 20 minute instances (~40yd wide, ~80yd deep). Sim layer: no
 // three.js imports.
 import type { Collider } from './colliders';
+import { litanyModuleLayout } from './delve_litany_layout';
 import { type DungeonLayout, layoutColliders } from './dungeon_layout';
 
 export type DelveModuleId =
   | 'reliquary_sunken_ossuary'
   | 'reliquary_bell_niche'
   | 'reliquary_saintless_hall'
-  | 'reliquary_finale';
+  | 'reliquary_finale'
+  | 'litany_sluice'
+  | 'litany_ledger'
+  | 'litany_ring'
+  | 'litany_choir_loft'
+  | 'litany_causeway'
+  | 'litany_baptistry'
+  | 'litany_apse';
 
 interface GridPoint {
   x: number;
@@ -144,11 +152,24 @@ export const RELIQUARY_FINALE_LAYOUT: DungeonLayout = {
   clutter: FINALE_CLUTTER,
 };
 
+function requireLitanyLayout(moduleId: Extract<DelveModuleId, `litany_${string}`>): DungeonLayout {
+  const layout = litanyModuleLayout(moduleId);
+  if (!layout) throw new Error(`missing litany module geometry for ${moduleId}`);
+  return layout;
+}
+
 export const DELVE_MODULE_LAYOUTS: Record<DelveModuleId, DungeonLayout> = {
   reliquary_sunken_ossuary: RELIQUARY_SUNKEN_OSSUARY_LAYOUT,
   reliquary_bell_niche: RELIQUARY_BELL_NICHE_LAYOUT,
   reliquary_saintless_hall: RELIQUARY_SAINTLESS_HALL_LAYOUT,
   reliquary_finale: RELIQUARY_FINALE_LAYOUT,
+  litany_sluice: requireLitanyLayout('litany_sluice'),
+  litany_ledger: requireLitanyLayout('litany_ledger'),
+  litany_ring: requireLitanyLayout('litany_ring'),
+  litany_choir_loft: requireLitanyLayout('litany_choir_loft'),
+  litany_causeway: requireLitanyLayout('litany_causeway'),
+  litany_baptistry: requireLitanyLayout('litany_baptistry'),
+  litany_apse: requireLitanyLayout('litany_apse'),
 };
 
 /** Interior collision set for a delve module, in instance-local coordinates. */

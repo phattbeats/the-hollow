@@ -2709,7 +2709,17 @@ export const id_ID: EnTranslations = {
       "moveCloserChest": "Mendekatlah ke peti.",
       "nothingToTake": "Tidak ada lagi yang bisa diambil.",
       "wayOutNotOpen": "Jalan keluar belum terbuka.",
-      "moveCloserStairs": "Mendekatlah ke tangga."
+      "moveCloserStairs": "Mendekatlah ke tangga.",
+      "litany": {
+        "cantorsHoldNote": "Cantors, hold the note!",
+        "blackwaterMark": "{boss} marks {target} with Blackwater!",
+        "finalBell": "{boss} unleashes Final Bell!",
+        "tollingBells": "{boss} tolls the bells!",
+        "bellRopeSnaps": "The bell rope snaps taut. Drowned Cantors reel from the shock.",
+        "eggSacBursts": "The egg-sac bursts. Spiderlings skitter free across the baptistry rim.",
+        "baptistryQuiet": "The baptistry falls quiet. Spider egg-sacs cling wetly to the rim.",
+        "baptistryStirs": "Something stirs in the black baptistry water."
+      }
     },
     "dungeonFinder": {
       "cannotQueueDead": "You cannot queue for the Dungeon Finder while dead.",

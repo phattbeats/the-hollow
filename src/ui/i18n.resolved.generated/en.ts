@@ -2709,7 +2709,17 @@ export const en: EnTranslations = {
       "moveCloserChest": "Move closer to the chest.",
       "nothingToTake": "There is nothing left to take.",
       "wayOutNotOpen": "The way out is not yet open.",
-      "moveCloserStairs": "Move closer to the stairs."
+      "moveCloserStairs": "Move closer to the stairs.",
+      "litany": {
+        "cantorsHoldNote": "Cantors, hold the note!",
+        "blackwaterMark": "{boss} marks {target} with Blackwater!",
+        "finalBell": "{boss} unleashes Final Bell!",
+        "tollingBells": "{boss} tolls the bells!",
+        "bellRopeSnaps": "The bell rope snaps taut. Drowned Cantors reel from the shock.",
+        "eggSacBursts": "The egg-sac bursts. Spiderlings skitter free across the baptistry rim.",
+        "baptistryQuiet": "The baptistry falls quiet. Spider egg-sacs cling wetly to the rim.",
+        "baptistryStirs": "Something stirs in the black baptistry water."
+      }
     },
     "dungeonFinder": {
       "cannotQueueDead": "You cannot queue for the Dungeon Finder while dead.",
