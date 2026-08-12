@@ -9,8 +9,10 @@
 // per-key cooldown, and a tiny pool of persistent looping sources for ambience
 // and sustained spell casts (cross-faded by gain, never restarted).
 
+import type { Rng } from '../sim/rng';
 import type { BiomeId } from '../sim/types';
 import { SFX_CLIPS } from './sfx_manifest.generated';
+import { pickWeightedVariant } from './sfx_variant_picker';
 
 const SAMPLE_GAIN = 0.85; // base level for sampled clips; sfxVolume multiplies this
 const MAX_VOICES = 24; // concurrent one-shot sources (frame-budget guard)
@@ -39,9 +41,21 @@ interface LoopSlot {
   target: number; // last commanded gain — skip re-arming the ramp when unchanged
 }
 
+// Look up the manifest entry for a sound key. Cheap `Map.get`; lets the hot
+// path stay loop-free and avoids scattering SFX_CLIPS references through
+// playAt/playUi/loop. Entries are immutable JSON, so a Map is safe (no later
+// mutation in this module).
+const ENTRY_BY_KEY: Map<string, { url: string; loop: boolean; variants?: string[] }> = new Map(
+  Object.entries(SFX_CLIPS),
+);
+
 class Sfx {
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
+  // Buffers are keyed by URL (the canonical `url` plus any `variants` URLs the
+  // manifest declares), not by sound key: a sound key with N declared takes
+  // owns N+1 buffer entries here. Use `pickVariantUrl` to resolve a key+index
+  // through the weighted picker before fetching from this map.
   private buffers = new Map<string, AudioBuffer>();
   private vol = 0.8;
   private active = 0;
@@ -52,6 +66,76 @@ class Sfx {
   private lx = 0;
   private ly = 0;
   private lz = 0; // cached listener position
+  // Deterministic picker RNG (the sim `Rng`). One instance per Sfx plus a
+  // per-sound-key no-repeat cursor. `setPickerRng` is the installer; it must
+  // be called BEFORE the first `playAt` for any key that has variants,
+  // otherwise `pickVariantUrl` falls back to round-robin (a key with no
+  // variants never touches this path). The constructor does not touch `Rng`
+  // so the module still imports cleanly under Vitest with no DOM.
+  private rng: Rng | null = null;
+  private lastVariant = new Map<string, number>();
+
+  /** Installer for the picker RNG. No caller yet: no shipped clip declares
+   *  `takes > 1`, so every current key is on the single-buffer fast path.
+   *  The host that first ships a multi-take clip installs a seeded `Rng`
+   *  here (client bootstrap, after `sfx.init()`) so the variant sequence is
+   *  seed-correlated for replays and QA parity. Until installed, the picker
+   *  rotates round-robin through declared variants: deterministic and
+   *  `Math.random`-free, just not seed-correlated. */
+  setPickerRng(rng: Rng): void {
+    this.rng = rng;
+  }
+
+  /** Resolve the per-sound-key variant buffer URL. Returns the URL of the
+   *  single declared take when no variants exist (the fast path: zero Rng
+   *  draws, the same audio all night). When variants exist, draws from the
+   *  picker with the previous-index no-repeat bias and records the cursor.
+   *  Missing (`!buffers.has`) URLs are filtered out of the usable pool; if
+   *  EVERY variant failed to load, the canonical URL is returned so the
+   *  caller still gets a buffer when the canonical clip succeeded. */
+  private pickVariantUrl(key: string, entry: { url: string; variants?: string[] }): string {
+    const urls: string[] =
+      entry.variants && entry.variants.length > 0 ? [entry.url, ...entry.variants] : [entry.url];
+    if (urls.length === 1) return urls[0]!;
+    const rng = this.rng;
+    if (!rng) {
+      // No Rng installed (pre-init or a test that never called setPickerRng):
+      // a deterministic, no-draw fallback that still walks the variants over
+      // time. A round-robin cursor avoids `Math.random` and stays predictable
+      // for QA. Variant order in the manifest is the intended play order so
+      // rotation is honest.
+      const cur = this.lastVariant.get(key) ?? -1;
+      const next = (cur + 1) % urls.length;
+      this.lastVariant.set(key, next);
+      return urls[next]!;
+    }
+    const last = this.lastVariant.get(key);
+    // Build usable index set: every URL whose buffer decoded successfully.
+    // A buffer for the canonical URL is allowed even when ALL variants failed
+    // to load, so a partial-multi-take entry still has a usable clip.
+    const usable: number[] = [];
+    for (let i = 0; i < urls.length; i++) {
+      const u = urls[i]!;
+      if (this.buffers.has(u) || (i === 0 && this.buffers.has(entry.url))) usable.push(i);
+    }
+    if (usable.length === 0) return entry.url; // every URL failed to load
+    const picked = pickWeightedVariant(rng, usable, last);
+    this.lastVariant.set(key, picked);
+    return urls[picked]!;
+  }
+
+  /** Resolve a sound key to its decoded `AudioBuffer`, choosing among
+   *  declared variants when present. Returns `null` for unknown keys or
+   *  for keys whose clip(s) failed to load. */
+  private bufferFor(key: string): AudioBuffer | null {
+    const entry = ENTRY_BY_KEY.get(key);
+    if (!entry) return null;
+    if (!entry.variants || entry.variants.length === 0) {
+      return this.buffers.get(entry.url) ?? null;
+    }
+    const url = this.pickVariantUrl(key, entry);
+    return this.buffers.get(url) ?? null;
+  }
 
   /** Set SFX volume (0..1). Shares the `sfxVolume` slider with `audio`. */
   setVolume(v: number): void {
@@ -93,16 +177,29 @@ class Sfx {
   private async preload(): Promise<void> {
     const ctx = this.ctx;
     if (!ctx) return;
+    // Decode every URL the manifest declares for a key (the canonical `url`
+    // plus any `variants` URLs) into the URL-keyed buffer cache. A key whose
+    // variants all failed to load still has its canonical buffer available,
+    // so a partial multi-take entry stays audible. Buffers are cached by URL,
+    // not by sound key, so the variant picker in `pickVariantUrl` can resolve
+    // a chosen URL directly.
+    const decodeOne = async (url: string) => {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) return;
+        const buf = await ctx.decodeAudioData(await res.arrayBuffer());
+        this.buffers.set(url, buf);
+      } catch {
+        /* missing/corrupt clip, that URL just stays silent */
+      }
+    };
     await Promise.all(
-      Object.entries(SFX_CLIPS).map(async ([key, entry]) => {
-        try {
-          const res = await fetch(entry.url);
-          if (!res.ok) return;
-          const buf = await ctx.decodeAudioData(await res.arrayBuffer());
-          this.buffers.set(key, buf);
-        } catch {
-          /* missing/corrupt clip, that key just stays silent */
-        }
+      Object.entries(SFX_CLIPS).flatMap(([, entry]) => {
+        const urls =
+          entry.variants && entry.variants.length > 0
+            ? [entry.url, ...entry.variants]
+            : [entry.url];
+        return urls.map(decodeOne);
       }),
     );
     this.ready = this.buffers.size > 0;
@@ -162,7 +259,10 @@ class Sfx {
       master = this.master;
     if (!ctx || !master) return;
     if (this.tooFar(x, z)) return;
-    const buf = this.buffers.get(key);
+    // bufferFor walks the variant picker when the key has variants, otherwise
+    // returns the single canonical buffer, the existing fast path for the 93
+    // current clips.
+    const buf = this.bufferFor(key);
     if (!buf || this.active >= MAX_VOICES) return;
     const now = ctx.currentTime;
     const cd = opts?.cooldown ?? 0.03;
@@ -227,7 +327,11 @@ class Sfx {
     const ctx = this.ctx,
       master = this.master;
     if (!ctx || !master) return;
-    const buf = this.buffers.get(key);
+    // bufferFor resolves the manifest URL (and any declared variants) so UI
+    // sounds stay on the same code path as positional ones. Most UI keys have
+    // a single canonical URL today, but the variant-aware lookup means a
+    // future UI sound declared with `takes: N` picks rotation-free.
+    const buf = this.bufferFor(key);
     if (!buf || this.active >= MAX_VOICES) return;
     const jitter = opts?.jitter !== false;
     const src = ctx.createBufferSource();
@@ -262,7 +366,7 @@ class Sfx {
       slot = undefined;
     }
     if (!slot) {
-      const buf = this.buffers.get(key);
+      const buf = this.bufferFor(key);
       if (!buf) return;
       const src = ctx.createBufferSource();
       src.buffer = buf;
