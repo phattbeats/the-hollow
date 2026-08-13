@@ -2711,14 +2711,14 @@ export const ko_KR: EnTranslations = {
       "wayOutNotOpen": "나가는 길이 아직 열리지 않았습니다.",
       "moveCloserStairs": "계단에 더 가까이 다가가세요.",
       "litany": {
-        "cantorsHoldNote": "Cantors, hold the note!",
-        "blackwaterMark": "{boss} marks {target} with Blackwater!",
-        "finalBell": "{boss} unleashes Final Bell!",
-        "tollingBells": "{boss} tolls the bells!",
-        "bellRopeSnaps": "The bell rope snaps taut. Drowned Cantors reel from the shock.",
-        "eggSacBursts": "The egg-sac bursts. Spiderlings skitter free across the baptistry rim.",
-        "baptistryQuiet": "The baptistry falls quiet. Spider egg-sacs cling wetly to the rim.",
-        "baptistryStirs": "Something stirs in the black baptistry water."
+        "cantorsHoldNote": "성가대여, 음을 유지하라!",
+        "blackwaterMark": "{boss}이(가) {target}에게 검은물 표식을 남깁니다!",
+        "finalBell": "{boss}이(가) 최후의 종을 울립니다!",
+        "tollingBells": "{boss}이(가) 종을 울립니다!",
+        "bellRopeSnaps": "종줄이 팽팽하게 당겨집니다. 익사한 선창자들이 충격에 휘청입니다.",
+        "eggSacBursts": "알주머니가 터집니다. 새끼 거미들이 세례반 가장자리로 흩어집니다.",
+        "baptistryQuiet": "세례반이 고요해집니다. 거미 알주머니가 가장자리에 축축하게 들러붙어 있습니다.",
+        "baptistryStirs": "검은 세례반 물속에서 무언가 꿈틀거립니다."
       }
     },
     "dungeonFinder": {
@@ -6582,6 +6582,36 @@ export const ko_KR: EnTranslations = {
       "acolyte_tessa": {
         "name": "수련사제 테사"
       },
+      "deepfen_spearjaw": {
+        "name": "딥펜 창턱"
+      },
+      "mirefen_widowling": {
+        "name": "마이어펜 새끼과부거미"
+      },
+      "reedbound_acolyte": {
+        "name": "갈대결속 수련사제"
+      },
+      "drowned_cantor": {
+        "name": "익사한 선창자"
+      },
+      "grave_silt_bulwark": {
+        "name": "무덤 진흙 방벽"
+      },
+      "choir_thrall": {
+        "name": "성가대 노예"
+      },
+      "sump_troll_devourer": {
+        "name": "시궁 트롤 포식자"
+      },
+      "spider_egg_sac": {
+        "name": "거미 알주머니"
+      },
+      "sister_nhalia_drowned_canticle": {
+        "name": "날리아 수녀"
+      },
+      "tolling_bell": {
+        "name": "울리는 종"
+      },
       "boarball_ball": {
         "name": "보어볼"
       },
@@ -8100,6 +8130,11 @@ export const ko_KR: EnTranslations = {
         "name": "무너진 성물실",
         "enterText": "무너진 성물실로 내려갑니다.",
         "leaveText": "성물실 폐허의 브라더 할벤에게로 다시 올라갑니다."
+      },
+      "drowned_litany": {
+        "name": "익사한 성가",
+        "enterText": "늪 가장자리의 물에 잠긴 사당으로 내려갑니다.",
+        "leaveText": "늪 가장자리의 할벤 수사에게 다시 올라갑니다."
       }
     },
     "enchants": {

@@ -2711,14 +2711,14 @@ export const ja_JP: EnTranslations = {
       "wayOutNotOpen": "出口はまだ開いていない。",
       "moveCloserStairs": "階段にもっと近づけ。",
       "litany": {
-        "cantorsHoldNote": "Cantors, hold the note!",
-        "blackwaterMark": "{boss} marks {target} with Blackwater!",
-        "finalBell": "{boss} unleashes Final Bell!",
-        "tollingBells": "{boss} tolls the bells!",
-        "bellRopeSnaps": "The bell rope snaps taut. Drowned Cantors reel from the shock.",
-        "eggSacBursts": "The egg-sac bursts. Spiderlings skitter free across the baptistry rim.",
-        "baptistryQuiet": "The baptistry falls quiet. Spider egg-sacs cling wetly to the rim.",
-        "baptistryStirs": "Something stirs in the black baptistry water."
+        "cantorsHoldNote": "聖歌隊よ、音を保て！",
+        "blackwaterMark": "{boss}は{target}にブラックウォーターの印を刻んだ！",
+        "finalBell": "{boss}が終焉の鐘を放つ！",
+        "tollingBells": "{boss}が鐘を鳴らす！",
+        "bellRopeSnaps": "鐘の綱がぴんと張り詰める。溺れた聖歌者たちが衝撃によろめく。",
+        "eggSacBursts": "卵嚢が破裂した。子蜘蛛が洗礼堂の縁へ散っていく。",
+        "baptistryQuiet": "洗礼堂が静まり返る。蜘蛛の卵嚢が縁に湿ってへばりついている。",
+        "baptistryStirs": "黒い洗礼盤の水の中で何かが蠢いている。"
       }
     },
     "dungeonFinder": {
@@ -6582,6 +6582,36 @@ export const ja_JP: EnTranslations = {
       "acolyte_tessa": {
         "name": "侍祭テッサ"
       },
+      "deepfen_spearjaw": {
+        "name": "ディープフェンの槍顎"
+      },
+      "mirefen_widowling": {
+        "name": "マイアフェンの子ウィドウ"
+      },
+      "reedbound_acolyte": {
+        "name": "葦縛りの侍祭"
+      },
+      "drowned_cantor": {
+        "name": "溺れた聖歌者"
+      },
+      "grave_silt_bulwark": {
+        "name": "墓泥の防壁"
+      },
+      "choir_thrall": {
+        "name": "聖歌隊の下僕"
+      },
+      "sump_troll_devourer": {
+        "name": "汚水トロルの喰らい手"
+      },
+      "spider_egg_sac": {
+        "name": "蜘蛛の卵嚢"
+      },
+      "sister_nhalia_drowned_canticle": {
+        "name": "ナリア修道女"
+      },
+      "tolling_bell": {
+        "name": "鳴り響く鐘"
+      },
       "boarball_ball": {
         "name": "ボアボール"
       },
@@ -8100,6 +8130,11 @@ export const ja_JP: EnTranslations = {
         "name": "崩れた聖遺物庫",
         "enterText": "あなたは崩れた聖遺物庫へと降りていく。",
         "leaveText": "あなたは聖遺物庫の廃墟にいるハルヴェン修道士のもとへ登り戻る。"
+      },
+      "drowned_litany": {
+        "name": "溺れた連祷",
+        "enterText": "あなたは湿地の縁にある水没した聖堂へと降りていく。",
+        "leaveText": "あなたは湿地の縁にいるハルヴェン修道士のもとへ登り返す。"
       }
     },
     "enchants": {

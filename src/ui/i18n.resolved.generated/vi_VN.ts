@@ -2711,14 +2711,14 @@ export const vi_VN: EnTranslations = {
       "wayOutNotOpen": "Lối ra vẫn chưa mở.",
       "moveCloserStairs": "Hãy lại gần cầu thang hơn.",
       "litany": {
-        "cantorsHoldNote": "Cantors, hold the note!",
-        "blackwaterMark": "{boss} marks {target} with Blackwater!",
-        "finalBell": "{boss} unleashes Final Bell!",
-        "tollingBells": "{boss} tolls the bells!",
-        "bellRopeSnaps": "The bell rope snaps taut. Drowned Cantors reel from the shock.",
-        "eggSacBursts": "The egg-sac bursts. Spiderlings skitter free across the baptistry rim.",
-        "baptistryQuiet": "The baptistry falls quiet. Spider egg-sacs cling wetly to the rim.",
-        "baptistryStirs": "Something stirs in the black baptistry water."
+        "cantorsHoldNote": "Hỡi ca đoàn, giữ vững nốt!",
+        "blackwaterMark": "{boss} đánh dấu {target} bằng Hắc Thủy!",
+        "finalBell": "{boss} tung ra Hồi Chuông Cuối!",
+        "tollingBells": "{boss} rung những hồi chuông!",
+        "bellRopeSnaps": "Dây chuông căng bật. Những Ca Sư Chết Chìm loạng choạng vì chấn động.",
+        "eggSacBursts": "Túi trứng vỡ tung. Lũ nhện con tản ra khắp vành giếng rửa tội.",
+        "baptistryQuiet": "Giếng rửa tội lặng đi. Những túi trứng nhện bám ẩm ướt trên vành giếng.",
+        "baptistryStirs": "Có gì đó khuấy động trong làn nước đen của giếng rửa tội."
       }
     },
     "dungeonFinder": {
@@ -6582,6 +6582,36 @@ export const vi_VN: EnTranslations = {
       "acolyte_tessa": {
         "name": "Tế Đồ Tessa"
       },
+      "deepfen_spearjaw": {
+        "name": "Hàm Giáo Đầm Sâu"
+      },
+      "mirefen_widowling": {
+        "name": "Nhện Góa Con Đầm Bùn"
+      },
+      "reedbound_acolyte": {
+        "name": "Tu Đồ Buộc Sậy"
+      },
+      "drowned_cantor": {
+        "name": "Ca Sư Chết Chìm"
+      },
+      "grave_silt_bulwark": {
+        "name": "Thành Lũy Bùn Mộ"
+      },
+      "choir_thrall": {
+        "name": "Nô Lệ Ca Đoàn"
+      },
+      "sump_troll_devourer": {
+        "name": "Troll Cống Ăn Thịt"
+      },
+      "spider_egg_sac": {
+        "name": "Túi Trứng Nhện"
+      },
+      "sister_nhalia_drowned_canticle": {
+        "name": "Xơ Nhalia"
+      },
+      "tolling_bell": {
+        "name": "Chuông Ngân"
+      },
       "boarball_ball": {
         "name": "Boarball"
       },
@@ -8100,6 +8130,11 @@ export const vi_VN: EnTranslations = {
         "name": "Thánh Tích Sụp Đổ",
         "enterText": "Bạn đi xuống thánh tích sụp đổ.",
         "leaveText": "Bạn trèo trở lại chỗ Tu Huynh Halven tại tàn tích thánh tích."
+      },
+      "drowned_litany": {
+        "name": "Kinh Cầu Chết Chìm",
+        "enterText": "Bạn đi xuống ngôi đền chìm nước bên rìa đầm lầy.",
+        "leaveText": "Bạn trèo về chỗ Tu Sĩ Halven bên rìa đầm lầy."
       }
     },
     "enchants": {

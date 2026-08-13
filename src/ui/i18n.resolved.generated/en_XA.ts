@@ -6582,6 +6582,36 @@ export const en_XA: EnTranslations = {
       "acolyte_tessa": {
         "name": "[Áçóļýţé Ţéššá]"
       },
+      "deepfen_spearjaw": {
+        "name": "[Ðééþƒéñ Šþéáŕĵáŵ]"
+      },
+      "mirefen_widowling": {
+        "name": "[Ɱíŕéƒéñ Ŵíðóŵļíñĝ]"
+      },
+      "reedbound_acolyte": {
+        "name": "[Ŕééðƀóúñð Áçóļýţé]"
+      },
+      "drowned_cantor": {
+        "name": "[Ðŕóŵñéð Çáñţóŕ]"
+      },
+      "grave_silt_bulwark": {
+        "name": "[Ĝŕáʋé Šíļţ Ɓúļŵáŕķ]"
+      },
+      "choir_thrall": {
+        "name": "[Çĥóíŕ Ţĥŕáļļ]"
+      },
+      "sump_troll_devourer": {
+        "name": "[Šúɱþ Ţŕóļļ Ðéʋóúŕéŕ]"
+      },
+      "spider_egg_sac": {
+        "name": "[Šþíðéŕ Éĝĝ-Šáç]"
+      },
+      "sister_nhalia_drowned_canticle": {
+        "name": "[Šíšţéŕ Ñĥáļíá]"
+      },
+      "tolling_bell": {
+        "name": "[Ţóļļíñĝ Ɓéļļ]"
+      },
       "boarball_ball": {
         "name": "[Ɓóáŕƀáļļ]"
       },
@@ -8100,6 +8130,11 @@ export const en_XA: EnTranslations = {
         "name": "[Ţĥé Çóļļáþšéð Ŕéļíɋúáŕý]",
         "enterText": "[Ýóú ðéšçéñð íñţó ţĥé çóļļáþšéð ŕéļíɋúáŕý.]",
         "leaveText": "[Ýóú çļíɱƀ ƀáçķ ţó Ɓŕóţĥéŕ Ĥáļʋéñ áţ ţĥé ŕéļíɋúáŕý ŕúíñ.]"
+      },
+      "drowned_litany": {
+        "name": "[Ţĥé Ðŕóŵñéð Ļíţáñý]",
+        "enterText": "[Ýóú ðéšçéñð íñţó ţĥé ðŕóŵñéð šĥŕíñé áţ ţĥé ɱáŕšĥ'š éðĝé.]",
+        "leaveText": "[Ýóú çļíɱƀ ƀáçķ ţó Ɓŕóţĥéŕ Ĥáļʋéñ áţ ţĥé ɱáŕšĥ'š éðĝé.]"
       }
     },
     "enchants": {

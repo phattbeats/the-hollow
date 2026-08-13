@@ -6582,6 +6582,36 @@ export const es_ES: EnTranslations = {
       "acolyte_tessa": {
         "name": "Acólita Tessa"
       },
+      "deepfen_spearjaw": {
+        "name": "Deepfen Spearjaw"
+      },
+      "mirefen_widowling": {
+        "name": "Mirefen Widowling"
+      },
+      "reedbound_acolyte": {
+        "name": "Reedbound Acolyte"
+      },
+      "drowned_cantor": {
+        "name": "Drowned Cantor"
+      },
+      "grave_silt_bulwark": {
+        "name": "Grave Silt Bulwark"
+      },
+      "choir_thrall": {
+        "name": "Choir Thrall"
+      },
+      "sump_troll_devourer": {
+        "name": "Sump Troll Devourer"
+      },
+      "spider_egg_sac": {
+        "name": "Spider Egg-Sac"
+      },
+      "sister_nhalia_drowned_canticle": {
+        "name": "Sister Nhalia"
+      },
+      "tolling_bell": {
+        "name": "Tolling Bell"
+      },
       "boarball_ball": {
         "name": "Boarball"
       },
@@ -8100,6 +8130,11 @@ export const es_ES: EnTranslations = {
         "name": "El Relicario Hundido",
         "enterText": "Desciendes al relicario hundido.",
         "leaveText": "Trepas de vuelta hasta el Hermano Halven, en la ruina del relicario."
+      },
+      "drowned_litany": {
+        "name": "The Drowned Litany",
+        "enterText": "You descend into the drowned shrine at the marsh's edge.",
+        "leaveText": "You climb back to Brother Halven at the marsh's edge."
       }
     },
     "enchants": {

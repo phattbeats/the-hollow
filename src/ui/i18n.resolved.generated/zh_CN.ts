@@ -2711,14 +2711,14 @@ export const zh_CN: EnTranslations = {
       "wayOutNotOpen": "出路尚未开启。",
       "moveCloserStairs": "靠近楼梯一些。",
       "litany": {
-        "cantorsHoldNote": "Cantors, hold the note!",
-        "blackwaterMark": "{boss} marks {target} with Blackwater!",
-        "finalBell": "{boss} unleashes Final Bell!",
-        "tollingBells": "{boss} tolls the bells!",
-        "bellRopeSnaps": "The bell rope snaps taut. Drowned Cantors reel from the shock.",
-        "eggSacBursts": "The egg-sac bursts. Spiderlings skitter free across the baptistry rim.",
-        "baptistryQuiet": "The baptistry falls quiet. Spider egg-sacs cling wetly to the rim.",
-        "baptistryStirs": "Something stirs in the black baptistry water."
+        "cantorsHoldNote": "颂咏者，稳住音！",
+        "blackwaterMark": "{boss} 用黑水标记了 {target}！",
+        "finalBell": "{boss} 敲响终末之钟！",
+        "tollingBells": "{boss} 鸣响群钟！",
+        "bellRopeSnaps": "钟绳骤然绷紧。溺亡颂咏者被震得踉跄。",
+        "eggSacBursts": "卵囊爆裂。蛛群沿着洗礼池边缘四散爬开。",
+        "baptistryQuiet": "洗礼池归于寂静。蜘蛛卵囊湿黏地附在池缘上。",
+        "baptistryStirs": "漆黑的洗礼池水中有什么在搅动。"
       }
     },
     "dungeonFinder": {
@@ -6582,6 +6582,36 @@ export const zh_CN: EnTranslations = {
       "acolyte_tessa": {
         "name": "侍僧泰莎"
       },
+      "deepfen_spearjaw": {
+        "name": "深沼矛颚"
+      },
+      "mirefen_widowling": {
+        "name": "泥沼寡妇幼蛛"
+      },
+      "reedbound_acolyte": {
+        "name": "苇缚侍僧"
+      },
+      "drowned_cantor": {
+        "name": "溺亡颂咏者"
+      },
+      "grave_silt_bulwark": {
+        "name": "墓淤壁垒"
+      },
+      "choir_thrall": {
+        "name": "唱诗奴仆"
+      },
+      "sump_troll_devourer": {
+        "name": "污水巨魔吞噬者"
+      },
+      "spider_egg_sac": {
+        "name": "蜘蛛卵囊"
+      },
+      "sister_nhalia_drowned_canticle": {
+        "name": "娜莉娅修女"
+      },
+      "tolling_bell": {
+        "name": "鸣响之钟"
+      },
       "boarball_ball": {
         "name": "野猪球"
       },
@@ -8100,6 +8130,11 @@ export const zh_CN: EnTranslations = {
         "name": "坍塌的圣物库",
         "enterText": "你向下深入坍塌的圣物库。",
         "leaveText": "你攀回圣物库废墟旁的哈尔文修士身边。"
+      },
+      "drowned_litany": {
+        "name": "溺亡祷文",
+        "enterText": "你向下深入沼泽边缘那座沉没的神龛。",
+        "leaveText": "你攀回沼泽边缘的哈尔文修士身边。"
       }
     },
     "enchants": {

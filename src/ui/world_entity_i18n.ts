@@ -85,6 +85,17 @@ const MOB_IDS = [
   'reliquary_saintless_effigy',
   'deacon_varric',
   'acolyte_tessa',
+  // Drowned Litany delve mobs (PHAA-910)
+  'deepfen_spearjaw',
+  'mirefen_widowling',
+  'reedbound_acolyte',
+  'drowned_cantor',
+  'grave_silt_bulwark',
+  'choir_thrall',
+  'sump_troll_devourer',
+  'spider_egg_sac',
+  'sister_nhalia_drowned_canticle',
+  'tolling_bell',
   'boarball_ball', // PHAA-572: the inert ball entity driving the boarball minigame
   'yumi_cat', // PHAA-573: the Protect Yumi objective familiar
 ] as const;
@@ -204,7 +215,7 @@ const DUNGEON_IDS = [
   'nythraxis_crypt',
   'nythraxis_boss_arena',
 ] as const;
-const DELVE_IDS = ['collapsed_reliquary'] as const;
+const DELVE_IDS = ['collapsed_reliquary', 'drowned_litany'] as const;
 
 type MobId = (typeof MOB_IDS)[number];
 type NpcId = (typeof NPC_IDS)[number];

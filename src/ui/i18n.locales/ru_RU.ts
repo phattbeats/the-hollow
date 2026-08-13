@@ -6183,4 +6183,28 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'editor.tutorial.steps.save.body':
     'Сохранение оставляет копию в этом браузере, а после входа в систему - и на сервере.',
   'editor.tutorial.steps.help.body': 'Вы можете в любой момент вернуться сюда за этим туром.',
+  'sim.delve.litany.cantorsHoldNote': 'Канторы, держите ноту!',
+  'sim.delve.litany.blackwaterMark': '{boss} отмечает {target} Черноводьем!',
+  'sim.delve.litany.finalBell': '{boss} обрушивает Последний Колокол!',
+  'sim.delve.litany.tollingBells': '{boss} звонит в колокола!',
+  'sim.delve.litany.bellRopeSnaps':
+    'Колокольная веревка резко натягивается. Утопших канторов отбрасывает ударом.',
+  'sim.delve.litany.eggSacBursts': 'Кокон лопается. Паучата разбегаются по краю баптистерия.',
+  'sim.delve.litany.baptistryQuiet':
+    'Баптистерий затихает. Паучьи коконы влажно липнут к его краю.',
+  'sim.delve.litany.baptistryStirs': 'Что-то шевелится в черной воде баптистерия.',
+  'entities.mobs.deepfen_spearjaw.name': 'Глубинный копьечелюст',
+  'entities.mobs.mirefen_widowling.name': 'Мирефенская вдовушка',
+  'entities.mobs.reedbound_acolyte.name': 'Тростниковый послушник',
+  'entities.mobs.drowned_cantor.name': 'Утопший кантор',
+  'entities.mobs.grave_silt_bulwark.name': 'Могильный илистый оплот',
+  'entities.mobs.choir_thrall.name': 'Хоровой раб',
+  'entities.mobs.sump_troll_devourer.name': 'Пожиратель из сточного болота',
+  'entities.mobs.spider_egg_sac.name': 'Паучий кокон',
+  'entities.mobs.sister_nhalia_drowned_canticle.name': 'Сестра Налия',
+  'entities.mobs.tolling_bell.name': 'Звонящий колокол',
+  'entities.delves.drowned_litany.name': 'Утопшая Литания',
+  'entities.delves.drowned_litany.enterText': 'Вы спускаетесь в затонувшее святилище на краю топи.',
+  'entities.delves.drowned_litany.leaveText':
+    'Вы поднимаетесь обратно к брату Хальвену на краю топи.',
 };
