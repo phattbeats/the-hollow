@@ -5095,6 +5095,36 @@ const RULES: Rule[] = [
     re: /^(.+) begins Raise Dead\.$/,
     build: (m) => t('sim.delve.raiseDead', { name: locMob(m[1]) }),
   },
+  // The Drowned Litany: Sister Nhalia boss driver + puzzle-room log lines.
+  { re: /^Cantors, hold the note!$/, build: () => t('sim.delve.litany.cantorsHoldNote') },
+  {
+    re: /^(.+) marks (.+) with Blackwater!$/,
+    build: (m) => t('sim.delve.litany.blackwaterMark', { boss: locMob(m[1]), target: m[2] }),
+  },
+  {
+    re: /^(.+) unleashes Final Bell!$/,
+    build: (m) => t('sim.delve.litany.finalBell', { boss: locMob(m[1]) }),
+  },
+  {
+    re: /^(.+) tolls the bells!$/,
+    build: (m) => t('sim.delve.litany.tollingBells', { boss: locMob(m[1]) }),
+  },
+  {
+    re: /^The bell rope snaps taut\. Drowned Cantors reel from the shock\.$/,
+    build: () => t('sim.delve.litany.bellRopeSnaps'),
+  },
+  {
+    re: /^The egg-sac bursts\. Spiderlings skitter free across the baptistry rim\.$/,
+    build: () => t('sim.delve.litany.eggSacBursts'),
+  },
+  {
+    re: /^The baptistry falls quiet\. Spider egg-sacs cling wetly to the rim\.$/,
+    build: () => t('sim.delve.litany.baptistryQuiet'),
+  },
+  {
+    re: /^Something stirs in the black baptistry water\.$/,
+    build: () => t('sim.delve.litany.baptistryStirs'),
+  },
   {
     re: /^You need (.+) Delve Marks to upgrade (.+)\.$/,
     build: (m) => t('sim.delve.companionMarksRequired', { marks: m[1], name: locMob(m[2]) }),

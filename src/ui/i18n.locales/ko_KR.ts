@@ -6045,4 +6045,28 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'editor.tutorial.steps.save.body':
     '저장은 이 브라우저에 사본을 보관하며, 로그인하면 서버에도 저장됩니다.',
   'editor.tutorial.steps.help.body': '이 투어는 언제든지 여기로 돌아와 다시 볼 수 있습니다.',
+  'sim.delve.litany.cantorsHoldNote': '성가대여, 음을 유지하라!',
+  'sim.delve.litany.blackwaterMark': '{boss}이(가) {target}에게 검은물 표식을 남깁니다!',
+  'sim.delve.litany.finalBell': '{boss}이(가) 최후의 종을 울립니다!',
+  'sim.delve.litany.tollingBells': '{boss}이(가) 종을 울립니다!',
+  'sim.delve.litany.bellRopeSnaps':
+    '종줄이 팽팽하게 당겨집니다. 익사한 선창자들이 충격에 휘청입니다.',
+  'sim.delve.litany.eggSacBursts':
+    '알주머니가 터집니다. 새끼 거미들이 세례반 가장자리로 흩어집니다.',
+  'sim.delve.litany.baptistryQuiet':
+    '세례반이 고요해집니다. 거미 알주머니가 가장자리에 축축하게 들러붙어 있습니다.',
+  'sim.delve.litany.baptistryStirs': '검은 세례반 물속에서 무언가 꿈틀거립니다.',
+  'entities.mobs.deepfen_spearjaw.name': '딥펜 창턱',
+  'entities.mobs.mirefen_widowling.name': '마이어펜 새끼과부거미',
+  'entities.mobs.reedbound_acolyte.name': '갈대결속 수련사제',
+  'entities.mobs.drowned_cantor.name': '익사한 선창자',
+  'entities.mobs.grave_silt_bulwark.name': '무덤 진흙 방벽',
+  'entities.mobs.choir_thrall.name': '성가대 노예',
+  'entities.mobs.sump_troll_devourer.name': '시궁 트롤 포식자',
+  'entities.mobs.spider_egg_sac.name': '거미 알주머니',
+  'entities.mobs.sister_nhalia_drowned_canticle.name': '날리아 수녀',
+  'entities.mobs.tolling_bell.name': '울리는 종',
+  'entities.delves.drowned_litany.name': '익사한 성가',
+  'entities.delves.drowned_litany.enterText': '늪 가장자리의 물에 잠긴 사당으로 내려갑니다.',
+  'entities.delves.drowned_litany.leaveText': '늪 가장자리의 할벤 수사에게 다시 올라갑니다.',
 };

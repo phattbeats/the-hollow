@@ -2709,7 +2709,17 @@ export const ru_RU: EnTranslations = {
       "moveCloserChest": "Подойдите ближе к сундуку.",
       "nothingToTake": "Забирать больше нечего.",
       "wayOutNotOpen": "Выход ещё не открыт.",
-      "moveCloserStairs": "Подойдите ближе к лестнице."
+      "moveCloserStairs": "Подойдите ближе к лестнице.",
+      "litany": {
+        "cantorsHoldNote": "Канторы, держите ноту!",
+        "blackwaterMark": "{boss} отмечает {target} Черноводьем!",
+        "finalBell": "{boss} обрушивает Последний Колокол!",
+        "tollingBells": "{boss} звонит в колокола!",
+        "bellRopeSnaps": "Колокольная веревка резко натягивается. Утопших канторов отбрасывает ударом.",
+        "eggSacBursts": "Кокон лопается. Паучата разбегаются по краю баптистерия.",
+        "baptistryQuiet": "Баптистерий затихает. Паучьи коконы влажно липнут к его краю.",
+        "baptistryStirs": "Что-то шевелится в черной воде баптистерия."
+      }
     },
     "dungeonFinder": {
       "cannotQueueDead": "Вы не можете встать в очередь Поиска подземелий, будучи мертвы.",
@@ -6572,6 +6582,36 @@ export const ru_RU: EnTranslations = {
       "acolyte_tessa": {
         "name": "Послушница Тесса"
       },
+      "deepfen_spearjaw": {
+        "name": "Глубинный копьечелюст"
+      },
+      "mirefen_widowling": {
+        "name": "Мирефенская вдовушка"
+      },
+      "reedbound_acolyte": {
+        "name": "Тростниковый послушник"
+      },
+      "drowned_cantor": {
+        "name": "Утопший кантор"
+      },
+      "grave_silt_bulwark": {
+        "name": "Могильный илистый оплот"
+      },
+      "choir_thrall": {
+        "name": "Хоровой раб"
+      },
+      "sump_troll_devourer": {
+        "name": "Пожиратель из сточного болота"
+      },
+      "spider_egg_sac": {
+        "name": "Паучий кокон"
+      },
+      "sister_nhalia_drowned_canticle": {
+        "name": "Сестра Налия"
+      },
+      "tolling_bell": {
+        "name": "Звонящий колокол"
+      },
       "boarball_ball": {
         "name": "Боарбол"
       },
@@ -8090,6 +8130,11 @@ export const ru_RU: EnTranslations = {
         "name": "Обрушившийся Реликварий",
         "enterText": "Вы спускаетесь в обрушившийся реликварий.",
         "leaveText": "Вы поднимаетесь обратно к Брату Хальвену у руин реликвария."
+      },
+      "drowned_litany": {
+        "name": "Утопшая Литания",
+        "enterText": "Вы спускаетесь в затонувшее святилище на краю топи.",
+        "leaveText": "Вы поднимаетесь обратно к брату Хальвену на краю топи."
       }
     },
     "enchants": {

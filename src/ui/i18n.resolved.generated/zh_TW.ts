@@ -2709,7 +2709,17 @@ export const zh_TW: EnTranslations = {
       "moveCloserChest": "再靠近寶箱一些。",
       "nothingToTake": "這裡已沒有任何可拿取之物了。",
       "wayOutNotOpen": "出路尚未開啟。",
-      "moveCloserStairs": "再靠近階梯一些。"
+      "moveCloserStairs": "再靠近階梯一些。",
+      "litany": {
+        "cantorsHoldNote": "頌詠者，穩住音！",
+        "blackwaterMark": "{boss} 以黑水標記了 {target}！",
+        "finalBell": "{boss} 敲響終末之鐘！",
+        "tollingBells": "{boss} 鳴響群鐘！",
+        "bellRopeSnaps": "鐘繩驟然繃緊。溺亡頌詠者被震得踉蹌。",
+        "eggSacBursts": "卵囊爆裂。蛛群沿著洗禮池邊緣四散爬開。",
+        "baptistryQuiet": "洗禮池歸於寂靜。蜘蛛卵囊濕黏地附在池緣上。",
+        "baptistryStirs": "漆黑的洗禮池水中有什麼在攪動。"
+      }
     },
     "dungeonFinder": {
       "cannotQueueDead": "你死亡時無法加入地下城搜尋器隊列。",
@@ -6572,6 +6582,36 @@ export const zh_TW: EnTranslations = {
       "acolyte_tessa": {
         "name": "侍僧泰莎"
       },
+      "deepfen_spearjaw": {
+        "name": "深沼矛顎"
+      },
+      "mirefen_widowling": {
+        "name": "泥沼寡婦幼蛛"
+      },
+      "reedbound_acolyte": {
+        "name": "葦縛侍僧"
+      },
+      "drowned_cantor": {
+        "name": "溺亡頌詠者"
+      },
+      "grave_silt_bulwark": {
+        "name": "墓淤壁壘"
+      },
+      "choir_thrall": {
+        "name": "唱詩奴僕"
+      },
+      "sump_troll_devourer": {
+        "name": "污水巨魔吞噬者"
+      },
+      "spider_egg_sac": {
+        "name": "蜘蛛卵囊"
+      },
+      "sister_nhalia_drowned_canticle": {
+        "name": "娜莉婭修女"
+      },
+      "tolling_bell": {
+        "name": "鳴響之鐘"
+      },
       "boarball_ball": {
         "name": "野豬球"
       },
@@ -8090,6 +8130,11 @@ export const zh_TW: EnTranslations = {
         "name": "崩塌的聖物庫",
         "enterText": "你向下深入崩塌的聖物庫。",
         "leaveText": "你爬回聖物庫遺墟處的哈爾文修士身邊。"
+      },
+      "drowned_litany": {
+        "name": "溺亡禱文",
+        "enterText": "你向下深入沼澤邊緣那座沉沒的神龕。",
+        "leaveText": "你爬回沼澤邊緣的哈爾文修士身邊。"
       }
     },
     "enchants": {

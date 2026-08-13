@@ -139,6 +139,12 @@ export function clampDelveModuleBounds(
   const moduleId = run.modules[run.moduleIndex] as DelveModuleId;
   const layout = DELVE_MODULE_LAYOUTS[moduleId];
   if (!layout) return { x, z };
+  // Irregular rooms (The Drowned Litany) are not boxes: their walkable outline is
+  // an authored polygon and the polygon-shell OBBs already seal every wall span,
+  // so the rectangular clamp below would shove players out of legitimately
+  // walkable alcoves that stick past the bounding box. Collision alone confines
+  // them there.
+  if (layout.shellPolygon) return { x, z };
   const wallX = layout.wallX ?? DUNGEON_WALL_X;
   const halfX = wallX - DUNGEON_WALL_HW - r; // inner wall face minus body radius
   const zBase = delveModuleZOffset(run);

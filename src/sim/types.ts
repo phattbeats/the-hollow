@@ -2543,7 +2543,18 @@ export type SimEvent = { pid?: number } & (
   // (harmless - the client only reads text/color) but the online server
   // strips it before broadcasting (server/plant_llm.ts), so real players
   // never see it over the wire.
-  | { type: 'log'; text: string; color?: string; entityId?: number; plant?: PlantUtteranceMeta }
+  // `telegraph` marks an entityId-anchored line as an actionable mechanic cue
+  // (a channel, a burst warning, a targeted debuff callout) rather than ambient
+  // flavor chatter. Emitted by the boss drivers; the fork has no log-routing
+  // consumer yet, so it is carried but not yet acted on by the HUD.
+  | {
+      type: 'log';
+      text: string;
+      color?: string;
+      entityId?: number;
+      plant?: PlantUtteranceMeta;
+      telegraph?: boolean;
+    }
   | { type: 'delveEntered'; delveId: string; tierId: string }
   | { type: 'delveComplete'; delveId: string; tierId: string }
   | { type: 'delveFailed'; delveId: string; tierId: string }
@@ -2764,6 +2775,11 @@ export const PARTY_XP_RANGE = 80; // yards: members this close share kill xp/cre
 // boss death) and the still-on-Sim encounter logic; N1 may re-home it when it owns
 // the encounter. Kept here as the neutral shared seam in the meantime.
 export const NYTHRAXIS_BOSS_ID = 'nythraxis_scourge_of_thornpeak';
+// The Drowned Litany finale boss. Used by the drowned_litany_boss driver.
+export const SISTER_NHALIA_BOSS_ID = 'sister_nhalia_drowned_canticle';
+// The Tolling Bells projectile mob (Drowned Litany finale): moved exclusively by
+// the boss driver.
+export const TOLLING_BELL_TEMPLATE_ID = 'tolling_bell';
 
 export function xpForLevel(level: number): number {
   return XP_TABLE[Math.min(level - 1, XP_TABLE.length - 1)];
@@ -3071,6 +3087,18 @@ export interface DelveInteractableSlot {
   variants: string[];
 }
 
+export interface DelveHazardZone {
+  x: number;
+  z: number;
+  r: number;
+  // An authored ellipse (e.g. the apse moat, wider along x than z to fit between
+  // its flanking islands): rx/rz win over r for both the damage check and every
+  // visual (map, render). Omit for a plain circle of radius r.
+  rx?: number;
+  rz?: number;
+  tier?: 'shallow' | 'deep';
+}
+
 export interface DelveModuleDef {
   id: string;
   interior: 'crypt' | 'cave' | 'mine';
@@ -3079,6 +3107,8 @@ export interface DelveModuleDef {
   spawnSets: DelveSpawnSet[];
   interactableSlots: DelveInteractableSlot[];
   sideRoom?: { chance: number; moduleId: string };
+  // Static Blackwater (or similar) hazard zones for this module, instance-local.
+  hazards?: DelveHazardZone[];
 }
 
 export interface DelveDef {
@@ -3088,6 +3118,10 @@ export interface DelveDef {
   index: number;
   minLevel: number;
   suggestedPlayers: number;
+  // Hard cap: a party larger than this may not enter (delves are solo/duo content).
+  // Optional for legacy/deflated defines; the entrance gate falls back to
+  // suggestedPlayers when omitted.
+  maxPlayers?: number;
   doorPos: { x: number; z: number };
   modules: string[];
   moduleCount: [number, number];
@@ -3149,6 +3183,58 @@ export interface DelveRun {
   surfaceExitId: number | null;
   /** Active lockpicking attempt on the finale chest (single interactor, v1), or null. In-memory only. */
   lockpick: LockSession | null;
+  /** Sister Nhalia boss mechanics (The Drowned Litany finale only). */
+  nhaliaBoss?: DrownedLitanyBossState;
+  /** Sinkhole Baptistry wave progression (egg-sacs gated until wave 3). */
+  litanyBaptistry?: DrownedLitanyBaptistryState;
+}
+
+export interface DrownedLitanyBaptistryState {
+  /** Index of the active wave in BAPTISTRY_WAVES (0..2). */
+  wave: number;
+  eggsEnabled: boolean;
+  /** Mob ids of the spawned spider_egg_sac adds (set once, at spawn time). */
+  eggSacIds: number[];
+  /** Subset of eggSacIds whose death burst has already fired, so a kill is processed once. */
+  burstIds: number[];
+}
+
+/** A boss-spawned Blackwater Mark puddle (world coords, instance-local). */
+export interface DrownedLitanyBlackwaterMark {
+  x: number;
+  z: number;
+  remaining: number;
+  tickTimer: number;
+}
+
+/** A single Tolling Bell projectile entity in flight (entity id + expiry timer). */
+export interface TollingBellEntity {
+  /** Entity id of the mob entity representing this bell. */
+  entityId: number;
+  /** Seconds until the bell expires (travels out of bounds). */
+  remaining: number;
+  /** Velocity direction: unit vector (dx, dz). */
+  vx: number;
+  vz: number;
+}
+
+/** Per-run Sister Nhalia encounter state (DelveRun.nhaliaBoss). */
+export interface DrownedLitanyBossState {
+  markTimer: number;
+  marks: DrownedLitanyBlackwaterMark[];
+  firedCantorPhases: number;
+  /** Entity ids from the active Cantor phase; shield drops when all are dead. */
+  cantorShieldAdds: number[];
+  finalBellFired: boolean;
+  /** Countdown until the next Tolling Bells volley (seconds). */
+  bellVolleyTimer: number;
+  /** Currently in-flight bell projectile entities. */
+  bells: TollingBellEntity[];
+  /** True once any Tolling Bell has landed on a player this encounter. The
+   * footwork-taint signal a "never touched by a bell" deed reads at clear time.
+   * The fork's deed roster does not author that deed yet (PHAA-745 owns deed
+   * authoring), so the flag is recorded here but not yet scored. */
+  bellContact: boolean;
 }
 
 export interface DelveDailyState {

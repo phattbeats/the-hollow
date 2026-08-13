@@ -3,6 +3,7 @@ import type { NpcDef } from '../../types';
 export { DELVE_AFFIXES } from './affixes';
 export { COLLAPSED_RELIQUARY_DELVE, COLLAPSED_RELIQUARY_MODULES } from './collapsed_reliquary';
 export { COMPANION_UPGRADE_COSTS, DELVE_COMPANIONS } from './companions';
+export { DROWNED_LITANY_DELVE, DROWNED_LITANY_MODULES } from './drowned_litany';
 export { DELVE_MOBS } from './mobs';
 export type { DelveShopEntry, DelveShopGate, DelveShopOffer } from './shop';
 export { DELVE_SHOPS, delveShopGateUnlocked, resolveDelveShopOffers } from './shop';
