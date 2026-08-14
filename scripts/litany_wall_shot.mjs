@@ -4,7 +4,6 @@
 
 import fs from 'node:fs';
 import puppeteer from 'puppeteer-core';
-import { BROWSER_PATH } from './browser_path.mjs';
 
 const URL = process.env.GAME_URL ?? 'http://localhost:5173';
 const OUT = process.env.OUT ?? 'tmp/litany_wall.png';
@@ -16,7 +15,7 @@ fs.mkdirSync('tmp', { recursive: true });
 const browser = process.env.BROWSER_WS
   ? await puppeteer.connect({ browserWSEndpoint: process.env.BROWSER_WS })
   : await puppeteer.launch({
-      executablePath: BROWSER_PATH,
+      executablePath: (await import('./browser_path.mjs')).BROWSER_PATH,
       headless: 'new',
       protocolTimeout: 60000,
       args: [
@@ -93,11 +92,10 @@ await page.evaluate(() => {
   p.facing = -Math.PI / 2;
 });
 await sleep(1500);
-// Dismiss the intro story modal so it does not cover the room.
+// Dismiss the cold-open story modal so it does not cover the room. Match the
+// stable class, never the localized button text.
 await page.evaluate(() => {
-  for (const b of document.querySelectorAll('button')) {
-    if ((b.textContent ?? '').trim().toLowerCase() === 'skip') b.click();
-  }
+  document.querySelector('.cold-open-skip')?.click();
 });
 await sleep(1500);
 await page.screenshot({ path: OUT });

@@ -319,6 +319,30 @@ function hash2(a: number, b: number): number {
   return s - Math.floor(s);
 }
 
+// Floor-cell grid bounds covering a shell polygon: the polygon extent snapped
+// outward to whole FLOOR_CELL steps on a grid anchored at 0, so a cell center
+// exists for every part of the room the sim lets the player stand in.
+function polygonCellBounds(points: ReadonlyArray<{ x: number; z: number }>): {
+  xMin: number;
+  xMax: number;
+  zMin: number;
+  zMax: number;
+} {
+  let xMin = Infinity;
+  let xMax = -Infinity;
+  let zMin = Infinity;
+  let zMax = -Infinity;
+  for (const { x, z } of points) {
+    if (x < xMin) xMin = x;
+    if (x > xMax) xMax = x;
+    if (z < zMin) zMin = z;
+    if (z > zMax) zMax = z;
+  }
+  const snapDown = (v: number) => Math.floor(v / FLOOR_CELL) * FLOOR_CELL;
+  const snapUp = (v: number) => Math.ceil(v / FLOOR_CELL) * FLOOR_CELL;
+  return { xMin: snapDown(xMin), xMax: snapUp(xMax), zMin: snapDown(zMin), zMax: snapUp(zMax) };
+}
+
 type WeightedKinds = [name: string, weight: number][];
 
 function pickKind(kinds: WeightedKinds, t: number): string {
@@ -1055,13 +1079,38 @@ export class DungeonInteriors {
     // are not left with a bare strip between the aisle floor and the side walls.
     const floorHalfX = layout.floorHalfX ?? (layout.wallX ?? DUNGEON_WALL_X) - 1;
     const poly = layout.shellPolygon;
-    for (let z = layout.zMin - 2; z <= layout.zMax + 2; z += FLOOR_CELL) {
-      for (let x = -floorHalfX; x <= floorHalfX; x += FLOOR_CELL) {
+    // A polygon room is not centred on the rectangular band: its bows and
+    // alcoves reach past floorHalfX and past zMin/zMax, so grid the polygon's
+    // own bounding box (snapped out to whole cells) and let the mask below cut
+    // it back. Using the rectangular bounds here would leave walkable-but-
+    // unfloored area inside the shell the player is confined to.
+    const bounds = poly ? polygonCellBounds(poly) : null;
+    const xLo = bounds ? bounds.xMin : -floorHalfX;
+    const xHi = bounds ? bounds.xMax : floorHalfX;
+    const zLo = bounds ? bounds.zMin : layout.zMin - 2;
+    const zHi = bounds ? bounds.zMax : layout.zMax + 2;
+    for (let z = zLo; z <= zHi; z += FLOOR_CELL) {
+      for (let x = xLo; x <= xHi; x += FLOOR_CELL) {
         // Polygon shell: mask the rectangular grid down to the authored room
         // outline (same grid stepping and tile-kind logic, just skip cells
         // whose own center falls outside the polygon). Boundary tiles will
         // stair-step; accepted for this kit.
-        if (poly && !polygonContainsPoint(poly, x, z)) continue;
+        if (poly && !polygonContainsPoint(poly, x, z)) {
+          // Boundary cell: its own center is outside, but part of it is inside
+          // the shell the player is confined to. Fill only the 2x2 sub-tiles
+          // whose own centers are inside, so the edge is floored to within 1u
+          // instead of leaving a standable hole ringing the polygon.
+          if (!poly) continue;
+          for (const dx of [-1, 1]) {
+            for (const dz of [-1, 1]) {
+              if (!polygonContainsPoint(poly, x + dx, z + dz)) continue;
+              const sub = this.floorQuadKind(variant, hash2(x + dx, z + dz));
+              const subRot = Math.floor(hash2(z + dz, x + dx) * 4) * quarter;
+              p.add(sub, x + dx, FLOOR_Y, z + dz, subRot);
+            }
+          }
+          continue;
+        }
         let kind = this.floorKind(variant, hash2(x * 1.31, z));
         if (kind === 'grate' && Math.abs(x) < 4) kind = 'floor_tile_large'; // keep pits off the walk aisle
         if (kind === 'grate') {
@@ -1237,6 +1286,8 @@ export class DungeonInteriors {
     arenaWalls?: PendingArenaWalls,
   ): void {
     if (layout.shellPolygon) {
+      // Polygon rooms are delve modules, never the arena, so the arenaWalls
+      // hide-batching split does not apply: they go into the single sink.
       this.placePolygonWalls(p, layout.shellPolygon, variant);
       return;
     }
@@ -1627,6 +1678,9 @@ export class DungeonInteriors {
       if (variant === 'delve_bell' && (i === 2 || i === 5)) continue;
       if (variant === 'delve_finale' && i > 3) continue;
       if (z > layout.zMax - 4) continue;
+      // Polygon-shell rooms: the sine aisle can wander outside the authored
+      // outline, so drop any clutter whose spot is not inside the shell.
+      if (layout.shellPolygon && !polygonContainsPoint(layout.shellPolygon, x, z)) continue;
       const r = hash2(x, z);
       if (variant === 'bastion') {
         p.add('box_small', x, 0, z, r * Math.PI * 2, 1.2);
@@ -1672,6 +1726,11 @@ export class DungeonInteriors {
       }
       return;
     }
+    // Polygon-shell rooms (Drowned Litany) have no rectangular wall band to hug:
+    // the hardcoded rubble corners and the per-variant edge dressing below are
+    // keyed to |x| = 19..22, which lands outside a narrow shell. Bespoke Litany
+    // dressing is its own piece of work; until then leave the shell clean.
+    if (layout.shellPolygon) return;
     // collapsed masonry in the legacy rubble corners
     const rubble: [number, number][] =
       variant === 'sanctum'

@@ -18,6 +18,7 @@ import {
   polygonWallSegments,
 } from '../src/sim/delve_litany_layout';
 import { DUNGEON_WALK_HALF_X } from '../src/sim/dungeon_layout';
+import { polygonContainsPoint, polygonSignedArea } from '../src/sim/geometry2d';
 
 const FOUR_MODULE_RUN: DelveModuleId[] = [
   'reliquary_sunken_ossuary',
@@ -306,6 +307,64 @@ describe('Litany polygon wall spans', () => {
           rot: segments[i].rot,
         });
       }
+    });
+  }
+});
+
+describe('Litany polygon floor coverage', () => {
+  for (const moduleId of LITANY_MODULE_IDS) {
+    it(`floors ${moduleId} out to its full shell extent`, () => {
+      const layout = DELVE_MODULE_LAYOUTS[moduleId];
+      const points = layout.shellPolygon;
+      if (!points) throw new Error(`${moduleId} must have an authored shell polygon`);
+      const tiles: Array<{ x: number; z: number }> = [];
+      const sink = {
+        add(_kind: string, x: number, _y: number, z: number): void {
+          tiles.push({ x, z });
+        },
+      };
+      const interiors = new DungeonInteriors(new THREE.Scene(), true, [], []);
+      (
+        interiors as unknown as {
+          placeFloor(target: typeof sink, l: typeof layout, variant: string): void;
+        }
+      ).placeFloor.bind(interiors)(sink, layout, 'delve_ossuary');
+
+      expect(tiles.length).toBeGreaterThan(0);
+      // Every part of the shell the sim lets the player stand in must have a
+      // floor tile whose own 4x4 cell reaches it: the tile grid has to span the
+      // polygon, not the narrower rectangular band.
+      const half = 2;
+      const xs = tiles.map((t) => t.x);
+      const zs = tiles.map((t) => t.z);
+      const polyXMin = Math.min(...points.map((pt) => pt.x));
+      const polyXMax = Math.max(...points.map((pt) => pt.x));
+      const polyZMin = Math.min(...points.map((pt) => pt.z));
+      const polyZMax = Math.max(...points.map((pt) => pt.z));
+      expect(Math.min(...xs) - half).toBeLessThanOrEqual(polyXMin);
+      expect(Math.max(...xs) + half).toBeGreaterThanOrEqual(polyXMax);
+      expect(Math.min(...zs) - half).toBeLessThanOrEqual(polyZMin);
+      expect(Math.max(...zs) + half).toBeGreaterThanOrEqual(polyZMax);
+      // and no tile center outside the shell
+      for (const t of tiles) {
+        // every tile, including grate halves and quad sub-tiles, is masked at
+        // its own position, so no emitted tile center may sit outside the shell
+        expect(polygonContainsPoint(points, t.x, t.z), `tile ${t.x},${t.z}`).toBe(true);
+      }
+    });
+  }
+});
+
+describe('Litany shell winding', () => {
+  // placePolygonWalls faces each module into the room with rot = atan2(-dz, dx),
+  // which only holds for counter-clockwise shells. Nothing in the sim normalizes
+  // the authored winding, so pin it here: a clockwise shell would render every
+  // wall and banner facing outward with no other test failing.
+  for (const moduleId of LITANY_MODULE_IDS) {
+    it(`authors ${moduleId} counter-clockwise`, () => {
+      const points = DELVE_MODULE_LAYOUTS[moduleId].shellPolygon;
+      if (!points) throw new Error(`${moduleId} must have an authored shell polygon`);
+      expect(polygonSignedArea(points)).toBeGreaterThan(0);
     });
   }
 });
