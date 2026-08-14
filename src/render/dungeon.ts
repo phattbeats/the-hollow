@@ -16,6 +16,7 @@ import * as THREE from 'three';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { DUNGEONS, instanceOrigin } from '../sim/data';
+import { polygonWallSegments } from '../sim/delve_litany_layout';
 import {
   ARENA_LAYOUT,
   CRYPT_LAYOUT,
@@ -31,6 +32,7 @@ import {
   TOMB_HD,
   type WallStub,
 } from '../sim/dungeon_layout';
+import { polygonContainsPoint } from '../sim/geometry2d';
 import { loadGltf, releaseGltf } from './assets/loader';
 import { registerPreload } from './assets/preload';
 import { sharedUniforms } from './gfx';
@@ -1052,19 +1054,28 @@ export class DungeonInteriors {
     // Default the floor to the inner wall face so wider rooms (delve |x|=25)
     // are not left with a bare strip between the aisle floor and the side walls.
     const floorHalfX = layout.floorHalfX ?? (layout.wallX ?? DUNGEON_WALL_X) - 1;
+    const poly = layout.shellPolygon;
     for (let z = layout.zMin - 2; z <= layout.zMax + 2; z += FLOOR_CELL) {
       for (let x = -floorHalfX; x <= floorHalfX; x += FLOOR_CELL) {
+        // Polygon shell: mask the rectangular grid down to the authored room
+        // outline (same grid stepping and tile-kind logic, just skip cells
+        // whose own center falls outside the polygon). Boundary tiles will
+        // stair-step; accepted for this kit.
+        if (poly && !polygonContainsPoint(poly, x, z)) continue;
         let kind = this.floorKind(variant, hash2(x * 1.31, z));
         if (kind === 'grate' && Math.abs(x) < 4) kind = 'floor_tile_large'; // keep pits off the walk aisle
         if (kind === 'grate') {
-          // floor_tile_grate is 4x2: a pair fills the cell
-          p.add('floor_tile_grate', x, FLOOR_Y, z - 1);
-          p.add('floor_tile_grate', x, FLOOR_Y, z + 1);
+          // floor_tile_grate is 4x2: a pair fills the cell, test each half's own center
+          if (!poly || polygonContainsPoint(poly, x, z - 1))
+            p.add('floor_tile_grate', x, FLOOR_Y, z - 1);
+          if (!poly || polygonContainsPoint(poly, x, z + 1))
+            p.add('floor_tile_grate', x, FLOOR_Y, z + 1);
           continue;
         }
         if (kind === 'quad') {
           for (const dx of [-1, 1]) {
             for (const dz of [-1, 1]) {
+              if (poly && !polygonContainsPoint(poly, x + dx, z + dz)) continue;
               const sub = this.floorQuadKind(variant, hash2(x + dx, z + dz));
               const rot = Math.floor(hash2(z + dz, x + dx) * 4) * quarter;
               p.add(sub, x + dx, FLOOR_Y, z + dz, rot);
@@ -1225,6 +1236,10 @@ export class DungeonInteriors {
     variant: Variant,
     arenaWalls?: PendingArenaWalls,
   ): void {
+    if (layout.shellPolygon) {
+      this.placePolygonWalls(p, layout.shellPolygon, variant);
+      return;
+    }
     const bannerEvery = variant === 'crypt' ? 4 : 3;
     const wallX = layout.wallX ?? DUNGEON_WALL_X;
     const endWallHw = layout.endWallHw ?? DUNGEON_END_WALL_HW;
@@ -1276,6 +1291,39 @@ export class DungeonInteriors {
         Math.PI,
         MODULE_SCALE,
       );
+    }
+  }
+
+  // Polygon-shell wall path: walks the exact shared collision segments and
+  // scales one wall module to each span, with the same variant-keyed wall and
+  // banner logic as the rectangular loop above. This covers the end faces too
+  // (the polygon already closes the room), so there is no separate end-cap pass
+  // and no door gap (Drowned
+  // Litany rooms are teleport-in, matching the sim shell colliders built by
+  // polygonShellColliders in sim/delve_litany_layout.ts). Rotation uses the
+  // SAME rot = atan2(-edgeDz, edgeDx) convention as that sim helper (and the
+  // fence OBBs in sim/colliders.ts): it aligns the OBB/module's local +x
+  // (world (cos(rot), -sin(rot)) under Three's Y-Euler) along the edge
+  // direction, which reproduces the existing side-wall ry for the west/east
+  // straight edges.
+  private placePolygonWalls(
+    p: Placements,
+    points: ReadonlyArray<{ x: number; z: number }>,
+    variant: Variant,
+  ): void {
+    const bannerEvery = variant === 'crypt' ? 4 : 3;
+    let i = 0;
+    for (const segment of polygonWallSegments(points)) {
+      const { x, z, rot, halfLength } = segment;
+      const kind = this.wallKind(variant, hash2(x * 13.7, z));
+      // KayKit wall modules are 4u long on local X. Scale each one to the exact
+      // shared segment span instead of drawing an 8u module past a short edge.
+      const scale: [number, number, number] = [halfLength / 2, MODULE_SCALE, MODULE_SCALE];
+      p.add(kind, x, 0, z, rot, scale);
+      if (i % bannerEvery === 2 && kind !== 'wall_archedwindow_gated') {
+        p.add(this.bannerKind(variant, hash2(z, x * 7.3)), x, 0, z, rot, MODULE_SCALE);
+      }
+      i++;
     }
   }
 
