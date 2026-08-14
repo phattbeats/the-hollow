@@ -191,6 +191,7 @@ const UI_PURE_CORES = [
 // cast_bar painter draws it and a Vitest drives it directly.
 const RENDER_PURE_CORES = [
   'src/render/cast_bar.ts',
+  'src/render/delve_interactable_visibility_core.ts',
   'src/render/nameplate_view.ts',
   // PHAA-437: the seeded plant-creature generator's pure half (seed -> spec +
   // clip-less motion envelopes). Three-free and deterministic; the Three
