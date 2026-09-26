@@ -55,7 +55,7 @@ import { CLICK_MARKER_LIFETIME, clickMarkerAnim, clickMarkerColor } from './clic
 import { trackWebGLContext } from './context_release';
 import { buildCritters, type CritterField } from './critters';
 import { buildDelveModule } from './delve_interiors';
-import { buildDelveInteractable } from './delve_props';
+import { buildDelveInteractable, syncDelveInteractableVisibility } from './delve_props';
 import { DungeonInteriors, ensureDungeonAssets } from './dungeon';
 import { objectDisplayName } from './entity_labels';
 import { releaseSelfFacing, stepSelfFacing } from './facing_smooth';
@@ -4203,8 +4203,12 @@ export class Renderer {
 
       if (e.kind === 'object') {
         const isPortalObject = isPersistentPortalObject(e);
-        const vis = e.lootable && (!isPortalObject || d2 <= ENTITY_VIEW_CREATE_RANGE_SQ);
-        v.group.visible = vis;
+        const vis = syncDelveInteractableVisibility(
+          v.group,
+          e.templateId,
+          e.lootable,
+          !isPortalObject || d2 <= ENTITY_VIEW_CREATE_RANGE_SQ,
+        );
         if (v.sparkle && vis) {
           // sub-pixel beyond ~45u but still a full transparent draw each
           // (d2 is this entity's player distance, computed once above)
