@@ -5,7 +5,6 @@
 // back to procedural geometry otherwise. No DOM, no sim imports (render-only).
 
 import * as THREE from 'three';
-import { delveInteractableVisible } from './delve_interactable_visibility_core';
 import { buildDungeonPropMesh } from './dungeon';
 import { GFX, surfaceMat } from './gfx';
 
@@ -650,18 +649,6 @@ function buildFallbackCrate(entityId: number): { group: THREE.Group; height: num
   }
 
   return { group, height: 1.0 };
-}
-
-/** Apply the object-view visibility policy after a delve prop mesh is rebuilt. */
-export function syncDelveInteractableVisibility(
-  group: THREE.Object3D,
-  templateId: string | null,
-  lootable: boolean,
-  withinPortalRange = true,
-): boolean {
-  const visible = delveInteractableVisible(templateId, lootable) && withinPortalRange;
-  group.visible = visible;
-  return visible;
 }
 
 // ---------------------------------------------------------------------------
