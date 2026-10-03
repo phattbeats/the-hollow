@@ -1,10 +1,11 @@
 import * as THREE from 'three';
 import { WORLD_MAX_Z, WORLD_MIN_Z, WORLD_SIZE } from '../sim/data';
-import { terrainHeight, WATER_LEVEL, waterBodies } from '../sim/world';
+import { waterBodies, waterLevel } from '../sim/world';
 import { loadTexture } from './assets/loader';
 import { registerPreload } from './assets/preload';
 import { GFX, SUN_DIR, sharedUniforms } from './gfx';
 import { waterNormalish, waterNormalMaps } from './textures';
+import { shoreDepthAt } from './water_core';
 
 // Water per lake footprint.
 //
@@ -169,13 +170,13 @@ function buildShaderWater(seed: number): WaterView {
     const pos = geo.attributes.position as THREE.BufferAttribute;
     const shoreDepth = new Float32Array(pos.count);
     for (let i = 0; i < pos.count; i++) {
-      shoreDepth[i] = WATER_LEVEL - terrainHeight(pos.getX(i), pos.getZ(i), seed);
+      shoreDepth[i] = shoreDepthAt(pos.getX(i), pos.getZ(i), seed);
     }
     geo.setAttribute('aShoreDepth', new THREE.BufferAttribute(shoreDepth, 1));
     geo.computeBoundingBox();
     geo.computeBoundingSphere();
     const mesh = new THREE.Mesh(geo, material);
-    mesh.position.y = WATER_LEVEL;
+    mesh.position.y = waterLevel();
     meshes.push(mesh);
   }
   return { meshes, update: () => {} };
@@ -201,7 +202,7 @@ function buildPhongWater(): WaterView {
     new THREE.PlaneGeometry(WORLD_SIZE, worldDepth).rotateX(-Math.PI / 2),
     mat,
   );
-  mesh.position.set(0, WATER_LEVEL, (WORLD_MIN_Z + WORLD_MAX_Z) / 2);
+  mesh.position.set(0, waterLevel(), (WORLD_MIN_Z + WORLD_MAX_Z) / 2);
   return {
     meshes: [mesh],
     update(time: number): void {

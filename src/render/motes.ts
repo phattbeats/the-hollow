@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { DUNGEON_X_THRESHOLD, WORLD_MAX_X, WORLD_MAX_Z, WORLD_MIN_Z } from '../sim/data';
 import type { BiomeId } from '../sim/types';
-import { terrainHeight, WATER_LEVEL, zoneBiomeAt } from '../sim/world';
+import { biomeAt, terrainHeight, waterLevel } from '../sim/world';
 import { GFX } from './gfx';
 
 // ---------------------------------------------------------------------------
@@ -19,9 +19,9 @@ export interface MotesView {
 }
 
 // per-biome speck colour — warm gold pollen, sickly green marsh spores, pale
-// blue snow dust; kept lighter than GRASS_TINT so they read as glints in air
-// beach/desert/volcano/cave are paint-only biomes (see foliage.ts), unreachable
-// until the render-load-in editor slice; values match the upstream reference port.
+// blue snow dust; kept lighter than GRASS_TINT so they read as glints in air.
+// beach/desert/volcano/cave are paint-only biomes (see sim/world.ts biomeAt):
+// reachable only via a map editor's biomePaint, never the built-in world.
 const MOTE_TINT: Record<BiomeId, number> = {
   vale: 0xf4e6a0,
   marsh: 0xb8d28a,
@@ -96,7 +96,7 @@ export function buildMotes(seed: number): MotesView {
     const z = pz + Math.sin(ang) * r;
     if (Math.abs(x) > WORLD_MAX_X - 8 || z < WORLD_MIN_Z + 8 || z > WORLD_MAX_Z - 8) return false;
     const h = terrainHeight(x, z, seed);
-    if (h < WATER_LEVEL + 0.5) return false; // no motes hovering over open water
+    if (h < waterLevel() + 0.5) return false; // no motes hovering over open water
     homeX[i] = x;
     homeZ[i] = z;
     baseY[i] = h;
@@ -105,7 +105,7 @@ export function buildMotes(seed: number): MotesView {
     positions[i * 3] = x;
     positions[i * 3 + 1] = h + bobAmp[i];
     positions[i * 3 + 2] = z;
-    tmpColor.setHex(MOTE_TINT[zoneBiomeAt(z)]);
+    tmpColor.setHex(MOTE_TINT[biomeAt(x, z)]);
     colors[i * 3] = tmpColor.r;
     colors[i * 3 + 1] = tmpColor.g;
     colors[i * 3 + 2] = tmpColor.b;

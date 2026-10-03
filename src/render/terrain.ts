@@ -1,11 +1,10 @@
 import * as THREE from 'three';
 import { WORLD_MAX_X, WORLD_MAX_Z, WORLD_MIN_Z, ZONES } from '../sim/data';
 import type { BiomeId } from '../sim/types';
-import { roadDistance, terrainHeight, WATER_LEVEL, zoneBiomeAt } from '../sim/world';
+import { biomeAt, roadDistance, terrainHeight, waterLevel, zoneBiomeAt } from '../sim/world';
 import { loadTexture } from './assets/loader';
 import { registerPreload } from './assets/preload';
 import { GFX } from './gfx';
-import { runIdleQueue } from './idle_queue';
 import { impactCraterTerrainBlend } from './impact_terrain';
 import { groundDetailTexture, groundSplatMaps, macroNoiseTexture } from './textures';
 
@@ -108,9 +107,10 @@ const NORMAL_TEX_STRENGTH = 1.35;
 // Ground colors per biome; boundaries blend across the same window as the
 // heightfield's shape blend. This is the tint layer the splat albedo
 // multiplies into (splat textures are authored near mid-gray).
-// beach/desert/volcano/cave are paint-only biomes (see render/foliage.ts),
-// unreachable until the render-load-in editor slice; values match the
-// upstream reference port.
+// beach/desert/volcano/cave are paint-only biomes: reachable only where a
+// custom map's biomePaint overrides biomeAt(x, z) (see sampleVertex below),
+// never the built-in world's zone-band biome. Values match the upstream
+// reference port.
 const BIOME_PALETTE: Record<
   BiomeId,
   { grass: number; grassDark: number; grassYellow: number; dirt: number; sand: number }
@@ -217,7 +217,22 @@ const zonePalettes = ZONES.map((zn) => {
   };
 });
 
-function paletteAt(z: number): void {
+// `biome` is the cell's ACTIVE biome (biomeAt(x, z): a paint-grid override
+// where painted, else the same z-band biome zoneBiomeAt(z) would give). A
+// painted cell takes its biome's palette FLAT (no z-band blend: the paint
+// grid is the author's explicit choice, not a gradient to feather), so the
+// map editor's beach/desert/volcano/cave paint reads as ground, not a
+// recolored vale/marsh/peaks tint riding the same blend windows.
+function paletteAt(z: number, biome: BiomeId): void {
+  if (biome !== zoneBiomeAt(z)) {
+    const p = BIOME_PALETTE[biome];
+    grassC.set(p.grass);
+    grassDarkC.set(p.grassDark);
+    grassYellowC.set(p.grassYellow);
+    dirtC.set(p.dirt);
+    sandC.set(p.sand);
+    return;
+  }
   grassC.copy(zonePalettes[0].grass);
   grassDarkC.copy(zonePalettes[0].grassDark);
   grassYellowC.copy(zonePalettes[0].grassYellow);
@@ -274,10 +289,11 @@ function sampleVertex(x: number, z: number, seed: number): VertexSample {
     -(hz / (2 * SLOPE_EPS)) * invLen,
   ];
 
-  paletteAt(z);
-  const biome = zoneBiomeAt(z);
+  const biome = biomeAt(x, z);
+  paletteAt(z, biome);
   const w: [number, number, number, number] = [1, 0, 0, 0];
   const impact = impactCraterTerrainBlend(x, z);
+  const wl = waterLevel();
 
   // base grass with patchy variation
   const v = (Math.sin(x * 0.21) * Math.cos(z * 0.17) + 1) / 2;
@@ -290,7 +306,7 @@ function sampleVertex(x: number, z: number, seed: number): VertexSample {
   // the shore blends out instead of cutting a razor-hard edge. Peaks gets a
   // dark wet-rock tint instead of the default sandy beach; everywhere else
   // keeps the classic sandy bank.
-  const shore = clamp01((WATER_LEVEL + 1.6 - h) / 1.6);
+  const shore = clamp01((wl + 1.6 - h) / 1.6);
   if (biome === 'peaks') {
     cTmp.lerp(wetRockC, shore);
     lerpSplat(w, 2, shore);
@@ -356,7 +372,7 @@ function sampleVertex(x: number, z: number, seed: number): VertexSample {
   const mud = marshWeightAt(z);
   if (GFX.lowPlus && !GFX.terrainSplat) {
     const ridge = clamp01((slope - 0.22) * 1.6);
-    const lowland = clamp01((WATER_LEVEL + 7 - h) / 12);
+    const lowland = clamp01((wl + 7 - h) / 12);
     const upland = clamp01((h - 8) / 22);
     cTmp.lerp(lowShadeC, 0.07 * ridge + 0.05 * lowland * mud);
     cTmp.lerp(lowSunC, 0.035 * (1 - shore) + 0.045 * upland);
@@ -690,27 +706,9 @@ export interface TerrainView {
   group: THREE.Group;
   /** hides chunks that sit entirely past the fog far plane */
   update(camX: number, camZ: number, fogFar: number): void;
-  /**
-   * Resolves once every streamed-in far chunk (see buildTerrain) has been
-   * added to `group`. Only the near ring around the world's zone hubs is
-   * built synchronously; everything else streams in across idle slots so
-   * first paint isn't gated on the whole map's geometry. Most callers don't
-   * need this - `chunks` is a live array shared with update(), which already
-   * sees streamed chunks as they arrive. Use this only when a caller needs
-   * the FULL map built before doing something else, and call cancelStreaming()
-   * before discarding this view.
-   */
-  streamingDone: Promise<void>;
-  /** Stops any in-flight far-chunk streaming. Call before discarding this view. */
-  cancelStreaming(): void;
 }
 
-// Chunks farther than the near ring stream in this many at a time per idle
-// slot, forced forward even under sustained load by the timeout.
-const STREAM_BATCH_SIZE = 4;
-const STREAM_TIMEOUT_MS = 200;
-
-export function buildTerrain(seed: number, priorityPoint?: { x: number; z: number }): TerrainView {
+export function buildTerrain(seed: number): TerrainView {
   const lowGfx = !GFX.terrainSplat || !hasTerrainSplatAssets();
   const mat = lowGfx ? buildLambertMaterial() : buildSplatMaterial(seed);
   const bands = lowGfx ? LOD_BANDS.low : LOD_BANDS.high;
@@ -737,15 +735,6 @@ export function buildTerrain(seed: number, priorityPoint?: { x: number; z: numbe
     const mesh = new THREE.Mesh(geo, mat);
     mesh.receiveShadow = true;
     group.add(mesh);
-    // A chunk's transform never changes after this point (its shape lives in
-    // the geometry, not the mesh matrix), so it can freeze immediately rather
-    // than waiting for the caller's group-wide freezeStaticMatrices pass. That
-    // pass only runs once, right after the synchronous near ring returns, so
-    // every chunk streamed in afterward (the majority, on the far bands)
-    // would otherwise keep matrixAutoUpdate = true and recompose every frame
-    // for the rest of the session (see static_matrix.ts).
-    mesh.updateMatrixWorld(true);
-    mesh.matrixAutoUpdate = false;
     chunks.push({
       mesh,
       x: x0 + size / 2,
@@ -753,20 +742,6 @@ export function buildTerrain(seed: number, priorityPoint?: { x: number; z: numbe
       half: size / 2,
     });
   };
-
-  // Collect every chunk to build as a job first, instead of building inline,
-  // so the near ring (around the zone hubs, i.e. where a fresh character
-  // actually stands) can build synchronously while the rest streams in
-  // across idle slots below. bandIndexAt returns 0 only for the densest,
-  // closest-to-a-hub band, which is what we treat as "near".
-  interface ChunkJob {
-    x0: number;
-    z0: number;
-    size: number;
-    spacing: number;
-    near: boolean;
-  }
-  const jobs: ChunkJob[] = [];
 
   // far-LOD cells merge 2x2 into super-chunks: the far field is where draw
   // count hurts and culling granularity matters least
@@ -793,66 +768,26 @@ export function buildTerrain(seed: number, priorityPoint?: { x: number; z: numbe
         ]) {
           built.add((cz + dz) * chunksX + (cx + dx));
         }
-        // a merged super-chunk only forms from four far-band cells, so it's
-        // never near
-        jobs.push({
-          x0: -WORLD_MAX_X + cx * CHUNK_SIZE,
-          z0: WORLD_MIN_Z + cz * CHUNK_SIZE,
-          size: CHUNK_SIZE * 2,
-          spacing: bands[farBand].spacing,
-          near: false,
-        });
+        addChunk(
+          -WORLD_MAX_X + cx * CHUNK_SIZE,
+          WORLD_MIN_Z + cz * CHUNK_SIZE,
+          CHUNK_SIZE * 2,
+          bands[farBand].spacing,
+        );
       } else {
         built.add(cz * chunksX + cx);
-        const bandIdx = bandIndexAt(cx, cz);
-        jobs.push({
-          x0: -WORLD_MAX_X + cx * CHUNK_SIZE,
-          z0: WORLD_MIN_Z + cz * CHUNK_SIZE,
-          size: CHUNK_SIZE,
-          spacing: bands[bandIdx].spacing,
-          near: bandIdx === 0,
-        });
+        const band = bands[bandIndexAt(cx, cz)];
+        addChunk(
+          -WORLD_MAX_X + cx * CHUNK_SIZE,
+          WORLD_MIN_Z + cz * CHUNK_SIZE,
+          CHUNK_SIZE,
+          band.spacing,
+        );
       }
     }
   }
-
-  for (const job of jobs) {
-    if (job.near) addChunk(job.x0, job.z0, job.size, job.spacing);
-  }
-  const farJobs = jobs.filter((job) => !job.near);
-  // A returning character can log out anywhere, not just at a zone hub, so
-  // the near ring alone can leave them standing on not-yet-streamed terrain.
-  // Ordering the far queue by distance to the actual entry point guarantees
-  // the chunk directly underfoot streams in first rather than landing
-  // wherever row-major order happens to reach it.
-  if (priorityPoint) {
-    const centerX = (job: ChunkJob): number => job.x0 + job.size / 2;
-    const centerZ = (job: ChunkJob): number => job.z0 + job.size / 2;
-    farJobs.sort(
-      (a, b) =>
-        Math.hypot(centerX(a) - priorityPoint.x, centerZ(a) - priorityPoint.z) -
-        Math.hypot(centerX(b) - priorityPoint.x, centerZ(b) - priorityPoint.z),
-    );
-  }
-  let cancelled = false;
-  const streamingDone = runIdleQueue(
-    farJobs,
-    (job) => {
-      addChunk(job.x0, job.z0, job.size, job.spacing);
-    },
-    {
-      batchSize: STREAM_BATCH_SIZE,
-      timeoutMs: STREAM_TIMEOUT_MS,
-      cancelled: () => cancelled,
-    },
-  );
-
   return {
     group,
-    streamingDone,
-    cancelStreaming(): void {
-      cancelled = true;
-    },
     update(camX: number, camZ: number, fogFar: number): void {
       // fully-fogged chunks are pure overdraw; drop them before the frustum
       for (const chunk of chunks) {
