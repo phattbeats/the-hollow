@@ -2711,14 +2711,14 @@ export const ru_RU: EnTranslations = {
       "wayOutNotOpen": "Выход ещё не открыт.",
       "moveCloserStairs": "Подойдите ближе к лестнице.",
       "litany": {
-        "cantorsHoldNote": "Канторы, держите ноту!",
-        "blackwaterMark": "{boss} отмечает {target} Черноводьем!",
-        "finalBell": "{boss} обрушивает Последний Колокол!",
-        "tollingBells": "{boss} звонит в колокола!",
-        "bellRopeSnaps": "Колокольная веревка резко натягивается. Утопших канторов отбрасывает ударом.",
-        "eggSacBursts": "Кокон лопается. Паучата разбегаются по краю баптистерия.",
-        "baptistryQuiet": "Баптистерий затихает. Паучьи коконы влажно липнут к его краю.",
-        "baptistryStirs": "Что-то шевелится в черной воде баптистерия."
+        "cantorsHoldNote": "Певчие, держите ноту!",
+        "blackwaterMark": "{boss} отмечает {target} Чёрной водой!",
+        "finalBell": "{boss} обрушивает Последний набат!",
+        "tollingBells": "{boss} начинает звонить в колокола!",
+        "bellRopeSnaps": "Верёвка колокола натягивается. Утопшие певчие пошатываются от удара.",
+        "eggSacBursts": "Яйцевой кокон лопается. Паучата разбегаются по краю купели.",
+        "baptistryQuiet": "Купель стихает. Паучьи коконы мокро липнут к краю.",
+        "baptistryStirs": "Что-то шевелится в чёрной воде купели."
       }
     },
     "dungeonFinder": {
@@ -6582,41 +6582,41 @@ export const ru_RU: EnTranslations = {
       "acolyte_tessa": {
         "name": "Послушница Тесса"
       },
-      "deepfen_spearjaw": {
-        "name": "Глубинный копьечелюст"
-      },
-      "mirefen_widowling": {
-        "name": "Мирефенская вдовушка"
-      },
-      "reedbound_acolyte": {
-        "name": "Тростниковый послушник"
-      },
-      "drowned_cantor": {
-        "name": "Утопший кантор"
-      },
-      "grave_silt_bulwark": {
-        "name": "Могильный илистый оплот"
-      },
-      "choir_thrall": {
-        "name": "Хоровой раб"
-      },
-      "sump_troll_devourer": {
-        "name": "Пожиратель из сточного болота"
-      },
-      "spider_egg_sac": {
-        "name": "Паучий кокон"
-      },
-      "sister_nhalia_drowned_canticle": {
-        "name": "Сестра Налия"
-      },
-      "tolling_bell": {
-        "name": "Звонящий колокол"
-      },
       "boarball_ball": {
         "name": "Боарбол"
       },
       "yumi_cat": {
         "name": "Yumi"
+      },
+      "choir_thrall": {
+        "name": "Хоровой послушник"
+      },
+      "deepfen_spearjaw": {
+        "name": "Глубокотрясинный копьезуб"
+      },
+      "drowned_cantor": {
+        "name": "Утопший певчий"
+      },
+      "grave_silt_bulwark": {
+        "name": "Могильно-иловой страж"
+      },
+      "mirefen_widowling": {
+        "name": "Трясинная паучата-вдова"
+      },
+      "reedbound_acolyte": {
+        "name": "Тростниковый служка"
+      },
+      "sister_nhalia_drowned_canticle": {
+        "name": "Сестра Нхалия"
+      },
+      "spider_egg_sac": {
+        "name": "Паучий яйцевой кокон"
+      },
+      "sump_troll_devourer": {
+        "name": "Трясинный тролль-пожиратель"
+      },
+      "tolling_bell": {
+        "name": "Погребальный колокол"
       },
       "ironvein_foreman": {
         "name": "Прораб Железной жилы"
@@ -8132,9 +8132,9 @@ export const ru_RU: EnTranslations = {
         "leaveText": "Вы поднимаетесь обратно к Брату Хальвену у руин реликвария."
       },
       "drowned_litany": {
-        "name": "Утопшая Литания",
-        "enterText": "Вы спускаетесь в затонувшее святилище на краю топи.",
-        "leaveText": "Вы поднимаетесь обратно к брату Хальвену на краю топи."
+        "name": "Утонувший напев",
+        "enterText": "Вы спускаетесь по краю трясины к утонувшей святыне.",
+        "leaveText": "Вы выбираетесь из трясины обратно к брату Харвину."
       }
     },
     "enchants": {

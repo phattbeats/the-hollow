@@ -2711,14 +2711,14 @@ export const ja_JP: EnTranslations = {
       "wayOutNotOpen": "出口はまだ開いていない。",
       "moveCloserStairs": "階段にもっと近づけ。",
       "litany": {
-        "cantorsHoldNote": "聖歌隊よ、音を保て！",
-        "blackwaterMark": "{boss}は{target}にブラックウォーターの印を刻んだ！",
-        "finalBell": "{boss}が終焉の鐘を放つ！",
+        "cantorsHoldNote": "唱経者、音程を保て！",
+        "blackwaterMark": "{boss}が{target}に黒水を刻んだ！",
+        "finalBell": "{boss}が終の鐘を放った！",
         "tollingBells": "{boss}が鐘を鳴らす！",
-        "bellRopeSnaps": "鐘の綱がぴんと張り詰める。溺れた聖歌者たちが衝撃によろめく。",
-        "eggSacBursts": "卵嚢が破裂した。子蜘蛛が洗礼堂の縁へ散っていく。",
-        "baptistryQuiet": "洗礼堂が静まり返る。蜘蛛の卵嚢が縁に湿ってへばりついている。",
-        "baptistryStirs": "黒い洗礼盤の水の中で何かが蠢いている。"
+        "bellRopeSnaps": "鐘の綱が張り詰める。溺れた唱経者たちが衝撃に翻弄される。",
+        "eggSacBursts": "卵嚢が弾け飛ぶ。子蜘蛛が洗礼盤の縁を駆け散る。",
+        "baptistryQuiet": "洗礼盤が静まり返る。蜘蛛の卵嚢が縁に濡れて張り付いている。",
+        "baptistryStirs": "黒い洗礼盤の水の中にかすかな蠢きが。"
       }
     },
     "dungeonFinder": {
@@ -6582,41 +6582,41 @@ export const ja_JP: EnTranslations = {
       "acolyte_tessa": {
         "name": "侍祭テッサ"
       },
-      "deepfen_spearjaw": {
-        "name": "ディープフェンの槍顎"
-      },
-      "mirefen_widowling": {
-        "name": "マイアフェンの子ウィドウ"
-      },
-      "reedbound_acolyte": {
-        "name": "葦縛りの侍祭"
-      },
-      "drowned_cantor": {
-        "name": "溺れた聖歌者"
-      },
-      "grave_silt_bulwark": {
-        "name": "墓泥の防壁"
-      },
-      "choir_thrall": {
-        "name": "聖歌隊の下僕"
-      },
-      "sump_troll_devourer": {
-        "name": "汚水トロルの喰らい手"
-      },
-      "spider_egg_sac": {
-        "name": "蜘蛛の卵嚢"
-      },
-      "sister_nhalia_drowned_canticle": {
-        "name": "ナリア修道女"
-      },
-      "tolling_bell": {
-        "name": "鳴り響く鐘"
-      },
       "boarball_ball": {
         "name": "ボアボール"
       },
       "yumi_cat": {
         "name": "Yumi"
+      },
+      "choir_thrall": {
+        "name": "聖歌の隷"
+      },
+      "deepfen_spearjaw": {
+        "name": "ディープフェンの槍顎"
+      },
+      "drowned_cantor": {
+        "name": "溺れた唱経者"
+      },
+      "grave_silt_bulwark": {
+        "name": "墓泥の防壁"
+      },
+      "mirefen_widowling": {
+        "name": "マイアフェンの仔蜘蛛"
+      },
+      "reedbound_acolyte": {
+        "name": "葦縛めの侍祭"
+      },
+      "sister_nhalia_drowned_canticle": {
+        "name": "ナーリア修道女"
+      },
+      "spider_egg_sac": {
+        "name": "蜘蛛の卵嚢"
+      },
+      "sump_troll_devourer": {
+        "name": "沼のトロール喰い"
+      },
+      "tolling_bell": {
+        "name": "弔いの鐘"
       },
       "ironvein_foreman": {
         "name": "鉄脈の現場監督"
@@ -8132,9 +8132,9 @@ export const ja_JP: EnTranslations = {
         "leaveText": "あなたは聖遺物庫の廃墟にいるハルヴェン修道士のもとへ登り戻る。"
       },
       "drowned_litany": {
-        "name": "溺れた連祷",
-        "enterText": "あなたは湿地の縁にある水没した聖堂へと降りていく。",
-        "leaveText": "あなたは湿地の縁にいるハルヴェン修道士のもとへ登り返す。"
+        "name": "溺れの聖歌",
+        "enterText": "あなたは沼地の端、溺れた聖堂へと降りていく。",
+        "leaveText": "あなたは沼地の端にいるハルヴェン修道士のもとへ這い戻る。"
       }
     },
     "enchants": {

@@ -6582,14 +6582,17 @@ export const en_XA: EnTranslations = {
       "acolyte_tessa": {
         "name": "[Áçóļýţé Ţéššá]"
       },
+      "boarball_ball": {
+        "name": "[Ɓóáŕƀáļļ]"
+      },
+      "yumi_cat": {
+        "name": "[Ýúɱí]"
+      },
+      "choir_thrall": {
+        "name": "[Çĥóíŕ Ţĥŕáļļ]"
+      },
       "deepfen_spearjaw": {
         "name": "[Ðééþƒéñ Šþéáŕĵáŵ]"
-      },
-      "mirefen_widowling": {
-        "name": "[Ɱíŕéƒéñ Ŵíðóŵļíñĝ]"
-      },
-      "reedbound_acolyte": {
-        "name": "[Ŕééðƀóúñð Áçóļýţé]"
       },
       "drowned_cantor": {
         "name": "[Ðŕóŵñéð Çáñţóŕ]"
@@ -6597,26 +6600,23 @@ export const en_XA: EnTranslations = {
       "grave_silt_bulwark": {
         "name": "[Ĝŕáʋé Šíļţ Ɓúļŵáŕķ]"
       },
-      "choir_thrall": {
-        "name": "[Çĥóíŕ Ţĥŕáļļ]"
+      "mirefen_widowling": {
+        "name": "[Ɱíŕéƒéñ Ŵíðóŵļíñĝ]"
       },
-      "sump_troll_devourer": {
-        "name": "[Šúɱþ Ţŕóļļ Ðéʋóúŕéŕ]"
-      },
-      "spider_egg_sac": {
-        "name": "[Šþíðéŕ Éĝĝ-Šáç]"
+      "reedbound_acolyte": {
+        "name": "[Ŕééðƀóúñð Áçóļýţé]"
       },
       "sister_nhalia_drowned_canticle": {
         "name": "[Šíšţéŕ Ñĥáļíá]"
       },
+      "spider_egg_sac": {
+        "name": "[Šþíðéŕ Éĝĝ-Šáç]"
+      },
+      "sump_troll_devourer": {
+        "name": "[Šúɱþ Ţŕóļļ Ðéʋóúŕéŕ]"
+      },
       "tolling_bell": {
         "name": "[Ţóļļíñĝ Ɓéļļ]"
-      },
-      "boarball_ball": {
-        "name": "[Ɓóáŕƀáļļ]"
-      },
-      "yumi_cat": {
-        "name": "[Ýúɱí]"
       },
       "ironvein_foreman": {
         "name": "[Íŕóñʋéíñ Ƒóŕéɱáñ]"

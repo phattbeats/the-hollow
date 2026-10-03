@@ -6582,14 +6582,17 @@ export const nl_NL: EnTranslations = {
       "acolyte_tessa": {
         "name": "Acoliet Tessa"
       },
+      "boarball_ball": {
+        "name": "Boarball"
+      },
+      "yumi_cat": {
+        "name": "Yumi"
+      },
+      "choir_thrall": {
+        "name": "Choir Thrall"
+      },
       "deepfen_spearjaw": {
         "name": "Deepfen Spearjaw"
-      },
-      "mirefen_widowling": {
-        "name": "Mirefen Widowling"
-      },
-      "reedbound_acolyte": {
-        "name": "Reedbound Acolyte"
       },
       "drowned_cantor": {
         "name": "Drowned Cantor"
@@ -6597,26 +6600,23 @@ export const nl_NL: EnTranslations = {
       "grave_silt_bulwark": {
         "name": "Grave Silt Bulwark"
       },
-      "choir_thrall": {
-        "name": "Choir Thrall"
+      "mirefen_widowling": {
+        "name": "Mirefen Widowling"
       },
-      "sump_troll_devourer": {
-        "name": "Sump Troll Devourer"
-      },
-      "spider_egg_sac": {
-        "name": "Spider Egg-Sac"
+      "reedbound_acolyte": {
+        "name": "Reedbound Acolyte"
       },
       "sister_nhalia_drowned_canticle": {
         "name": "Sister Nhalia"
       },
+      "spider_egg_sac": {
+        "name": "Spider Egg-Sac"
+      },
+      "sump_troll_devourer": {
+        "name": "Sump Troll Devourer"
+      },
       "tolling_bell": {
         "name": "Tolling Bell"
-      },
-      "boarball_ball": {
-        "name": "Boarball"
-      },
-      "yumi_cat": {
-        "name": "Yumi"
       },
       "ironvein_foreman": {
         "name": "IJzerader-Voorman"
