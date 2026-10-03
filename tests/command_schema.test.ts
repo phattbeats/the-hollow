@@ -30,9 +30,9 @@ const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 // and +1 for daily_rewards_claim (IWorldDailyRewards, PHAA-660): each of these
 // five is both a ClientWorld send and a server dispatch case (none dispatch-only).
 // +2 for PHAA-649's disenchantItem/applyEnchant (IWorldEnchanting): both are
-// ClientWorld sends and server dispatch cases (neither dispatch-only). +1 for
-// PHAA-813's stow_weapon (weapon sheathing): also both a ClientWorld send and a
-// server dispatch case (not dispatch-only).
+// ClientWorld sends and server dispatch cases (neither dispatch-only).
+// +1 for PHAA-813's stow_weapon: also both a ClientWorld send and a server
+// dispatch case (not dispatch-only).
 const EXPECTED_SEND_COUNT = 127;
 const EXPECTED_DISPATCH_COUNT = 134;
 const EXPECTED_DISPATCH_ONLY_COUNT = 7;

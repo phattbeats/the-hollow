@@ -2029,7 +2029,6 @@ export class Sim {
               date: meta.honorArenaDaily.date,
               winsByOpponent: { ...meta.honorArenaDaily.winsByOpponent },
               fiestaCompletionsByOpponent: { ...meta.honorArenaDaily.fiestaCompletionsByOpponent },
-              fiestaKillsByVictim: { ...meta.honorArenaDaily.fiestaKillsByVictim },
               totalWins: meta.honorArenaDaily.totalWins,
             },
           }
