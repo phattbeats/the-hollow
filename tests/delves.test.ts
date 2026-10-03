@@ -7,6 +7,7 @@ import {
   ARENA_X_MIN,
   DELVE_BAND_X_MIN,
   DELVE_LIST,
+  DELVE_MODULES,
   DELVE_X_MIN,
   DELVES,
   delveAt,
@@ -17,9 +18,21 @@ import {
   isDelvePos,
   MOBS,
 } from '../src/sim/data';
-import { DELVE_MODULE_LAYOUTS } from '../src/sim/delve_layout';
-
+import { DELVE_MODULE_LAYOUTS, delveModuleColliders } from '../src/sim/delve_layout';
+import {
+  LITANY_MODULE_IDS,
+  litanyModuleGeometry,
+  litanyModuleIsNonRectangular,
+} from '../src/sim/delve_litany_layout';
+import {
+  BAPTISTRY_EGG_SAC_SPOTS,
+  isLitanyPuzzleKind,
+  litanyHatchlingSpawnClear,
+  LITANY_PUZZLE_KINDS,
+} from '../src/sim/delves/drowned_litany_rooms';
+import { clampDelveModuleBounds } from '../src/sim/delves/runs';
 import { createMob } from '../src/sim/entity';
+import { polygonContainsPoint } from '../src/sim/geometry2d';
 import { solveLockActions } from '../src/sim/lockpick';
 import { Rng } from '../src/sim/rng';
 import { DELVE_IMPLEMENTED_AFFIXES, Sim } from '../src/sim/sim';
@@ -48,6 +61,18 @@ function enterReliquary(sim: Sim, tier: 'normal' | 'heroic' = 'normal') {
   const door = DELVES.collapsed_reliquary.doorPos;
   teleport(sim, door.x, door.z);
   sim.enterDelve('collapsed_reliquary', tier);
+}
+
+function enterLitany(sim: Sim, tier: 'normal' | 'heroic' = 'normal') {
+  const heroicTier = DELVES.drowned_litany.tiers.find((t) => t.id === 'heroic');
+  const level =
+    tier === 'heroic'
+      ? (heroicTier?.minPlayerLevel ?? DELVES.drowned_litany.minLevel)
+      : DELVES.drowned_litany.minLevel;
+  sim.setPlayerLevel(level);
+  const door = DELVES.drowned_litany.doorPos;
+  teleport(sim, door.x, door.z);
+  sim.enterDelve('drowned_litany', tier);
 }
 
 function castAndFinish(sim: Sim, id: string) {
