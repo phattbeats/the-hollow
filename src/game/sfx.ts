@@ -388,10 +388,16 @@ class Sfx {
     nearWater: boolean,
   ): void {
     this.ambient('amb_dungeon', inDungeon ? 0.3 : 0);
-    this.ambient('amb_wind_vale', !inDungeon && biome === 'vale' ? 0.12 : 0);
+    this.ambient('amb_wind_vale', !inDungeon && (biome === 'vale' || biome === 'beach') ? 0.12 : 0);
     this.ambient('amb_birds', !inDungeon && biome === 'vale' ? 0.1 : 0);
-    this.ambient('amb_wind_marsh', !inDungeon && biome === 'marsh' ? 0.13 : 0);
-    this.ambient('amb_wind_peaks', !inDungeon && biome === 'peaks' ? 0.18 : 0);
+    this.ambient(
+      'amb_wind_marsh',
+      !inDungeon && (biome === 'marsh' || biome === 'cave') ? 0.13 : 0,
+    );
+    this.ambient(
+      'amb_wind_peaks',
+      !inDungeon && (biome === 'peaks' || biome === 'desert' || biome === 'volcano') ? 0.18 : 0,
+    );
     this.ambient('amb_rain', precip === 'rain' ? 0.11 : 0); // sharp clip — kept very low
     this.ambient('amb_snow', precip === 'snow' ? 0.13 : 0);
     this.ambient('amb_water', nearWater ? 0.18 : 0);

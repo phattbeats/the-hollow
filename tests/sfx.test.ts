@@ -24,29 +24,64 @@ let nowT = 0;
 function installAudioStub(): void {
   sources.length = 0;
   nowT += 1000; // monotonic across tests so the singleton's cooldown map never blocks
-  const param = () => ({ value: 0, setValueAtTime() {}, linearRampToValueAtTime() {}, setTargetAtTime() {} });
+  const param = () => ({
+    value: 0,
+    setValueAtTime() {},
+    linearRampToValueAtTime() {},
+    setTargetAtTime() {},
+  });
   class FakeCtx {
-    get currentTime() { return nowT; }
+    get currentTime() {
+      return nowT;
+    }
     destination = {};
     listener = {} as Record<string, unknown>;
-    createGain() { return { gain: param(), connect(n: unknown) { return n; }, disconnect() {} }; }
+    createGain() {
+      return {
+        gain: param(),
+        connect(n: unknown) {
+          return n;
+        },
+        disconnect() {},
+      };
+    }
     createPanner() {
       return {
-        panningModel: '', distanceModel: '', refDistance: 0, maxDistance: 0, rolloffFactor: 0,
-        setPosition() {}, connect(n: unknown) { return n; }, disconnect() {},
+        panningModel: '',
+        distanceModel: '',
+        refDistance: 0,
+        maxDistance: 0,
+        rolloffFactor: 0,
+        setPosition() {},
+        connect(n: unknown) {
+          return n;
+        },
+        disconnect() {},
       };
     }
     createBufferSource(): FakeSource {
       const s: FakeSource = {
-        buffer: null, playbackRate: { value: 1 }, onended: null, started: false, stopAt: null,
-        connect(n: unknown) { return n; },
-        start() { this.started = true; },
-        stop(t?: number) { this.stopAt = t ?? 0; },
+        buffer: null,
+        playbackRate: { value: 1 },
+        onended: null,
+        started: false,
+        stopAt: null,
+        connect(n: unknown) {
+          return n;
+        },
+        start() {
+          this.started = true;
+        },
+        stop(t?: number) {
+          this.stopAt = t ?? 0;
+        },
       };
       sources.push(s);
       return s;
     }
-    resume() { return Promise.resolve(); }
+    resume() {
+      return Promise.resolve();
+    }
   }
   (globalThis as never as { AudioContext: unknown }).AudioContext = FakeCtx;
 }
@@ -92,7 +127,7 @@ describe('footstep toggle', () => {
   it('is a no-op when footsteps are disabled', () => {
     sfx.setFootstepsEnabled(false);
     const before = sources.length;
-    sfx.footstep(0, 0, 0, 'grass', true, true);  // self
+    sfx.footstep(0, 0, 0, 'grass', true, true); // self
     sfx.footstep(5, 0, 5, 'grass', false, false); // another entity
     expect(sources.length).toBe(before);
   });
@@ -106,5 +141,43 @@ describe('footstep toggle', () => {
     sfx.footstep(0, 0, 0, 'grass', true, true);
     expect(sources.length).toBe(muted + 1);
     expect(sources.at(-1)!.started).toBe(true);
+  });
+});
+
+// Paint-only biomes (beach/cave/desert/volcano, custom maps only) have no wind
+// bed of their own; ambience() must fall back to the closest shipped biome's
+// loop rather than leaving the player in silence.
+describe('ambience paint-only biome fallback', () => {
+  beforeEach(() => {
+    const buffers = (sfx as unknown as { buffers: Map<string, { duration: number }> }).buffers;
+    for (const key of ['amb_wind_vale', 'amb_wind_marsh', 'amb_wind_peaks']) {
+      buffers.set(key, { duration: 4 });
+    }
+  });
+
+  it('borrows the vale wind bed for beach', () => {
+    sfx.ambience('beach', false, null, false);
+    expect(sfx.hasLoop('amb_wind_vale')).toBe(true);
+    expect(sfx.hasLoop('amb_wind_marsh')).toBe(false);
+    expect(sfx.hasLoop('amb_wind_peaks')).toBe(false);
+  });
+
+  it('borrows the marsh wind bed for cave', () => {
+    sfx.ambience('cave', false, null, false);
+    expect(sfx.hasLoop('amb_wind_marsh')).toBe(true);
+    expect(sfx.hasLoop('amb_wind_vale')).toBe(false);
+    expect(sfx.hasLoop('amb_wind_peaks')).toBe(false);
+  });
+
+  it('borrows the peaks wind bed for desert and volcano', () => {
+    sfx.ambience('desert', false, null, false);
+    expect(sfx.hasLoop('amb_wind_peaks')).toBe(true);
+    sfx.ambience('volcano', false, null, false);
+    expect(sfx.hasLoop('amb_wind_peaks')).toBe(true);
+  });
+
+  it('mutes every wind bed inside a dungeon regardless of biome', () => {
+    sfx.ambience('beach', true, null, false);
+    expect(sfx.hasLoop('amb_wind_vale')).toBe(false);
   });
 });
