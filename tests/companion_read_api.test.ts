@@ -90,10 +90,24 @@ describe('sheet routes use the right gate', () => {
     expect(block).not.toContain('bearerReadAccount');
   });
 
-  it('bearerReadAccount gates exactly the two read routes (owner /sheet + /api/me/characters)', () => {
+  // Read tokens are deliberately scoped to owner-read routes only. Adding a
+  // route here is a real decision: it must be a GET that returns only the
+  // caller's own data, never a mutation. The count is the tripwire.
+  it('bearerReadAccount gates exactly the four owner-read routes', () => {
     const count = (MAIN.match(/bearerReadAccount\(req, res\)/g) ?? []).length;
-    expect(count).toBe(2);
+    expect(count).toBe(4);
   });
+
+  for (const anchor of [
+    "if (url === '/api/maps' && (req.method === 'GET' || req.method === 'POST')) {",
+    "if (req.method === 'GET' && url === '/api/assets/mine') {",
+  ]) {
+    it(`owner-read map editor route uses bearerReadAccount: ${anchor}`, () => {
+      const idx = MAIN.indexOf(anchor);
+      expect(idx, `anchor not found: ${anchor}`).toBeGreaterThanOrEqual(0);
+      expect(MAIN.slice(idx, idx + 400)).toContain('bearerReadAccount(req, res)');
+    });
+  }
 });
 
 describe('GET /api/me/characters (read-scoped my-characters list)', () => {

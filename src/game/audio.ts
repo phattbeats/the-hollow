@@ -159,7 +159,7 @@ export class GameAudio {
   }
 
   eat(): void {
-    [0, 0.3].forEach((_d) => {
+    [0, 0.3].forEach((d) => {
       this.noise(0.1, 800, 0.1, 0.8, 'bandpass');
     });
   }
