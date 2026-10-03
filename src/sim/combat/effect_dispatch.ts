@@ -688,16 +688,6 @@ export function runEffects(
         ctx.summonPet(p, eff.mobId);
         break;
       }
-      // Boarball (PHAA-572): sport moves, consumed only by social/boarball.ts.
-      case 'ballShoot': {
-        ctx.boarballShoot(p, eff.power, eff.loft);
-        break;
-      }
-      case 'ballPass': {
-        if (!target) break;
-        ctx.boarballPass(p, target, eff.power);
-        break;
-      }
     }
     if (target?.dead) target = null;
   }

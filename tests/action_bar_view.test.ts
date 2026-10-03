@@ -84,7 +84,6 @@ interface WorldOpts {
   dead?: boolean;
   resource?: number;
   cooldowns?: Map<string, number>;
-  potionCooldownRemaining?: number;
   gcdRemaining?: number;
   queuedOnSwing?: string | null;
   playerPos?: { x: number; y: number; z: number };
@@ -101,7 +100,6 @@ function world(opts: WorldOpts = {}): ActionBarWorldInput {
       dead: opts.dead ?? false,
       resource: opts.resource ?? 100,
       cooldowns: opts.cooldowns ?? new Map(),
-      potionCooldownRemaining: opts.potionCooldownRemaining ?? 0,
       gcdRemaining: opts.gcdRemaining ?? 0,
       queuedOnSwing: opts.queuedOnSwing ?? null,
       pos: opts.playerPos ?? { x: 0, y: 0, z: 0 },

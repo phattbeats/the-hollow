@@ -49,14 +49,9 @@
       .catch((err: unknown) => fail(err, 'blockedIps.removeFailed'));
   }
 
-  // Presentation only; the server gates the block/unblock writes on
-  // ipblocks.manage (the list itself reads with moderation.read).
-  let canBlock = $derived(auth.can('ipblocks.manage'));
-
   onMount(() => { void refresh(); });
 </script>
 
-{#if canBlock}
 <Panel title={t('blockedIps.addTitle')}>
   <form class="ip-add" onsubmit={addBlock}>
     <input class="ip-add-ip" placeholder={t('blockedIps.ipPlaceholder')} maxlength="128" bind:value={ip} />
@@ -72,7 +67,6 @@
     <button>{t('blockedIps.add')}</button>
   </form>
 </Panel>
-{/if}
 
 <section id="blocked-ips">
   <Panel title={t('blockedIps.listTitle')}>
@@ -89,7 +83,7 @@
             <th>{t('blockedIps.colExpires')}</th>
             <th>{t('blockedIps.colCreatedBy')}</th>
             <th>{t('blockedIps.colCreatedAt')}</th>
-            {#if canBlock}<th>{t('detail.colActions')}</th>{/if}
+            <th>{t('detail.colActions')}</th>
           </tr>
         </thead>
         <tbody>
@@ -106,7 +100,7 @@
               </td>
               <td>{r.createdByUsername ?? t('common.unknown')}</td>
               <td>{fmtDate(r.createdAt)}</td>
-              {#if canBlock}<td><button onclick={() => unblock(r.ip)}>{t('blockedIps.remove')}</button></td>{/if}
+              <td><button onclick={() => unblock(r.ip)}>{t('blockedIps.remove')}</button></td>
             </tr>
           {/each}
         </tbody>

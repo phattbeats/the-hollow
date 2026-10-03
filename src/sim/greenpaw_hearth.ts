@@ -11,12 +11,10 @@
 // randomness (which of Greenpaw's in-voice feed lines plays) goes through
 // SimContext's Rng.
 //
-// Greenpaw's feed-response lines emit in English here (the sim core stays
-// language-agnostic); the client re-localizes them through src/ui/sim_i18n.ts's
-// RULES against the sim.hearth.* catalog keys (PHAA-428), the same matcher
-// pattern housing.ts uses for its housing text. Feeding is triggered from
-// Greenpaw's dialogue menu (feedGreenpaw(), an IWorld command; PHAA-482), not
-// a typed /feed chat command.
+// Player-facing /feed command text and Greenpaw's feed-response lines are
+// deliberately English here, the same documented backstop housing.ts uses for
+// its /house command text: a dedicated localization pass is tracked follow-up
+// work, not blocking this state machine (PHAA-421 ticket note).
 
 import type { SimContext } from './sim_context';
 import { dist2d, type Entity, INTERACT_RANGE } from './types';
@@ -90,8 +88,6 @@ export interface GreenpawHearthInfo {
 export interface GreenpawHearthSave {
   hunger: number;
   smoke: number;
-  // Optional (added PHAA-484): absent in older saves, load() tolerates that.
-  lastFeeder?: string | null;
 }
 
 function clamp(v: number, lo: number, hi: number): number {
@@ -109,9 +105,6 @@ export class GreenpawHearth {
   // character's first minute in the hub, not need twenty minutes to matter.
   private hunger = HUNGER_MAX * 0.6;
   private smoke = 0;
-  // The player who most recently fed him (PHAA-484): PlantSpeech's sustained-
-  // smoke lean-in names the keeper who earned the room its haze.
-  private lastFeeder: string | null = null;
 
   constructor(private readonly ctx: SimContext) {}
 
@@ -127,10 +120,6 @@ export class GreenpawHearth {
 
   get smokeValue(): number {
     return this.smoke;
-  }
-
-  get lastFeederName(): string | null {
-    return this.lastFeeder;
   }
 
   info(): GreenpawHearthInfo {
@@ -175,13 +164,7 @@ export class GreenpawHearth {
         pid: meta.entityId,
       });
     }
-    if (fed) {
-      this.lastFeeder = meta.name;
-      // PHAA-484: credits a 'feed' quest objective (q_the_wavelength), one
-      // credit per successful feed() call regardless of how many item types
-      // it consumed.
-      this.ctx.onGreenpawFedForQuests(meta);
-    } else {
+    if (!fed) {
       this.ctx.emit({
         type: 'log',
         text: this.ctx.rng.pick(NO_ITEMS_LINES),
@@ -191,8 +174,16 @@ export class GreenpawHearth {
     }
   }
 
+  // "/feed ..." chat routing (called from social/chat.ts). Returns true when
+  // the message was a /feed command (handled, even if it errored).
+  handleChat(raw: string, pid: number): boolean {
+    if (!/^\/feed\s*$/i.test(raw)) return false;
+    this.feed(pid);
+    return true;
+  }
+
   serialize(): GreenpawHearthSave {
-    return { hunger: this.hunger, smoke: this.smoke, lastFeeder: this.lastFeeder };
+    return { hunger: this.hunger, smoke: this.smoke };
   }
 
   load(save: GreenpawHearthSave | null | undefined): void {
@@ -202,9 +193,6 @@ export class GreenpawHearth {
     }
     if (typeof save.smoke === 'number' && Number.isFinite(save.smoke)) {
       this.smoke = clamp(save.smoke, 0, SMOKE_MAX);
-    }
-    if (typeof save.lastFeeder === 'string' && save.lastFeeder.length > 0) {
-      this.lastFeeder = save.lastFeeder;
     }
   }
 }

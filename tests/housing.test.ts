@@ -1,7 +1,5 @@
 // Housing v0 (the Hollow hub homesteads): claim/uniqueness/validation and the
-// serialize/load round trip, mirroring the market persistence pattern. The
-// /house chat command was removed (PHAA-482): claim/place/remove are now
-// interact-key commands only (PHAA-405), exercised directly below.
+// serialize/load round trip, mirroring the market persistence pattern.
 
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
@@ -10,13 +8,6 @@ import {
   HOLLOW_HOUSE_SLOT_OFFSETS,
 } from '../src/sim/content/hollow';
 import { Sim } from '../src/sim/sim';
-import type { SimEvent } from '../src/sim/types';
-
-function errorTexts(events: SimEvent[]): string[] {
-  return events
-    .filter((e): e is Extract<SimEvent, { type: 'error' }> => e.type === 'error')
-    .map((e) => e.text);
-}
 
 const SEED = 7;
 
@@ -98,12 +89,14 @@ describe('housing claim', () => {
     expect(asP1.plots.find((p) => p.plotId === HOLLOW_HOUSE_PLOTS[3].id)!.mine).toBe(false);
   });
 
-  it('/house is no longer a chat command (PHAA-482): it falls through to the unknown-command error', () => {
+  it('routes /house chat commands through the sim chat router', () => {
     standOnPlot(sim, p1, 0);
     sim.chat('/house claim', p1);
-    const events = sim.tick();
-    expect(errorTexts(events).some((t) => /unknown command: \/house/i.test(t))).toBe(true);
-    expect(sim.housingInfoFor(p1)!.plots.every((p) => p.ownerName === null)).toBe(true);
+    sim.chat('/house place 2 lantern', p1);
+    const plot = sim.housingInfoFor(p1)!.plots.find((p) => p.mine)!;
+    expect(plot.objects).toEqual([{ slot: 1, kind: 'lantern' }]);
+    sim.chat('/house remove 2', p1);
+    expect(sim.housingInfoFor(p1)!.plots.find((p) => p.mine)!.objects).toEqual([]);
   });
 });
 

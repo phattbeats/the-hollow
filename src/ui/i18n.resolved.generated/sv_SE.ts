@@ -85,8 +85,6 @@ export const sv_SE: EnTranslations = {
       "title": "Talanger",
       "classTab": "Klass",
       "specTab": "Specialisering",
-      "secondaryTab": "Secondary: {cls}",
-      "secondaryCapHint": "Secondary tree: {spent}/{cap} points (capped at half your shared pool).",
       "available": "Tillgänglig",
       "spent": "Lagda",
       "pointSource": "Tjäna 1 talangpoäng per nivå från nivå {first} till {cap}. Gå upp i nivå för att få fler poäng.",
@@ -290,9 +288,6 @@ export const sv_SE: EnTranslations = {
       "minutes": "{m}m",
       "lessThanMinute": "<1m",
       "lockedToast": "Du är låst till {raid}. Låses upp om {time}."
-    },
-    "worldBoss": {
-      "spawn": "{name} rises over Root Hollow!"
     },
     "compass": {
       "N": "N",
@@ -632,13 +627,6 @@ export const sv_SE: EnTranslations = {
       "unassigned": "{item} tilldelades inte och ar fritt for alla.",
       "leaderOnly": "Endast gruppledaren kan andra lootmetoden."
     },
-    "lootRollGroup": {
-      "pending": "Waiting...",
-      "need": "Need",
-      "greed": "Greed",
-      "pass": "Pass",
-      "aria": "Group roll status for {item}"
-    },
     "bags": {
       "filterGroupAria": "Filtrera väskor efter kategori",
       "filterAll": "Alla",
@@ -653,12 +641,7 @@ export const sv_SE: EnTranslations = {
       "sortName": "Namn",
       "searchPlaceholder": "Sök föremål",
       "searchAria": "Sök väskföremål efter namn",
-      "noMatch": "Inga föremål matchar dina filter.",
-      "capacity": "{used}/{total}",
-      "capacityAria": "Bag slots used: {used} of {total}",
-      "backpack": "Backpack",
-      "socketEmpty": "Empty bag slot",
-      "unequipHint": "Click to remove this bag"
+      "noMatch": "Inga föremål matchar dina filter."
     },
     "raidConvert": {
       "toPartyDone": "Din raid har omvandlats tillbaka till en grupp.",
@@ -893,106 +876,7 @@ export const sv_SE: EnTranslations = {
           "hint": "Be gemenskapen om hjälp"
         }
       }
-    },
-    "npcJournal": {
-      "readLabel": "Tell me about the journal.",
-      "readAria": "Read the journal of {name}",
-      "pageOf": "Page {index} of {total}",
-      "back": "Previous page",
-      "next": "Next page",
-      "close": "Close journal",
-      "title": "{name}'s Journal"
-    },
-    "calendar": {
-      "title": "Event Calendar",
-      "close": "Close calendar",
-      "keybindLabel": "Event Calendar",
-      "prevMonth": "Previous month",
-      "nextMonth": "Next month",
-      "dayAria": "{date}: {count} events",
-      "noEvents": "Nothing planned for this day.",
-      "allDay": "All day",
-      "bookedBy": "Booked by {name}",
-      "deleteAria": "Remove the event {title}",
-      "bookTitle": "Book a guild event",
-      "titlePlaceholder": "Event title",
-      "notePlaceholder": "Note (optional)",
-      "hourLabel": "Hour (UTC)",
-      "hourAllDay": "All day",
-      "addButton": "Book event",
-      "guildOnlyNote": "Join a guild to plan events together.",
-      "result": {
-        "created": "The event is on the guild calendar.",
-        "removed": "The event was taken off the calendar.",
-        "notInGuild": "You are not in a guild.",
-        "notOfficer": "Only officers and the Guild Master may manage guild events.",
-        "badInput": "Give the event a title and a valid day.",
-        "calendarFull": "The guild calendar is full.",
-        "eventGone": "That event is no longer on the calendar."
-      },
-      "events": {
-        "raidCall": {
-          "title": "Raid Call",
-          "note": "Wardens sound the horn: gather a party for the raid."
-        },
-        "marketDay": {
-          "title": "Market Day",
-          "note": "The Merchant expects fresh stock. A fine day to browse the World Market."
-        },
-        "fiestaNight": {
-          "title": "Fiesta Night",
-          "note": "The 2v2 Fiesta ring draws its loudest crowds tonight."
-        },
-        "arenaClash": {
-          "title": "Arena Clash",
-          "note": "Duelists flock to the Ashen Coliseum. Queue up and climb the ladder."
-        },
-        "fishingDerby": {
-          "title": "Fishing Derby",
-          "note": "Anglers line Mirror Lake. Bring a pole and swap fishing tales."
-        },
-        "delveDay": {
-          "title": "Delve Day",
-          "note": "A fine day to brave the Collapsed Reliquary with a companion at your side."
-        },
-        "moongateCommunion": {
-          "title": "Moongate Communion",
-          "note": "Pilgrims gather at the moon-sanctum under the mid-month moon."
-        }
-      }
-    },
-    "trainer": {
-      "secondaryClassSet": "You have taken up {cls} as your secondary profession."
-    },
-    "gathering": {
-      "title": "Gathering",
-      "amber": "Amber",
-      "heartwood": "Heartwood",
-      "spore": "Spore",
-      "toolTier": "Tier {tier} tool",
-      "toolNone": "No tool"
     }
-  },
-  "mailUi": {
-    "title": "The Ravenpost",
-    "subtitle": "send and collect letters",
-    "close": "Close mail",
-    "inbox": "Inbox",
-    "compose": "Compose",
-    "noPostOffice": "Step up to the Ravenpost to tend your mail.",
-    "emptyInbox": "No letters waiting. A raven will arrive when someone writes to you.",
-    "from": "From {name}",
-    "noSubject": "(no subject)",
-    "take": "Take",
-    "delete": "Delete",
-    "postageNote": "Sending a letter costs {money} postage.",
-    "recipient": "Recipient",
-    "subjectLabel": "Subject",
-    "bodyPlaceholder": "Write your letter...",
-    "send": "Send Letter",
-    "needRecipientOrText": "Name a recipient and write something before sending.",
-    "openButton": "Show me the Ravenpost.",
-    "openButtonAria": "Open the Ravenpost mail window"
   },
   "guide": {
     "brand": "World of ClaudeCraft",
@@ -1013,17 +897,14 @@ export const sv_SE: EnTranslations = {
       "social": "Socialt och grupper",
       "stats": "Karaktär och egenskaper",
       "progression": "Nivåökning och progression",
-      "hollow": "The Hollow",
       "world": "Värld",
       "quests": "Uppdrag",
       "dungeons": "Fängelsehål och raider",
       "delves": "Delver",
       "reference": "Referens",
       "controls": "Kontroller",
-      "settings": "Settings & Performance",
       "combat": "Strid",
       "talents": "Talanger",
-      "professions": "Professions",
       "arena": "Arena och PvP",
       "glossary": "Ordlista",
       "wishIKnew": "Saker jag önskar att jag visste",
@@ -1102,8 +983,6 @@ export const sv_SE: EnTranslations = {
         "sub": "Ett sammanhängande land, tre zoner, från stilla dalar till frusna toppar.",
         "levels": "Nivå {min} till {max}",
         "cta": "Se världen",
-        "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
         "valeName": "Östbäcksdalen",
         "valeBlurb": "Gröna kullar och gamla skogar där varje äventyr börjar.",
         "marshName": "Dykärrsträsket",
@@ -1191,66 +1070,6 @@ export const sv_SE: EnTranslations = {
       "mobileBody": "Pekkontroller visas automatiskt på telefoner och surfplattor: en rörelsespak till vänster, dra var som helst till höger för att titta, och knappar på skärmen för dina förmågor och menyer.",
       "controllerHeading": "På handkontroll",
       "controllerBody": "Handkontroller fungerar också, och stöd för handkontroll är på som standard. Vänsterspaken förflyttar dig, högerspaken styr kameran, och ansikts- och axelknapparna täcker dina förmågor, hopp och interaktion. Öppna valfritt fönster för att ta fram en pekare på skärmen för menyer. Du kan binda om knapparna och justera spakens dödzon, kamerahastighet, vibration och inverterat sikte i handkontrollsinställningarna under alternativ."
-    },
-    "settingsPage": {
-      "heading": "Settings & Performance",
-      "intro": "Make the game look its best or run its fastest. Three ready-made loadouts, plus what every graphics option really does.",
-      "wherePath": "Everything on this page lives in the game: press Esc and look in Graphics, Interface, and the Performance Overlay panel.",
-      "fairnessTitle": "Fair by design",
-      "fairnessBody": "No option here trades beauty for power. Lower settings shed cosmetic polish only, never information you fight with: your own debuffs and crowd control, party and raid member health, the target and boss cast bar, target health, and enemy positions are identical from Low to Ultra. Playing on a modest machine is never a handicap.",
-      "loadoutsHeading": "Three ready-made loadouts",
-      "loadoutsIntro": "Start from the loadout that sounds like your machine, then adjust one option at a time until it feels right.",
-      "recommended": "Recommended",
-      "whyLabel": "Why it works:",
-      "tagReload": "after reload",
-      "fpsTitle": "Best FPS",
-      "fpsTagline": "For older laptops, integrated graphics, and battery play.",
-      "fpsWhy": "Graphics Quality is the master switch, and Render Quality is the strongest slider: at 50 to 70% the world draws roughly half the pixels while the interface stays perfectly sharp.",
-      "balancedTitle": "Balanced",
-      "balancedTagline": "The sweet spot for most machines, and our default advice.",
-      "balancedWhy": "Medium brings real shadows and full materials; High adds ambient occlusion and bloom. Below Ultra a built-in safety net quietly thins effects for a moment when a big fight spikes, then restores them, so Balanced stays smooth without babysitting.",
-      "visualsTitle": "Best Visuals",
-      "visualsTagline": "Screenshot mode for powerful desktop machines.",
-      "visualsWhy": "Ultra renders at the highest resolution your display offers with the richest lighting. It also switches the safety net off, and it is desktop-only: phones and tablets top out at High to keep heat and battery in check.",
-      "value50to70": "50 to 70%",
-      "value90to100": "90 to 100%",
-      "value100": "100%",
-      "valueHighOrMedium": "High on a gaming PC, Medium on a laptop",
-      "valueOnOptional": "On (optional)",
-      "howHeading": "How the options behave",
-      "factDetectTitle": "The game tunes itself first",
-      "factDetectBody": "On your first launch the game reads your device and picks a sensible tier, from Low on a modest phone to Ultra on a strong desktop. Any choice you make yourself always wins.",
-      "factReloadTitle": "Two kinds of options",
-      "factReloadBody": "Graphics Quality and the Advanced pickers take effect after a reload, and the panel offers a Reload Now button when needed. Every other option applies the moment you change it.",
-      "factGovernorTitle": "A built-in safety net",
-      "factGovernorBody": "On every tier below Ultra, the game quietly thins effects for a moment when a big fight spikes, then restores them. Choosing Ultra tells it you would rather keep every detail.",
-      "advancedHeading": "The Advanced preset: mix your own",
-      "advancedBody": "Advanced starts from the High tier and unlocks four extra pickers, so you can spend your frames where you actually notice them: Terrain Detail, Foliage Density, Effects and Lighting, and Shadow Quality. Like Graphics Quality, they apply after a reload.",
-      "advancedMixes": "Two favorite mixes: keep Shadow Quality on High and set Effects and Lighting to Low for a crisp, glow-free look that runs light, or do the reverse to keep the bloom and soften the shadows.",
-      "tableHeading": "Every option, explained",
-      "colSetting": "Setting",
-      "colDoes": "What it does",
-      "colImpact": "FPS impact",
-      "impactNone": "None",
-      "impactLight": "Light",
-      "impactModerate": "Moderate",
-      "impactHeavy": "Heavy",
-      "rowGraphicsQuality": "The master switch. Each step changes resolution, shadows, materials, foliage, and lighting effects together. The biggest single difference you can make.",
-      "rowRenderQuality": "Draws the 3D world at a lower internal resolution and scales it up; the interface stays sharp. The strongest instant slider on weaker machines and high-resolution screens.",
-      "rowFieldOfView": "How much of the world fits on screen, from a zoomed 55 to a sweeping 100 degrees. A comfort choice; wider views draw slightly more.",
-      "rowBrightness": "Scene exposure, darker or brighter. Pure preference.",
-      "rowWeather": "Ambient rain and snow. Atmosphere only, and switching it off saves a little during storms.",
-      "rowBrowserEffects": "How fancy the interface itself is allowed to be: glass blur, glow, animated menus. Auto matches your browser; the 3D world is untouched either way.",
-      "rowTerrainDetail": "Rich, blended ground textures versus a simpler, faster terrain look.",
-      "rowFoliageDensity": "How far and how thick the grass grows around your character.",
-      "rowEffectsQuality": "Bloom, ambient occlusion, and how many torches and spells cast real light. The single biggest saving among the Advanced pickers.",
-      "rowShadowQuality": "Shadow crispness. Low keeps shadows but softens their edges.",
-      "rowFrostedPanels": "A frosted-glass blur behind windows. Pretty, and exactly the kind of effect a weaker browser feels; leave it off for the classic crisp look.",
-      "rowReduceMotion": "Removes interface animations so windows appear instantly. An accessibility option first, with a small performance bonus.",
-      "rowPerfOverlay": "An on-screen readout of FPS, frame time, and more. Turn it on while you tune this page, then hide it again.",
-      "tableFoot": "Looking for a draw-distance slider or an FPS cap? There is nothing to hunt for: view distance is part of each quality tier, and frame pacing follows your display.",
-      "mobileTitle": "On phones and tablets",
-      "mobileBody": "Mobile manages more for you: the game picks the tier, holds resolution a touch lower to protect battery and heat, and keeps the highest tiers desktop-only. The loadouts above still apply; phones simply top out at High."
     },
     "combat": {
       "intro": "Strid följer välbekanta klassiska MMO-regler. Du behöver aldrig studera något av det för att spela bra, detta är bara formen för hur strider fungerar.",
@@ -1361,10 +1180,7 @@ export const sv_SE: EnTranslations = {
       "fullKitHeading": "Hela uppsättningen",
       "fullKitNote": "Varje förmåga denna klass kan lära sig, i den ordning den blir tillgänglig. Talanger avgör vilka som bär ditt bygge.",
       "petsHeading": "Demoner",
-      "petsNote": "Häxmästare frammanar demoner att slåss vid sin sida, var och en lämpad för en annan uppgift.",
-      "professionsTitle": "Pair with a second class",
-      "professionsNote": "Any class above can also be taken as a profession, a secondary class that opens a second talent tree without dropping your primary role. See how professions work before you pick.",
-      "professionsLink": "Professions and multiclassing"
+      "petsNote": "Häxmästare frammanar demoner att slåss vid sin sida, var och en lämpad för en annan uppgift."
     },
     "classHook": {
       "warrior": "En obeveklig frontlinjekämpe som förvandlar varje mottaget slag till bränsle för nästa.",
@@ -1523,31 +1339,6 @@ export const sv_SE: EnTranslations = {
         "desc": "Fjälliga, ormlika ting från de gamla djupen. Sällsynta, stolta och långt starkare än de ser ut."
       }
     },
-    "hollowPage": {
-      "heading": "The Hollow",
-      "intro": "Past the shrine gate lies the vase: the clearing every new hero wakes into, and always returns to. It is shared ground, one hub for the whole realm, home to your first faces, your first quests, and your first home.",
-      "greeting": "you're back, that's a blessin'... got a couple sacred matters queued up, same wavelength as last time. c'mere a minute...",
-      "greeter": "Brother Greenpaw, at the vase",
-      "vaseHeading": "The vase",
-      "vaseBody": "Everyone begins at the vase, an old, listening presence the Hollow is built around. It asks for small things, an emberbulb burned or a cave morsel fed, and seems to notice when it gets them. Downhill of it, a cave mouth opens onto the Under-Shrine, and to either side lie plots where you can raise a home of your own.",
-      "figuresHeading": "Who tends it",
-      "figuresBody": "Two people keep the vase running, and you will meet them both in your first minutes.",
-      "npcFmt": "{name}, {title}",
-      "greenpawBody": "The vase's sole caretaker and the one who hands out its earliest errands. Self-appointed and the first to admit it, he is the closest thing the Hollow has to a guide.",
-      "yarrowBody": "Keeper of the second calling: every class can learn a profession from her, mirrored across the vase from Greenpaw.",
-      "questsHeading": "Your first errands",
-      "questsBody": "Greenpaw's own chain of quests comes first: four short errands that teach the vase's rhythm before sending you on into the wider Hollow.",
-      "questBurnsBody": "A cave-grown bulb the vase burns for light, gathered a handful at a time.",
-      "questFillsBody": "A cave-fed morsel that answers a quieter hunger, gathered the same way.",
-      "questWavelengthBody": "An introduction to the vase's second calling, and to feeding it yourself.",
-      "questKeepLitBody": "Turning a single favor into a standing habit, three times over.",
-      "housingHeading": "A home of your own",
-      "housingBody": "{n} house plots ring the vase, waiting to be claimed and furnished as your own private corner of the Hollow.",
-      "shrineHeading": "The Under-Shrine",
-      "shrineBody": "A cave mouth beside the vase opens onto the Under-Shrine, the Hollow's own instanced descent and every new hero's first real test of a party.",
-      "outsiderHeading": "How the rest of the world sees it",
-      "outsiderBody": "Beyond the shrine gate, most folk have never heard of the vase at all. The few who have tend to write off its keepers as hippies, freaks, or worse, ordinary undesirables who talk to a jar. What little else gets around comes from stranger sightings still: a follower who wandered too far from the clearing, or one of its small green creatures turning up somewhere it plainly should not have."
-    },
     "worldPage": {
       "heading": "Världen",
       "intro": "World of ClaudeCraft är ett enda sammanhängande land som du korsar till fots, tre zoner lagda från söder till norr. Det finns ingen snabbresa, så resan är en del av äventyret.",
@@ -1556,19 +1347,15 @@ export const sv_SE: EnTranslations = {
       "mapSub": "Tre zoner, från söder till norr, var och en ett steg högre i nivå. Följ uppdragsspåret så bär landet dig från dalen till topparna.",
       "places": "Anmärkningsvärda platser",
       "residents": "Vem du kommer att möta",
-      "hollowReachesBlurb": "The calm ground just beyond the shrine gate, where new arrivals cut their teeth on wolves and boars around Fallow Acres and Root Hollow.",
       "valeBlurb": "Den gröna startdalen, där nya hjältar prövar sina krafter på vargar och banditer kring staden Eastbrook.",
       "marshBlurb": "Ett dränkt land av dimma och ruiner. Murlocer svärmar i grundvattnet och något äldre rör sig under ytan, bevakat från bro-staden Fenbridge.",
       "peaksBlurb": "Vindpiskade åsar och gamla gruvverk som klättrar mot rikets kallaste, högsta faror, hållna av utposten Highwatch.",
-      "hollowReachesGreeting": "I keep the Reaches to a calendar, or I keep trying. Mind the loose dirt, and do not touch the register.",
-      "hollowReachesGreeter": "Verger Zebediah, Root Hollow",
       "valeGreeting": "Håll ditt svärd nära. Dalen är inte vad den var.",
       "valeGreeter": "Marskalk Redbrook, Eastbrook",
       "marshGreeting": "Stanna vid porten. Bortom de vassen sköter myren dödandet åt oss.",
       "marshGreeter": "Väktare Fenwick, Fenbridge",
       "peaksGreeting": "Tvåhundra år har denna mur hållit. Den ska inte brista på min vakt, men den stönar.",
       "peaksGreeter": "Kapten Thessaly, Highwatch",
-      "hollowReachesPlaceNotes": "The Hollow Gate is the shrine portal reopening onto open ground. West at Fallow Acres, Sexton Faddick keeps the wolves off land meant for building; east at Root Hollow, Verger Zebediah keeps a boar-plagued patch to its calendar. Mossbank, by the lake, is a quiet place to fish.",
       "valePlaceNotes": "Eastbrook är din första hembas. Wolf Run och Boar Meadow är milda jaktmarker; Mirror Lake är stilla vatten att fiska i; Webwood och Copper Dig döljer spindlar och malmgiriga grävare; ett Bandit Camp och Fallen Chapel rymmer hårdare arbete; Reliquary Hill leder ner i Collapsed Reliquary, rikets första delve; och Brightwood Glade är en lugn, solbelyst lund i norr.",
       "marshPlaceNotes": "Fenbridge vaktar den enda torra vägen. Prowler Reeds och Deepfen Shallows kryllar av träskbestar och murlocer; Widow Thicket är tjockt spunnet med väv; Drowned Chapel och Troll Mounds rymmer äldre faror; Gravecaller Encampment är kulten nedgrävd, och Den sjunkna bastionen är myrens instansierade hjärta.",
       "peaksPlaceNotes": "Highwatch håller muren. Stalker Ridge och Deeprock Burrows tillhör åskatter och kobolder; Ogre Foothills och Drogmar's War-Camp åt brutaler till salu; Stormcrag sprakar av elementarer och Glimmermere lyser nedanför den; Wyrmcult Tents och Revenant Fields omger kultens höglänta mark, med Gravlindormens helgedom på dess topp.",
@@ -1589,7 +1376,6 @@ export const sv_SE: EnTranslations = {
       "storyTitle": "En tråd löper genom alltihop",
       "storyBody": "Redan från dina första ärenden i Östbäck är något fel med de döda. En kult är i farten, och spåret leder norrut genom varje zon. Följ det för att få veta vem som står bakom.",
       "soloNote": "Huvudberättelsen kan klaras på egen hand ända fram till varje kapitels final, som är en fängelsehåla för fem spelare.",
-      "sagaGateNote": "This saga is real, completed content, the same trail that opens once the road north does. It is not where a new hero starts today; that is the vase, in the Hollow.",
       "typesTitle": "De sorters uppdrag du kommer att se",
       "typesBody": "De flesta uppdrag har en av några bekanta former. Skärmens spårare stavar exakt ut vad var och ett vill, så du lämnas aldrig att gissa.",
       "typeSlayTitle": "Dräp",
@@ -1691,21 +1477,6 @@ export const sv_SE: EnTranslations = {
       "resetNote": "Du kan återställa dina talanger när som helst du är utanför strid, så ett tidigt val är aldrig en fälla. Prova saker, se vad du gillar, och ändra dig fritt.",
       "specsHeading": "Specialiseringar per klass",
       "specsBody": "Varje klass har en handfull specialiseringar, var och en med sin egen roll och ett kännetecknande fokus. Här är formen på dem alla. Öppna en klass för dess fullständiga uppsättning."
-    },
-    "professionsPage": {
-      "heading": "Professions and multiclassing",
-      "intro": "A profession is a second class you train alongside your primary one, opening a second talent tree and a slice of its ability kit without leaving your first role behind.",
-      "whatHeading": "What a profession is",
-      "whatBody": "Every class can be taken as a profession by any other class. Pairing one adds a second talent tree and lets you borrow a few of its abilities, so a Warrior can dabble in the Priest's healing or a Mage pick up a Rogue's sting. Your primary class still sets your role, your resource, and your identity; the profession bends the build without replacing it.",
-      "howHeading": "How to pick one",
-      "howBody": "Professions open at level 10, the same moment your first talent tree unlocks. Visit a Profession Trainer in the hub town, open their dialog, and pick the class you want as your secondary.",
-      "costBody": "Your first pick is free. Changing to a different class later costs gold, and the fee steps up each time you swap, so an early decision is never punished while later reshuffles carry a small price.",
-      "resetTitle": "Nothing is locked in",
-      "resetNote": "You can refund points in either tree any time you are out of combat, and you can swap your secondary class at the same trainer for an escalating gold fee. An early profession pick is a first draft, not a commitment.",
-      "talentsHeading": "How talents split across the two trees",
-      "talentsBody": "A profession adds a whole second talent tree beside your primary one, but the two draw from the same pool of points. The secondary tree can hold at most half of that pool, so your primary class always stays the heart of the build. A point dropped into the secondary tree unlocks its abilities, and those abilities cast from your primary resource, not theirs: a Priest profession on a Warrior spends rage to heal, not mana.",
-      "trainersHeading": "Finding a trainer",
-      "trainersBody": "A Profession Trainer stands in the hub town near the shrine. Any single trainer can teach you any class as a profession (other than your primary), so one visit is enough to set or change your secondary."
     },
     "arenaPage": {
       "heading": "Arena och PvP",
@@ -1933,11 +1704,6 @@ export const sv_SE: EnTranslations = {
       "home": "Tillbaka till översikten"
     }
   },
-  "readableUi": {
-    "prompt": {
-      "read": "Read"
-    }
-  },
   "coldOpen": {
     "title": "The Hollow",
     "wakeBody": "You come to on warm ground, no memory of your name, your people, or how you got here. Green light pools from a great vase ahead, and something about it feels like it has been waiting.",
@@ -1945,13 +1711,6 @@ export const sv_SE: EnTranslations = {
     "continue": "Continue",
     "begin": "Begin",
     "skip": "Skip"
-  },
-  "apiError": {
-    "crossSiteRejected": "Cross-site request rejected.",
-    "notAuthenticated": "Not authenticated.",
-    "readOnlyToken": "This token is read-only.",
-    "characterNotFound": "Character not found.",
-    "rateLimited": "Too many attempts. Wait a minute and try again."
   },
   "skinEvent": {
     "title": "Kosmetisk förvaring",
@@ -2084,9 +1843,6 @@ export const sv_SE: EnTranslations = {
     "realm": "Rike",
     "newCharacter": "Ny karaktär",
     "appearance": "Utseende",
-    "sex": "Sex",
-    "sexMale": "Male",
-    "sexFemale": "Female",
     "class": "Klass",
     "name": "Namn",
     "chromaOption": "Nyans {n}",
@@ -2391,71 +2147,6 @@ export const sv_SE: EnTranslations = {
       "toolSlips": "Det verktyget glider av det här låset.",
       "lockJammed": "Låset har kärvat bortom upplåsning. Rensa fördjupningen igen för ett nytt försök.",
       "lastPickSnaps": "Den sista dyrken går av. Låset kärvar. Kistan är förlorad om du inte rensar fördjupningen igen."
-    },
-    "gathering": {
-      "nothingToHarvest": "That corpse has nothing to harvest.",
-      "alreadyHarvested": "This corpse has already been harvested."
-    },
-    "hearth": {
-      "tooFar": "You need to be near Brother Greenpaw to feed him.",
-      "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
-      "noItems2": "nothin' on you but good intentions, huh... intentions don't stoke a furnace.",
-      "emberbulb1": "now THAT'S fuel... watch her breathe, friend...",
-      "emberbulb2": "the furnace takes it slow and clean, just like she likes it...",
-      "emberbulb3": "stoked and smokin'... the wavelength's openin' up already, i can feel it.",
-      "morsel1": "...oh, bless you, friend. bless you and the ground you walk on.",
-      "morsel2": "stomach quits singin' hymns for a minute. much obliged...",
-      "morsel3": "a good morsel, is like a good friend... rare, and worth the walk.",
-      "helpLine": "Greenpaw: /feed (bring what burns or what fills, from near the vase)."
-    },
-    "house": {
-      "mustStandToClaim": "You must stand on a homestead plot in the Hollow to claim.",
-      "alreadyOwn": "You already own a homestead in the Hollow.",
-      "noFreePlot": "There is no free homestead plot here. Stand on one to claim.",
-      "plotTaken": "That homestead already has an owner.",
-      "claimed": "The homestead is yours. Decorate it with /house place <slot> <kind>.",
-      "noHomestead": "You do not own a homestead. Claim one with /house claim.",
-      "mustBeInHollow": "You must be in the Hollow to tend your homestead.",
-      "slotRange": "Slots are numbered 1 to {count}.",
-      "unknownKind": "Unknown decor kind. Kinds: {kinds}.",
-      "placed": "Placed the {kind} on slot {slot}.",
-      "slotEmpty": "That slot is already empty.",
-      "cleared": "Cleared slot {slot}.",
-      "readoutNone": "You own no homestead. Stand on a free plot in the Hollow and type /house claim.",
-      "readoutMine": "Your homestead: {plotId}. Decor: {decor}.",
-      "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
-      "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
-    },
-    "bags": {
-      "full": "Your bags are full.",
-      "socketsFull": "All your bag slots are full.",
-      "swapTooManyItems": "You have too many items to swap to that bag.",
-      "removeTooManyItems": "You have too many items to remove that bag.",
-      "tradeSpace": "Trade failed: not enough bag space."
-    },
-    "bank": {
-      "tooFar": "You are too far from the banker.",
-      "noQuestItems": "You cannot store quest items in the bank.",
-      "full": "Your bank is full.",
-      "expansionCapped": "Your bank cannot be expanded further.",
-      "cannotAfford": "You cannot afford that bank expansion.",
-      "purchased": "You purchase additional bank slots."
-    },
-    "homestead": {
-      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
-      "tooCloseGate": "Too close to the gate. Move further out.",
-      "tooCloseWater": "Too close to the water.",
-      "tooCloseGraveyard": "Too close to the graveyard.",
-      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
-      "tooCloseRoad": "Too close to the road.",
-      "tooCloseOther": "Too close to another homestead.",
-      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
-      "alreadyOwn": "You already own a homestead.",
-      "claimed": "The ground is yours. This homestead is claimed.",
-      "readoutMine": "Your homestead sits at ({x}, {z}).",
-      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
-      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
-      "helpLine": "Homestead: /homestead, /homestead claim."
     }
   },
   "lockpickUi": {
@@ -2648,21 +2339,6 @@ export const sv_SE: EnTranslations = {
     },
     "chest": {
       "flavor": "De döda har överlämnat det de kan undvara."
-    }
-  },
-  "boarball": {
-    "queue": {
-      "join": "You join the boarball queue. Stand by for three more players…",
-      "leave": "You leave the boarball queue."
-    },
-    "log": {
-      "welcome": "Welcome to boarball! Shoot, pass, and outscore the other team.",
-      "kickoff": "Kickoff!",
-      "over": "Full time! Returning to the world…"
-    },
-    "error": {
-      "tooFar": "You're not close enough to the ball.",
-      "noTeammate": "No teammate targeted."
     }
   },
   "fiesta": {
@@ -2859,7 +2535,6 @@ export const sv_SE: EnTranslations = {
     "rendererFailed": "Kunde inte starta renderaren: försök läsa om sidan. {error}",
     "enterTimeout": "Kunde inte gå in i världen. Anslutningen tog för lång tid. Körs spelservern?",
     "connectionLost": "Anslutningen till servern bröts.",
-    "reconnecting": "Connection lost. Reconnecting...",
     "connectionRejected": "Servern stängde anslutningen."
   },
   "errors": {
@@ -2889,10 +2564,8 @@ export const sv_SE: EnTranslations = {
       "notAuthenticated": "Inte autentiserad.",
       "accountBanned": "Detta konto har bannlysts.",
       "webLoginOnly": "Inloggningar är endast tillåtna från spelklienten.",
-      "crossSiteRejected": "Cross-site request rejected.",
       "accountSuspended": "Detta konto är avstängt till {date}.",
       "alreadyInWorld": "Karaktären är redan i världen.",
-      "tooManyOnline": "Only one of your characters may be in the world at a time.",
       "takenOver": "Din karaktär togs över av en annan session.",
       "renameBeforeEntering": "Denna karaktär måste byta namn innan den går in i världen.",
       "renameNotPermitted": "Det är inte tillåtet att byta namn på denna karaktär."
@@ -3011,9 +2684,7 @@ export const sv_SE: EnTranslations = {
       "druid": "Druider kanaliserar naturen, läker sår, snärjer fiender och skiftar till djurformer för försvar eller skada."
     },
     "aria": "Klassdetaljer för {className}: roll {role}. Startvärden: Styrka {str}, Smidighet {agi}, Uthållighet {sta}, Intellekt {int}, Ande {spi}.",
-    "statBarAria": "{stat}: {value} av 25",
-    "classPairLabel": "{primary} / {secondary}",
-    "classPairAria": "{primary}, secondary {secondary}"
+    "statBarAria": "{stat}: {value} av 25"
   },
   "mobilePreflight": {
     "title": "Spela i liggande helskärm",
@@ -3642,7 +3313,6 @@ export const sv_SE: EnTranslations = {
       "offGlobalCooldown": "Utanför den globala nedkylningen",
       "friendlyTarget": "Vänligt mål",
       "enemyTarget": "Fiendemål",
-      "selfOnly": "Self only",
       "damageRange": "{min} till {max}",
       "finisherDamage": "{base} plus {perCombo} per kombopoäng"
     },
@@ -3686,7 +3356,6 @@ export const sv_SE: EnTranslations = {
     "dialog": {
       "close": "Stäng uppdragsdialog",
       "greetingFallback": "Var hälsad.",
-      "chat": "Let's talk a while.",
       "availableQuestAria": "Tillgängligt uppdrag: {name}",
       "readyQuestAria": "Uppdrag redo att lämnas in: {name}",
       "discussQuest": "Diskutera {name}.",
@@ -3696,22 +3365,6 @@ export const sv_SE: EnTranslations = {
       "browseGoodsAria": "Bläddra bland varor från {name}",
       "worldMarket": "Visa mig Världsmarknaden.",
       "worldMarketAria": "Öppna Världsmarknaden",
-      "trainSecondary": "Train me in a secondary profession.",
-      "trainSecondaryAria": "Train a secondary profession with {name}",
-      "feedHearth": "I have something for the hearth.",
-      "feedHearthAria": "Feed the hearth",
-      "trainerTitle": "Secondary Profession",
-      "trainerLevelLocked": "Unlocks at level {level}.",
-      "trainerCurrent": "Current",
-      "trainerFree": "Free",
-      "trainerPickAria": "Train as secondary {cls}: {cost}",
-      "trainerNeedsGold": "Not enough gold",
-      "trainerConfirmTitle": "Confirm secondary class",
-      "trainerConfirmBody": "Train as {cls} for {cost}?",
-      "trainerConfirmYes": "Yes, train me",
-      "trainerConfirmNo": "No, go back",
-      "trainerHowTitle": "How do secondary professions work?",
-      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities convert their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
       "accept": "Acceptera",
       "decline": "Avböj",
       "continue": "Fortsätt",
@@ -3750,11 +3403,6 @@ export const sv_SE: EnTranslations = {
   "housingUi": {
     "claimedBanner": "You claim this plot as your home.",
     "ownerBanner": "This is {name}'s homestead.",
-    "prompt": {
-      "claim": "Claim this plot",
-      "manage": "Manage your homestead",
-      "visit": "Visit {name}'s home"
-    },
     "window": {
       "title": "Your Homestead",
       "close": "Close homestead",
@@ -3808,8 +3456,7 @@ export const sv_SE: EnTranslations = {
       "drink": "Dryck",
       "tool": "Verktyg",
       "potion": "Trolldryck",
-      "elixir": "Elixir",
-      "bag": "Bag"
+      "elixir": "Elixir"
     },
     "stats": {
       "armor": "Rustning",
@@ -3851,11 +3498,7 @@ export const sv_SE: EnTranslations = {
       "useManaPotion": "Använd: Återställer omedelbart {amount} mana. Användbar i strid. 1 min nedkylning.",
       "clickUseInstant": "Klicka för att använda omedelbart i strid",
       "clickUse": "Klicka för att använda",
-      "clickBuyback": "Klicka för att köpa tillbaka",
-      "bagSlots": "{slots} Slot Bag"
-    },
-    "error": {
-      "requiresLevelToEquip": "Requires level {level} to equip."
+      "clickBuyback": "Klicka för att köpa tillbaka"
     },
     "bags": {
       "title": "Väskor",
@@ -5137,21 +4780,6 @@ export const sv_SE: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Monarkens krona"
       },
-      "linen_pouch": {
-        "name": "Linnepåse"
-      },
-      "travelers_knapsack": {
-        "name": "Vandrarens Ryggsäck"
-      },
-      "wolfhide_satchel": {
-        "name": "Vargskinnsväska"
-      },
-      "gravewoven_bag": {
-        "name": "Gravvävd Väska"
-      },
-      "mistcallers_duffel": {
-        "name": "Mistcallers Sjösäck"
-      },
       "bristleback_maul": {
         "name": "Borstryggens klubba"
       },
@@ -5495,17 +5123,7 @@ export const sv_SE: EnTranslations = {
         "name": "Glödknöl"
       },
       "first_cutting": {
-        "name": "En stickling",
-        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
-      },
-      "greenpaw_bead": {
-        "name": "En pärla från bandoleret"
-      },
-      "keeper_coal": {
-        "name": "Ett Kol Som Aldrig Svalnade"
-      },
-      "willow_sprig": {
-        "name": "En videkvist"
+        "name": "En stickling"
       },
       "witness_root_cincture": {
         "name": "Vittnesrotens gördel"
@@ -5513,24 +5131,6 @@ export const sv_SE: EnTranslations = {
       "shrine_diary_page": {
         "name": "Sönderriven Dagbokssida",
         "flavorText": "...räknade fyrtio dagar vid ljusets sken innan jag tappade tråden. Mörkret här nere glömmer Honom inte, även om Han har glömt denna plats. Om hägern cirklar lågt, säg till Klockaren att veken fortfarande brinner..."
-      },
-      "heartwood_splinter": {
-        "name": "Kärnvedsplitta",
-        "flavorText": "Varm att röra vid, långt efter att trädet den kom från slutat röra sig."
-      },
-      "bloomcrown_pauldrons": {
-        "name": "Blomkronans Axelskydd"
-      },
-      "verdantguard_mantle": {
-        "name": "Den Gröna Väktarens Mantel"
-      },
-      "worn_prayer_token": {
-        "name": "Nött Bönepollett",
-        "flavorText": "...slät på ena sidan av en tumme som inte är min, som nött samma grunda fåra i hundra andra som denna före den här, eller så vill högen här nere få dig att tro. en tumme nöter inte hundra polletter. många tummar nöter dock en och samma fåra..."
-      },
-      "tally_shard": {
-        "name": "Skärva med Räknemärken",
-        "flavorText": "...märken i femtal, djupt ristade, överstrukna varje gång räkningen gick runt. hundratals femtal innan överstrykningarna upphör, och den sista raden blev aldrig färdig..."
       },
       "reliquary_plate_chest": {
         "name": "Relikvarievaktens ringbrynja"
@@ -5597,33 +5197,6 @@ export const sv_SE: EnTranslations = {
       },
       "event_skin_token": {
         "name": "Mystiskt kosmetiskt förråd"
-      },
-      "flint_amber_pick": {
-        "name": "Flintbärnstenshacka"
-      },
-      "bonewood_amber_pick": {
-        "name": "Benträbärnstenshacka"
-      },
-      "starleaf_amber_pick": {
-        "name": "Stjärnbladbärnstenshacka"
-      },
-      "flint_bark_axe": {
-        "name": "Flintbarkyxa"
-      },
-      "bonewood_bark_axe": {
-        "name": "Benträbarkyxa"
-      },
-      "starleaf_bark_axe": {
-        "name": "Stjärnbladbarkyxa"
-      },
-      "flint_spore_sickle": {
-        "name": "Flintsporskära"
-      },
-      "bonewood_spore_sickle": {
-        "name": "Benträsporskära"
-      },
-      "starleaf_spore_sickle": {
-        "name": "Stjärnbladsporskära"
       },
       "deathless_heartwood": {
         "name": "Kärnved från den odödliga kronan"
@@ -5768,9 +5341,6 @@ export const sv_SE: EnTranslations = {
       "deacon_voss": {
         "name": "Diakon Voss"
       },
-      "training_dummy": {
-        "name": "Training Dummy"
-      },
       "ridge_stalker": {
         "name": "Åssmygare"
       },
@@ -5900,9 +5470,6 @@ export const sv_SE: EnTranslations = {
       "acolyte_tessa": {
         "name": "Akolyten Tessa"
       },
-      "boarball_ball": {
-        "name": "Boarball"
-      },
       "ironvein_foreman": {
         "name": "Järnådersförman"
       },
@@ -6019,9 +5586,6 @@ export const sv_SE: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Vittnesroten"
-      },
-      "heartwood_colossus": {
-        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
@@ -6029,11 +5593,6 @@ export const sv_SE: EnTranslations = {
         "name": "Köpmannen",
         "title": "Väktare av Världsmarknaden",
         "greeting": "Välkommen till Världsmarknaden, {className}. Köp av varje äventyrare i riket - eller ställ ut dina egna varor och låt mynten finna dig."
-      },
-      "the_ravenpost": {
-        "name": "The Ravenpost",
-        "title": "Keeper of the Mail",
-        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
       },
       "marshal_redbrook": {
         "name": "Marskalk Redbrook",
@@ -6135,11 +5694,6 @@ export const sv_SE: EnTranslations = {
         "title": "Relikvarievaktare",
         "greeting": "Relikvariet där nere har förskjutits igen."
       },
-      "elder_yarrow": {
-        "name": "Elder Yarrow",
-        "title": "Profession Trainer",
-        "greeting": "Every build starts as a question. Which second calling speaks to you?"
-      },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
         "title": "Tidvattenväktare",
@@ -6148,98 +5702,17 @@ export const sv_SE: EnTranslations = {
       "brother_greenpaw": {
         "name": "Broder Gröntass",
         "title": "Förste profeten (självutnämnd)",
-        "greeting": "hej där, resenär. fångade du vasen på gott humör idag, eller är det bara jag igen... kom hit, har ett par heliga angelägenheter som behöver skötas. mest mellanmål. samma sak, om man är Gröntass.",
-        "introLines": {
-          "0": "uhh... hi. hi. didn't hear you come up, i was someplace else, someplace green... you got the just-woke-up look, friend. i know it well, i wear it most days...",
-          "1": "name's greenpaw. brother greenpaw, first prophet, self-appointed, which the vase'll tell you means exactly nothin', and he's not wrong, but somebody's gotta tend him...",
-          "2": "this here's the hollow. was a whole tribe once, big doings, so they tell me, and now it's mostly me, the vase, and whatever's breathin' down in that cave... anyway. he's hungry, i'm hungry, same wavelength. c'mere, got a couple sacred matters need tendin'."
-        },
-        "dialogNode": {
-          "hearth": "howdy, friend, back at the vase huh, he's quiet today which means he's either listenin' real hard or straight up ignorin' me, and honestly i respect both, those are my only two settings too... anyway how's the hollow been treatin' you, good, bad, you got a snack on you, no? okay just checkin', askin' for a friend, the friend is me...",
-          "warmed": "...whoa, okay, that's real nice of you to say, friend, real nice, didn't expect it, most folks just b-line for the gate soon as they can... you're alright, you know that, you're alright to a greenpaw degree even, and i don't hand that out for free... i'd buy stock in ya if stock was a thing i had, buy the new friends, sell the old omens, that's just economics...",
-          "vase": "same ol' same ol', he wants smoke, wants tendin', wants somebody sittin' close so it feels like a conversation even when it ain't one, which... huh. that's most conversations, ain't it. whoa. okay, anyway, i talk at him plenty and he ain't said a word back in, uh, ever, but that's fine, that's the whole deal really, to a greenpaw degree... wait, what were we talkin' about... oh. right. him. he's fine. probably hungry. same.",
-          "faith": "believe's a big word, friend, i just tend, tendin' i can do, got two hands and a lighter and that's about the whole résumé... whether he's listenin' or not i couldn't tell ya, but the smoke smells good and it don't judge me neither, which puts it ahead of most things with ears, so, wavelength's covered either way. indeed.",
-          "stung": "...oof, yeah okay, ouch friend, dang... i mean maybe, i dunno, i've had them thoughts too, on the real cold mornings when nobody's comin' up the path and the vase won't even sigh at me... but i'm still here so, that's gotta count for somethin', right? right. anyway you want a snack, i got a snack, changin' the subject. F.",
-          "mended": "s'all good, friend, it's all gambit, always has been, that's the cowboy in me talkin', don't ask him what gambit means, he don't know neither, he just says it real confident... place like this earns a hard word now'n then, i ain't gonna pretend it don't... you came back and said sorry though, and that means somethin', or it means you want somethin', either way we're square, you and me, same wavelength, snack's on me later if you want one.",
-          "tribe": "big tribe, way back, so the old marks say anyway, i can't read good but i can count and there's a whole lotta fives scratched down there, crossed out, more fives than one hand shoulda made, that's math i can't get around... kept him lit a long time before it got down to just me, i don't know where everybody went, friend, i really don't, i get a feelin' about it sometimes, on the wavelength, but the feelin' won't finish its own sentence so, neither will i i guess... wick can't go out on my watch though. that part i know for sure.",
-          "confide": "...that's kind of you to say, friend, real kind... look, i talk at you half 'cause the vase don't answer and half 'cause i get scared, some nights, that nobody's gonna come up that path ever again and it'll just be me and him and the quiet... so. thanks for comin' up it. that's the sacred part, if you ask me. ...anyway. you got a snack on you? askin' for the vase. wavelength's hungry too."
-        },
-        "dialogChoice": {
-          "kind": "it's growin' on me, greenpaw. like, for real, for real.",
-          "ask": "so what's the vase been sayin', these days?",
-          "blunt": "it's a graveyard with a mascot, greenpaw. that's it.",
-          "tribe": "tell me about the tribe, the one before you.",
-          "warm_bye": "i'll let you get on with it then.",
-          "vase_more": "and you actually think he's listenin'?",
-          "vase_bye": "well, keep him company then.",
-          "faith_bye": "fair enough, greenpaw.",
-          "sorry": "that came out meaner than i meant. sorry, greenpaw.",
-          "cold_bye": "believe whatever you want.",
-          "mended_bye": "we're square. see you around, greenpaw.",
-          "confide": "you don't have to carry that alone, brother.",
-          "tribe_bye": "well, somebody's still tendin' it.",
-          "confide_bye": "i'll keep comin' up that path, greenpaw."
-        }
+        "greeting": "hej där, resenär. fångade du vasen på gott humör idag, eller är det bara jag igen... kom hit, har ett par heliga angelägenheter som behöver skötas. mest mellanmål. samma sak, om man är Gröntass."
       },
       "verger_zebediah": {
         "name": "Verger Zebediah",
         "title": "Warden of Root Hollow",
-        "greeting": "Verger Zebediah. I keep the Reaches to a calendar, or I keep trying. Root Hollow was marked to rest this season, and the boars did not read the notice. Mind the loose dirt, and do not touch the register.",
-        "introLines": {
-          "0": "Verger Zebediah. Warden of Root Hollow, by appointment of an office that is, presently, also me. You will find me here on most days; I find myself here on the others. The Reaches do not require a quorum, only a record.",
-          "1": "I keep the calendar. The calendar is not keeping me, though some seasons it tries. Root Hollow is marked to rest this turn, the lower dens have not received the notice, and the heron has stopped pretending to be surprised. This is the situation. It is not a complaint; complaints require witnesses.",
-          "2": "There is a register inside the shrine. Do not touch it. There is loose dirt underfoot where the boars have been. Mind both. If you have come about the ward, I can offer two errands, neither of them small, and one of them I would rather not amend a third time. Which brings us to why I am talking to you at all."
-        },
-        "journalLines": {
-          "0": "The register goes back further than the heron does. I did not write the first entry, and I will not write the last; that is the comfort of an office no one is waiting to inherit. The Reaches were a thoroughfare once. People came up the lake path with salt and left with something they did not name, and neither did I, because it was not mine to ask. The register records the comings and the goings and one long gap where neither happened. I keep the gap too.",
-          "1": "The heron is older than the register, which the register resents. It does not say so. It does not have to. I have watched it stand on one leg through a season that killed the pear trees and not blink, which I take to be a position on something, though I have never been briefed on what. There is a room under the shrine I do not enter. The heron goes in. I do not ask it what it does in there; it does not ask me what I do up here. This arrangement has held longer than either of us.",
-          "2": "If you have read this far you are either curious or avoiding the boars, and I respect both. The short version of the long record: this place remembers something it was, and something it means to be again, and the difference is the work. Mine is the remembering. I do not know whose the being again is. I file it under pending and go to bed. The register allows pending. It does not allow forgetting.",
-          "3": "Travelers who come up the lake path and hear about the vase tend to arrive at one of two conclusions, neither of them flattering. Some call the congregation hippies, or freaks, and leave laughing. Others call them worse and do not stay to laugh. Most never hear of the vase at all, which I have come to think is the arrangement working as intended. A quiet thing survives longer than a famous one."
-        }
+        "greeting": "Verger Zebediah. I keep the Reaches to a calendar, or I keep trying. Root Hollow was marked to rest this season, and the boars did not read the notice. Mind the loose dirt, and do not touch the register."
       },
       "sexton_faddick": {
         "name": "Sexton Faddick",
         "title": "The Wandering Keeper",
-        "greeting": "Faddick. Sexton, where there is still a shrine to sexton. I do not stay anywhere; I keep. Wolves have circled the flock at Fallow Acres every night, and a thing that circles long enough learns the shape of what it circles. Best it stays a flock.",
-        "introLines": {
-          "0": "Faddick. Sexton, where there is still a shrine to sexton, which is fewer shrines than there used to be. I do not stay anywhere; I keep. The keeping is most of what I am still for.",
-          "1": "A thing that circles long enough learns the shape of what it circles. The wolves at Fallow Acres have been circling the flock every night since before I came through, and they have not yet learned the flock, which is something. The flock has learned them, which is more.",
-          "2": "I would offer you tea, but the kettle is somewhere I was yesterday. There is a quiet stretch of ground by the lake that means to be built on; nothing settles on ground with wolves working the dark. Two errands, then, and one of them I would rather not do alone. Best we walk while we talk."
-        },
-        "journalLines": {
-          "0": "I keep a list of the places I have kept, in my head, because the paper changes hands faster than the ground does. Shrines, mostly, the ones with no one left to tend them. Fallow Acres is on the list. So is a pond east of the lake whose name I never learned and a standing stone the wind has been rounding down for a hundred years. The list is not long. The list is, in the way that matters, the whole point. You do not keep a place by staying. You keep it by being the one who still knows it was there.",
-          "1": "The ground keeps better than we do. That is the whole of the trade. What walks above forgets its own name inside two generations and invents a new one and calls it the same; what sits below forgets nothing and waits. There is a slow time down under the stones. I have heard it, once, and I did not answer, because answering is how the slow thing finds the door. I carry the key for the not answering. It is not a metal key. It is a habit, which is heavier.",
-          "2": "The wolves are not the problem. The wolves are the symptom; the problem is whatever made the ground quiet enough that wolves thought it was theirs. I have seen this before, a place going quiet in the wrong direction, and the fix is always the same: make it loud again with the right kind of noise, which is people, which is why someone builds. You could ask who I am to carry any of this. I am the one still walking. That is the whole qualification. It is enough and it is not, and I have made my peace with the gap between those."
-        }
-      },
-      "shade": {
-        "name": "Shade",
-        "title": "A Traveler",
-        "greeting": "Oh, it's you. Sit if you like, the water's not going anywhere. Have you eaten today? You should eat.",
-        "introLines": {
-          "0": "You caught me at my chores. Don't mind the can, it's only water. There's always something somewhere that wants a little water.",
-          "1": "Me? Nobody much. Shade. I walk, I lend a hand where hands are short. You look worn through. Sit a moment, if you like."
-        }
-      },
-      "gate_bard": {
-        "name": "Halden the Bard",
-        "title": "Player at the Gate",
-        "greeting": "A copper for a song? No? That's all right, most days it's no. I play for the gate, and the gate's never once reached for its purse. Folk passing through call this place a hippie camp, or worse, and mostly they're just passing through, so I let them."
-      },
-      "goodwife_orla": {
-        "name": "Orla",
-        "title": "Once of Root Hollow",
-        "greeting": "You can sit. Most walk on. The Verger crossed my name off his register a long while back, and a crossed name learns to keep quiet so nobody has to be reminded it's still here."
-      },
-      "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
-      },
-      "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "greeting": "Faddick. Sexton, where there is still a shrine to sexton. I do not stay anywhere; I keep. Wolves have circled the flock at Fallow Acres every night, and a thing that circles long enough learns the shape of what it circles. Best it stays a flock."
       }
     },
     "quests": {
@@ -7076,47 +6549,6 @@ export const sv_SE: EnTranslations = {
           "0": {
             "label": "Grottbit insamlad"
           }
-        },
-        "dialog": {
-          "complain": "I was just down there. You watched me climb out of the hole.",
-          "complainReply": "i know it, friend, i know... the vase don't keep a calendar and neither does my stomach. but look at them boots and tell me they don't got one more descent in 'em... no rush. the hole ain't goin' anywhere. that's kinda its whole deal...",
-          "refuse": "No. I'm not going back down there.",
-          "refuseReply": "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most..."
-        }
-      },
-      "q_the_wavelength": {
-        "title": "On the Wavelength",
-        "text": "the cutting's yours now, friend, so let's talk about what comes after... two things, and neither one's a trial, more like an interduction. first, cross the vase and meet elder yarrow, she teaches a whole second callin', a different way to play this whole thing, and every soul that comes through here oughta know that door's open... second, come on back and feed me somethin', don't matter which, emberbulb or morsel, i'm always runnin' on empty and the vase always wants for smoke. that part never really ends, to a greenpaw degree.",
-        "completion": "there it is... you felt the room go thick for a second, right? that's him, noticin'. that's the whole trick, friend - you feed me, i smoke up the place, he leans in a little closer to payin' attention. ain't complicated. ain't never gonna stop bein' true, neither. c'mere anytime you're carryin' spare bulbs or morsels, the hearth don't keep a calendar... and hey. welcome to the hollow. i realize i never actually said that part.",
-        "objectives": {
-          "0": {
-            "label": "Elder Yarrow met"
-          },
-          "1": {
-            "label": "Fed at the hearth"
-          }
-        },
-        "dialog": {
-          "complain": "Another errand? I just climbed out of that hole.",
-          "complainReply": "no, no, hear me out, this ain't cave work... this one's easy, this one's just walkin' and one good feed. lightest thing i ever asked of you, i promise, on the wavelength and everything.",
-          "refuse": "I'll find my own training, thanks.",
-          "refuseReply": "...fair 'nough. can't make a soul learn somethin' 'fore they're ready. door's open when it ain't 'not yet' no more... here, take this anyway, least i can do for you showin' up at all."
-        }
-      },
-      "q_keep_him_lit": {
-        "title": "Keep Him Lit",
-        "text": "three times, friend, that's the number... not sacred, just enough to turn a favor into a habit, and habits are the only religion i actually trust... c'mon back and feed the hearth three separate times, don't matter the order, don't matter which of the two, emberbulb or morsel, and i'll believe you're really here to stay, not just passin' through on your way to somethin' bigger...",
-        "completion": "three for three... you're not just visitin' anymore, friend, you're keepin' somethin' alive, and that's the whole ballgame if you ask me, which nobody did, but i'm sayin' it anyway... here. hold onto this, it don't do nothin', it just remembers, same as the rest of us down here...",
-        "objectives": {
-          "0": {
-            "label": "Hearth fed"
-          }
-        },
-        "dialog": {
-          "complain": "I already fed you once. Isn't that enough?",
-          "complainReply": "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
-          "refuse": "I'm not doing this three separate times. Once was enough.",
-          "refuseReply": "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does..."
         }
       },
       "q_root_hollow_boars": {
@@ -7132,7 +6564,7 @@ export const sv_SE: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "Root Hollow's Reckoning",
         "text": "I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.",
-        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me. The register itself is older than that arrangement, bound in a hand I have never met, keeping a count I choose not to add. Someone was thorough here, once. I only try to keep pace.",
+        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.",
         "objectives": {
           "0": {
             "label": "Wild Boar slain"
@@ -7156,46 +6588,6 @@ export const sv_SE: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Forest Wolf slain"
-          }
-        }
-      },
-      "q_have_you_eaten": {
-        "title": "Have You Eaten?",
-        "text": "There's a bard at the gate who plays for coppers and eats when the coppers come, which isn't often. I've got a bowl warm and one to spare. Carry it down to him, would you? And don't tell him it was pity. Tell him it was extra.",
-        "completion": "You're back. Did he eat? Good. That's good. And did you? ... You didn't, I can see it. Sit, then. You don't have to be great to be something good. Greatness isn't kindness. Eat.",
-        "objectives": {
-          "0": {
-            "label": "Warm meal carried to the bard"
-          }
-        }
-      },
-      "q_someone_your_own_size": {
-        "title": "Someone Your Own Size",
-        "text": "There's a woman near Root Hollow the world has been unkind to. Her name was struck from the register, and people treat a struck name like it can't hear. Go and sit with her a while. You don't have to fix anything. Just be someone her own size.",
-        "completion": "You stayed. She won't say it mattered, but it did, I promise you it did. Here, this is for you. A sprig off a willow I'm fond of. It does nothing at all. It only remembers that you were kind when nothing made you.",
-        "objectives": {
-          "0": {
-            "label": "Sat a while with Orla"
-          }
-        }
-      },
-      "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
-        "objectives": {
-          "0": {
-            "label": "Water carried up the willow path"
-          }
-        }
-      },
-      "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
-        "objectives": {
-          "0": {
-            "label": "Water given to the buried root"
           }
         }
       }
@@ -7372,10 +6764,6 @@ export const sv_SE: EnTranslations = {
       }
     },
     "itemSets": {
-      "boundstone_vanguard": {
-        "name": "Boundstone Vanguard",
-        "bonus3": "Increases attack and casting speed by 15%."
-      },
       "crownforged": {
         "name": "Kronsmidd stridsutrustning",
         "bonus2": "Ökar attackkraft med 40.",
@@ -7385,10 +6773,6 @@ export const sv_SE: EnTranslations = {
         "name": "Dödsherrens stridsutrustning",
         "bonus2": "Ökar attackkraft med 40.",
         "bonus3": "Ökar styrka med 15 och uthållighet med 15."
-      },
-      "greyjaw_stalker": {
-        "name": "Greyjaw Stalker's Kit",
-        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Nekromantikerns skrud",
@@ -7410,32 +6794,10 @@ export const sv_SE: EnTranslations = {
         "bonus2": "Minskar kastfördröjning från skada med 50%.",
         "bonus3": "Skada du tar fördröjer inte dina besvärjelser."
       },
-      "vale_arcanist": {
-        "name": "Vale Arcanist's Regalia",
-        "bonus3": "Increases attack and casting speed by 15%."
-      },
       "wyrmshadow": {
         "name": "Wyrmskuggans utrustning",
         "bonus2": "Ökar attackkraft med 40.",
         "bonus3": "Ökar smidighet med 15 och kritisk chans med 2%."
-      }
-    },
-    "readables": {
-      "torn_ledger_page": {
-        "title": "A Torn Ledger",
-        "pages": {
-          "0": "Root Hollow, entered to rest. Fallow Acres, entered to rest. The lake at Mossbank, which rests whether we enter it or not. Signed and dated, as the register wants.",
-          "1": "Tally of the season so far: three seedlings up through the road stones, which is not on any calendar of mine. I have stopped scratching them out. They come back faster than the ink dries, and the ink was not cheap.",
-          "2": "A note to whoever keeps this after me. Count the boars, count the wolves, count the days. Do not count the green. It counts back, and it does not stop where you do."
-        }
-      },
-      "keepers_marginalia": {
-        "title": "A Keeper's Marginalia",
-        "pages": {
-          "0": "Left in the margin of a hymnbook with the hymns worn out of it. The hand is quick, the way a hand is quick when it writes while walking.",
-          "1": "The wolves circle Fallow Acres from the tree line, always the same ring, always sunwise. A thing that circles long enough learns the shape of what it circles. So do I. So, I think, does the ground.",
-          "2": "If you are reading this you have stopped walking, which is the one thing I never learned to do. Rest a moment. The Reaches will still be here. That is rather the whole trouble with it."
-        }
       }
     }
   },

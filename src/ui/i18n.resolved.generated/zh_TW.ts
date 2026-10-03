@@ -85,8 +85,6 @@ export const zh_TW: EnTranslations = {
       "title": "天賦",
       "classTab": "職業",
       "specTab": "專精",
-      "secondaryTab": "副職業：{cls}",
-      "secondaryCapHint": "副職業天賦樹：{spent}/{cap}點（上限為共享天賦池的一半）。",
       "available": "可用",
       "spent": "已用",
       "pointSource": "從 {first} 級到 {cap} 級，每升一級獲得 1 點天賦點。繼續升級可獲得更多點數。",
@@ -290,9 +288,6 @@ export const zh_TW: EnTranslations = {
       "minutes": "{m}分",
       "lessThanMinute": "<1分",
       "lockedToast": "你已鎖定到{raid}。{time}後解鎖。"
-    },
-    "worldBoss": {
-      "spawn": "{name}崛起於根穴上空！"
     },
     "compass": {
       "N": "北",
@@ -632,13 +627,6 @@ export const zh_TW: EnTranslations = {
       "unassigned": "{item}未被分配，現可自由拾取。",
       "leaderOnly": "只有隊長才能更改拾取方式。"
     },
-    "lootRollGroup": {
-      "pending": "等待中...",
-      "need": "需求",
-      "greed": "貪婪",
-      "pass": "放棄",
-      "aria": "{item} 的團隊擲骰狀態"
-    },
     "bags": {
       "filterGroupAria": "依類別篩選背包",
       "filterAll": "全部",
@@ -653,12 +641,7 @@ export const zh_TW: EnTranslations = {
       "sortName": "名稱",
       "searchPlaceholder": "搜尋物品",
       "searchAria": "依名稱搜尋背包物品",
-      "noMatch": "沒有符合篩選條件的物品。",
-      "capacity": "{used}/{total}",
-      "capacityAria": "背包已用欄位：{used}/{total}",
-      "backpack": "背包",
-      "socketEmpty": "空背包欄位",
-      "unequipHint": "點擊移除此背包"
+      "noMatch": "沒有符合篩選條件的物品。"
     },
     "raidConvert": {
       "toPartyDone": "你的團隊已轉換回隊伍。",
@@ -893,106 +876,7 @@ export const zh_TW: EnTranslations = {
           "hint": "向社群尋求協助"
         }
       }
-    },
-    "npcJournal": {
-      "readLabel": "跟我說說你的日記吧。",
-      "readAria": "閱讀{name}的日記",
-      "pageOf": "Page {index} of {total}",
-      "back": "上一頁",
-      "next": "下一頁",
-      "close": "關閉日記",
-      "title": "{name}的日記"
-    },
-    "calendar": {
-      "title": "活動日曆",
-      "close": "關閉日曆",
-      "keybindLabel": "活動日曆",
-      "prevMonth": "上個月",
-      "nextMonth": "下個月",
-      "dayAria": "{date}：{count} 個活動",
-      "noEvents": "這一天沒有安排。",
-      "allDay": "全天",
-      "bookedBy": "由 {name} 安排",
-      "deleteAria": "移除活動 {title}",
-      "bookTitle": "安排公會活動",
-      "titlePlaceholder": "活動名稱",
-      "notePlaceholder": "備註（可選）",
-      "hourLabel": "小時（UTC）",
-      "hourAllDay": "全天",
-      "addButton": "安排活動",
-      "guildOnlyNote": "加入公會即可一起計劃活動。",
-      "result": {
-        "created": "活動已列入公會日曆。",
-        "removed": "活動已從日曆中移除。",
-        "notInGuild": "你不在公會中。",
-        "notOfficer": "只有幹部和會長可以管理公會活動。",
-        "badInput": "請為活動填寫名稱和有效日期。",
-        "calendarFull": "公會日曆已滿。",
-        "eventGone": "該活動已不在日曆上。"
-      },
-      "events": {
-        "raidCall": {
-          "title": "團隊集結",
-          "note": "守衛吹響號角：組隊前往團隊副本。"
-        },
-        "marketDay": {
-          "title": "集市日",
-          "note": "商人正等著新貨。今天很適合逛逛世界市場。"
-        },
-        "fiestaNight": {
-          "title": "狂歡之夜",
-          "note": "今晚 2v2 狂歡擂台的人氣最旺。"
-        },
-        "arenaClash": {
-          "title": "競技場之戰",
-          "note": "決鬥者湧向灰燼鬥獸場。排隊開打，向天梯進發。"
-        },
-        "fishingDerby": {
-          "title": "釣魚大賽",
-          "note": "釣手們在湖邊排開。帶上魚竿，交流釣魚趣聞。"
-        },
-        "delveDay": {
-          "title": "探窟日",
-          "note": "與同伴一起挑戰坍塌聖物窖的好日子。"
-        },
-        "moongateCommunion": {
-          "title": "月門共禱",
-          "note": "朝聖者在月中之月下聚於月之聖所。"
-        }
-      }
-    },
-    "trainer": {
-      "secondaryClassSet": "你已選擇{cls}作為你的副職業。"
-    },
-    "gathering": {
-      "title": "採集",
-      "amber": "琥珀",
-      "heartwood": "心材",
-      "spore": "孢子",
-      "toolTier": "{tier}級工具",
-      "toolNone": "無工具"
     }
-  },
-  "mailUi": {
-    "title": "渡鴉驛站",
-    "subtitle": "寄送與領取信件",
-    "close": "關閉郵件",
-    "inbox": "收件匣",
-    "compose": "寫信",
-    "noPostOffice": "請前往渡鴉驛站處理郵件。",
-    "emptyInbox": "目前沒有信件。有人寫信給你時渡鴉便會送達。",
-    "from": "來自 {name}",
-    "noSubject": "(無主旨)",
-    "take": "領取",
-    "delete": "刪除",
-    "postageNote": "寄送一封信需要 {money} 郵資。",
-    "recipient": "收件人",
-    "subjectLabel": "主旨",
-    "bodyPlaceholder": "寫下你的信件……",
-    "send": "寄出信件",
-    "needRecipientOrText": "請先填寫收件人並寫點內容再寄送。",
-    "openButton": "帶我去渡鴉驛站。",
-    "openButtonAria": "開啟渡鴉驛站郵件視窗"
   },
   "guide": {
     "brand": "World of ClaudeCraft",
@@ -1013,17 +897,14 @@ export const zh_TW: EnTranslations = {
       "social": "社交與組隊",
       "stats": "角色與屬性",
       "progression": "升級與進程",
-      "hollow": "The Hollow",
       "world": "世界",
       "quests": "任務",
       "dungeons": "地城與團隊副本",
       "delves": "秘探",
       "reference": "參考資料",
       "controls": "操作按鍵",
-      "settings": "設定與效能",
       "combat": "戰鬥",
       "talents": "天賦",
-      "professions": "副職業",
       "arena": "競技場與PvP",
       "glossary": "詞彙表",
       "wishIKnew": "我希望早點知道的事",
@@ -1102,8 +983,6 @@ export const zh_TW: EnTranslations = {
         "sub": "一片相連的大陸，三座區域，從寧靜的山谷到冰封的高峰。",
         "levels": "等級 {min} 至 {max}",
         "cta": "瀏覽世界",
-        "hollowReachesName": "空谷地",
-        "hollowReachesBlurb": "神殿門下的靜謐之地，新人在Fallow Acres與Root Hollow一帶磨練身手。",
         "valeName": "東溪谷地",
         "valeBlurb": "翠綠的丘陵與古老的林地，每段冒險的起點。",
         "marshName": "泥沼澤地",
@@ -1191,66 +1070,6 @@ export const zh_TW: EnTranslations = {
       "mobileBody": "在手機與平板上會自動顯示觸控操作：左側為移動搖桿，在右側任意處拖曳即可環顧，並有螢幕上的按鈕供你使用技能與選單。",
       "controllerHeading": "使用手把時",
       "controllerBody": "手把同樣可用，且預設即開啟手把支援。左搖桿負責移動，右搖桿控制鏡頭，正面按鍵與肩鍵則涵蓋你的技能、跳躍與互動。開啟任何視窗都會喚出畫面上的指標，供你操作選單。你可以在選項中的手把設定裡重新配置按鍵，並調整搖桿盲區、鏡頭速度、震動以及反轉視角。"
-    },
-    "settingsPage": {
-      "heading": "設定與效能",
-      "intro": "讓遊戲畫面美到極致，或跑得飛快。三套現成配置，加上每個圖形選項的真正作用。",
-      "wherePath": "本頁介紹的一切都在遊戲裡：按下 Esc，就能在「圖形」、「介面」與「效能監視器」中找到。",
-      "fairnessTitle": "天生公平",
-      "fairnessBody": "這裡沒有任何選項會用畫面換取優勢。調低設定只會捨去外觀上的修飾，絕不會犧牲作戰所需的資訊：你的減益效果、施法條、隊伍血量與傷害數字，從「低」到「超高」完全相同。用入門機器遊玩絕不吃虧。",
-      "loadoutsHeading": "三套現成配置",
-      "loadoutsIntro": "先從聽起來最像你機器的配置開始，再一次調整一個選項，直到感覺對了為止。",
-      "recommended": "推薦",
-      "whyLabel": "為什麼有效：",
-      "tagReload": "需重新載入",
-      "fpsTitle": "效能優先",
-      "fpsTagline": "適合較舊的筆電、內顯，以及使用電池遊玩的時候。",
-      "fpsWhy": "圖形品質是總開關，渲染品質則是效果最強的滑桿：調到 70% 時，世界只需繪製約一半的像素，介面卻依然完全清晰。",
-      "balancedTitle": "平衡",
-      "balancedTagline": "大多數機器的甜蜜點，也是我們的預設建議。",
-      "balancedWhy": "「中」就有真實陰影與完整材質，「高」再加上環境光遮蔽與光暈。只要低於「超高」，內建安全網就會在激烈戰鬥中吸收突然的效能下滑，因此「平衡」不必費心照顧也能保持順暢。",
-      "visualsTitle": "極致畫質",
-      "visualsTagline": "給高階桌機的截圖模式。",
-      "visualsWhy": "「超高」會以你螢幕支援的最高解析度繪製，並呈現最豐富的光照。它同時會關閉安全網，而且僅限桌機：手機與 App 版最高到「高」為止。",
-      "value50to70": "50% 到 70%",
-      "value90to100": "90% 到 100%",
-      "value100": "100%",
-      "valueHighOrMedium": "電競電腦用「高」，筆電用「中」",
-      "valueOnOptional": "開啟（可選）",
-      "howHeading": "選項的運作方式",
-      "factDetectTitle": "遊戲會先自我調校",
-      "factDetectBody": "首次啟動時，遊戲會偵測你的裝置並挑選合適的檔位：入門手機用「低」，高效能桌機用「超高」。而你親自做的選擇永遠優先。",
-      "factReloadTitle": "兩種類型的選項",
-      "factReloadBody": "圖形品質與進階選項需要重新載入後才會生效，必要時面板會出現「立即重新載入」按鈕。其他所有選項則是一改就生效。",
-      "factGovernorTitle": "內建安全網",
-      "factGovernorBody": "在「超高」以下的所有檔位，當大型戰鬥造成瞬間負載時，遊戲會悄悄暫時減少草叢、特效與光照，狀況過去後再恢復原狀。選擇「超高」則代表你寧可保留每一分細節。",
-      "advancedHeading": "「進階」預設：自由調配",
-      "advancedBody": "「進階」以「高」這一檔為起點，並解鎖四個額外選項，讓你把效能花在真正看得出差別的地方：地形細節、植被密度、特效與光照，以及陰影品質。它們和圖形品質一樣，需要重新載入後才會生效。",
-      "advancedMixes": "兩種人氣搭配：把陰影品質維持在「高」、特效與光照調成「低」，畫面清爽俐落、沒有光暈，跑起來也輕鬆；或者反過來，保留光暈，讓陰影柔和一些。",
-      "tableHeading": "每個選項，逐一解說",
-      "colSetting": "選項",
-      "colDoes": "作用",
-      "colImpact": "FPS 影響",
-      "impactNone": "無",
-      "impactLight": "輕微",
-      "impactModerate": "中等",
-      "impactHeavy": "顯著",
-      "rowGraphicsQuality": "總開關。每調一檔，解析度、陰影、材質、植被與光照特效都會一起改變。這是影響最大的單一選項。",
-      "rowRenderQuality": "以較低的內部解析度繪製 3D 世界再放大，介面維持清晰。在較弱的機器與高解析度螢幕上，是立即見效、威力最強的滑桿。",
-      "rowFieldOfView": "決定畫面能容納多少世界：從拉近的 55 度到開闊的 100 度。屬於舒適度選擇；視野越廣，繪製量會略微增加。",
-      "rowBrightness": "調整場景曝光的明暗，純屬個人喜好。",
-      "rowWeather": "環境雨雪效果。純屬氣氛營造，關閉後在暴風雨中還能省下一點效能。",
-      "rowBrowserEffects": "決定介面本身可以多華麗：玻璃模糊、光暈、選單動畫。「自動」會配合你的瀏覽器；無論怎麼選，3D 世界都不受影響。",
-      "rowTerrainDetail": "豐富細膩的混合地面材質，或是較簡單、跑得較快的地形外觀。",
-      "rowFoliageDensity": "角色周圍草叢生長的範圍與密度。",
-      "rowEffectsQuality": "光暈、環境光遮蔽，以及有多少火把和法術會投射真實光源。是進階選項中省效能最多的一項。",
-      "rowShadowQuality": "陰影的銳利程度。「低」仍保留陰影，只是邊緣較柔和。",
-      "rowFrostedPanels": "視窗背後的霧面玻璃模糊。很漂亮，但也正是較弱的瀏覽器最有感的那種效果；關閉它，就是經典的俐落外觀。",
-      "rowReduceMotion": "移除介面動畫，讓視窗立即出現。首先是無障礙選項，順帶帶來少許效能提升。",
-      "rowPerfOverlay": "在畫面上即時顯示 FPS、影格時間等數據。調整本頁設定時先開著，調完再關掉。",
-      "tableFoot": "想找繪製距離滑桿或 FPS 上限嗎？其實不必找：可視距離已內建在各品質檔位中，影格節奏則交由你的顯示器決定。",
-      "mobileTitle": "在手機與平板上",
-      "mobileBody": "行動裝置上，遊戲會替你打理更多：自動挑選檔位、將解析度稍微壓低以節省電力並抑制發熱，最高的幾個檔位則僅限桌機。上面的配置依然適用，只是手機最高到「高」為止。"
     },
     "combat": {
       "intro": "戰鬥遵循熟悉的經典MMO規則。你完全不需要研究這些就能玩得很好，這只是讓你了解戰鬥運作的大致樣貌。",
@@ -1361,10 +1180,7 @@ export const zh_TW: EnTranslations = {
       "fullKitHeading": "完整技能",
       "fullKitNote": "此職業能學習的每一項技能，依照解鎖順序排列。天賦決定哪些技能撐起你的配置。",
       "petsHeading": "惡魔",
-      "petsNote": "術士召喚惡魔並肩作戰，每隻各擅長不同的任務。",
-      "professionsTitle": "搭配副職業",
-      "professionsNote": "以上任意職業都可以作為副職業來學習：這是一種能開啟第二棵天賦樹的副職業，且不會影響你的主職業定位。選擇前，請先了解副職業的運作方式。",
-      "professionsLink": "副職業與多職業"
+      "petsNote": "術士召喚惡魔並肩作戰，每隻各擅長不同的任務。"
     },
     "classHook": {
       "warrior": "一名不屈不撓的前線戰士，將承受的每一擊都化為下一擊的燃料。",
@@ -1523,52 +1339,23 @@ export const zh_TW: EnTranslations = {
         "desc": "來自遠古深淵、覆鱗如蛇的生物。稀少、高傲，且遠比外表看來更為強大。"
       }
     },
-    "hollowPage": {
-      "heading": "The Hollow",
-      "intro": "穿過神殿之門便是花瓶所在的空地：每位新英雄甦醒之處，也是你始終會回來的地方。這裡是共享之地，整片大陸共用的一個據點，也是你初見的面孔、初次的任務，唯一真正需要的家。",
-      "greeting": "你回來了，那可真是件幸事……有幾樁神聖的差事在等你呢，跟上次同一個頻道。過來一下……",
-      "greeter": "格林保修士，於花瓶旁",
-      "vaseHeading": "花瓶",
-      "vaseBody": "所有人都從花瓶開始：這個古老而有靈性的存在，正是幽谷得以建立的核心。它渴求些微小的供奉，燃一顆餘燼球，或餵一份洞穴嫩肉，似乎都能有所察覺。花瓶下坡處，一處洞口通向地窟深處；兩側則留有地塊，供你建造屬於自己的家。",
-      "figuresHeading": "誰在照看它",
-      "figuresBody": "有兩個人維繫著花瓶的運作，你在最初的幾分鐘內便會與他們相遇。",
-      "npcFmt": "{name}, {title}",
-      "greenpawBody": "花瓶唯一的照看者，也是最早派發差事的人。他自封頭銜，也是第一個承認這點的人，算是幽谷裡最接近嚮導的存在。",
-      "yarrowBody": "第二職業的傳授者：每個職業都能向她學習一門副業，她的位置正好與格林保隔瓶相望。",
-      "questsHeading": "你最初的差事",
-      "questsBody": "格林保自己的任務鏈是你要做的第一件事：四樁短小的差事，教會你花瓶的節奏，然後送你踏入更廣闊的幽谷。",
-      "questBurnsBody": "花瓶焚燒以取光的洞穴產球莖，一次採集一把。",
-      "questFillsBody": "能填飽另一種更安靜飢餓的洞穴嫩肉，採集方式相同。",
-      "questWavelengthBody": "引薦花瓶的第二職業，並教你親手餵養它。",
-      "questKeepLitBody": "把一次的恩惠變成一種固定的習慣，連續三次。",
-      "housingHeading": "屬於你自己的家",
-      "housingBody": "{n}塊宅地環繞著花瓶，等待被認領，裝點成你在幽谷中私有的一角。",
-      "shrineHeading": "地窟深處",
-      "shrineBody": "花瓶旁的一處洞口通向地窟深處，那是幽谷自身的副本地城，也是每位新英雄組隊面對的第一場真正考驗。",
-      "outsiderHeading": "外界如何看待此地",
-      "outsiderBody": "在聖所大門之外，大多數人從未聽說過花瓶的存在。少數聽說過的人，往往把它的守護者當成嬉皮士、怪人，或者更難聽地說，是些對著罐子說話的怪胎。剩下流傳出去的，多半來自更離奇的目擊：一個信徒走得離空地太遠，又或者某隻小小的綠色生物出現在了它本不該出現的地方。"
-    },
     "worldPage": {
       "heading": "世界",
-      "intro": "穿過花瓶的神殿之門，你便置身幽谷腹地：新人踏出戶外第一步的寧靜之地。再往北還有三個區域，由南向北依次鋪展；通往那裡的道路尚未開啟，但它們是真實存在、靜候你到來的。",
+      "intro": "World of ClaudeCraft 是一片你需徒步橫越的連綿大地，三大區域由南向北排列。沒有快速旅行，所以旅程本身就是冒險的一部分。",
       "hub": "主據點",
       "mapHeading": "北行之路",
       "mapSub": "三個地區由南而北，等級層層遞增。跟著任務的軌跡走，這片土地會帶你從谷地一路前往群峰。",
       "places": "著名地點",
       "residents": "你將遇見的人物",
-      "hollowReachesBlurb": "緊鄰神殿門外的平靜之地，新人在Fallow Acres與Root Hollow一帶與野狼、野豬交手磨練身手。",
       "valeBlurb": "翠綠的起始山谷，新英雄在東溪鎮周圍與群狼和盜匪交手、磨練本領之處。",
       "marshBlurb": "一片被霧氣與廢墟淹沒的國度。魚人成群湧入淺灘，更古老之物在水下蠢動，沼橋鎮的人們從橋上警戒注視著。",
       "peaksBlurb": "被狂風刮蝕的山脊與古老的礦坑，向上攀升至王國中最寒冷、最高處的險境，由高守哨站鎮守。",
-      "hollowReachesGreeting": "我盡量按曆書打理這片谷地，至少在努力。當心鬆軟的泥土，別碰登記簿。",
-      "hollowReachesGreeter": "司事澤比迪亞，Root Hollow",
       "valeGreeting": "把你的劍帶在身邊。谷地已不復昔日。",
       "valeGreeter": "雷德布魯克元帥，東溪鎮",
       "marshGreeting": "守在城門這頭。越過那片蘆葦，沼澤便會替我們動手殺人。",
       "marshGreeter": "守衛芬威克，沼橋鎮",
       "peaksGreeting": "這座城牆已守了兩百年。它不會在我當值時破，但它正在呻吟。",
       "peaksGreeter": "瑟莎莉隊長，高守哨站",
-      "hollowReachesPlaceNotes": "Hollow Gate 是重新開向曠野的神殿傳送門。西邊的 Fallow Acres，司事法迪克把狼群趕出預留的建設用地；東邊的 Root Hollow，司事澤比迪亞按曆書照看一塊野豬成患的地塊。湖邊的 Mossbank 是垂釣的寧靜去處。",
       "valePlaceNotes": "Eastbrook 是你的第一個主據點。Wolf Run 與 Boar Meadow 是溫和的狩獵場；Mirror Lake 是適合垂釣的靜謐水域；Webwood 與 Copper Dig 藏著蜘蛛與貪礦的掘地者；一座 Bandit Camp 與 Fallen Chapel 另有更粗野的活計；Reliquary Hill 向下通往 Collapsed Reliquary，這個王國的第一座探窟；而 Brightwood Glade 則是北方一片靜謐、陽光灑落的林地。",
       "marshPlaceNotes": "沼橋鎮鎮守著唯一一條乾燥的道路。潛獵蘆葦叢與深沼淺灘擠滿了沼澤野獸與魚人；寡婦密林被蛛網織得密不透風；溺亡禮拜堂與巨魔土塚藏著更古老的危險；喚墓者營地是邪教的據點，而沉沒堡壘則是沼澤的副本核心。",
       "peaksPlaceNotes": "高守哨站鎮守著城牆。潛行者山脊與深岩地洞屬於山脊巨貓與狗頭人；食人魔山麓與卓格瑪戰營屬於受僱的暴徒；風暴岩劈啪作響地竄動著元素，微光湖則在其下發著光；龍裔邪教帳篷與亡魂之野環繞著邪教佔據的高地，墓龍聖所就矗立於其頂峰。",
@@ -1587,9 +1374,8 @@ export const zh_TW: EnTranslations = {
       "partyTitle": "組隊接任務",
       "partyBody": "附近的隊伍成員會共享擊殺與目標進度，所以一起接任務只會更快，絕不會更慢。你也可以與隊伍分享任務：用 /share 指令將它以可點擊的連結貼到聊天中，任何符合條件的附近成員都能一鍵接取同一項任務。",
       "storyTitle": "一條主線貫穿其中",
-      "storyBody": "你最初的線索，是格林保修士自己那條短短的任務鏈，就在花瓶旁。往外則是幽谷腹地裡那些安靜的差事；再往外，還有一段更長的故事：一個邪教從山谷一路作亂到山巔，真實且已完成，只是新英雄眼下還走不到那條路。花瓶自己的任務見幽谷頁面，其餘的則列在下方，作為即將到來的內容。",
+      "storyBody": "從你在東溪鎮的第一批跑腿差事開始，亡者出了問題。一個邪教正在運作，線索向北穿過每個區域。循線追查，便能查出幕後主使是誰。",
       "soloNote": "主線劇情一路到每個篇章的結局都可以單人完成，而那結局是一座五人地城。",
-      "sagaGateNote": "這段傳奇是真實、已完成的內容，正是道路重新北通之後開啟的同一條線索。它並非新英雄如今的起點；起點是花瓶，在幽谷之中。",
       "typesTitle": "你會見到的任務種類",
       "typesBody": "大多數任務都屬於幾種熟悉的形式之一。畫面上的追蹤器會明確指出每一個任務的要求，讓你絕不會無所適從。",
       "typeSlayTitle": "擊殺",
@@ -1691,21 +1477,6 @@ export const zh_TW: EnTranslations = {
       "resetNote": "只要脫離戰鬥，你隨時都能重置天賦，所以早期的選擇絕不會是陷阱。儘管嘗試，看看自己喜歡什麼，並自由地改變主意。",
       "specsHeading": "各職業的專精",
       "specsBody": "每個職業都有數種專精，各有自己的角色定位和標誌性的著重方向。以下是它們全部的輪廓。打開某個職業即可查看其完整技能。"
-    },
-    "professionsPage": {
-      "heading": "副職業與多職業",
-      "intro": "副職業是你在主職業之外訓練的第二個職業，它會開啟第二棵天賦樹，並讓你學到其部分技能，而不會讓你離開原本的定位。",
-      "whatHeading": "什麼是副職業",
-      "whatBody": "任何職業都可以被其他職業選為副職業。搭配副職業會新增一棵天賦樹，並讓你借用其部分技能：比如戰士可以涉獵牧師的治療，法師也能學到盜賊的毒刺。你的主職業依舊決定你的定位、資源和身分；副職業只是讓build更靈活，而不會取代它。",
-      "howHeading": "如何選擇副職業",
-      "howBody": "副職業在10級開放，與你的第一棵天賦樹同時解鎖。前往主城拜訪副職業訓練師，開啟對話框，選擇你想要的副職業。",
-      "costBody": "第一次選擇是免費的。之後更換副職業需要花費金幣，且每次更換的費用都會提高，因此儘早做決定不會受到懲罰，而之後反覆更改則要付出一點代價。",
-      "resetTitle": "一切都可以重來",
-      "resetNote": "只要不在戰鬥中，你隨時都可以重置兩棵天賦樹的天賦點，也可以在同一位訓練師那裡更換副職業（費用會遞增）。儘早選定的副職業只是初稿，而非最終定案。",
-      "talentsHeading": "天賦點如何在兩棵樹之間分配",
-      "talentsBody": "副職業會在主職業之外新增一整棵天賦樹，但兩棵樹共用同一份天賦點。副職業天賦樹最多只能佔用這份點數的一半，因此你的主職業始終是build的核心。投入副職業天賦樹的點數會解鎖其技能，而這些技能消耗的是你主職業的資源，而非副職業本身的資源：戰士學習牧師副職業後，技能消耗的是怒氣，而不是法力。",
-      "trainersHeading": "尋找訓練師",
-      "trainersBody": "副職業訓練師就站在主城神龕附近。任意一位訓練師都能教你除主職業外的任何職業作為副職業，因此只需拜訪一次即可設定或更換你的副職業。"
     },
     "arenaPage": {
       "heading": "競技場與PvP",
@@ -1933,11 +1704,6 @@ export const zh_TW: EnTranslations = {
       "home": "返回總覽"
     }
   },
-  "readableUi": {
-    "prompt": {
-      "read": "Read"
-    }
-  },
   "coldOpen": {
     "title": "空穴",
     "wakeBody": "你在溫熱的地面上醒來，記不起自己的名字、族人，也想不起是如何來到此處的。前方一只巨大的花瓶中漾出綠光，那光彷彿一直在等著你。",
@@ -1945,13 +1711,6 @@ export const zh_TW: EnTranslations = {
     "continue": "繼續",
     "begin": "開始",
     "skip": "跳過"
-  },
-  "apiError": {
-    "crossSiteRejected": "跨站請求已被拒絕。",
-    "notAuthenticated": "尚未驗證。",
-    "readOnlyToken": "此權杖為唯讀。",
-    "characterNotFound": "找不到角色。",
-    "rateLimited": "嘗試次數過多。請等待一分鐘後再試。"
   },
   "skinEvent": {
     "title": "外觀寶箱",
@@ -2084,9 +1843,6 @@ export const zh_TW: EnTranslations = {
     "realm": "伺服器",
     "newCharacter": "新增角色",
     "appearance": "外觀",
-    "sex": "性別",
-    "sexMale": "男性",
-    "sexFemale": "女性",
     "class": "職業",
     "name": "名稱",
     "chromaOption": "配色 {n}",
@@ -2391,71 +2147,6 @@ export const zh_TW: EnTranslations = {
       "toolSlips": "那件工具從這道鎖上滑開了。",
       "lockJammed": "這道鎖已卡死到無法撬開，再次通關秘探以獲得另一次嘗試。",
       "lastPickSnaps": "最後一根撬棒折斷了。鎖卡死了，除非你再次通關這場秘探，否則寶箱將就此失去。"
-    },
-    "gathering": {
-      "nothingToHarvest": "這具屍體沒有什麼可以採集的。",
-      "alreadyHarvested": "這具屍體已經被採集過了。"
-    },
-    "hearth": {
-      "tooFar": "你得靠近綠掌修士才能餵他。",
-      "noItems1": "……夥計，你兩手空空啊。帶點能燒的或能填飽肚子的東西來，我們再聊。",
-      "noItems2": "身上啥也沒有，就剩一片好心，是吧……好心可點不著爐子。",
-      "emberbulb1": "這才叫柴火……瞧瞧她喘氣的樣子，夥計……",
-      "emberbulb2": "爐子慢慢地、乾乾淨淨地吃下去，她就愛這樣……",
-      "emberbulb3": "添了柴，冒了煙……那個波長已經開始鬆動了，我能感覺到。",
-      "morsel1": "……哦，願神保佑你，夥計。保佑你腳下的這片土地。",
-      "morsel2": "肚子總算不咕咕叫了，消停一會兒。多謝了……",
-      "morsel3": "一口好乾糧，就像一個好朋友……難得，也值得一路尋來。",
-      "helpLine": "綠掌：/feed（從甕邊帶上能燒的或能填飽肚子的東西）。"
-    },
-    "house": {
-      "mustStandToClaim": "你必須站在空穴中的宅地上才能認領。",
-      "alreadyOwn": "你在空穴已經擁有一處宅邸了。",
-      "noFreePlot": "這裡沒有空閒的宅地。站到一塊地上再認領。",
-      "plotTaken": "那塊宅地已經有主人了。",
-      "claimed": "這處宅邸歸你了。用 /house place <槽位> <種類> 來裝飾它。",
-      "noHomestead": "你還沒有宅邸。用 /house claim 認領一處。",
-      "mustBeInHollow": "你必須在空穴裡才能打理你的宅邸。",
-      "slotRange": "槽位編號為 1 到 {count}。",
-      "unknownKind": "未知的裝飾種類。可選種類：{kinds}。",
-      "placed": "在槽位 {slot} 放置了 {kind}。",
-      "slotEmpty": "那個槽位本來就是空的。",
-      "cleared": "清空了槽位 {slot}。",
-      "readoutNone": "你沒有宅邸。站到空穴裡的空閒地塊上，輸入 /house claim。",
-      "readoutMine": "你的宅邸：{plotId}。裝飾：{decor}。",
-      "readoutUsage": "/house place <1-{count}> <{kinds}>，/house remove <槽位>。",
-      "helpLine": "宅邸：/house、/house claim、/house place <槽位> <種類>、/house remove <槽位>。"
-    },
-    "bags": {
-      "full": "你的背包已滿。",
-      "socketsFull": "你的所有背包欄位都已佔用。",
-      "swapTooManyItems": "物品太多，無法換成那個背包。",
-      "removeTooManyItems": "物品太多，無法移除那個背包。",
-      "tradeSpace": "交易失敗：背包空間不足。"
-    },
-    "bank": {
-      "tooFar": "你離銀行職員太遠了。",
-      "noQuestItems": "你不能把任務物品存入銀行。",
-      "full": "你的銀行已滿。",
-      "expansionCapped": "你的銀行無法再擴容了。",
-      "cannotAfford": "你負擔不起這次銀行擴容。",
-      "purchased": "你購買了額外的銀行槽位。"
-    },
-    "homestead": {
-      "outsideArea": "這裡不屬於家園用地。去路西邊的 Fallow Acres 試試。",
-      "tooCloseGate": "離大門太近了。再往外挪一挪。",
-      "tooCloseWater": "離水域太近了。",
-      "tooCloseGraveyard": "離墓地太近了。",
-      "tooCloseWildlife": "離野生動物太近了。清空這片區域，或者再挪遠一些。",
-      "tooCloseRoad": "離大路太近了。",
-      "tooCloseOther": "離別人的家園太近了。",
-      "questGate": "綠掌修士還沒讓你出發呢。先把他的差事做完。",
-      "alreadyOwn": "你已經擁有一處家園了。",
-      "claimed": "這片土地歸你了。家園認領成功。",
-      "readoutMine": "你的家園坐落在 ({x}, {z})。",
-      "readoutNoHomesteadQuest": "你還沒有家園。先完成綠掌修士的全部差事才能解鎖。",
-      "readoutNoHomesteadHint": "你還沒有家園。站在空谷地裡合適的位置，輸入 /homestead claim。",
-      "helpLine": "家園：/homestead，/homestead claim。"
     }
   },
   "lockpickUi": {
@@ -2648,21 +2339,6 @@ export const zh_TW: EnTranslations = {
     },
     "chest": {
       "flavor": "亡者已交出他們所能割捨之物。"
-    }
-  },
-  "boarball": {
-    "queue": {
-      "join": "你加入了野豬球隊列。等待另外三名玩家…",
-      "leave": "你離開了野豬球隊列。"
-    },
-    "log": {
-      "welcome": "歡迎來到野豬球！射門、傳球，比分超越對方球隊。",
-      "kickoff": "開球！",
-      "over": "比賽結束！正在返回世界…"
-    },
-    "error": {
-      "tooFar": "你離球不夠近。",
-      "noTeammate": "未選定隊友目標。"
     }
   },
   "fiesta": {
@@ -2859,7 +2535,6 @@ export const zh_TW: EnTranslations = {
     "rendererFailed": "無法啟動渲染器：請嘗試重新整理。{error}",
     "enterTimeout": "無法進入世界。連線已逾時。遊戲伺服器是否正在執行？",
     "connectionLost": "與伺服器的連線已中斷。",
-    "reconnecting": "連線已中斷。正在重新連線...",
     "connectionRejected": "伺服器已關閉連線。"
   },
   "errors": {
@@ -2889,10 +2564,8 @@ export const zh_TW: EnTranslations = {
       "notAuthenticated": "尚未驗證。",
       "accountBanned": "此帳號已被封鎖。",
       "webLoginOnly": "只能從遊戲客戶端登入。",
-      "crossSiteRejected": "跨站請求已被拒絕。",
       "accountSuspended": "此帳號停權至 {date}。",
       "alreadyInWorld": "角色已在世界中。",
-      "tooManyOnline": "同一時間只能有一個角色在世界中。",
       "takenOver": "你的角色已被另一個工作階段接管。",
       "renameBeforeEntering": "此角色必須先更名才能進入世界。",
       "renameNotPermitted": "不允許為此角色更名。"
@@ -3011,9 +2684,7 @@ export const zh_TW: EnTranslations = {
       "druid": "德魯伊引導自然之力，治療傷口、纏繞敵人，並變形成動物來防禦或輸出。"
     },
     "aria": "{className} 職業詳情：職責 {role}。初始屬性：力量 {str}，敏捷 {agi}，耐力 {sta}，智力 {int}，精神 {spi}。",
-    "statBarAria": "{stat}：{value}/25",
-    "classPairLabel": "{primary} / {secondary}",
-    "classPairAria": "{primary}，副職業 {secondary}"
+    "statBarAria": "{stat}：{value}/25"
   },
   "mobilePreflight": {
     "title": "橫向全螢幕遊玩",
@@ -3642,7 +3313,6 @@ export const zh_TW: EnTranslations = {
       "offGlobalCooldown": "不觸發公共冷卻",
       "friendlyTarget": "友方目標",
       "enemyTarget": "敵方目標",
-      "selfOnly": "僅對自己",
       "damageRange": "{min} 到 {max}",
       "finisherDamage": "{base} 加每個連擊點 {perCombo}"
     },
@@ -3686,7 +3356,6 @@ export const zh_TW: EnTranslations = {
     "dialog": {
       "close": "關閉任務對話",
       "greetingFallback": "你好。",
-      "chat": "聊一會兒吧。",
       "availableQuestAria": "可接任務：{name}",
       "readyQuestAria": "可交付任務：{name}",
       "discussQuest": "談論{name}。",
@@ -3696,22 +3365,6 @@ export const zh_TW: EnTranslations = {
       "browseGoodsAria": "查看 {name} 的貨物",
       "worldMarket": "讓我看看世界市場。",
       "worldMarketAria": "開啟世界市場",
-      "trainSecondary": "訓練我一項副職業。",
-      "trainSecondaryAria": "向 {name} 學習一項副職業",
-      "feedHearth": "我這兒有點東西要添進爐子。",
-      "feedHearthAria": "給爐子添東西",
-      "trainerTitle": "副職業",
-      "trainerLevelLocked": "{level} 級解鎖。",
-      "trainerCurrent": "目前",
-      "trainerFree": "免費",
-      "trainerPickAria": "將 {cls} 訓練為副職業：{cost}",
-      "trainerNeedsGold": "金幣不足",
-      "trainerConfirmTitle": "確認副職業",
-      "trainerConfirmBody": "花費{cost}訓練為{cls}？",
-      "trainerConfirmYes": "是，訓練我",
-      "trainerConfirmNo": "否，返回",
-      "trainerHowTitle": "副職業是如何運作的？",
-      "trainerHowBody": "副職業會在你的主職業之上增加第二棵天賦樹和一套技能，從{level}級開始解鎖。你保留主職業的定位；副職業與主職業共享天賦池，最多佔用其中的{pct}%，其技能的資源消耗會換算為你的主資源。首次選擇免費；之後更換需要花費金幣。",
       "accept": "接受",
       "decline": "拒絕",
       "continue": "繼續",
@@ -3748,13 +3401,8 @@ export const zh_TW: EnTranslations = {
     }
   },
   "housingUi": {
-    "claimedBanner": "你將這塊地認領為家園。",
-    "ownerBanner": "這是{name}的家園。",
-    "prompt": {
-      "claim": "認領這塊地",
-      "manage": "管理你的家園",
-      "visit": "拜訪{name}的家"
-    },
+    "claimedBanner": "You claim this plot as your home.",
+    "ownerBanner": "This is {name}'s homestead.",
     "window": {
       "title": "你的家園",
       "close": "關閉家園",
@@ -3808,8 +3456,7 @@ export const zh_TW: EnTranslations = {
       "drink": "飲料",
       "tool": "工具",
       "potion": "藥水",
-      "elixir": "藥劑",
-      "bag": "Bag"
+      "elixir": "藥劑"
     },
     "stats": {
       "armor": "護甲",
@@ -3851,11 +3498,7 @@ export const zh_TW: EnTranslations = {
       "useManaPotion": "使用：立即恢復 {amount} 點法力值。戰鬥中可用。1 分鐘冷卻。",
       "clickUseInstant": "點擊在戰鬥中立即使用",
       "clickUse": "點擊使用",
-      "clickBuyback": "點擊買回",
-      "bagSlots": "{slots} Slot Bag"
-    },
-    "error": {
-      "requiresLevelToEquip": "需要等級 {level} 才能裝備。"
+      "clickBuyback": "點擊買回"
     },
     "bags": {
       "title": "背包",
@@ -5137,21 +4780,6 @@ export const zh_TW: EnTranslations = {
       "monarch_crown_helm": {
         "name": "君主之冠"
       },
-      "linen_pouch": {
-        "name": "亞麻小袋"
-      },
-      "travelers_knapsack": {
-        "name": "旅行者背包"
-      },
-      "wolfhide_satchel": {
-        "name": "狼皮挎包"
-      },
-      "gravewoven_bag": {
-        "name": "墓織袋"
-      },
-      "mistcallers_duffel": {
-        "name": "喚霧者的行囊"
-      },
       "bristleback_maul": {
         "name": "硬鬃重槌"
       },
@@ -5495,17 +5123,7 @@ export const zh_TW: EnTranslations = {
         "name": "餘燼球莖"
       },
       "first_cutting": {
-        "name": "插條",
-        "flavorText": "一段來自灰爪修士的鮮活綠枝，用濕苔蘚包裹著。等家園地塊可以編輯後，這是你要種下的第一樣東西。"
-      },
-      "greenpaw_bead": {
-        "name": "彈藥帶上的一顆唸珠"
-      },
-      "keeper_coal": {
-        "name": "一塊永不冷卻的炭"
-      },
-      "willow_sprig": {
-        "name": "一段柳枝"
+        "name": "插條"
       },
       "witness_root_cincture": {
         "name": "見證根的束帶"
@@ -5513,24 +5131,6 @@ export const zh_TW: EnTranslations = {
       "shrine_diary_page": {
         "name": "撕碎的日記頁",
         "flavorText": "……我數著燭光過了四十天，後來便斷了數。這底下的黑暗從未忘記祂，儘管祂已經忘了這個地方。若鷺鳥低飛掠過，告訴守燈人，燭芯還燃著……"
-      },
-      "heartwood_splinter": {
-        "name": "心材碎片",
-        "flavorText": "觸摸時依然溫暖,儘管孕育它的樹早已停止生長。"
-      },
-      "bloomcrown_pauldrons": {
-        "name": "繁花王冠護肩"
-      },
-      "verdantguard_mantle": {
-        "name": "常青守衛者披風"
-      },
-      "worn_prayer_token": {
-        "name": "磨損的禱牌",
-        "flavorText": "……一面被一根不是我的拇指磨得光滑，磨出的淺溝和這堆裡另外上百枚一模一樣，至少這堆東西是這麼告訴我的。一根拇指磨不出一百枚令牌的痕跡。可一百根拇指，倒是能磨出同一道淺溝……"
-      },
-      "tally_shard": {
-        "name": "刻痕碎片",
-        "flavorText": "……以五為一組刻得極深，每數完一輪便劃去一道。劃去的五連一組，累計上百組，最後一行卻始終沒有劃完……"
       },
       "reliquary_plate_chest": {
         "name": "聖物庫守衛鎖甲"
@@ -5597,33 +5197,6 @@ export const zh_TW: EnTranslations = {
       },
       "event_skin_token": {
         "name": "神秘外觀寶箱"
-      },
-      "flint_amber_pick": {
-        "name": "燧石琥珀鎬"
-      },
-      "bonewood_amber_pick": {
-        "name": "骨木琥珀鎬"
-      },
-      "starleaf_amber_pick": {
-        "name": "星葉琥珀鎬"
-      },
-      "flint_bark_axe": {
-        "name": "燧石樹皮斧"
-      },
-      "bonewood_bark_axe": {
-        "name": "骨木樹皮斧"
-      },
-      "starleaf_bark_axe": {
-        "name": "星葉樹皮斧"
-      },
-      "flint_spore_sickle": {
-        "name": "燧石孢子鐮刀"
-      },
-      "bonewood_spore_sickle": {
-        "name": "骨木孢子鐮刀"
-      },
-      "starleaf_spore_sickle": {
-        "name": "星葉孢子鐮刀"
       },
       "deathless_heartwood": {
         "name": "不朽王冠之心木"
@@ -5768,9 +5341,6 @@ export const zh_TW: EnTranslations = {
       "deacon_voss": {
         "name": "執事沃斯"
       },
-      "training_dummy": {
-        "name": "訓練假人"
-      },
       "ridge_stalker": {
         "name": "山脊潛獵者"
       },
@@ -5900,9 +5470,6 @@ export const zh_TW: EnTranslations = {
       "acolyte_tessa": {
         "name": "侍僧泰莎"
       },
-      "boarball_ball": {
-        "name": "野豬球"
-      },
       "ironvein_foreman": {
         "name": "鐵脈工頭"
       },
@@ -6019,9 +5586,6 @@ export const zh_TW: EnTranslations = {
       },
       "the_witness_root": {
         "name": "見證之根"
-      },
-      "heartwood_colossus": {
-        "name": "心材巨像"
       }
     },
     "npcs": {
@@ -6029,11 +5593,6 @@ export const zh_TW: EnTranslations = {
         "name": "商人",
         "title": "世界市場守護者",
         "greeting": "歡迎來到世界市場，{className}。向王國各地的冒險者購買，或出售你自己的貨物。"
-      },
-      "the_ravenpost": {
-        "name": "渡鴉驛站",
-        "title": "郵務守護者",
-        "greeting": "寄一封信吧，{className}，我的渡鴉會找到你的朋友，無論他們漂泊何方，隨信附上的錢幣和包裹也會安然相隨，直到被領取。"
       },
       "marshal_redbrook": {
         "name": "雷德布魯克元帥",
@@ -6135,11 +5694,6 @@ export const zh_TW: EnTranslations = {
         "title": "聖物庫守護人",
         "greeting": "下方的聖物庫又移位了。"
       },
-      "elder_yarrow": {
-        "name": "長老亞羅",
-        "title": "副職業訓練師",
-        "greeting": "每一套build都始於一個問題：哪個副職業在召喚你？"
-      },
       "tidewatcher_ondrel": {
         "name": "翁德瑞爾·韋恩",
         "title": "守潮者",
@@ -6148,98 +5702,17 @@ export const zh_TW: EnTranslations = {
       "brother_greenpaw": {
         "name": "綠掌修士",
         "title": "首席先知（自封）",
-        "greeting": "你又來啦，真是福氣……這甕一早上唉聲嘆氣的，幾件神聖的事兒又排上了，跟上回一個路子。過來坐一會兒……",
-        "introLines": {
-          "0": "呃……你好。你好啊。沒聽見你過來，我剛才神遊去了，去了個綠油油的地方……你這一臉剛睡醒的樣子，朋友。我太熟這表情了，我自己十天有九天掛著它……",
-          "1": "我叫綠掌。綠掌修士，初代先知，自封的，這甕會告訴你這頭銜一文不值，他說得沒錯，可總得有人照看他不是……",
-          "2": "這地方就是空穴。從前是一整個部族，熱鬧得很，聽他們說的，如今嘛，多半就剩我、這甕，還有那洞裡頭喘氣的那些玩意兒……罷了。他餓了，我也餓了，同一個頻道。過來吧，有幾件神聖的事兒得辦。"
-        },
-        "dialogNode": {
-          "hearth": "好迪，朋友，又回瓶子這兒了啊，他今天挺安靜的，要嘛是聽得特別入神，要嘛就是乾脆不理我了，說真的這兩樣我都佩服，因為我也就這兩個檔……對了空谷這陣子待你怎樣，好還是不好，你帶零食了沒，沒有？行吧就隨口一問，替朋友問問，那朋友就是我……",
-          "warmed": "……哇喔，好吧，你這麼說真的挺好聽的，朋友，是真挺好聽，沒想到耶，大多數人一有機會就直奔大門口了……你還挺不錯的，知道嗎，綠掌級別的不錯，這稱號我可不是隨便給的……要是我手裡有股票，我就買你的股，買進新朋友，賣出舊兆頭，這就叫經濟……",
-          "vase": "老樣子啦，他要煙，要人照顧，要有人坐得近近的，讓這份安靜看起來像聊天……欸。這不就是大多數聊天嘛。哇喔。行吧，反正，我天天跟他唸叨，他一句都沒回過，呃，從來沒有，不過沒事，反正就這麼回事，綠掌級別的沒事……等等，咱們剛才聊到哪兒了……喔。對。說他呢。他挺好的。大概是餓了。同感。",
-          "faith": "信不信是個大詞兒，朋友，我就是照顧照顧，照顧這事我這兩隻手能幹，還帶個打火機，履歷表上就這麼點東西……他到底聽沒聽我說不準，不過煙聞著挺香，還不會對我評頭論足，比大多數長耳朵的強多了，所以波長這塊算是穩了。的確如此。",
-          "stung": "……哎喲，好吧，疼啊朋友，我的天……我是說也許吧，我也說不準，那種大冷天的早上我自己也這麼想過，沒人上這條路來，瓶子連嘆口氣都懶得嘆……不過我還在這兒呢，所以，這總該算點什麼吧？對吧。對。對了你要不要零食，我有零食，換個話題。F。",
-          "mended": "沒事沒事，朋友，全都是賭局，從來都是，這是我心裡那個牛仔在說話，別問他賭局什麼意思，他也不知道，就是說得特別有底氣……這種地方三不五時挨句重話也正常，我不裝作沒這回事……不過你回來道歉了，這就說明點什麼，或者說明你想要點什麼，反正咱倆兩清了，你我，波長一致，改天你想要零食我請。",
-          "tribe": "以前是個大部族，反正老刻痕是這麼說的，我認字不太行，不過我會數數，那底下刻了老多老多的五道槓，劃掉的，比一隻手能劃出來的都多，這數學我繞不過去……讓他亮了老長老長一段時間，才輪到只剩我一個。我不知道大夥都去哪兒了，朋友，是真不知道，我有時候在波長上能感覺到點什麼，可那感覺自己都說不完一句話，所以我也說不完……不過這燈芯不能在我看著的時候滅了。這個我是真知道。",
-          "confide": "……你這麼說真挺好的，朋友，是真挺好……聽著，我跟你唸叨一半是因為瓶子不搭理我，一半是因為我怕，有那麼些晚上，我怕再也沒人上這條路來了，就剩我跟他，還有這份安靜……所以。謝謝你上來了。要說啥算神聖，朋友，那就是這個。……對了。你帶零食了沒？替瓶子問的。波長也餓了。"
-        },
-        "dialogChoice": {
-          "kind": "越來越喜歡這兒了，綠掌。是真的，真的。",
-          "ask": "那瓶子這幾天都說了啥？",
-          "blunt": "就是個帶吉祥物的亂葬崗，綠掌。僅此而已。",
-          "tribe": "跟我說說那個部族吧，你之前那個。",
-          "warm_bye": "那我不打擾你陪他了。",
-          "vase_more": "你是真覺得他在聽？",
-          "vase_bye": "那好，陪著他吧。",
-          "faith_bye": "說得也是，綠掌。",
-          "sorry": "那話說重了，不是故意的。對不起，綠掌。",
-          "cold_bye": "你愛信什麼就信什麼吧。",
-          "mended_bye": "咱倆兩清了。回頭見，綠掌。",
-          "confide": "你不必獨自扛著這一切，師兄。",
-          "tribe_bye": "反正還有人照料著呢。",
-          "confide_bye": "我會一直上這條路來的，綠掌。"
-        }
+        "greeting": "喲，旅人，你來啦。你說這甕今兒個心情不錯，還是只有我這麼覺得……過來吧，有幾件神聖的事兒要辦。基本上就是弄點吃的。反正對綠掌來說是一回事兒。"
       },
       "verger_zebediah": {
         "name": "司事澤比迪亞",
         "title": "根穴守衛",
-        "greeting": "司事澤比迪亞。我為外域記著一本曆書，至少一直在努力記。根穴這一季本該休養，可野豬沒讀那張告示。留神腳下的浮土，還有，別碰我的登記簿。",
-        "introLines": {
-          "0": "司事澤比迪亞。根穴守衛，依一紙任命而來，那紙任命眼下也就是我本人。大多數日子你在這裡便能尋到我；其餘的日子，我也在這裡尋到自己。外域不需法定人數，只需一本登記簿。",
-          "1": "我替這本曆書做主，曆書卻並不替我做主，不過某些季裡它也試著來過。根穴這一輪本記作休養，底下的獸穴卻未收到那張告示，蒼鷺也早不再裝作吃驚。這便是現況。這並非抱怨，抱怨是要有旁人的。",
-          "2": "神龕之內有一本登記簿，切莫去碰。腳下是野豬拱過的浮土，二者皆請留神。若是為守土之事而來，我可託付兩樁差事，都不算小，其中一樁我實在不願再改第三回。這便是我為何同你搭話的緣由。"
-        },
-        "journalLines": {
-          "0": "這本登記簿比蒼鷺更老。第一筆並非我所書，最後一筆也並非我所能書；這便是一樁無人等候承繼的職務，所能給我的慰藉。外域曾是一條通衢。有人沿湖道攜鹽而上，歸時攜一樁無以名狀之物而去，我既不便過問，便也未曾過問。簿中記其來、記其去，亦記一段長久無人來往的空白。那段空白，我也一併看顧。",
-          "1": "蒼鷺比簿更老，簿對這點心有不悅。它不說出口。也不必說。我曾見牠單足而立，熬過那一季，梨樹盡枯，牠連眼也不曾眨一眨，我便將此看作牠對某事的一種態度，雖從未被告知究竟是哪一樁。神龕底下有一間我不入內的房。蒼鷺入內。牠做些什麼，我不問；我在上頭做些什麼，牠也不問。這一樁彼此的默契，比你我任何一人都更長久。",
-          "2": "讀到此處之人，非好奇即避難，二者我皆敬重。長篇記錄的簡短版是：此地記得它曾是什麼，亦記得它將成什麼，二者之間的差，便是這樁差事。記，是我的分內之事。將成什麼、其主是誰，我無從得知。我書以「待定」二字，便去歇了。簿允許待定，不允許遺忘。",
-          "3": "沿湖道而上、聽聞花瓶之事的旅人，多半會得出兩種結論，哪一種都不算好聽。有人稱這一群信眾是嬉皮士，是怪人，笑罷便走。也有人罵得更難聽，且不願多留片刻。多數人則壓根不曾聽聞花瓶之事，而我漸漸以為，這正是這份安排本該有的樣子。默默無聞之物，總比聲名遠揚之物活得長久。"
-        }
+        "greeting": "司事澤比迪亞。我為外域記著一本曆書，至少一直在努力記。根穴這一季本該休養，可野豬沒讀那張告示。留神腳下的浮土，還有，別碰我的登記簿。"
       },
       "sexton_faddick": {
         "name": "守墓人法迪克",
         "title": "流浪的守護者",
-        "greeting": "法迪克。哪裡還有神龕需要守墓人，我就在哪兒守。我從不在一處久留，只管看顧。狼群夜夜繞著閒田莊的羊群打轉，繞得久了，便摸清了所繞之物的形狀。最好讓牠一直只是群羊。",
-        "introLines": {
-          "0": "法迪克。哪裡還有神龕要我來做守墓人，我便做守墓人，只是這樣的神龕已比從前少了。我從不在一處久留，只管看顧。看顧這一樁，便是我如今所剩的幾乎全部。",
-          "1": "繞得久了，便摸清了所繞之物的形狀。閒田莊的狼群在我路過之前便夜夜繞著羊群打轉，至今仍未摸清羊群的形狀，這也算是一樁事。倒是羊群已把牠們摸清，那便是更大的事。",
-          "2": "本想請你喝杯茶，可茶壺留在我昨日待過的地方了。湖邊有一片安靜的地，等著人起屋；狼群在暗中出沒之地，什麼都紮不下根來。喏，兩樁差事，其中一樁我不想獨個兒去辦。邊走邊說罷。"
-        },
-        "journalLines": {
-          "0": "我所看顧的地方，記在腦中便好，因紙易主比地易主來得快。神龕居多，皆是已無人奉祀之神龕。閒田莊在冊。湖東那無名池塘亦在冊。還有一柱立石，風花了一百年才把它磨圓。冊子不長，在要緊處，冊子便是全部。一地之留存，不在久留，而在仍是那個記得它曾在此的人。",
-          "1": "地比我們記得更牢。這便是全部的交換。地上之人走不過兩代，便忘了自己本來的名，又起個新的，照舊叫它；地下之物一無所忘，只管等。石頭底下有一種慢時辰。我聽過一次，沒答，因為一答，那慢東西便尋到了門。我攜著不答的鑰匙，非金屬之鑰，是習慣，習比金屬重一些。",
-          "2": "狼並非問題，狼只是症候；問題在於那樁使地靜到狼都以為是自己的事。這樣的事我見過，一處之地朝錯的方向靜下去，修法向來只有一種：以對的噪聲再把它弄響，而這噪聲便是人，這便是為何有人去建。你或要問，我何德何能，擔得這些。我是那仍走著的人，這便是全部的資格。夠也不夠，夠與不夠之間的那段空隙，我已同它講和。"
-        }
-      },
-      "shade": {
-        "name": "莎德",
-        "title": "一位旅人",
-        "greeting": "哦，是你啊。想坐就坐吧，水又不會跑。今天吃過了嗎？你該吃點東西。",
-        "introLines": {
-          "0": "你撞見我做雜活了。別在意這桶，不過是水而已。總有些東西需要澆上一點水。",
-          "1": "我？沒什麼好說的。叫我莎德。我四處走走，哪裡缺人手就搭把手。你看著累壞了。想的話，就坐一會兒吧。"
-        }
-      },
-      "gate_bard": {
-        "name": "吟遊詩人哈爾登",
-        "title": "門前的賣藝人",
-        "greeting": "一枚銅板換一首歌？不要？沒關係，多數日子都是不要。我為這道門彈唱，可這門從沒掏過一次腰包。路過的人管這兒叫嬉皮士營地，甚至更難聽，反正他們多半只是路過，我也就隨他們說去。"
-      },
-      "goodwife_orla": {
-        "name": "奧拉",
-        "title": "曾屬根穴",
-        "greeting": "你可以坐下。大多數人只是走過去。司事早就把我的名字從冊子上劃掉了，一個被劃掉的名字，學會了安靜，好讓誰都不必想起它還在這兒。"
-      },
-      "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
-      },
-      "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "greeting": "法迪克。哪裡還有神龕需要守墓人，我就在哪兒守。我從不在一處久留，只管看顧。狼群夜夜繞著閒田莊的羊群打轉，繞得久了，便摸清了所繞之物的形狀。最好讓牠一直只是群羊。"
       }
     },
     "quests": {
@@ -7076,47 +6549,6 @@ export const zh_TW: EnTranslations = {
           "0": {
             "label": "已採集洞穴肉粒"
           }
-        },
-        "dialog": {
-          "complain": "我剛從下面上來。你親眼看著我從洞裡爬出來的。",
-          "complainReply": "我知道，朋友，我知道……瓶子不看日曆，我的肚子也不看。可你看看那雙靴子，再告訴我它們走不動最後一趟……不急。那個洞哪兒也不會去。這差不多就是它的全部本事……",
-          "refuse": "不。我不會再下去了。",
-          "refuseReply": "哦……哦，好吧。……好吧。這……是啊。不，這很公道，朋友，很公道……瓶子也聽見了，偷偷跟你說，我覺得他還挺敬佩你的。來，這根插枝你還是拿著。你下去過一次，就已經比大多數人多一次了……"
-        }
-      },
-      "q_the_wavelength": {
-        "title": "同一頻率上",
-        "text": "挖來的插條現在是你的了，朋友，那接下來該聊聊後面的事了……兩件事，都不算考驗，更像是引見。第一，穿過瓶子那邊，去見見耶羅長老，她教的是第二天職，一種完全不同的玩法，凡是路過這兒的靈魂都該知道那扇門是開著的……第二，回來餵我點什麼，不管是哪樣，殘火球莖也好，洞穴肉粒也好，我永遠處於飢餓狀態，瓶子也永遠想要煙。這部分是不會真正結束的，對綠掌來說就是這樣。",
-        "completion": "看吧……你感覺到了吧，房間一下子變濃了？那是他，注意到了。這就是全部的竅門，朋友——你餵我，我就冒煙，他就多湊近一點聽著。沒什麼複雜的。以後也永遠不會變。手頭有多餘的殘火球莖或洞穴肉粒，隨時過來，爐子不看日曆……哦對了。歡迎來到聖所。我這才意識到之前一直沒說過這句。",
-        "objectives": {
-          "0": {
-            "label": "已拜見耶羅長老"
-          },
-          "1": {
-            "label": "已在爐邊餵食"
-          }
-        },
-        "dialog": {
-          "complain": "又要跑腿？我才剛從那洞裡爬出來。",
-          "complainReply": "不不，聽我說完，這次不是洞裡的活兒……這次簡單，就是走一趟，好好餵我一次。這是我求過你最輕鬆的一件事了，我保證，同頻共振，絕不騙你。",
-          "refuse": "我自己去找我的訓練，謝了。",
-          "refuseReply": "……那也行吧。一個靈魂還沒準備好之前，是沒法強求學東西的。等哪天不是「還沒準備好」了，門就一直開著……給，這個還是拿著吧，好歹你來了一趟。"
-        }
-      },
-      "q_keep_him_lit": {
-        "title": "Keep Him Lit",
-        "text": "三次，朋友，就是這個數……不是什麼神聖的數字，就是剛好能把一個人情變成一個習慣，習慣才是我真正信的那種信仰……回來餵爐子三次，分開的三次，先後順序不重要，殘火球莖還是洞穴肉粒也不重要，只要你做到了，我就信你是真的打算留下來，不是路過順道辦完事就走……",
-        "completion": "三次都到了……你不再只是個訪客了，朋友，你是在守著一樣活著的東西，這就是全部的意義，雖然沒人問過我，但我還是要說……給，拿著這個吧，它什麼用也沒有，只是個念想，跟咱們這兒的人一樣……",
-        "objectives": {
-          "0": {
-            "label": "已在爐邊餵食三次"
-          }
-        },
-        "dialog": {
-          "complain": "我不是已經餵過你一次了嗎？這還不夠？",
-          "complainReply": "一次是個人情，朋友，三次才是習慣，人情我吃過虧……這不是爐子需不需要，爐子好得很，我照顧得來，這是關於你願不願意自己走回來，不是因為任務標記逼你來的……三次。不急著數。",
-          "refuse": "我不會分三次來做這件事。一次就夠了。",
-          "refuseReply": "……好吧。好吧，我懂你的意思，朋友，這條線劃得也算公道……這樣吧，還是拿著，嚴格說不算你掙來的，但我給出去的大半也不算，頻率這東西，其實沒真的在計較。"
         }
       },
       "q_root_hollow_boars": {
@@ -7132,7 +6564,7 @@ export const zh_TW: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "根穴的清算",
         "text": "我就說句本職上不該說的實話：五頭，是我樂觀了。底下的窩還在不斷往外拱。再殺八頭，我便能結清這一季，不必第三回去改記錄。記錄不喜被改。我也不喜。",
-        "completion": "結案。簽字。歸檔。這一季總算能照原定的曆程走了，畢竟又有人來看著這本曆書。你幫了一個極小的會眾一個大忙。我得澄清一句：這會眾，就是我。這本曆書本身比這安排還要古老，裝訂出自一雙我從未謀面的手，記著一個我不願去加總的數目。曾經有人在此極為用心。我不過是盡力跟上罷了。",
+        "completion": "結案。簽字。歸檔。這一季總算能照原定的曆程走了，畢竟又有人來看著這本曆書。你幫了一個極小的會眾一個大忙。我得澄清一句：這會眾，就是我。",
         "objectives": {
           "0": {
             "label": "野豬已殺"
@@ -7156,46 +6588,6 @@ export const zh_TW: EnTranslations = {
         "objectives": {
           "0": {
             "label": "森林狼已殺"
-          }
-        }
-      },
-      "q_have_you_eaten": {
-        "title": "你吃過了嗎？",
-        "text": "門口有個吟遊詩人，靠銅板過活，銅板來了才有飯吃，而銅板難得來。我這兒有一碗熱的，還多出一份。替我給他送去，好嗎？別告訴他這是可憐他。就說這是多出來的。",
-        "completion": "你回來了。他吃了嗎？很好。那就好。那你呢？……你沒吃，我看得出來。那就坐下吧。要成為一個好人，不必偉大。偉大不是善良。吃吧。",
-        "objectives": {
-          "0": {
-            "label": "把熱飯送給吟遊詩人"
-          }
-        }
-      },
-      "q_someone_your_own_size": {
-        "title": "找個和你一般大的",
-        "text": "根穴附近有個女人，這世道待她不公。她的名字被從冊子上劃掉了，人們對待一個被劃掉的名字，就當它聽不見。去陪她坐一會兒吧。你不必去修補什麼。只要做一個和她一般大的人就好。",
-        "completion": "你留下來了。她不會說這有什麼要緊，可它要緊，我向你保證它要緊。來，這個給你。一段柳枝，取自我很喜歡的一棵柳樹。它什麼用也沒有。它只記得，在沒人逼你的時候，你依然選擇了善良。",
-        "objectives": {
-          "0": {
-            "label": "陪奧拉坐了一會兒"
-          }
-        }
-      },
-      "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
-        "objectives": {
-          "0": {
-            "label": "Water carried up the willow path"
-          }
-        }
-      },
-      "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
-        "objectives": {
-          "0": {
-            "label": "Water given to the buried root"
           }
         }
       }
@@ -7372,23 +6764,15 @@ export const zh_TW: EnTranslations = {
       }
     },
     "itemSets": {
-      "boundstone_vanguard": {
-        "name": "縛石先鋒鎧",
-        "bonus3": "攻擊與施法速度提高 15%。"
-      },
       "crownforged": {
         "name": "鑄冠戰裝",
         "bonus2": "攻擊強度提高 40 點。",
-        "bonus3": "力量提高 15 點，耐力提高 15 點，攻擊與施法速度提高 15%。"
+        "bonus3": "力量提高 15 點，耐力提高 15 點。"
       },
       "deathlord": {
         "name": "死王戰甲",
         "bonus2": "攻擊強度提高 40 點。",
         "bonus3": "力量提高 15 點，耐力提高 15 點。"
-      },
-      "greyjaw_stalker": {
-        "name": "灰顎潛行者裝備",
-        "bonus3": "攻擊與施法速度提高 15%。"
       },
       "necromancers": {
         "name": "死靈法師法衣",
@@ -7398,44 +6782,22 @@ export const zh_TW: EnTranslations = {
       "nighttalon": {
         "name": "夜爪皮甲",
         "bonus2": "攻擊強度提高 40 點。",
-        "bonus3": "敏捷提高 15 點，致命一擊機率提高 2%，攻擊與施法速度提高 15%。"
+        "bonus3": "敏捷提高 15 點，致命一擊機率提高 2%。"
       },
       "soulflame": {
         "name": "魂焰法衣",
         "bonus2": "受到傷害造成的施法延退降低 50%。",
-        "bonus3": "施法時不會因受到傷害而被延退，且攻擊與施法速度提高 15%。"
+        "bonus3": "施法時不會因受到傷害而被延退。"
       },
       "stormcallers": {
         "name": "喚雷者法衣",
         "bonus2": "受到傷害造成的施法延退降低 50%。",
-        "bonus3": "施法時不會因受到傷害而被延退，且攻擊與施法速度提高 15%。"
-      },
-      "vale_arcanist": {
-        "name": "山谷秘法師法衣",
-        "bonus3": "攻擊與施法速度提高 15%。"
+        "bonus3": "施法時不會因受到傷害而被延退。"
       },
       "wyrmshadow": {
         "name": "龍影外衣",
         "bonus2": "攻擊強度提高 40 點。",
         "bonus3": "敏捷提高 15 點，致命一擊機率提高 2%。"
-      }
-    },
-    "readables": {
-      "torn_ledger_page": {
-        "title": "撕破的登記簿",
-        "pages": {
-          "0": "根穴，記為休養。閒田莊，記為休養。莫斯岸的那片湖，無論我們記與不記，它自顧自地歇著。按登記簿的規矩，簽了名，注了日期。",
-          "1": "本季至今的清點：路石縫裡冒出三株幼苗，我的任何一本曆書上都沒有這一條。我已經不再劃掉它們了。墨跡未乾它們就長回來，而那墨水可不便宜。",
-          "2": "給我之後接手此簿的人留一句。數野豬，數狼，數日子。別去數那片綠。它會數回來，而且不會停在你停下的地方。"
-        }
-      },
-      "keepers_marginalia": {
-        "title": "守護者的旁批",
-        "pages": {
-          "0": "夾在一本聖歌都磨沒了的聖歌集頁邊留下的。那筆跡很快，就像一隻邊走邊寫的手那樣快。",
-          "1": "狼群從林線繞著閒田莊打轉，永遠是同一個圈，永遠順著日頭轉。繞得夠久的東西，會摸清它所繞之物的形狀。我如此。我想，這片土地也如此。",
-          "2": "你若讀到這裡，說明你停下了腳步，那正是我這輩子唯一沒學會的事。歇一會兒吧。外域還會在這兒。而這，恰恰就是它最麻煩的地方。"
-        }
       }
     }
   },

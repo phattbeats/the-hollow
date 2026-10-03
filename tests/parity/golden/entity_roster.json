@@ -10,13 +10,13 @@
     "releaseSpirit outdoor graveyard respawn (full hp, ~10966)"
   ],
   "draws": 4,
-  "drawDigest": "bd70bdfe",
+  "drawDigest": "49d4fe7f",
   "frames": [
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "39460566",
+      "nextId": 400,
+      "state": "8df53963",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -29,26 +29,16 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -66,7 +56,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -109,34 +99,34 @@
     {
       "tick": 2,
       "time": 0.1,
-      "nextId": 409,
-      "state": "6379674a",
-      "events": "8dd7da22",
+      "nextId": 402,
+      "state": "8b4d49f3",
+      "events": "9f2a44d9",
       "rng": {
         "draws": 4,
-        "digest": "bd70bdfe"
+        "digest": "49d4fe7f"
       }
     },
     {
       "tick": 4,
       "time": 0.2,
-      "nextId": 409,
-      "state": "2c97b858",
+      "nextId": 402,
+      "state": "ad1de7dd",
       "events": "741638a5",
       "rng": {
         "draws": 4,
-        "digest": "bd70bdfe"
+        "digest": "49d4fe7f"
       }
     },
     {
       "tick": 5,
       "time": 0.25,
-      "nextId": 409,
-      "state": "f2c32fac",
+      "nextId": 402,
+      "state": "37157429",
       "events": "741638a5",
       "rng": {
         "draws": 4,
-        "digest": "bd70bdfe"
+        "digest": "49d4fe7f"
       },
       "label": "post-churn",
       "players": [
@@ -145,27 +135,17 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
           "lifetimeXp": 27600,
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -183,7 +163,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99.25,
           "hp": 50000,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 10,
           "lootFfaTimer": "Infinity",
@@ -226,12 +206,12 @@
     {
       "tick": 5,
       "time": 0.25,
-      "nextId": 409,
-      "state": "82895ad4",
-      "events": "8dd7da22",
+      "nextId": 402,
+      "state": "99040f51",
+      "events": "9f2a44d9",
       "rng": {
         "draws": 4,
-        "digest": "bd70bdfe"
+        "digest": "49d4fe7f"
       },
       "label": "graveyard-release",
       "players": [
@@ -240,27 +220,17 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
           "lifetimeXp": 27600,
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -278,7 +248,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99.25,
           "hp": 432,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 10,
           "lootFfaTimer": "Infinity",
@@ -321,23 +291,23 @@
     {
       "tick": 6,
       "time": 0.3,
-      "nextId": 409,
-      "state": "7558c461",
+      "nextId": 402,
+      "state": "914777e4",
       "events": "741638a5",
       "rng": {
         "draws": 4,
-        "digest": "bd70bdfe"
+        "digest": "49d4fe7f"
       }
     },
     {
       "tick": 7,
       "time": 0.35,
-      "nextId": 409,
-      "state": "a0b26740",
+      "nextId": 402,
+      "state": "bf962085",
       "events": "741638a5",
       "rng": {
         "draws": 4,
-        "digest": "bd70bdfe"
+        "digest": "49d4fe7f"
       },
       "label": "final",
       "players": [
@@ -346,27 +316,17 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
           "lifetimeXp": 27600,
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -384,7 +344,7 @@
           "fallStartY": 1.500121,
           "fiveSecondRule": 99.35,
           "hp": 432,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 10,
           "lootFfaTimer": "Infinity",

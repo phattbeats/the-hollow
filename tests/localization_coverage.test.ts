@@ -10,7 +10,6 @@ import {
   MOBS,
   NPCS,
   QUESTS,
-  READABLES_BY_ID,
   ZONES,
 } from '../src/sim/data';
 import type { PlayerClass } from '../src/sim/types';
@@ -337,7 +336,6 @@ describe('i18n Localization Key Coverage', () => {
     channel: 'World',
     classes: 'Warrior, Mage',
     className: 'Mage',
-    cls: 'Priest',
     command: '/dance',
     completed: 12,
     count: 5,
@@ -357,7 +355,6 @@ describe('i18n Localization Key Coverage', () => {
     item: 'Rough Bracers',
     key: 'K',
     kind: 'Weapon',
-    slots: 14,
     label: 'Wolf',
     level: 10,
     losses: 4,
@@ -369,7 +366,6 @@ describe('i18n Localization Key Coverage', () => {
     money: '12 copper',
     name: 'Aki',
     needed: 400,
-    pct: 50,
     perCombo: 7,
     percent: 30,
     position: 3,
@@ -509,14 +505,6 @@ describe('i18n Localization Key Coverage', () => {
         values: { className: 'Mage', classNameLower: 'mage', playerName: 'Mira' },
       };
     }
-    if (entry.kind === 'npcIntro') {
-      const { ownerId, index } = parseIndexedEntry(entry.id, 'introLines');
-      return { kind: 'npcIntro', id: ownerId, lineIndex: index, field: 'introLine' };
-    }
-    if (entry.kind === 'npcJournal') {
-      const { ownerId, index } = parseIndexedEntry(entry.id, 'journalLines');
-      return { kind: 'npcJournal', id: ownerId, lineIndex: index, field: 'journalLine' };
-    }
     if (entry.kind === 'quest') {
       return {
         kind: 'quest',
@@ -528,14 +516,6 @@ describe('i18n Localization Key Coverage', () => {
     if (entry.kind === 'questObjective') {
       const { ownerId, index } = parseIndexedEntry(entry.id, 'objectives');
       return { kind: 'questObjective', questId: ownerId, objectiveIndex: index, field: 'label' };
-    }
-    if (entry.kind === 'questDialog') {
-      const ownerId = entry.id.slice(0, entry.id.indexOf('.dialog.'));
-      return {
-        kind: 'questDialog',
-        id: ownerId,
-        field: entry.field as 'complain' | 'complainReply' | 'refuse' | 'refuseReply',
-      };
     }
     if (entry.kind === 'zone') {
       return { kind: 'zone', id: entry.id, field: entry.field as 'name' | 'welcome' };
@@ -557,23 +537,6 @@ describe('i18n Localization Key Coverage', () => {
         id: entry.id,
         field: entry.field as 'name' | 'enterText' | 'leaveText',
       };
-    }
-    if (entry.kind === 'readable') {
-      if (entry.field === 'readableTitle') {
-        return { kind: 'readable', id: entry.id, field: 'readableTitle' };
-      }
-      const { ownerId, index } = parseIndexedEntry(entry.id, 'pages');
-      return { kind: 'readable', id: ownerId, pageIndex: index, field: 'readablePage' };
-    }
-    if (entry.kind === 'npcDialog') {
-      const marker = entry.field === 'npcLine' ? '.dialogNode.' : '.dialogChoice.';
-      const markerIndex = entry.id.lastIndexOf(marker);
-      if (markerIndex < 0) throw new Error(`Malformed dialog entity id: ${entry.id}`);
-      const npcId = entry.id.slice(0, markerIndex);
-      const key = entry.id.slice(markerIndex + marker.length);
-      return entry.field === 'npcLine'
-        ? { kind: 'npcDialog', npcId, node: key, field: 'npcLine' }
-        : { kind: 'npcDialog', npcId, choice: key, field: 'choiceLabel' };
     }
     throw new Error(`Unexpected entity kind: ${entry.kind}`);
   }
@@ -915,9 +878,7 @@ describe('i18n Localization Key Coverage', () => {
 
   it('should track item-set names and bonus text in the entity catalog', async () => {
     const itemSetEntries = entityTranslationManifest().filter((entry) => entry.group === 'itemSet');
-    // 7 raid/dungeon families with name+bonus2+bonus3, plus 3 leveling haste
-    // kits carrying a single 3-piece tier (name+bonus3 only)
-    expect(itemSetEntries).toHaveLength(7 * 3 + 3 * 2);
+    expect(itemSetEntries).toHaveLength(7 * 3);
     expect(missingEntityTranslationsForGroups(['itemSet'])).toHaveLength(0);
 
     for (const lang of ['zh_CN', 'zh_TW', 'ja_JP', 'ko_KR', 'ru_RU'] as const) {
@@ -977,26 +938,12 @@ describe('i18n Localization Key Coverage', () => {
     const expectedWorldCount =
       Object.keys(MOBS).length +
       Object.keys(NPCS).length * 3 +
-      Object.values(NPCS).reduce((sum, npc) => sum + (npc.introLines?.length ?? 0), 0) +
-      Object.values(NPCS).reduce((sum, npc) => sum + (npc.journalLines?.length ?? 0), 0) +
       Object.keys(QUESTS).length * 3 +
       Object.values(QUESTS).reduce((sum, quest) => sum + quest.objectives.length, 0) +
-      Object.values(QUESTS).reduce((sum, quest) => sum + (quest.offerDialog ? 4 : 0), 0) +
       ZONES.length * 2 +
       ZONES.reduce((sum, zone) => sum + zone.pois.length, 0) +
       Object.keys(DUNGEONS).length * 3 +
-      Object.keys(DELVES).length * 3 +
-      // Readables (PHAA-552): one title + one entry per page, each readable.
-      Object.keys(READABLES_BY_ID).length +
-      Object.values(READABLES_BY_ID).reduce((sum, r) => sum + r.pages.length, 0) +
-      // Branching NPC dialogue (PHAA-562): one npcLine per node, one
-      // choiceLabel per choice across every node, for each NPC with a tree.
-      Object.values(NPCS).reduce((sum, npc) => {
-        const tree = npc.dialogTree;
-        if (!tree) return sum;
-        const nodes = Object.values(tree.nodes);
-        return sum + nodes.length + nodes.reduce((n, node) => n + node.choices.length, 0);
-      }, 0);
+      Object.keys(DELVES).length * 3;
     expect(worldEntries).toHaveLength(expectedWorldCount);
 
     for (const lang of supportedLanguages) {

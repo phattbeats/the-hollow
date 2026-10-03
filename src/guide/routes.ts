@@ -98,14 +98,6 @@ export const GUIDE_ROUTES: GuideRoute[] = [
     descKey: 'guide.models.intro',
   },
   {
-    id: 'hollow',
-    sub: 'hollow',
-    navKey: 'guide.nav.hollow',
-    group: 'compendium',
-    topbar: true,
-    descKey: 'guide.hollowPage.intro',
-  },
-  {
     id: 'world',
     sub: 'world',
     navKey: 'guide.nav.world',
@@ -163,13 +155,6 @@ export const GUIDE_ROUTES: GuideRoute[] = [
     descKey: 'guide.controls.intro',
   },
   {
-    id: 'settings',
-    sub: 'reference/settings',
-    navKey: 'guide.nav.settings',
-    group: 'reference',
-    descKey: 'guide.settingsPage.intro',
-  },
-  {
     id: 'combat',
     sub: 'reference/combat',
     navKey: 'guide.nav.combat',
@@ -196,13 +181,6 @@ export const GUIDE_ROUTES: GuideRoute[] = [
     navKey: 'guide.nav.talents',
     group: 'reference',
     descKey: 'guide.talentsPage.intro',
-  },
-  {
-    id: 'professions',
-    sub: 'reference/professions',
-    navKey: 'guide.nav.professions',
-    group: 'reference',
-    descKey: 'guide.professionsPage.intro',
   },
   {
     id: 'glossary',

@@ -1,6 +1,5 @@
 import type * as http from 'node:http';
 import * as net from 'node:net';
-import { attackSignalSink } from './attack_signals';
 
 // Simple in-memory rate limiter (per client IP, sliding minute window).
 //
@@ -148,10 +147,7 @@ export function rateLimited(req: http.IncomingMessage, maxPerMinute = 20): boole
       attempts.delete(oldestKey);
     }
   }
-  const limited = updated.length > maxPerMinute;
-  // Attack signal (PHAA-527): one series per limiter policy, key kind fixed.
-  if (limited) attackSignalSink().rateLimitHit('auth', 'ip');
-  return limited;
+  return updated.length > maxPerMinute;
 }
 
 /** Number of IPs currently tracked. Exposed for the backstop-bound test. */
@@ -217,9 +213,7 @@ export function cardUploadRateLimited(req: http.IncomingMessage, accountId: numb
     accountId,
     CARD_UPLOAD_MAX_PER_MINUTE,
   );
-  const limited = ipLimited || accountLimited;
-  if (limited) attackSignalSink().rateLimitHit('card_upload', 'ip+account');
-  return limited;
+  return ipLimited || accountLimited;
 }
 
 /** Reset player-card upload throttles. Test-only: keeps scoped buckets isolated. */
@@ -246,9 +240,7 @@ export function discordRateLimited(req: http.IncomingMessage, accountId: number)
     accountId > 0
       ? recordSlidingWindowAttempt(discordAccountAttempts, accountId, DISCORD_MAX_PER_MINUTE)
       : false;
-  const limited = ipLimited || accountLimited;
-  if (limited) attackSignalSink().rateLimitHit('discord', 'ip+account');
-  return limited;
+  return ipLimited || accountLimited;
 }
 
 /** Reset Discord throttles. Test-only: keeps scoped buckets isolated. */
@@ -266,13 +258,11 @@ export const PUBLIC_READ_MAX_PER_MINUTE = 60;
 const publicReadIpAttempts = new Map<string, number[]>();
 
 export function publicReadRateLimited(req: http.IncomingMessage): boolean {
-  const limited = recordSlidingWindowAttempt(
+  return recordSlidingWindowAttempt(
     publicReadIpAttempts,
     requestIp(req),
     PUBLIC_READ_MAX_PER_MINUTE,
   );
-  if (limited) attackSignalSink().rateLimitHit('public_read', 'ip');
-  return limited;
 }
 
 /** Reset the public-read throttle. Test-only: keeps scoped buckets isolated. */
@@ -326,9 +316,6 @@ export function authThrottled(username: string): boolean {
 
 /** Record a failed login for an account (call on bad password / unknown user). */
 export function recordAuthFailure(username: string): void {
-  // Attack signal (PHAA-527): every recorded failure is a bad credential; the
-  // 'throttled' kind is emitted at the login gate that rejects before recording.
-  attackSignalSink().authFailure('bad_credentials');
   const key = authKey(username);
   const windowStart = Date.now() - AUTH_FAIL_WINDOW_MS;
   const recent = (authFailures.get(key) ?? []).filter((t) => t > windowStart);

@@ -15,14 +15,11 @@ import { economy } from './economy';
 import { faq } from './faq';
 import { gear } from './gear';
 import { glossary } from './glossary';
-import { hollow } from './hollow';
 import { home } from './home';
 import { howToPlay } from './how_to_play';
 import { models } from './models';
-import { professions } from './professions';
 import { progression } from './progression';
 import { quests } from './quests';
-import { settings } from './settings';
 import { social } from './social';
 import { stats } from './stats';
 import { talents } from './talents';
@@ -40,7 +37,6 @@ const PAGES: Record<string, GuidePage> = {
   classes,
   bestiary,
   models,
-  hollow,
   world,
   gear,
   economy,
@@ -52,9 +48,7 @@ const PAGES: Record<string, GuidePage> = {
   stats,
   progression,
   controls,
-  settings,
   talents,
-  professions,
   glossary,
   faq,
 };

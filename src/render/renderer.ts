@@ -28,7 +28,7 @@ import {
 } from '../sim/data';
 import type { DelveModuleId } from '../sim/delve_layout';
 import { type DungeonLayout, UNDER_SHRINE_LAYOUT } from '../sim/dungeon_layout';
-import type { BiomeId, EquipSlot } from '../sim/types';
+import type { BiomeId } from '../sim/types';
 import { ALL_CLASSES, type Entity, type SimEvent } from '../sim/types';
 import { groundHeight, WATER_LEVEL, zoneBiomeAt } from '../sim/world';
 import { tEntity } from '../ui/entity_i18n';
@@ -38,13 +38,7 @@ import type { SpatialAudioSink, Surface } from './audio_sink';
 import { type BirdsView, buildBirds } from './birds';
 import { type CameraOcclusionState, stepCameraOcclusion } from './camera_collision';
 import { characterSoulRendActive } from './character_effects';
-import {
-  type AnimState,
-  type CharacterVisual,
-  createCharacterVisual,
-  type MobVisual,
-  plantArchetypeFor,
-} from './characters';
+import { type AnimState, type CharacterVisual, createCharacterVisual } from './characters';
 import { mechAssetsReady, preloadMechAssets } from './characters/assets';
 import { skinCount, visualKeyFor } from './characters/manifest';
 import { CLICK_MARKER_LIFETIME, clickMarkerAnim, clickMarkerColor } from './click_marker';
@@ -62,7 +56,6 @@ import {
   type FoliagePerfStats,
   type FoliageView,
 } from './foliage';
-import { buildGatherNodes } from './gather_nodes';
 import {
   GFX,
   type GfxBucketBands,
@@ -74,17 +67,13 @@ import {
   urlForcedTier,
 } from './gfx';
 import { buildHollowCanopy } from './hollow_canopy';
-import { buildHollowFlora, type HollowFloraView } from './hollow_flora';
 import {
   buildHollowProps,
-  buildShrineGateDoor,
   hollowSmokeIntensity,
   hollowVaseWorldPos,
   isHollowHubOrigin,
   isHollowHubPos,
-  updateHollowVaseBreath,
 } from './hollow_props';
-import { HomesteadView } from './homestead';
 import { HousingView } from './housing';
 import { type NearbyHousingPlot, nearestHousingPlot } from './housing_proximity';
 import { buildImpactSite, type ImpactSiteView } from './impact_site';
@@ -97,20 +86,15 @@ import {
   isProjectedNameplateAnchorVisible,
   nameplateScreenTransform,
 } from './nameplate_projection';
-import { resolveDirectPickEntityId } from './pick_resolution';
 import { buildComposer, type PostPipeline } from './post';
 import { buildPropMaterialPrewarmGroup, buildProps } from './props';
 import { buildGroundQuestObject } from './quest_objects';
 import { isOwnedPetHostile } from './reaction';
-import { type NearbyReadable, nearestReadable } from './readable_proximity';
-import { buildReadables } from './readables';
 import { RenderBudgetGovernor, type RenderBudgetState } from './render_budget';
 import { downscaleDims } from './screenshot';
 import { drapeRingLocalY } from './selection_ring';
-import { type SelfMotionFrame, SelfMotionPredictor } from './self_motion';
 import { buildClouds, buildSky, type SkyView } from './sky';
 import { nearestSloppyPickId, type SloppyPickCandidate } from './sloppy_pick';
-import { freezeStaticMatrices } from './static_matrix';
 import { shouldRenderStealthGhost } from './stealth';
 import { buildFlaredConeFan, buildRingXZ, drapeConeWorld } from './target_cone_debug';
 import { buildTerrain, type TerrainView } from './terrain';
@@ -220,9 +204,6 @@ const CAMERA_BASE_FOV = 60;
 const CAMERA_MAX_COMP_FOV = 98;
 const SELF_RENDER_SMOOTH_RATE = 30;
 const SELF_RENDER_SNAP_DIST_SQ = 6 * 6;
-// Decay rate of the one-time offset captured when the self-motion predictor
-// takes over from the lead-smoothing path (gone in ~0.3 s, no camera step).
-const SELF_MOTION_HANDOFF_RATE = 15;
 const SUN_HALO_OPACITY = 0.35; // bloom now supplies most of the halo
 // lighting rig (high/ultra) — IBL supplies ambient, sun carries the key
 const HEMI_INTENSITY = 0.45;
@@ -480,9 +461,8 @@ function selfSnapshotAlpha(alpha: number, lead: number): number {
 
 export interface EntityView {
   group: THREE.Group;
-  /** rigged glTF visual, or (PHAA-531) a seeded plant creature; null for object
-   *  views (doors/crates) */
-  visual: MobVisual | null;
+  /** rigged glTF visual for characters; null for object views (doors/crates) */
+  visual: CharacterVisual | null;
   visualKey: string | null;
   visualPoolKey: string | null;
   sheepVisual: CharacterVisual | null; // polymorph form, built lazily
@@ -491,11 +471,6 @@ export interface EntityView {
   travelVisual: CharacterVisual | null; // druid travel form (chicken-cow), built lazily
   skin: number; // last-rendered appearance skin — diffed each frame for live swaps
   mainhandItemId: string | null; // last-rendered equipped weapon — diffed for live held-weapon swaps
-  /** Last-rendered equipped armor (mirrors the entity's `equippedItems`). Diffed
-   *  each frame for live armor equips: the renderer calls v.visual.setArmor(...)
-   *  only when the keys/values change, the same write-elision discipline as the
-   *  skin + mainhand diffs just below. Null before the first setArmor call. */
-  armorByItemId: Partial<Record<EquipSlot, string>> | null;
   /** unscaled height — nameplate/vfx anchor reads height * e.scale */
   height: number;
   /** last-applied entity scale (group.scale); diffed each frame for live size buffs */
@@ -707,9 +682,6 @@ export class Renderer {
   camera: THREE.PerspectiveCamera;
   webgl: THREE.WebGLRenderer;
   views = new Map<number, EntityView>();
-  // view groups that own a budgeted point light: exempt from the hidden-view
-  // matrix gate (see the gate pass in sync and the note at registration)
-  private lightOwnerGroups = new WeakSet<THREE.Object3D>();
   nameplateLayer: HTMLDivElement;
   // Travel-form speed-illusion overlay (presentation only; see travel_speed_fx*).
   private travelSpeedFx: TravelSpeedFxPainter;
@@ -731,11 +703,6 @@ export class Renderer {
   // so sync() can re-drape the ring over the terrain without allocating.
   selectionRingLocalXZ: Float32Array;
   selectionRingDrapeY: Float32Array;
-  // last drape anchor: the drape is a pure function of (x, z, scale), so a
-  // stationary target skips the per-vertex groundHeight resample entirely.
-  private selRingX = Number.NaN;
-  private selRingZ = Number.NaN;
-  private selRingScale = Number.NaN;
   // Dev-only Tab-target cone overlay (enabled via ?targetcone=1 in main.ts).
   // Null until enabled; once built it is re-draped over the terrain in front of
   // the local player every frame. See target_cone_debug.ts.
@@ -816,11 +783,6 @@ export class Renderer {
   };
   private selfRenderPosition = new THREE.Vector3();
   private selfRenderPositionReady = false;
-  // Online display-only self extrapolation (see src/render/self_motion.ts).
-  // Lazy: offline never passes a SelfMotionFrame, so it is never constructed.
-  private selfMotionPredictor: SelfMotionPredictor | null = null;
-  private selfMotionActive = false;
-  private selfMotionOffset = new THREE.Vector3();
   private lastSelfId: number | null = null;
   // Last yaw applied to the local player while the camera was driving its facing
   // (mouselook / mouse-camera). Null when the override is disengaged, so the next
@@ -841,7 +803,6 @@ export class Renderer {
   private waterView: WaterView;
   private terrainView: TerrainView;
   private foliage: FoliageView;
-  private hollowFlora: HollowFloraView;
   private fish: FishView;
   private critters: CritterField;
   private motes: MotesView;
@@ -883,13 +844,6 @@ export class Renderer {
   // recomputed alongside housingView each frame. main.ts's interact-key handler
   // reads this instead of re-deriving the same distance check.
   nearHousingPlot: NearbyHousingPlot | null = null;
-  // PHAA-552: the world-placed readable book the player is currently in read
-  // range of (if any), recomputed each frame. main.ts's interact-key handler and
-  // the HUD "Read" prompt both read this rather than re-deriving the check.
-  nearReadable: NearbyReadable | null = null;
-  // Homestead v0: open-world plots drawn from IWorld.homesteadInfo. Lazy like
-  // `housingView` (nothing to draw before the primary entity resolves).
-  private homesteadView: HomesteadView | null = null;
   private envRTs = new Map<BiomeId, THREE.WebGLRenderTarget>();
   private envBiome: BiomeId = 'vale';
   private envOutdoorIntensity = ENV_INTENSITY;
@@ -959,7 +913,7 @@ export class Renderer {
   private renderDiagnosticsLastTextures = 0;
   private appliedBudgetLevels: RenderBudgetState['levels'] | null = null;
   private lastQualityChange: Omit<RendererQualityChangeStats, 'ageMs'> | null = null;
-  private visualPool = new Map<string, MobVisual[]>();
+  private visualPool = new Map<string, CharacterVisual[]>();
   private objectPool = new Map<string, PooledObjectView[]>();
 
   constructor(
@@ -969,14 +923,6 @@ export class Renderer {
   ) {
     this.nameplateLayer = nameplateLayer;
     this.travelSpeedFx = new TravelSpeedFxPainter(nameplateLayer);
-    // The scene root sits at identity forever, but with the default
-    // matrixAutoUpdate the root recomposes each frame, which flags
-    // matrixWorldNeedsUpdate and force-cascades a matrixWorld multiply through
-    // every node in the graph (three r165 updateMatrixWorld), defeating both
-    // the static-subtree freeze and the hidden-rig gate below. Freeze the root:
-    // children with auto-update still recompose themselves normally.
-    this.scene.updateMatrix();
-    this.scene.matrixAutoUpdate = false;
     // No default-framebuffer MSAA on any tier: high/ultra get AA from the
     // composer's MSAA HalfFloat target, low is meant to run without AA — and
     // requesting it here would hit software GL (the autodetect can only run
@@ -1213,24 +1159,15 @@ export class Renderer {
     this.terrainView = buildTerrain(this.sim.cfg.seed);
     setRenderCategory(this.terrainView.group, 'terrain');
     this.scene.add(this.terrainView.group);
-    // Terrain chunks never move after build (the LOD update only toggles
-    // visibility): stop their per-frame matrix recompose (static_matrix.ts).
-    freezeStaticMatrices(this.terrainView.group);
     this.waterView = buildWater(this.sim.cfg.seed);
     for (const mesh of this.waterView.meshes) {
       setRenderCategory(mesh, 'water');
       this.scene.add(mesh);
-      freezeStaticMatrices(mesh); // water animates via uniforms, never transforms
     }
 
     this.foliage = buildFoliage(this.sim.cfg.seed);
     setRenderCategory(this.foliage.group, 'foliage');
     this.scene.add(this.foliage.group);
-    // Otherworldly starter-zone garden flora clustered around the Hollow
-    // Reaches camps (PHAA-581): static plant-creature decor, walk-through.
-    this.hollowFlora = buildHollowFlora(this.sim.cfg.seed);
-    setRenderCategory(this.hollowFlora.group, 'foliage');
-    this.scene.add(this.hollowFlora.group);
     this.fish = buildFish(this.sim.cfg.seed);
     setRenderCategory(this.fish.group, 'fish');
     this.scene.add(this.fish.group);
@@ -1250,29 +1187,11 @@ export class Renderer {
     this.scene.add(props.group);
     this.flames = props.flames;
     this.fireLights = props.fireLights;
-    // Props are baked into world space at build and their update() only toggles
-    // visibility, so the whole tree is matrix-static, EXCEPT the campfire
-    // flames, whose flicker rescales them every frame: re-enable those.
-    freezeStaticMatrices(props.group);
-    for (const flame of this.flames) flame.matrixAutoUpdate = true;
     // The impact-site light rides the campfire point-light budget so the visible
     // point-light count stays constant as the player travels (constant
     // numPointLights -> materials never recompile for a light-count change).
     this.fireLights.push(this.impactSite.light);
     this.propsView = props;
-
-    const gatherNodes = buildGatherNodes(this.sim.cfg.seed);
-    setRenderCategory(gatherNodes.group, 'props');
-    this.scene.add(gatherNodes.group);
-    // Baked into world space at build with no per-frame update(), same as props.
-    freezeStaticMatrices(gatherNodes.group);
-
-    // PHAA-552: world-placed readable books, same static-fixture treatment as
-    // gather nodes above (baked into world space, no per-frame transform).
-    const readables = buildReadables(this.sim.cfg.seed);
-    setRenderCategory(readables.group, 'props');
-    this.scene.add(readables.group);
-    freezeStaticMatrices(readables.group);
 
     // selection ring — a classic target reticle: a base ring plus four
     // inward-pointing ticks. The base ring is draped over the terrain each
@@ -2101,12 +2020,7 @@ export class Renderer {
   }
 
   private visualPoolKeyFor(e: Entity): string | null {
-    if (e.kind === 'mob') {
-      // seeded per-entity-id (PHAA-531): recycling one entity's build for
-      // another would show the wrong creature, so these are never pooled
-      if (plantArchetypeFor(e.templateId)) return null;
-      return `mob:${e.templateId}:${e.color}:${e.scale}`;
-    }
+    if (e.kind === 'mob') return `mob:${e.templateId}:${e.color}:${e.scale}`;
     // NPCs are skinned characters too: pool them like mobs so their Skeleton (and its
     // bone-matrix DataTexture) survives interest churn instead of being disposed and
     // re-uploaded every time one streams out and back into view - that dispose +
@@ -2116,7 +2030,7 @@ export class Renderer {
     return null;
   }
 
-  private takePooledVisual(key: string): MobVisual | null {
+  private takePooledVisual(key: string): CharacterVisual | null {
     const pool = this.visualPool.get(key);
     const visual = pool?.pop() ?? null;
     if (!visual) return null;
@@ -2130,7 +2044,7 @@ export class Renderer {
     return visual;
   }
 
-  private storePooledVisual(key: string, visual: MobVisual): void {
+  private storePooledVisual(key: string, visual: CharacterVisual): void {
     visual.root.removeFromParent();
     visual.root.visible = false;
     visual.root.position.set(0, 0, 0);
@@ -2798,7 +2712,6 @@ export class Renderer {
       case 'spellfx':
         if (ev.fx === 'projectile') this.vfx.projectile(ev.sourceId, ev.targetId, ev.school);
         else if (ev.fx === 'beam') this.vfx.beam(ev.sourceId, ev.targetId, ev.school);
-        else if (ev.fx === 'lightning') this.vfx.lightningProjectile(ev.sourceId, ev.targetId);
         else if (ev.fx === 'tick') this.vfx.tick(ev.targetId, ev.school);
         else this.vfx.nova(ev.targetId, ev.school);
         break;
@@ -3054,7 +2967,7 @@ export class Renderer {
   private buildDoorBody(
     entering: boolean,
     dungeonId?: string | null,
-  ): { body: THREE.Group; portal?: THREE.Mesh; height?: number } {
+  ): { body: THREE.Group; portal?: THREE.Mesh } {
     const body = new THREE.Group();
     if (entering && dungeonId === 'nythraxis_crypt') {
       const clickBox = new THREE.Mesh(
@@ -3064,36 +2977,6 @@ export class Renderer {
       clickBox.position.y = 2.1;
       body.add(clickBox);
       return { body };
-    }
-
-    // Hollow-family transitions read as the shrine gate, not the generic
-    // stone arch (PHAA-589 follow-up): the overworld shrine gate into the
-    // hub, the hub's cave mouth into the Under-Shrine, and the Under-Shrine
-    // exit. The hub's own walk-out (the_hollow exit) keeps the stone arch:
-    // hollow_props.ts already stands the static shrine gate on that exact
-    // line, and doubling the mesh would z-fight. Falls through to the arch
-    // if the GLB is unavailable (preload failure).
-    if (dungeonId === 'under_shrine' || (dungeonId === 'the_hollow' && entering)) {
-      // Cloned kit meshes share geometry with the loader cache; mark them so
-      // the object-view dispose path (which frees unshared geometries on
-      // interest churn) leaves the cache intact.
-      const gate = buildShrineGateDoor((o) =>
-        o.traverse((c) => {
-          const mesh = c as THREE.Mesh;
-          if (mesh.isMesh) markSharedGeometry(mesh.geometry);
-        }),
-      );
-      if (gate) {
-        body.add(gate);
-        const portal = new THREE.Mesh(this.doorPortalGeometry(), this.doorPortalMaterial(entering));
-        // centred in the gate's arch opening (frame ~7.6 x 7.9 at the kit's
-        // 1.8x scale), a touch larger than the stone-arch swirl to fill it
-        portal.position.y = 2.6;
-        portal.scale.set(1.25, 1.6, 1);
-        body.add(portal);
-        // nameplate above the ~7.9-unit gate frame, not inside it
-        return { body, portal, height: 8.2 };
-      }
     }
 
     const stone = this.doorStoneMaterial();
@@ -3134,7 +3017,7 @@ export class Renderer {
   private createView(e: Entity): void {
     const group = new THREE.Group();
     setRenderCategory(group, `entity:${e.kind}`);
-    let visual: MobVisual | null = null;
+    let visual: CharacterVisual | null = null;
     let body: THREE.Group | null = null; // object views build meshes into this
     let height = 1.2;
     let sparkle: THREE.Sprite | undefined;
@@ -3152,7 +3035,7 @@ export class Renderer {
       const built = this.buildDoorBody(entering, e.dungeonId);
       body = built.body;
       portal = built.portal;
-      height = built.height ?? 4.6;
+      height = 4.6;
       objectMesh = body!;
     } else if (e.kind === 'object' && e.templateId?.startsWith('delve_')) {
       // Delve interactables: skip the object pool (each is unique/stateful) and
@@ -3332,11 +3215,6 @@ export class Renderer {
         this.viewLights.push(light);
       }
       this.lightRankDirty = true;
-      // A light-owning view is exempt from the hidden-view matrix gate below:
-      // the light-budget rebuild caches light.getWorldPosition, and r165's
-      // updateWorldMatrix does not heal through a matrixWorldAutoUpdate=false
-      // ancestor, so a gated group would rank the light at a stale position.
-      this.lightOwnerGroups.add(group);
     }
     this.views.set(e.id, {
       group,
@@ -3385,12 +3263,6 @@ export class Renderer {
       lastZ: e.pos.z,
       skin: e.skin,
       mainhandItemId: e.mainhandItemId,
-      // First-render snapshot of the entity's full worn set, so the per-frame
-      // diff just below treats the initial paint as already applied (no swap
-      // pop when a peer streams in mid-fight wearing armor). Forms (sheep/bear/
-      // cat/travel) never carry armor: their `equippedItems` is empty on every
-      // host, so the map here is always `{}` for them.
-      armorByItemId: e.equippedItems ?? null,
       liveScale: e.scale,
       loco: newLocoTrack(),
       stepAccum: 0,
@@ -3432,7 +3304,7 @@ export class Renderer {
   }
 
   /** The visual the player currently sees (form swaps hide the base rig). */
-  private activeVisual(v: EntityView): MobVisual | null {
+  private activeVisual(v: EntityView): CharacterVisual | null {
     if (v.sheepVisual?.root.visible) return v.sheepVisual;
     if (v.bearVisual?.root.visible) return v.bearVisual;
     if (v.catVisual?.root.visible) return v.catVisual;
@@ -3548,12 +3420,10 @@ export class Renderer {
 
   // Outdoor fog presets per biome (high tier eases between them as the
   // player crosses zone bands; low keeps the legacy vale fog everywhere).
-  // peaks near/far trimmed so a zone's own mountain crags fade into haze
-  // instead of standing out crisp when viewed from the zone's hub.
   private static BIOME_FOG: Record<BiomeId, { color: number; near: number; far: number }> = {
     vale: { color: 0xa6c6e0, near: 130, far: 470 },
     marsh: { color: 0xa3b294, near: 80, far: 330 },
-    peaks: { color: 0xbdd3ec, near: 110, far: 390 },
+    peaks: { color: 0xbdd3ec, near: 160, far: 560 },
   };
   private static LOW_FOG = { color: 0xa6c6e0, near: 70, far: 260 };
 
@@ -3924,13 +3794,7 @@ export class Renderer {
     this.targetCone = { group, pos, localXZ: fan.localXZ, worldXYZ, ringPos, ringXZ, ringWorldXYZ };
   }
 
-  sync(
-    alpha: number,
-    dt: number,
-    renderFacingOverride: number | null,
-    selfAlphaLead = 0,
-    selfMotion: SelfMotionFrame | null = null,
-  ): void {
+  sync(alpha: number, dt: number, renderFacingOverride: number | null, selfAlphaLead = 0): void {
     const totalStart = performance.now();
     let phaseStart = totalStart;
     const framePhaseMs = emptyFramePhaseMs();
@@ -3962,7 +3826,6 @@ export class Renderer {
     }
     this.time += dt;
     sharedUniforms.uTime.value = this.time;
-    updateHollowVaseBreath(this.time);
     const sim = this.sim;
     const p = sim.player;
     if (this.lastSelfId !== p.id) {
@@ -3971,7 +3834,7 @@ export class Renderer {
       this.selfFacingOverride = null;
     }
     const now = performance.now();
-    const selfPos = this.updateSelfRenderPosition(alpha, dt, selfAlphaLead, selfMotion);
+    const selfPos = this.updateSelfRenderPosition(alpha, dt, selfAlphaLead);
     markPhase('setup');
 
     // dynamic worlds: create nearby views lazily and drop views for leavers or
@@ -4022,30 +3885,14 @@ export class Renderer {
     for (const [id, v] of this.views) {
       const e = sim.entities.get(id);
       if (!e) continue;
-      // form swaps (polymorph sheep, druid forms), computed up front because
-      // the shadow gates below must not run the base rig's proxy under a form.
-      // One pass over the aura list instead of six .some() scans per entity per
-      // frame; the flag combination below preserves the original precedence.
-      let hasPoly = false;
-      let hasBear = false;
-      let hasGhostWolf = false;
-      let hasCatForm = false;
-      let hasTravelForm = false;
-      let hasStealth = false;
-      for (const a of e.auras) {
-        if (a.kind === 'polymorph') hasPoly = true;
-        if (a.kind === 'form_bear') hasBear = true;
-        if (a.id === 'ghost_wolf') hasGhostWolf = true;
-        if (a.kind === 'form_cat') hasCatForm = true;
-        if (a.kind === 'form_travel') hasTravelForm = true;
-        if (a.kind === 'stealth') hasStealth = true;
-      }
-      const polyed = hasPoly;
-      const bear = !polyed && hasBear;
-      const ghostWolf = !polyed && !bear && hasGhostWolf;
-      const cat = !polyed && !bear && (ghostWolf || hasCatForm);
-      const travel = !polyed && !bear && !cat && hasTravelForm;
-      const _stealthed = hasStealth;
+      // form swaps (polymorph sheep, druid forms) — computed up front because
+      // the shadow gates below must not run the base rig's proxy under a form
+      const polyed = e.auras.some((a) => a.kind === 'polymorph');
+      const bear = !polyed && e.auras.some((a) => a.kind === 'form_bear');
+      const ghostWolf = !polyed && !bear && e.auras.some((a) => a.id === 'ghost_wolf');
+      const cat = !polyed && !bear && (ghostWolf || e.auras.some((a) => a.kind === 'form_cat'));
+      const travel = !polyed && !bear && !cat && e.auras.some((a) => a.kind === 'form_travel');
+      const _stealthed = e.auras.some((a) => a.kind === 'stealth');
       // distance cull: far rigs are invisible specks but cost real draw calls
       const cdx = e.pos.x - p.pos.x,
         cdz = e.pos.z - p.pos.z;
@@ -4137,8 +3984,9 @@ export class Renderer {
         v.group.visible = vis;
         if (v.sparkle && vis) {
           // sub-pixel beyond ~45u but still a full transparent draw each
-          // (d2 is this entity's player distance, computed once above)
-          v.sparkle.visible = d2 < SPARKLE_DRAW_RANGE_SQ;
+          const sdx = e.pos.x - p.pos.x,
+            sdz = e.pos.z - p.pos.z;
+          v.sparkle.visible = sdx * sdx + sdz * sdz < SPARKLE_DRAW_RANGE_SQ;
           const pulse = 0.75 + Math.sin(this.time * 3 + e.id) * 0.25;
           v.sparkle.scale.set(pulse, pulse, 1);
           v.sparkle.material.rotation = this.time * 0.8;
@@ -4183,19 +4031,6 @@ export class Renderer {
       if (e.mainhandItemId !== v.mainhandItemId) {
         v.mainhandItemId = e.mainhandItemId;
         v.visual.setWeapon(e.mainhandItemId);
-      }
-
-      // live worn-armor swap. Full equippedItems set changed (self equip or a
-      // peer's gear update). The diff is shallow: same reference means same
-      // worn set (the OnlineClient keeps the entity's object stable across
-      // ticks; the offline Sim mutates in place). setArmor does its own deep
-      // equality check on the keys/values it actually renders, so a no-op equip
-      // (e.g. swap to the same item id) still skips the re-attach + material
-      // pass. setArmor also no-ops on visuals without `armorSlots` (mobs/NPCs/
-      // forms never carry gear, so the diff is always a cheap walk past them).
-      if (e.equippedItems !== v.armorByItemId) {
-        v.armorByItemId = e.equippedItems;
-        v.visual.setArmor(e.equippedItems ?? null);
       }
 
       // live body-size buffs (Fiesta power-ups): scale the whole group so the
@@ -4376,19 +4211,6 @@ export class Renderer {
     }
     this.lastVisibleRigCount = visibleRigCount;
 
-    // Hidden views skip their whole matrix subtree: three recomposes even
-    // invisible hierarchies, and a distance-culled or off-screen rig is 30-60
-    // nodes of dead per-frame compose+multiply. Re-showing flips the gate back
-    // on, and the next scene update revisits the subtree and recomposes it
-    // from the live position/rotation properties, so nothing renders stale.
-    // (pick() skips hidden views, so a frozen matrix never ghosts a hitbox.
-    // CAUTION: getWorldPosition on a node inside a gated subtree does not heal
-    // the chain in r165, hence the light-owner exemption; any new world-space
-    // read of a view child must use group.position or exempt the view too.)
-    for (const [, v] of this.views) {
-      v.group.matrixWorldAutoUpdate = v.group.visible || this.lightOwnerGroups.has(v.group);
-    }
-
     // selection ring
     const target = p.targetId !== null ? sim.entities.get(p.targetId) : null;
     if (target) {
@@ -4396,36 +4218,28 @@ export class Renderer {
       if (tv) {
         const cx = tv.group.position.x;
         const cz = tv.group.position.z;
+        const seed = this.sim.cfg.seed;
         // anchor the reticle to the ground under the unit (a classic decal: it
         // stays grounded even if the target jumps) and drape it over the slope.
-        // The drape is a pure function of (cx, cz, scale) and nothing else writes
-        // the ring's position attribute, so a stationary target reuses last
-        // frame's per-vertex groundHeight samples untouched.
-        if (cx !== this.selRingX || cz !== this.selRingZ || target.scale !== this.selRingScale) {
-          this.selRingX = cx;
-          this.selRingZ = cz;
-          this.selRingScale = target.scale;
-          const seed = this.sim.cfg.seed;
-          const gy = groundHeight(cx, cz, seed);
-          this.selectionRing.position.set(cx, gy, cz);
-          this.selectionRing.scale.setScalar(target.scale);
-          const drape = drapeRingLocalY(
-            this.selectionRingLocalXZ,
-            cx,
-            cz,
-            gy,
-            target.scale,
-            0.08,
-            (sx, sz) => groundHeight(sx, sz, seed),
-            this.selectionRingDrapeY,
-          );
-          const ringPos = this.selectionRingMesh.geometry.getAttribute(
-            'position',
-          ) as THREE.BufferAttribute;
-          for (let i = 0; i < drape.length; i++) ringPos.setY(i, drape[i]);
-          ringPos.needsUpdate = true;
-          this.selectionRingTicks.position.y = 0.08; // ticks float just above the footing
-        }
+        const gy = groundHeight(cx, cz, seed);
+        this.selectionRing.position.set(cx, gy, cz);
+        this.selectionRing.scale.setScalar(target.scale);
+        const drape = drapeRingLocalY(
+          this.selectionRingLocalXZ,
+          cx,
+          cz,
+          gy,
+          target.scale,
+          0.08,
+          (sx, sz) => groundHeight(sx, sz, seed),
+          this.selectionRingDrapeY,
+        );
+        const ringPos = this.selectionRingMesh.geometry.getAttribute(
+          'position',
+        ) as THREE.BufferAttribute;
+        for (let i = 0; i < drape.length; i++) ringPos.setY(i, drape[i]);
+        ringPos.needsUpdate = true;
+        this.selectionRingTicks.position.y = 0.08; // ticks float just above the footing
         this.selectionRingTicks.rotation.y += dt * SELECTION_RING_SPIN; // slow reticle spin
         const ringMat = this.selectionRingMat;
         ringMat.color.setHex(this.isHostileSelectionTarget(target) ? 0xcc2222 : 0xd4af37);
@@ -4567,24 +4381,6 @@ export class Renderer {
         this.housingView.updateProximity(this.nearHousingPlot?.plotId ?? null, this.time);
       } else {
         this.nearHousingPlot = null;
-      }
-    }
-    // PHAA-552: nearest world-placed readable book in read range, mirroring the
-    // housing proximity check above so the "Read" prompt and main.ts's
-    // interact-key handler share one answer. readableProps is already scoped to
-    // the viewer's overworld zone (empty inside instances), so this is a short
-    // list every frame.
-    this.nearReadable = nearestReadable(p.pos.x, p.pos.z, this.sim.readableProps);
-    // Homestead v0: open-world Hollow Reaches plots, always world-space (no
-    // hub-origin gate, unlike Housing v0 above); the JSON change key inside
-    // update() makes the per-frame cost negligible.
-    {
-      const homestead = this.sim.homesteadInfo;
-      if (homestead || this.homesteadView) {
-        this.homesteadView ??= new HomesteadView(this.scene, (hx, hz) =>
-          groundHeight(hx, hz, this.sim.cfg.seed),
-        );
-        this.homesteadView.update(homestead);
       }
     }
     worldStart = markWorldPhase('props', worldStart);
@@ -4869,43 +4665,8 @@ export class Renderer {
     alpha: number,
     dt: number,
     selfAlphaLead: number,
-    selfMotion: SelfMotionFrame | null = null,
   ): THREE.Vector3 {
     const p = this.sim.player;
-    // Online intent-driven extrapolation: when active it owns the position and
-    // the lead-smoothing path below becomes the fallback (both write the same
-    // selfRenderPosition, so enable/disable hands off without a pop, absorbed
-    // by the snap/smooth rules on the next frame).
-    if (selfMotion) {
-      if (!this.selfMotionPredictor) {
-        this.selfMotionPredictor = new SelfMotionPredictor(this.sim.cfg.seed);
-      }
-      const predicted = this.selfMotionPredictor.step(p, selfMotion);
-      if (predicted) {
-        // Follow the predictor output exactly (it is already continuous;
-        // smoothing it again would re-add the display lag this exists to
-        // remove). The only discontinuity is the handoff frame from the
-        // lead-smoothing path below: capture that gap once as an offset and
-        // decay it, so the camera glides instead of stepping.
-        if (this.selfRenderPositionReady && !this.selfMotionActive) {
-          this.selfMotionOffset.set(
-            this.selfRenderPosition.x - predicted.x,
-            this.selfRenderPosition.y - predicted.y,
-            this.selfRenderPosition.z - predicted.z,
-          );
-        }
-        this.selfMotionOffset.multiplyScalar(Math.exp(-SELF_MOTION_HANDOFF_RATE * Math.max(0, dt)));
-        this.selfRenderPosition.set(
-          predicted.x + this.selfMotionOffset.x,
-          predicted.y + this.selfMotionOffset.y,
-          predicted.z + this.selfMotionOffset.z,
-        );
-        this.selfRenderPositionReady = true;
-        this.selfMotionActive = true;
-        return this.selfRenderPosition;
-      }
-    }
-    this.selfMotionActive = false;
     const playerAlpha = selfSnapshotAlpha(alpha, selfAlphaLead);
     const px = p.prevPos.x + (p.pos.x - p.prevPos.x) * playerAlpha;
     const py = p.prevPos.y + (p.pos.y - p.prevPos.y) * playerAlpha;
@@ -5097,25 +4858,16 @@ export class Renderer {
     );
     this.raycaster.setFromCamera(ndc, this.camera);
     const hits = this.raycaster.intersectObjects(this.clickTargets, true);
-    const directHitIds: number[] = [];
     for (const hit of hits) {
       let o: THREE.Object3D | null = hit.object;
       while (o) {
         if (o.userData.entityId !== undefined && o.userData.entityId !== this.sim.playerId) {
-          const id = o.userData.entityId as number;
-          // a hidden view is not clickable: the player cannot see it, and its
-          // matrixWorld is frozen while hidden (the rig gate in sync), so a hit
-          // against it would be a ghost hitbox at the hide-time position
-          const hitView = this.views.get(id);
-          if (hitView && !hitView.group.visible) break;
-          directHitIds.push(id);
-          break;
+          const e = this.sim.entities.get(o.userData.entityId as number);
+          if (e?.kind === 'object' && !e.lootable) return null;
+          return o.userData.entityId as number;
         }
         o = o.parent;
       }
-    }
-    if (directHitIds.length > 0) {
-      return resolveDirectPickEntityId(directHitIds, this.sim.entities, this.sim.player.targetId);
     }
     // Forgiving assist: nothing under the ray, so snap to the nearest
     // targetable character within a small screen radius — chibi proportions

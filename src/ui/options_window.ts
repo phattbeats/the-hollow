@@ -157,7 +157,6 @@ const BIND_ACTION_LABEL_KEYS: Partial<Record<string, TranslationKey>> = {
   // map and fell back to the raw English BIND_ACTIONS labels).
   talents: 'game.talents.title',
   leaderboard: 'game.leaderboard.title',
-  calendar: 'hudChrome.calendar.keybindLabel',
 };
 
 /**

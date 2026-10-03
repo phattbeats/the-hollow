@@ -3,9 +3,7 @@ import type { ItemDef, PlayerClass } from '../types';
 // Archetype groups for class-locked rewards (REWARD_ARCHETYPE hands warrior
 // rewards to paladins/shamans etc., so the lock must admit the whole group).
 const WAR: PlayerClass[] = ['warrior', 'paladin', 'shaman'];
-const WEAPON_WAR: PlayerClass[] = ['warrior', 'rogue', 'hunter', 'shaman', 'paladin'];
 const MAG: PlayerClass[] = ['mage', 'priest', 'warlock', 'druid'];
-const WEAPON_MAG: PlayerClass[] = ['mage', 'priest', 'warlock', 'shaman', 'paladin', 'druid'];
 const ROG: PlayerClass[] = ['rogue', 'hunter'];
 
 // ---------------------------------------------------------------------------
@@ -100,7 +98,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 6, max: 11, speed: 2.2 },
     stats: { str: 2 },
     sellValue: 120,
-    requiredClass: WEAPON_WAR,
+    requiredClass: WAR,
   },
   apprentice_staff: {
     id: 'apprentice_staff',
@@ -111,7 +109,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 7, max: 12, speed: 3.0 },
     stats: { int: 3, sta: 1 },
     sellValue: 120,
-    requiredClass: WEAPON_MAG,
+    requiredClass: MAG,
   },
   keen_dirk: {
     id: 'keen_dirk',
@@ -137,7 +135,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
   },
   woven_robe: {
     id: 'woven_robe',
-    set: 'vale_arcanist',
     name: 'Valewoven Robe',
     kind: 'armor',
     armorType: 'cloth',
@@ -149,7 +146,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
   },
   shadow_jerkin: {
     id: 'shadow_jerkin',
-    set: 'greyjaw_stalker',
     name: 'Shadowstitch Jerkin',
     kind: 'armor',
     armorType: 'leather',
@@ -191,7 +187,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
   },
   greyjaw_hide_boots: {
     id: 'greyjaw_hide_boots',
-    set: 'greyjaw_stalker',
     name: 'Greyjaw Hide Boots',
     kind: 'armor',
     armorType: 'leather',
@@ -209,7 +204,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 7, max: 12, speed: 2.8 },
     stats: { str: 2, sta: 1 },
     sellValue: 160,
-    requiredClass: WEAPON_WAR,
+    requiredClass: WAR,
   },
   sableweb_slippers: {
     id: 'sableweb_slippers',
@@ -231,7 +226,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 8, max: 13, speed: 2.4 },
     stats: { str: 2, sta: 1 },
     sellValue: 180,
-    requiredClass: WEAPON_WAR,
+    requiredClass: WAR,
   },
   tunnelkings_spade: {
     id: 'tunnelkings_spade',
@@ -242,7 +237,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 9, max: 15, speed: 2.7 },
     stats: { str: 3, sta: 2 },
     sellValue: 190,
-    requiredClass: WEAPON_WAR,
+    requiredClass: WAR,
   },
   moggers_stomper_boots: {
     id: 'moggers_stomper_boots',
@@ -264,7 +259,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 9, max: 15, speed: 2.6 },
     stats: { str: 3, sta: 2 },
     sellValue: 850,
-    requiredClass: WEAPON_WAR,
+    requiredClass: WAR,
   },
   moggers_shiv: {
     id: 'moggers_shiv',
@@ -286,7 +281,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 8, max: 14, speed: 2.2 },
     stats: { int: 4, spi: 2 },
     sellValue: 850,
-    requiredClass: WEAPON_MAG,
+    requiredClass: MAG,
   },
   cryptbone_greaves: {
     id: 'cryptbone_greaves',
@@ -347,7 +342,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
   },
   boundstone_helm: {
     id: 'boundstone_helm',
-    set: 'boundstone_vanguard',
     name: 'Boundstone Helm',
     kind: 'armor',
     armorType: 'mail',
@@ -358,7 +352,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
   },
   boundstone_girdle: {
     id: 'boundstone_girdle',
-    set: 'boundstone_vanguard',
     name: 'Boundstone Girdle',
     kind: 'armor',
     armorType: 'mail',
@@ -379,7 +372,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
   },
   gravewyrm_gauntlets: {
     id: 'gravewyrm_gauntlets',
-    set: 'boundstone_vanguard',
     name: 'Gravewyrm Gauntlets',
     kind: 'armor',
     armorType: 'mail',
@@ -387,52 +379,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     quality: 'rare',
     stats: { armor: 72, str: 5, sta: 4 },
     sellValue: 390,
-  },
-  // --- bags (kind:'bag', equip into one of the 4 bag sockets for +bagSlots
-  // pooled inventory capacity; the 16-slot backpack is implicit). Tiered by
-  // quality: common bags are vendor goods, uncommon drops from beasts, rare
-  // and epic from dungeon bosses. See src/sim/bags.ts for the capacity rules. ---
-  linen_pouch: {
-    id: 'linen_pouch',
-    name: 'Linen Pouch',
-    kind: 'bag',
-    quality: 'common',
-    bagSlots: 6,
-    sellValue: 60,
-    buyValue: 250,
-  },
-  travelers_knapsack: {
-    id: 'travelers_knapsack',
-    name: "Traveler's Knapsack",
-    kind: 'bag',
-    quality: 'common',
-    bagSlots: 8,
-    sellValue: 500,
-    buyValue: 2000,
-  },
-  wolfhide_satchel: {
-    id: 'wolfhide_satchel',
-    name: 'Wolfhide Satchel',
-    kind: 'bag',
-    quality: 'uncommon',
-    bagSlots: 10,
-    sellValue: 1200,
-  },
-  gravewoven_bag: {
-    id: 'gravewoven_bag',
-    name: 'Gravewoven Bag',
-    kind: 'bag',
-    quality: 'rare',
-    bagSlots: 12,
-    sellValue: 3500,
-  },
-  mistcallers_duffel: {
-    id: 'mistcallers_duffel',
-    name: "Mistcaller's Duffel",
-    kind: 'bag',
-    quality: 'epic',
-    bagSlots: 14,
-    sellValue: 9000,
   },
   // --- food & drink (vendor) ---
   baked_bread: {
@@ -461,85 +407,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     use: { type: 'fishing' },
     sellValue: 4,
     buyValue: 20,
-  },
-  // Crafted gathering tools, tiers 1-3 (PHAA-507, upstream #1191). One tool
-  // family per gather node type (amber/heartwood/spore); `use.tier` gates
-  // node AND monster-material tier access (see src/sim/gathering_tools.ts).
-  // Player-crafted, not vendor-sold: no `buyValue`, and deliberately absent
-  // from every NPC `vendorItems` list. `quality` (rarity) is independent of
-  // `use.tier` and never affects gating: only the tool's `use.tier` value is
-  // read by the gate.
-  flint_amber_pick: {
-    id: 'flint_amber_pick',
-    name: 'Flint Amber Pick',
-    kind: 'tool',
-    quality: 'common',
-    use: { type: 'gatherTool', nodeType: 'amber', tier: 1 },
-    sellValue: 15,
-  },
-  bonewood_amber_pick: {
-    id: 'bonewood_amber_pick',
-    name: 'Bonewood Amber Pick',
-    kind: 'tool',
-    quality: 'uncommon',
-    use: { type: 'gatherTool', nodeType: 'amber', tier: 2 },
-    sellValue: 45,
-  },
-  starleaf_amber_pick: {
-    id: 'starleaf_amber_pick',
-    name: 'Starleaf Amber Pick',
-    kind: 'tool',
-    quality: 'rare',
-    use: { type: 'gatherTool', nodeType: 'amber', tier: 3 },
-    sellValue: 120,
-  },
-  flint_bark_axe: {
-    id: 'flint_bark_axe',
-    name: 'Flint Bark Axe',
-    kind: 'tool',
-    quality: 'common',
-    use: { type: 'gatherTool', nodeType: 'heartwood', tier: 1 },
-    sellValue: 15,
-  },
-  bonewood_bark_axe: {
-    id: 'bonewood_bark_axe',
-    name: 'Bonewood Bark Axe',
-    kind: 'tool',
-    quality: 'uncommon',
-    use: { type: 'gatherTool', nodeType: 'heartwood', tier: 2 },
-    sellValue: 45,
-  },
-  starleaf_bark_axe: {
-    id: 'starleaf_bark_axe',
-    name: 'Starleaf Bark Axe',
-    kind: 'tool',
-    quality: 'rare',
-    use: { type: 'gatherTool', nodeType: 'heartwood', tier: 3 },
-    sellValue: 120,
-  },
-  flint_spore_sickle: {
-    id: 'flint_spore_sickle',
-    name: 'Flint Spore Sickle',
-    kind: 'tool',
-    quality: 'common',
-    use: { type: 'gatherTool', nodeType: 'spore', tier: 1 },
-    sellValue: 15,
-  },
-  bonewood_spore_sickle: {
-    id: 'bonewood_spore_sickle',
-    name: 'Bonewood Spore Sickle',
-    kind: 'tool',
-    quality: 'uncommon',
-    use: { type: 'gatherTool', nodeType: 'spore', tier: 2 },
-    sellValue: 45,
-  },
-  starleaf_spore_sickle: {
-    id: 'starleaf_spore_sickle',
-    name: 'Starleaf Spore Sickle',
-    kind: 'tool',
-    quality: 'rare',
-    use: { type: 'gatherTool', nodeType: 'spore', tier: 3 },
-    sellValue: 120,
   },
   // Cosmetic event reward: using it rolls a rarity rank (server-side) and opens
   // the skin-select overlay. See src/sim/content/skins.ts. Dev-grant for now.
@@ -997,7 +864,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 10, max: 16, speed: 2.5 },
     stats: { str: 4, sta: 2 },
     sellValue: 880,
-    requiredClass: WEAPON_WAR,
+    requiredClass: WAR,
   },
   hollow_vigil_staff: {
     id: 'hollow_vigil_staff',
@@ -1008,7 +875,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 11, max: 18, speed: 3.0 },
     stats: { int: 5, spi: 2 },
     sellValue: 880,
-    requiredClass: WEAPON_MAG,
+    requiredClass: MAG,
   },
   gravewardens_shiv: {
     id: 'gravewardens_shiv',
@@ -1229,7 +1096,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
   },
   acolytes_circlet: {
     id: 'acolytes_circlet',
-    set: 'vale_arcanist',
     name: "Acolyte's Circlet",
     kind: 'armor',
     armorType: 'cloth',
@@ -1273,7 +1139,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
   },
   silk_sash: {
     id: 'silk_sash',
-    set: 'vale_arcanist',
     name: 'Woven Silk Sash',
     kind: 'armor',
     armorType: 'cloth',
@@ -1324,7 +1189,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 8, max: 14, speed: 2.5 },
     stats: { str: 3 },
     sellValue: 180,
-    requiredClass: WEAPON_WAR,
+    requiredClass: WAR,
   },
   mossy_handwraps: {
     id: 'mossy_handwraps',
@@ -1372,7 +1237,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 9, max: 15, speed: 3.0 },
     stats: { int: 3, spi: 2 },
     sellValue: 175,
-    requiredClass: WEAPON_MAG,
+    requiredClass: MAG,
   },
   caravan_warden_dirk: {
     id: 'caravan_warden_dirk',
@@ -1427,7 +1292,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
   },
   trail_leggings: {
     id: 'trail_leggings',
-    set: 'greyjaw_stalker',
     name: 'Trailworn Leggings',
     kind: 'armor',
     armorType: 'leather',

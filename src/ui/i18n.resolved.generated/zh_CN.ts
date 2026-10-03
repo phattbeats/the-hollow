@@ -85,8 +85,6 @@ export const zh_CN: EnTranslations = {
       "title": "天赋",
       "classTab": "职业",
       "specTab": "专精",
-      "secondaryTab": "副职业：{cls}",
-      "secondaryCapHint": "副职业天赋树：{spent}/{cap}点（上限为共享天赋池的一半）。",
       "available": "可用",
       "spent": "已用",
       "pointSource": "从 {first} 级到 {cap} 级，每升一级获得 1 点天赋点。继续升级可获得更多点数。",
@@ -290,9 +288,6 @@ export const zh_CN: EnTranslations = {
       "minutes": "{m}分",
       "lessThanMinute": "<1分",
       "lockedToast": "你已锁定到{raid}。{time}后解锁。"
-    },
-    "worldBoss": {
-      "spawn": "{name}崛起于根穴上空！"
     },
     "compass": {
       "N": "北",
@@ -632,13 +627,6 @@ export const zh_CN: EnTranslations = {
       "unassigned": "{item}未被分配，现可自由拾取。",
       "leaderOnly": "只有队长才能更改拾取方式。"
     },
-    "lootRollGroup": {
-      "pending": "等待中...",
-      "need": "需求",
-      "greed": "贪婪",
-      "pass": "放弃",
-      "aria": "{item} 的团队掷骰状态"
-    },
     "bags": {
       "filterGroupAria": "按类别筛选背包",
       "filterAll": "全部",
@@ -653,12 +641,7 @@ export const zh_CN: EnTranslations = {
       "sortName": "名称",
       "searchPlaceholder": "搜索物品",
       "searchAria": "按名称搜索背包物品",
-      "noMatch": "没有符合筛选条件的物品。",
-      "capacity": "{used}/{total}",
-      "capacityAria": "背包已用槽位：{used}/{total}",
-      "backpack": "背包",
-      "socketEmpty": "空背包栏位",
-      "unequipHint": "点击移除此背包"
+      "noMatch": "没有符合筛选条件的物品。"
     },
     "raidConvert": {
       "toPartyDone": "你的团队已转换回队伍。",
@@ -893,106 +876,7 @@ export const zh_CN: EnTranslations = {
           "hint": "向社区寻求帮助"
         }
       }
-    },
-    "npcJournal": {
-      "readLabel": "跟我说说你的日记吧。",
-      "readAria": "阅读{name}的日记",
-      "pageOf": "Page {index} of {total}",
-      "back": "上一页",
-      "next": "下一页",
-      "close": "关闭日记",
-      "title": "{name}的日记"
-    },
-    "calendar": {
-      "title": "活动日历",
-      "close": "关闭日历",
-      "keybindLabel": "活动日历",
-      "prevMonth": "上个月",
-      "nextMonth": "下个月",
-      "dayAria": "{date}：{count} 个活动",
-      "noEvents": "这一天没有安排。",
-      "allDay": "全天",
-      "bookedBy": "由 {name} 安排",
-      "deleteAria": "移除活动 {title}",
-      "bookTitle": "安排公会活动",
-      "titlePlaceholder": "活动名称",
-      "notePlaceholder": "备注（可选）",
-      "hourLabel": "小时（UTC）",
-      "hourAllDay": "全天",
-      "addButton": "安排活动",
-      "guildOnlyNote": "加入公会即可一起计划活动。",
-      "result": {
-        "created": "活动已列入公会日历。",
-        "removed": "活动已从日历中移除。",
-        "notInGuild": "你不在公会中。",
-        "notOfficer": "只有官员和会长可以管理公会活动。",
-        "badInput": "请为活动填写名称和有效日期。",
-        "calendarFull": "公会日历已满。",
-        "eventGone": "该活动已不在日历上。"
-      },
-      "events": {
-        "raidCall": {
-          "title": "团队集结",
-          "note": "守卫吹响号角：组队前往团队副本。"
-        },
-        "marketDay": {
-          "title": "集市日",
-          "note": "商人正等着新货。今天很适合逛逛世界市场。"
-        },
-        "fiestaNight": {
-          "title": "狂欢之夜",
-          "note": "今晚 2v2 狂欢擂台的人气最旺。"
-        },
-        "arenaClash": {
-          "title": "竞技场之战",
-          "note": "决斗者涌向灰烬斗兽场。排队开打，向天梯进发。"
-        },
-        "fishingDerby": {
-          "title": "钓鱼大赛",
-          "note": "钓手们在湖边排开。带上鱼竿，交流钓鱼趣闻。"
-        },
-        "delveDay": {
-          "title": "探窟日",
-          "note": "与同伴一起挑战坍塌圣物窖的好日子。"
-        },
-        "moongateCommunion": {
-          "title": "月门共祷",
-          "note": "朝圣者在月中之月下聚于月之圣所。"
-        }
-      }
-    },
-    "trainer": {
-      "secondaryClassSet": "你已选择{cls}作为你的副职业。"
-    },
-    "gathering": {
-      "title": "采集",
-      "amber": "琥珀",
-      "heartwood": "心材",
-      "spore": "孢子",
-      "toolTier": "{tier}级工具",
-      "toolNone": "无工具"
     }
-  },
-  "mailUi": {
-    "title": "渡鸦驿站",
-    "subtitle": "寄送与领取信件",
-    "close": "关闭邮件",
-    "inbox": "收件箱",
-    "compose": "写信",
-    "noPostOffice": "请前往渡鸦驿站处理邮件。",
-    "emptyInbox": "暂无信件。有人写信给你时渡鸦便会送达。",
-    "from": "来自 {name}",
-    "noSubject": "(无主题)",
-    "take": "领取",
-    "delete": "删除",
-    "postageNote": "寄送一封信需要 {money} 邮费。",
-    "recipient": "收件人",
-    "subjectLabel": "主题",
-    "bodyPlaceholder": "写下你的信件……",
-    "send": "寄出信件",
-    "needRecipientOrText": "请先填写收件人并写点内容再寄送。",
-    "openButton": "带我去渡鸦驿站。",
-    "openButtonAria": "打开渡鸦驿站邮件窗口"
   },
   "guide": {
     "brand": "World of ClaudeCraft",
@@ -1013,17 +897,14 @@ export const zh_CN: EnTranslations = {
       "social": "社交与组队",
       "stats": "角色与属性",
       "progression": "升级与进阶",
-      "hollow": "The Hollow",
       "world": "世界",
       "quests": "任务",
       "dungeons": "地下城与团队副本",
       "delves": "探秘",
       "reference": "参考",
       "controls": "操作键",
-      "settings": "设置和性能",
       "combat": "战斗",
       "talents": "天赋",
-      "professions": "副职业",
       "arena": "竞技场与 PvP",
       "glossary": "术语表",
       "wishIKnew": "我希望早点知道的事",
@@ -1102,8 +983,6 @@ export const zh_CN: EnTranslations = {
         "sub": "一片连绵不绝的大陆,三大区域,从静谧的山谷到冰封的峰巅。",
         "levels": "{min} 至 {max} 级",
         "cta": "一览世界",
-        "hollowReachesName": "空谷地",
-        "hollowReachesBlurb": "神殿门下的静谧之地,新人在Fallow Acres与Root Hollow一带磨练身手。",
         "valeName": "东溪谷地",
         "valeBlurb": "翠绿的丘陵与古老的林地,一切冒险由此启程。",
         "marshName": "泥沼湿地",
@@ -1191,66 +1070,6 @@ export const zh_CN: EnTranslations = {
       "mobileBody": "在手机和平板上会自动出现触控操作:左侧是移动摇杆,在右侧任意位置拖动即可环顾四周,屏幕上还有用于使用技能和打开菜单的按钮。",
       "controllerHeading": "使用手柄",
       "controllerBody": "手柄同样可用，且默认开启手柄支持。左摇杆控制移动，右摇杆控制镜头，正面按键与肩部按键则负责你的技能、跳跃和互动。打开任意窗口，即可调出用于操作菜单的屏幕指针。你可以在选项的手柄设置中重新映射按键，并调整摇杆死区、镜头速度、震动以及反转视角。"
-    },
-    "settingsPage": {
-      "heading": "设置和性能",
-      "intro": "把画面调到最美，或把帧数拉到最高。三套现成方案，外加每个图形选项的真实作用。",
-      "wherePath": "本页的一切都在游戏里：按 Esc，到图形、界面和性能监视器中查看。",
-      "fairnessTitle": "公平源自设计",
-      "fairnessBody": "这里没有任何选项会拿画面换战力。调低设置只会舍弃视觉上的修饰，绝不会砍掉你作战所需的信息：从“低”到“超高”，你的减益效果、施法条、队伍血量和伤害数字完全一致。用配置一般的机器游玩，绝不会吃亏。",
-      "loadoutsHeading": "三套现成方案",
-      "loadoutsIntro": "先从最像你设备的那套方案开始，然后每次只调一个选项，直到感觉合适为止。",
-      "recommended": "推荐",
-      "whyLabel": "推荐理由：",
-      "tagReload": "需重新加载",
-      "fpsTitle": "帧数优先",
-      "fpsTagline": "适合较老的笔记本、核显设备，以及用电池游玩的场合。",
-      "fpsWhy": "图形质量是总开关，渲染质量则是效果最猛的滑块：调到 70% 时，世界只需绘制大约一半的像素，而界面依旧清晰锐利。",
-      "balancedTitle": "均衡",
-      "balancedTagline": "大多数设备的最佳平衡点，也是我们的默认建议。",
-      "balancedWhy": "“中”档就有真实的阴影和完整的材质，“高”档再加上环境光遮蔽和泛光。只要低于“超高”，内置保护机制就会在激烈战斗掉帧时自动兜底，所以均衡方案不必时刻盯着，也能一直流畅。",
-      "visualsTitle": "极致画质",
-      "visualsTagline": "为高性能台式机准备的截图模式。",
-      "visualsWhy": "“超高”会以显示器支持的最高分辨率渲染，并启用最丰富的光照。它还会关闭内置保护机制，而且仅限桌面端：手机和应用端最高到“高”为止。",
-      "value50to70": "50% 到 70%",
-      "value90to100": "90% 到 100%",
-      "value100": "100%",
-      "valueHighOrMedium": "游戏 PC 选“高”，笔记本选“中”",
-      "valueOnOptional": "开启（可选）",
-      "howHeading": "这些选项如何生效",
-      "factDetectTitle": "游戏会先自动调校",
-      "factDetectBody": "首次启动时，游戏会检测你的设备并选好合适的档位：性能一般的手机是“低”，强力台式机则是“超高”。你自己做出的任何选择永远优先。",
-      "factReloadTitle": "两类选项",
-      "factReloadBody": "图形质量和“高级”下的各个选项要在重新加载后才会生效，需要时面板会提供“立即重新加载”按钮。其余选项在你改动的那一刻立即生效。",
-      "factGovernorTitle": "内置保护机制",
-      "factGovernorBody": "在“超高”以下的所有档位，大型战斗骤然吃紧时，游戏会悄悄暂时精简草地、特效和光照，随后再恢复原样。选择“超高”，就等于告诉游戏你宁可保留每一处细节。",
-      "advancedHeading": "“高级”预设：自由搭配",
-      "advancedBody": "“高级”以“高”档位为起点，额外解锁四个独立选项，让你把帧数花在真正看得出差别的地方：地形细节、植被密度、特效和光照，以及阴影质量。这些选项和图形质量一样，重新加载后才会生效。",
-      "advancedMixes": "两套人气搭配：把阴影质量保持在“高”、特效和光照调到“低”，画面干净利落、没有泛光，跑起来也轻快；或者反过来，保留泛光，让阴影更柔和。",
-      "tableHeading": "每个选项，逐一说明",
-      "colSetting": "选项",
-      "colDoes": "作用",
-      "colImpact": "FPS 影响",
-      "impactNone": "无",
-      "impactLight": "小",
-      "impactModerate": "中等",
-      "impactHeavy": "大",
-      "rowGraphicsQuality": "总开关。每调一档，分辨率、阴影、材质、植被和光照特效都会一起变化。这是单项改动里差别最大的一个。",
-      "rowRenderQuality": "以更低的内部分辨率绘制 3D 世界再放大呈现，界面保持锐利。对较弱的设备和高分辨率屏幕而言，这是见效最快、最猛的滑块。",
-      "rowFieldOfView": "决定屏幕能装下多大的世界：从拉近的 55 度到开阔的 100 度。纯属舒适度选择；视野越宽，绘制量略微增加。",
-      "rowBrightness": "调整场景曝光，偏暗或偏亮，纯看个人喜好。",
-      "rowWeather": "环境雨雪。纯氛围效果，关闭后在暴风雨天能省下一点性能。",
-      "rowBrowserEffects": "决定界面本身可以多华丽：玻璃模糊、辉光、菜单动画。“自动”会根据你的浏览器自行匹配；无论怎么选，3D 世界都不受影响。",
-      "rowTerrainDetail": "细腻混合的地表纹理，或更简洁、更省性能的地形外观，二选一。",
-      "rowFoliageDensity": "决定角色周围的草地长多远、长多密。",
-      "rowEffectsQuality": "控制泛光、环境光遮蔽，以及有多少火把和法术能投射真实光照。在“高级”各选项中，这一项省下的性能最多。",
-      "rowShadowQuality": "决定阴影的锐利程度。“低”仍保留阴影，只是边缘更柔和。",
-      "rowFrostedPanels": "在窗口背后加一层毛玻璃模糊。效果漂亮，但也正是性能较弱的浏览器最吃力的那类特效；想要经典的清爽外观就保持关闭。",
-      "rowReduceMotion": "移除界面动画，让窗口即刻显示。它首先是一项无障碍选项，顺带还有一点性能收益。",
-      "rowPerfOverlay": "在屏幕上实时显示 FPS、帧时间等数据。调校本页选项时先打开它，调完再隐藏。",
-      "tableFoot": "在找视距滑块或 FPS 上限？不用找了：可视距离已包含在各画质档位里，帧率则与你的显示器保持同步。",
-      "mobileTitle": "手机与平板",
-      "mobileBody": "移动端会替你多打理一些：游戏自动选择档位，把分辨率稍微压低以兼顾电量和发热，最高的几个档位也仅在桌面端开放。上面的方案依然适用，只是手机最高到“高”为止。"
     },
     "combat": {
       "intro": "战斗遵循经典 MMO 中熟悉的规则。你完全不必钻研这些就能玩得很好,这里只是介绍一下战斗大致的运作方式。",
@@ -1361,10 +1180,7 @@ export const zh_CN: EnTranslations = {
       "fullKitHeading": "全部技能",
       "fullKitNote": "这个职业能学到的每一项技能，按解锁顺序排列。天赋决定哪些技能撑起你的构筑。",
       "petsHeading": "恶魔",
-      "petsNote": "术士召唤恶魔与自己并肩作战，每一只都擅长不同的活儿。",
-      "professionsTitle": "搭配副职业",
-      "professionsNote": "以上任意职业都可以作为副职业来学习：这是一种能开启第二棵天赋树的副职业，且不会影响你的主职业定位。选择前，请先了解副职业的运作方式。",
-      "professionsLink": "副职业与多职业"
+      "petsNote": "术士召唤恶魔与自己并肩作战，每一只都擅长不同的活儿。"
     },
     "classHook": {
       "warrior": "勇往直前的前线战士,将承受的每一次打击都化作下一击的燃料。",
@@ -1523,52 +1339,23 @@ export const zh_CN: EnTranslations = {
         "desc": "源自远古深渊、披着鳞甲、形似巨蛇的造物。它们罕见、骄傲，远比看上去更强大。"
       }
     },
-    "hollowPage": {
-      "heading": "The Hollow",
-      "intro": "穿过神殿之门便是花瓶所在的空地：每位新英雄苏醒之处，也是你始终会回来的地方。这里是共享之地，整个大陆共用的一个据点，也是你初见的面孔、初次的任务，唯一真正需要的家。",
-      "greeting": "你回来了，那可真是件幸事……有几桩神圣的差事在等你呢，跟上次一个频道。过来一下……",
-      "greeter": "格林保修士，于花瓶旁",
-      "vaseHeading": "花瓶",
-      "vaseBody": "所有人都从花瓶开始：这个古老而有灵性的存在，正是幽谷得以建立的核心。它渴求些微小的供奉，燃一颗余烬球，或喂一份洞穴嫩肉，似乎都能有所察觉。花瓶下坡处，一处洞口通向地窟深处；两侧则留着地块，供你建造属于自己的家。",
-      "figuresHeading": "谁在照看它",
-      "figuresBody": "有两个人维系着花瓶的运转，你在最初的几分钟内便会与他们相遇。",
-      "npcFmt": "{name}, {title}",
-      "greenpawBody": "花瓶唯一的照看者，也是最早派发差事的人。他自封头衔，也是第一个承认这一点的人，算是幽谷里最接近向导的存在。",
-      "yarrowBody": "第二职业的传授者：每个职业都能向她学习一门副业，她的位置正好与格林保隔瓶相望。",
-      "questsHeading": "你最初的差事",
-      "questsBody": "格林保自己的任务链是你要做的第一件事：四桩短小的差事，教会你花瓶的节奏，然后送你踏入更广阔的幽谷。",
-      "questBurnsBody": "花瓶焚烧以取光的洞穴产球茎，一次采集一把。",
-      "questFillsBody": "能填饱另一种更安静饥饿的洞穴嫩肉，采集方式相同。",
-      "questWavelengthBody": "引荐花瓶的第二职业，并教你亲手喂养它。",
-      "questKeepLitBody": "把一次的恩惠变成一种固定的习惯，连续三次。",
-      "housingHeading": "属于你自己的家",
-      "housingBody": "{n}块宅地环绕着花瓶，等待被认领，装点成你在幽谷中私有的一角。",
-      "shrineHeading": "地窟深处",
-      "shrineBody": "花瓶旁的一处洞口通向地窟深处，那是幽谷自身的副本地下城，也是每位新英雄组队面对的第一场真正考验。",
-      "outsiderHeading": "外界如何看待此地",
-      "outsiderBody": "在圣所大门之外，大多数人从未听说过花瓶的存在。少数听说过的人，往往把它的守护者当成嬉皮士、怪人，或者更难听地说，是些对着罐子说话的怪胎。剩下流传出去的，多半来自更离奇的目击：一个信徒走得离空地太远，又或者某只小小的绿色生物出现在了它本不该出现的地方。"
-    },
     "worldPage": {
       "heading": "世界",
-      "intro": "穿过花瓶的神殿之门，你便置身幽谷腹地：新人踏出户外第一步的宁静之地。再往北还有三个区域，由南向北依次铺展；通往那里的道路尚未开启，但它们是真实存在、静候你的到来的。",
+      "intro": "World of ClaudeCraft 是一片连绵不绝、需你徒步穿越的大陆，三大区域由南向北依次铺展。这里没有快速旅行，因此旅途本身便是冒险的一部分。",
       "hub": "大本营",
       "mapHeading": "向北之路",
       "mapSub": "三片区域，自南向北，每一片的等级都更高一级。跟着任务线走，这片土地便会带你从山谷一路抵达群峰。",
       "places": "值得一看的地点",
       "residents": "你将遇见的人",
-      "hollowReachesBlurb": "紧邻神殿门外的平静之地，新人在Fallow Acres与Root Hollow一带与野狼、野猪交手磨练身手。",
       "valeBlurb": "青翠的起始山谷，新英雄在东溪镇周边的野狼与盗匪身上磨砺技艺。",
       "marshBlurb": "一片被洪水淹没、迷雾与废墟交织的国度。鱼人涌入浅滩，水下有更古老之物蠢蠢欲动，由桥镇芬桥镇守望着。",
       "peaksBlurb": "风蚀的山脊与古老的矿坑向上攀升，通往这片王国中最寒冷、最高处的危险之地，由高守哨站镇守。",
-      "hollowReachesGreeting": "我尽量按历书打理这片谷地，至少在努力。当心松软的泥土，别碰登记簿。",
-      "hollowReachesGreeter": "司事泽比迪亚，Root Hollow",
       "valeGreeting": "把你的刀剑带在身边。谷地已不复往日。",
       "valeGreeter": "雷德布鲁克元帅，东溪",
       "marshGreeting": "守在门口。过了那片芦苇，泥沼会替我们动手杀人。",
       "marshGreeter": "守望者芬威克，芬桥",
       "peaksGreeting": "这堵墙已守了两百年。在我当值时它绝不会破，但它在呻吟。",
       "peaksGreeter": "塞萨莉队长，高守哨站",
-      "hollowReachesPlaceNotes": "Hollow Gate 是重新开向旷野的神殿传送门。西边的 Fallow Acres，司事法迪克把狼群赶出预留的建设用地；东边的 Root Hollow，司事泽比迪亚按历书照看一块野猪成患的地块。湖边的 Mossbank 是垂钓的宁静去处。",
       "valePlaceNotes": "Eastbrook 是你的第一个大本营。Wolf Run 与 Boar Meadow 是温和的狩猎场；Mirror Lake 是供垂钓的静水；the Webwood 与 the Copper Dig 藏着蜘蛛和贪婪掘矿的家伙；一处 Bandit Camp 与 the Fallen Chapel 里有更棘手的活儿；Reliquary Hill 向下通往 the Collapsed Reliquary，这是这片位面的首个探险地；而 Brightwood Glade 则是北方一片宁静、阳光普照的林地。",
       "marshPlaceNotes": "芬桥守着唯一一条干燥的道路。潜行者芦苇荡与深沼浅滩里满是沼泽野兽和鱼人；寡妇密林被蛛网织得密不透风；溺亡礼拜堂与巨魔土丘藏着更古老的危险；唤墓者营地是邪教的盘踞之处，沉没堡垒则是这片湿地的副本核心。",
       "peaksPlaceNotes": "高守哨站扼守着城墙。潜猎者山脊与深岩洞穴属于山脊猫和狗头人；食人魔丘陵与卓格玛的战营属于受雇的莽夫；风暴岩中元素噼啪作响，饮月之池在它下方泛着微光；蜿龙教帐篷与亡魂之野环绕着邪教的制高点，墓龙圣所则居于其巅。",
@@ -1587,9 +1374,8 @@ export const zh_CN: EnTranslations = {
       "partyTitle": "组队做任务",
       "partyBody": "附近的队员会共享击杀和目标进度，因此组队做任务只会更快，绝不会更慢。你还可以与你的小队分享任务：用 /share 命令把它作为可点击的链接发到聊天中，任何符合条件的附近队员都能一键接取同一个任务。",
       "storyTitle": "一条主线贯穿始终",
-      "storyBody": "你最初的线索，是格林保修士自己那条短短的任务链，就在花瓶旁。往外则是幽谷腹地里那些安静的差事，再往外，还有一段更长的故事：一个邪教从山谷一路作乱到山巅，真实且已完成，只是新英雄眼下还走不到那条路。花瓶自己的任务见幽谷页面，其余的则列在下方，作为即将到来的内容。",
+      "storyBody": "从你在东溪镇的第一批差事起，死者便有了异样。一个邪教正在暗中行动，线索向北贯穿每一个区域。循迹而行，揭开幕后黑手的真面目。",
       "soloNote": "主线剧情一直到每个章节的高潮之前都可单人完成，而那场高潮是一座五人地下城。",
-      "sagaGateNote": "这段传奇是真实、已完成的内容，正是道路重新北通之后开启的同一条线索。它并非新英雄如今的起点；起点是花瓶，在幽谷之中。",
       "typesTitle": "你将遇到的任务种类",
       "typesBody": "大多数任务都属于几种熟悉的样式之一。屏幕上的追踪器会清楚地说明每个任务的要求，让你绝不会一头雾水。",
       "typeSlayTitle": "讨伐",
@@ -1691,21 +1477,6 @@ export const zh_CN: EnTranslations = {
       "resetNote": "只要脱离战斗，你随时都可以重置天赋，所以早期的选择绝不会成为陷阱。尽管尝试，看看你喜欢什么，随心改主意。",
       "specsHeading": "各职业的专精",
       "specsBody": "每个职业都有几种专精，各有自己的定位和标志性的侧重。这里是它们全部的大致面貌。打开某个职业可查看其全部技能。"
-    },
-    "professionsPage": {
-      "heading": "副职业与多职业",
-      "intro": "副职业是你在主职业之外训练的第二个职业，它会开启第二棵天赋树，并让你学到其部分技能，而不会让你离开原本的定位。",
-      "whatHeading": "什么是副职业",
-      "whatBody": "任何职业都可以被其他职业选为副职业。搭配副职业会新增一棵天赋树，并让你借用其部分技能：比如战士可以涉猎牧师的治疗，法师也能学到盗贼的毒刺。你的主职业依旧决定你的定位、资源和身份；副职业只是让build更灵活，而不会取代它。",
-      "howHeading": "如何选择副职业",
-      "howBody": "副职业在10级开放，与你的第一棵天赋树同时解锁。前往主城拜访副职业训练师，打开对话框，选择你想要的副职业。",
-      "costBody": "第一次选择是免费的。之后更换副职业需要花费金币，且每次更换的费用都会提高，因此尽早做决定不会受到惩罚，而之后反复更改则要付出一点代价。",
-      "resetTitle": "一切都可以重来",
-      "resetNote": "只要不在战斗中，你随时都可以重置两棵天赋树的天赋点，也可以在同一位训练师那里更换副职业（费用会递增）。尽早选定的副职业只是初稿，而非最终定案。",
-      "talentsHeading": "天赋点如何在两棵树之间分配",
-      "talentsBody": "副职业会在主职业之外新增一整棵天赋树，但两棵树共用同一份天赋点。副职业天赋树最多只能占用这份点数的一半，因此你的主职业始终是build的核心。投入副职业天赋树的点数会解锁其技能，而这些技能消耗的是你主职业的资源，而非副职业本身的资源：战士学习牧师副职业后，技能消耗的是怒气，而不是法力。",
-      "trainersHeading": "寻找训练师",
-      "trainersBody": "副职业训练师就站在主城神龛附近。任意一位训练师都能教你除主职业外的任何职业作为副职业，因此只需拜访一次即可设置或更换你的副职业。"
     },
     "arenaPage": {
       "heading": "竞技场与 PvP",
@@ -1933,11 +1704,6 @@ export const zh_CN: EnTranslations = {
       "home": "返回概览"
     }
   },
-  "readableUi": {
-    "prompt": {
-      "read": "Read"
-    }
-  },
   "coldOpen": {
     "title": "空穴",
     "wakeBody": "你在温热的地面上醒来，记不起自己的名字、族人，也想不起是如何来到此处的。前方一只巨大的花瓶中漾出绿光，那光仿佛一直在等着你。",
@@ -1945,13 +1711,6 @@ export const zh_CN: EnTranslations = {
     "continue": "继续",
     "begin": "开始",
     "skip": "跳过"
-  },
-  "apiError": {
-    "crossSiteRejected": "跨站请求被拒绝。",
-    "notAuthenticated": "尚未认证。",
-    "readOnlyToken": "此令牌为只读。",
-    "characterNotFound": "未找到角色。",
-    "rateLimited": "尝试次数过多。请等待一分钟后重试。"
   },
   "skinEvent": {
     "title": "外观宝箱",
@@ -2084,9 +1843,6 @@ export const zh_CN: EnTranslations = {
     "realm": "服务器",
     "newCharacter": "新建角色",
     "appearance": "外观",
-    "sex": "性别",
-    "sexMale": "男性",
-    "sexFemale": "女性",
     "class": "职业",
     "name": "名称",
     "chromaOption": "配色 {n}",
@@ -2391,71 +2147,6 @@ export const zh_CN: EnTranslations = {
       "toolSlips": "这件工具在这把锁上打滑了。",
       "lockJammed": "锁已卡死，无法撬开，请再次通关探秘以获得新的尝试机会。",
       "lastPickSnaps": "最后一根撬锁器折断了。锁卡死了，除非再次通关探秘，否则这只宝箱就此失去。"
-    },
-    "gathering": {
-      "nothingToHarvest": "这具尸体没有什么可以采集的。",
-      "alreadyHarvested": "这具尸体已经被采集过了。"
-    },
-    "hearth": {
-      "tooFar": "你得靠近绿掌修士才能喂他。",
-      "noItems1": "……伙计，你两手空空啊。带点能烧的或能填饱肚子的东西来，我们再唠。",
-      "noItems2": "身上啥也没有，就剩一片好心，是吧……好心可点不着炉子。",
-      "emberbulb1": "这才叫柴火……瞧瞧她喘气的样子，伙计……",
-      "emberbulb2": "炉子慢慢地、干干净净地吃下去，她就爱这样……",
-      "emberbulb3": "添了柴，冒了烟……那个波长已经开始松动了，我能感觉到。",
-      "morsel1": "……哦，愿神保佑你，伙计。保佑你脚下的这片土地。",
-      "morsel2": "肚子总算不咕咕叫了，消停一会儿。多谢了……",
-      "morsel3": "一口好干粮，就像一个好朋友……难得，也值得一路寻来。",
-      "helpLine": "绿掌：/feed（从瓮边带上能烧的或能填饱肚子的东西）。"
-    },
-    "house": {
-      "mustStandToClaim": "你必须站在空穴中的宅基地上才能认领。",
-      "alreadyOwn": "你在空穴已经拥有一处宅邸了。",
-      "noFreePlot": "这里没有空闲的宅基地。站到一块地上再认领。",
-      "plotTaken": "那块宅基地已经有主人了。",
-      "claimed": "这处宅邸归你了。用 /house place <槽位> <种类> 来装饰它。",
-      "noHomestead": "你还没有宅邸。用 /house claim 认领一处。",
-      "mustBeInHollow": "你必须在空穴里才能打理你的宅邸。",
-      "slotRange": "槽位编号为 1 到 {count}。",
-      "unknownKind": "未知的装饰种类。可选种类：{kinds}。",
-      "placed": "在槽位 {slot} 放置了 {kind}。",
-      "slotEmpty": "那个槽位本来就是空的。",
-      "cleared": "清空了槽位 {slot}。",
-      "readoutNone": "你没有宅邸。站到空穴里的空闲地块上，输入 /house claim。",
-      "readoutMine": "你的宅邸：{plotId}。装饰：{decor}。",
-      "readoutUsage": "/house place <1-{count}> <{kinds}>，/house remove <槽位>。",
-      "helpLine": "宅邸：/house、/house claim、/house place <槽位> <种类>、/house remove <槽位>。"
-    },
-    "bags": {
-      "full": "你的背包已满。",
-      "socketsFull": "你的所有背包栏位都已占用。",
-      "swapTooManyItems": "物品太多，无法换成那个背包。",
-      "removeTooManyItems": "物品太多，无法移除那个背包。",
-      "tradeSpace": "交易失败：背包空间不足。"
-    },
-    "bank": {
-      "tooFar": "你离银行职员太远了。",
-      "noQuestItems": "你不能把任务物品存入银行。",
-      "full": "你的银行已满。",
-      "expansionCapped": "你的银行无法再扩容了。",
-      "cannotAfford": "你负担不起这次银行扩容。",
-      "purchased": "你购买了额外的银行槽位。"
-    },
-    "homestead": {
-      "outsideArea": "这里不属于家园用地。去路西边的 Fallow Acres 试试。",
-      "tooCloseGate": "离大门太近了。再往外挪一挪。",
-      "tooCloseWater": "离水域太近了。",
-      "tooCloseGraveyard": "离墓地太近了。",
-      "tooCloseWildlife": "离野生动物太近了。清空这片区域，或者再挪远一些。",
-      "tooCloseRoad": "离大路太近了。",
-      "tooCloseOther": "离别人的家园太近了。",
-      "questGate": "绿掌修士还没让你出发呢。先把他的差事做完。",
-      "alreadyOwn": "你已经拥有一处家园了。",
-      "claimed": "这片土地归你了。家园认领成功。",
-      "readoutMine": "你的家园坐落在 ({x}, {z})。",
-      "readoutNoHomesteadQuest": "你还没有家园。先完成绿掌修士的全部差事才能解锁。",
-      "readoutNoHomesteadHint": "你还没有家园。站在空谷地里合适的位置，输入 /homestead claim。",
-      "helpLine": "家园：/homestead，/homestead claim。"
     }
   },
   "lockpickUi": {
@@ -2648,21 +2339,6 @@ export const zh_CN: EnTranslations = {
     },
     "chest": {
       "flavor": "亡者交出了他们尚能割舍之物。"
-    }
-  },
-  "boarball": {
-    "queue": {
-      "join": "你加入了野猪球队列。等待另外三名玩家…",
-      "leave": "你离开了野猪球队列。"
-    },
-    "log": {
-      "welcome": "欢迎来到野猪球！射门、传球，比分超越对方球队。",
-      "kickoff": "开球！",
-      "over": "比赛结束！正在返回世界…"
-    },
-    "error": {
-      "tooFar": "你离球不够近。",
-      "noTeammate": "未选定队友目标。"
     }
   },
   "fiesta": {
@@ -2859,7 +2535,6 @@ export const zh_CN: EnTranslations = {
     "rendererFailed": "无法启动渲染器：请尝试刷新。{error}",
     "enterTimeout": "无法进入世界。连接已超时。游戏服务器是否正在运行？",
     "connectionLost": "与服务器的连接已断开。",
-    "reconnecting": "连接已断开。正在重新连接...",
     "connectionRejected": "服务器关闭了连接。"
   },
   "errors": {
@@ -2889,10 +2564,8 @@ export const zh_CN: EnTranslations = {
       "notAuthenticated": "尚未认证。",
       "accountBanned": "此账号已被封禁。",
       "webLoginOnly": "只能从游戏客户端登录。",
-      "crossSiteRejected": "跨站请求被拒绝。",
       "accountSuspended": "此账号被停用至 {date}。",
       "alreadyInWorld": "角色已在世界中。",
-      "tooManyOnline": "同一时间只能有一个角色在世界中。",
       "takenOver": "你的角色已被另一个会话接管。",
       "renameBeforeEntering": "此角色必须先改名才能进入世界。",
       "renameNotPermitted": "不允许为此角色改名。"
@@ -3011,9 +2684,7 @@ export const zh_CN: EnTranslations = {
       "druid": "德鲁伊引导自然之力，治疗伤口，缠绕敌人，并变形成动物来防御或输出。"
     },
     "aria": "{className} 职业详情：职责 {role}。初始属性：力量 {str}，敏捷 {agi}，耐力 {sta}，智力 {int}，精神 {spi}。",
-    "statBarAria": "{stat}：{value}/25",
-    "classPairLabel": "{primary} / {secondary}",
-    "classPairAria": "{primary}，副职业 {secondary}"
+    "statBarAria": "{stat}：{value}/25"
   },
   "mobilePreflight": {
     "title": "横屏全屏游玩",
@@ -3642,7 +3313,6 @@ export const zh_CN: EnTranslations = {
       "offGlobalCooldown": "不触发公共冷却",
       "friendlyTarget": "友方目标",
       "enemyTarget": "敌方目标",
-      "selfOnly": "仅对自己",
       "damageRange": "{min} 到 {max}",
       "finisherDamage": "{base} 加每个连击点 {perCombo}"
     },
@@ -3686,7 +3356,6 @@ export const zh_CN: EnTranslations = {
     "dialog": {
       "close": "关闭任务对话",
       "greetingFallback": "你好。",
-      "chat": "聊一会儿吧。",
       "availableQuestAria": "可接任务：{name}",
       "readyQuestAria": "可交付任务：{name}",
       "discussQuest": "谈论{name}。",
@@ -3696,22 +3365,6 @@ export const zh_CN: EnTranslations = {
       "browseGoodsAria": "查看 {name} 的货物",
       "worldMarket": "让我看看世界市场。",
       "worldMarketAria": "打开世界市场",
-      "trainSecondary": "训练我一项副职业。",
-      "trainSecondaryAria": "向 {name} 学习一项副职业",
-      "feedHearth": "我这儿有点东西要添进炉子。",
-      "feedHearthAria": "给炉子添东西",
-      "trainerTitle": "副职业",
-      "trainerLevelLocked": "{level} 级解锁。",
-      "trainerCurrent": "当前",
-      "trainerFree": "免费",
-      "trainerPickAria": "将 {cls} 训练为副职业：{cost}",
-      "trainerNeedsGold": "金币不足",
-      "trainerConfirmTitle": "确认副职业",
-      "trainerConfirmBody": "花费{cost}训练为{cls}？",
-      "trainerConfirmYes": "是，训练我",
-      "trainerConfirmNo": "否，返回",
-      "trainerHowTitle": "副职业是如何运作的？",
-      "trainerHowBody": "副职业会在你的主职业之上增加第二棵天赋树和一套技能，从{level}级开始解锁。你保留主职业的定位；副职业与主职业共享天赋池，最多占用其中的{pct}%，其技能的资源消耗会换算为你的主资源。首次选择免费；之后更换需要花费金币。",
       "accept": "接受",
       "decline": "拒绝",
       "continue": "继续",
@@ -3748,13 +3401,8 @@ export const zh_CN: EnTranslations = {
     }
   },
   "housingUi": {
-    "claimedBanner": "你将这块地认领为家园。",
-    "ownerBanner": "这是{name}的家园。",
-    "prompt": {
-      "claim": "认领这块地",
-      "manage": "管理你的家园",
-      "visit": "拜访{name}的家"
-    },
+    "claimedBanner": "You claim this plot as your home.",
+    "ownerBanner": "This is {name}'s homestead.",
     "window": {
       "title": "你的家园",
       "close": "关闭家园",
@@ -3808,8 +3456,7 @@ export const zh_CN: EnTranslations = {
       "drink": "饮料",
       "tool": "工具",
       "potion": "药水",
-      "elixir": "药剂",
-      "bag": "Bag"
+      "elixir": "药剂"
     },
     "stats": {
       "armor": "护甲",
@@ -3851,11 +3498,7 @@ export const zh_CN: EnTranslations = {
       "useManaPotion": "使用：立即恢复 {amount} 点法力值。战斗中可用。1 分钟冷却。",
       "clickUseInstant": "点击在战斗中立即使用",
       "clickUse": "点击使用",
-      "clickBuyback": "点击回购",
-      "bagSlots": "{slots} Slot Bag"
-    },
-    "error": {
-      "requiresLevelToEquip": "需要等级 {level} 才能装备。"
+      "clickBuyback": "点击回购"
     },
     "bags": {
       "title": "背包",
@@ -5137,21 +4780,6 @@ export const zh_CN: EnTranslations = {
       "monarch_crown_helm": {
         "name": "君主之冠"
       },
-      "linen_pouch": {
-        "name": "亚麻小袋"
-      },
-      "travelers_knapsack": {
-        "name": "旅行者背包"
-      },
-      "wolfhide_satchel": {
-        "name": "狼皮挎包"
-      },
-      "gravewoven_bag": {
-        "name": "墓织袋"
-      },
-      "mistcallers_duffel": {
-        "name": "唤雾者的行囊"
-      },
       "bristleback_maul": {
         "name": "硬鬃重槌"
       },
@@ -5495,17 +5123,7 @@ export const zh_CN: EnTranslations = {
         "name": "余烬球茎"
       },
       "first_cutting": {
-        "name": "插条",
-        "flavorText": "一段来自灰爪修士的鲜活绿枝，用湿苔藓包裹着。等家园地块可以编辑后，这是你要种下的第一样东西。"
-      },
-      "greenpaw_bead": {
-        "name": "弹药带上的一颗念珠"
-      },
-      "keeper_coal": {
-        "name": "一块永不冷却的炭"
-      },
-      "willow_sprig": {
-        "name": "一段柳枝"
+        "name": "插条"
       },
       "witness_root_cincture": {
         "name": "见证根的束带"
@@ -5513,24 +5131,6 @@ export const zh_CN: EnTranslations = {
       "shrine_diary_page": {
         "name": "撕碎的日记页",
         "flavorText": "……我数着烛光过了四十天，后来便断了数。这底下的黑暗从未忘记祂，尽管祂已经忘了这个地方。若鹭鸟低飞掠过，告诉守灯人，烛芯还燃着……"
-      },
-      "heartwood_splinter": {
-        "name": "心材碎片",
-        "flavorText": "触摸时依然温暖,尽管孕育它的树早已停止生长。"
-      },
-      "bloomcrown_pauldrons": {
-        "name": "繁花王冠护肩"
-      },
-      "verdantguard_mantle": {
-        "name": "常青守卫者披风"
-      },
-      "worn_prayer_token": {
-        "name": "磨损的祷牌",
-        "flavorText": "……一面被一根不是我的拇指磨得光滑，磨出的浅沟和这堆里另外上百枚一模一样，至少这堆东西是这么告诉我的。一根拇指磨不出一百枚令牌的痕迹。可一百根拇指，倒是能磨出同一道浅沟……"
-      },
-      "tally_shard": {
-        "name": "刻痕碎片",
-        "flavorText": "……以五为一组刻得极深，每数完一轮便划去一道。划去的五连一组，累计上百组，最后一行却始终没有划完……"
       },
       "reliquary_plate_chest": {
         "name": "圣物库守卫锁甲"
@@ -5597,33 +5197,6 @@ export const zh_CN: EnTranslations = {
       },
       "event_skin_token": {
         "name": "神秘外观宝箱"
-      },
-      "flint_amber_pick": {
-        "name": "燧石琥珀镐"
-      },
-      "bonewood_amber_pick": {
-        "name": "骨木琥珀镐"
-      },
-      "starleaf_amber_pick": {
-        "name": "星叶琥珀镐"
-      },
-      "flint_bark_axe": {
-        "name": "燧石树皮斧"
-      },
-      "bonewood_bark_axe": {
-        "name": "骨木树皮斧"
-      },
-      "starleaf_bark_axe": {
-        "name": "星叶树皮斧"
-      },
-      "flint_spore_sickle": {
-        "name": "燧石孢子镰刀"
-      },
-      "bonewood_spore_sickle": {
-        "name": "骨木孢子镰刀"
-      },
-      "starleaf_spore_sickle": {
-        "name": "星叶孢子镰刀"
       },
       "deathless_heartwood": {
         "name": "不朽王冠之心木"
@@ -5768,9 +5341,6 @@ export const zh_CN: EnTranslations = {
       "deacon_voss": {
         "name": "执事沃斯"
       },
-      "training_dummy": {
-        "name": "训练假人"
-      },
       "ridge_stalker": {
         "name": "山脊潜猎者"
       },
@@ -5900,9 +5470,6 @@ export const zh_CN: EnTranslations = {
       "acolyte_tessa": {
         "name": "侍僧泰莎"
       },
-      "boarball_ball": {
-        "name": "野猪球"
-      },
       "ironvein_foreman": {
         "name": "铁脉工头"
       },
@@ -6019,9 +5586,6 @@ export const zh_CN: EnTranslations = {
       },
       "the_witness_root": {
         "name": "见证之根"
-      },
-      "heartwood_colossus": {
-        "name": "心材巨像"
       }
     },
     "npcs": {
@@ -6029,11 +5593,6 @@ export const zh_CN: EnTranslations = {
         "name": "商人",
         "title": "世界市场守护者",
         "greeting": "欢迎来到世界市场，{className}。从王国各地的冒险者手中购买，或出售你自己的货物。"
-      },
-      "the_ravenpost": {
-        "name": "渡鸦驿站",
-        "title": "邮务守护者",
-        "greeting": "寄一封信吧，{className}，我的渡鸦会找到你的朋友，无论他们漂泊何方，随信附上的钱币和包裹也会安然相随，直到被认领。"
       },
       "marshal_redbrook": {
         "name": "雷德布鲁克元帅",
@@ -6135,11 +5694,6 @@ export const zh_CN: EnTranslations = {
         "title": "圣物库守护人",
         "greeting": "下方的圣物库又移位了。"
       },
-      "elder_yarrow": {
-        "name": "长老亚罗",
-        "title": "副职业训练师",
-        "greeting": "每一套build都始于一个问题：哪个副职业在召唤你？"
-      },
       "tidewatcher_ondrel": {
         "name": "翁德雷尔·凡恩",
         "title": "守潮者",
@@ -6148,98 +5702,17 @@ export const zh_CN: EnTranslations = {
       "brother_greenpaw": {
         "name": "绿掌修士",
         "title": "首席先知（自封）",
-        "greeting": "你又来啦，真是福气……这瓮一早上唉声叹气的，几件神圣的事儿又排上了，跟上回一个路子。过来坐一会儿……",
-        "introLines": {
-          "0": "呃……你好。你好啊。没听见你过来，我刚才神游去了，去了个绿油油的地方……你这一脸刚睡醒的样子，朋友。我太熟这表情了，我自己十天有九天挂着它……",
-          "1": "我叫绿掌。绿掌修士，初代先知，自封的，这瓮会告诉你这头衔一文不值，他说得没错，可总得有人照看他不是……",
-          "2": "这地方就是空穴。从前是一整个部族，热闹得很，听他们说的，如今嘛，多半就剩我、这瓮，还有那洞里头喘气的那些玩意儿……罢了。他饿了，我也饿了，同一个频道。过来吧，有几件神圣的事儿得办。"
-        },
-        "dialogNode": {
-          "hearth": "好迪，朋友，又回瓶子这儿了啊，他今天挺安静的，要么是听得特别入神，要么就是干脆不理我了，说真的这两样我都佩服，因为我也就这两个档……对了空谷这阵子待你咋样，好还是不好，你带零食了没，没有？行吧就随口一问，替朋友问问，那朋友就是我……",
-          "warmed": "……哇哦，行吧，你这么说真挺好听的，朋友，是真挺好听，没想到啊，大多数人一有机会就直奔大门口了……你还挺不错的，知道吗，绿掌级别的不错，这称号我可不是随便给的……要是我手里有股票，我就买你的股，买进新朋友，卖出旧兆头，这就叫经济……",
-          "vase": "老样子呗，他要烟，要人照顾，要有人坐得近近的，让这份安静看着像聊天……欸。这不就是大多数聊天嘛。哇哦。行吧，反正，我天天跟他唠嗑，他一句都没回过，呃，从来没有，不过没事，反正就这么回事，绿掌级别的没事……等等，咱们刚才聊到哪儿了……哦。对。说他呢。他挺好的。估计是饿了。同感。",
-          "faith": "信不信是个大词儿，朋友，我就是照顾照顾，照顾这事我这两只手能干，还带个打火机，简历上就这么点东西……他到底听没听我说不准，不过烟闻着挺香，还不会对我评头论足，比大多数长耳朵的强多了，所以波长这块儿是稳了。的确如此。",
-          "stung": "……哎哟，行吧，疼啊朋友，我去……我是说也许吧，我也说不准，那种大冷天的早上我自个儿也这么想过，没人上这条路来，瓶子连叹口气都懒得叹……不过我还在这儿呢，所以，这总该算点什么吧？对吧。对。对了你要零食不，我有零食，换个话题。F。",
-          "mended": "没事没事，朋友，全都是赌局，从来都是，这是我心里那个牛仔在说话，别问他赌局啥意思，他也不知道，就是说得特别有底气……这种地方三不五时挨句重话也正常，我不装没这回事……不过你回来道歉了，这就说明点啥，或者说明你想要点啥，反正咱俩两清了，你我，波长一致，回头你想要零食我请。",
-          "tribe": "以前是个大部族，反正老刻痕是这么说的，我认字不太行，不过我会数数，那底下刻了老多老多的五道杠，划掉的，比一只手能划出来的都多，这数学我绕不过去……让他亮了老长老长时间，才轮到就剩我一个。我不知道大伙都去哪儿了，朋友，是真不知道，我有时候在波长上能感觉到点啥，可那感觉自己都说不完一句话，所以我也说不完……不过这灯芯不能在我看着的时候灭了。这个我是真知道。",
-          "confide": "……你这么说真挺好的，朋友，是真挺好……听着，我跟你唠嗑一半是因为瓶子不搭理我，一半是因为我怕，有那么些晚上，我怕再也没人上这条路来了，就剩我跟他，还有这份安静……所以。谢谢你上来了。要说啥算神圣，朋友，那就是这个。……对了。你带零食了没？替瓶子问的。波长也饿了。"
-        },
-        "dialogChoice": {
-          "kind": "越来越喜欢这儿了，绿掌。是真的，真的。",
-          "ask": "那瓶子这几天都说啥了？",
-          "blunt": "就是个带吉祥物的乱葬岗，绿掌。仅此而已。",
-          "tribe": "跟我说说那个部族吧，你之前那个。",
-          "warm_bye": "那我不打扰你陪他了。",
-          "vase_more": "你是真觉得他在听？",
-          "vase_bye": "那行，陪着他吧。",
-          "faith_bye": "说得也是，绿掌。",
-          "sorry": "那话说重了，不是故意的。对不起，绿掌。",
-          "cold_bye": "你爱信什么就信什么吧。",
-          "mended_bye": "咱俩两清了。回头见，绿掌。",
-          "confide": "你不必独自扛着这一切，师兄。",
-          "tribe_bye": "反正还有人照料着呢。",
-          "confide_bye": "我会一直上这条路来的，绿掌。"
-        }
+        "greeting": "哟，旅人，你来啦。你说这瓮今儿个心情不错，还是只有我这么觉得……过来吧，有几件神圣的事儿要办。基本上就是弄点吃的。反正对绿掌来说是一回事儿。"
       },
       "verger_zebediah": {
         "name": "司事泽比迪亚",
         "title": "根穴守卫",
-        "greeting": "司事泽比迪亚。我给外域记着一本历书，至少一直在努力记。根穴这一季本该休养，可野猪没读那张告示。留神脚下的浮土，还有，别碰我的登记簿。",
-        "introLines": {
-          "0": "司事泽比迪亚。根穴守卫，依一纸任命而来，那纸任命眼下也就是我本人。大多数日子你在这里便能寻到我；其余的日子，我也在这里寻到自己。外域不需法定人数，只需一本登记簿。",
-          "1": "我替这本历书做主，历书却并不替我做主，不过某些季里它也试着来过。根穴这一轮本记作休养，底下的兽穴却未收到那张告示，苍鹭也早不再装作吃惊。这便是现状。这并非抱怨，抱怨是要有旁人的。",
-          "2": "神龛之内有一本登记簿，切莫去碰。脚下是野猪拱过的浮土，二者皆请留神。若是为守土之事而来，我可托付两桩差事，都不算小，其中一桩我实在不愿再改第三回。这便是我为何同你搭话的缘由。"
-        },
-        "journalLines": {
-          "0": "这本登记簿比苍鹭更老。第一笔并非我所书，最后一笔也并非我所能书；这便是一桩无人等候承继的职务，所能给我的慰藉。外域曾是一条通衢。有人沿湖道携盐而上，归时携一桩无以名状之物而去，我既不便过问，便也未曾过问。簿中记其来、记其去，亦记一段长久无人来往的空白。那段空白，我也一并看顾。",
-          "1": "苍鹭比簿更老，簿对这点心有不悦。它不说出口。也不必说。我曾见它单足而立，熬过那一季，梨树尽枯，它连眼也不曾眨一眨，我便将此看作它对某事的一种态度，虽从未被告知究竟是哪一桩。神龛底下有一间我不入内的房。苍鹭入内。它做些什么，我不问；我在上头做些什么，它也不问。这一桩彼此的默契，比你我任何一人都更长久。",
-          "2": "读到此处之人，非好奇即避难，二者我皆敬重。长篇记录的简短版是：此地记得它曾是什么，亦记得它将成什么，二者之间的差，便是这桩差事。记，是我的分内之事。将成什么、其主是谁，我无从得知。我书以「待定」二字，便去歇了。簿允许待定，不允许遗忘。",
-          "3": "沿湖道而上、听闻花瓶之事的旅人，多半会得出两种结论，哪一种都不算好听。有人称这一群信众是嬉皮士，是怪人，笑罢便走。也有人骂得更难听，且不愿多留片刻。多数人则压根不曾听闻花瓶之事，而我渐渐以为，这正是这份安排本该有的样子。默默无闻之物，总比声名远扬之物活得长久。"
-        }
+        "greeting": "司事泽比迪亚。我给外域记着一本历书，至少一直在努力记。根穴这一季本该休养，可野猪没读那张告示。留神脚下的浮土，还有，别碰我的登记簿。"
       },
       "sexton_faddick": {
         "name": "守墓人法迪克",
         "title": "流浪的守护者",
-        "greeting": "法迪克。哪里还有神龛需要守墓人，我就在哪儿守。我从不在一处久留，只管看顾。狼群夜夜绕着闲田庄的羊群打转，绕得久了，便摸清了所绕之物的形状。最好让它一直只是群羊。",
-        "introLines": {
-          "0": "法迪克。哪里还有神龛要我来做守墓人，我便做守墓人，只是这样的神龛已比从前少了。我从不在一处久留，只管看顾。看顾这一桩，便是我如今所剩的几乎全部。",
-          "1": "绕得久了，便摸清了所绕之物的形状。闲田庄的狼群在我路过之前便夜夜绕着羊群打转，至今仍未摸清羊群的形状，这也算是一桩事。倒是羊群已把它们摸清，那便是更大的事。",
-          "2": "本想请你喝杯茶，可茶壶留在我昨日待过的地方了。湖边有一片安静的地，等着人起屋；狼群在暗中出没之地，什么都扎不下根来。喏，两桩差事，其中一桩我不想独个儿去办。边走边说罢。"
-        },
-        "journalLines": {
-          "0": "我所看顾的地方，记在脑中便好，因纸易主比地易主来得快。神龛居多，皆是已无人奉祀之神龛。闲田庄在册。湖东那无名池塘亦在册。还有一柱立石，风花了一百年才把它磨圆。册子不长，在要紧处，册子便是全部。一地之留存，不在久留，而在仍是那个记得它曾在此的人。",
-          "1": "地比我们记得更牢。这便是全部的交换。地上之人走不过两代，便忘了自己本来的名，又起个新的，照旧叫它；地下之物一无所忘，只管等。石头底下有一种慢时辰。我听过一次，没答，因为一答，那慢东西便寻到了门。我携着不答的钥匙，非金属之钥，是习惯，习比重一些。",
-          "2": "狼并非问题，狼只是症候；问题在于那桩使地静到狼都以为是自己的事。这样的事我见过，一处之地朝错的方向静下去，修法向来只有一种：以对的噪声再把它弄响，而这噪声便是人，这便是为何有人去建。你或要问，我何德何能，担得这些。我是那仍走着的人，这便是全部的资格。够也不够，够与不够之间的那段空隙，我已同它讲和。"
-        }
-      },
-      "shade": {
-        "name": "莎德",
-        "title": "一位旅人",
-        "greeting": "哦，是你啊。想坐就坐吧，水又不会跑。今天吃过了吗？你该吃点东西。",
-        "introLines": {
-          "0": "你撞见我做杂活了。别在意这桶，不过是水而已。总有些东西需要浇上一点水。",
-          "1": "我？没什么好说的。叫我莎德。我四处走走，哪里缺人手就搭把手。你看着累坏了。想的话，就坐一会儿吧。"
-        }
-      },
-      "gate_bard": {
-        "name": "吟游诗人哈尔登",
-        "title": "门前的卖艺人",
-        "greeting": "一枚铜板换一首歌？不要？没关系，多数日子都是不要。我为这道门弹唱，可这门从没掏过一次腰包。路过的人管这儿叫嬉皮士营地，甚至更难听，反正他们多半只是路过，我也就随他们说去。"
-      },
-      "goodwife_orla": {
-        "name": "奥拉",
-        "title": "曾属根穴",
-        "greeting": "你可以坐下。大多数人只是走过去。司事早就把我的名字从册子上划掉了，一个被划掉的名字，学会了安静，好让谁都不必想起它还在这儿。"
-      },
-      "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
-      },
-      "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "greeting": "法迪克。哪里还有神龛需要守墓人，我就在哪儿守。我从不在一处久留，只管看顾。狼群夜夜绕着闲田庄的羊群打转，绕得久了，便摸清了所绕之物的形状。最好让它一直只是群羊。"
       }
     },
     "quests": {
@@ -7076,47 +6549,6 @@ export const zh_CN: EnTranslations = {
           "0": {
             "label": "已采集洞穴肉粒"
           }
-        },
-        "dialog": {
-          "complain": "我刚从下面上来。你亲眼看着我从洞里爬出来的。",
-          "complainReply": "我知道，朋友，我知道……瓶子不看日历，我的肚子也不看。可你看看那双靴子，再告诉我它们走不动最后一趟……不急。那个洞哪儿也不会去。这差不多就是它的全部本事……",
-          "refuse": "不。我不会再下去了。",
-          "refuseReply": "哦……哦，好吧。……好吧。这……是啊。不，这很公道，朋友，很公道……瓶子也听见了，偷偷跟你说，我觉得他还挺敬佩你的。来，这根插枝你还是拿着。你下去过一次，就已经比大多数人多一次了……"
-        }
-      },
-      "q_the_wavelength": {
-        "title": "同一频率上",
-        "text": "挖来的插条现在是你的了，朋友，那接下来该聊聊后面的事了……两件事，都不算考验，更像是引见。第一，穿过瓶子那边，去见见耶罗长老，她教的是第二天职，一种完全不同的玩法，凡是路过这儿的灵魂都该知道那扇门是开着的……第二，回来喂我点什么，不管是哪样，残火球茎也好，洞穴肉粒也好，我永远处于饥饿状态，瓶子也永远想要烟。这部分是不会真正结束的，对绿掌来说就是这样。",
-        "completion": "看吧……你感觉到了吧，房间一下子变浓了？那是他，注意到了。这就是全部的窍门，朋友——你喂我，我就冒烟，他就多凑近一点听着。没什么复杂的。以后也永远不会变。手头有多余的残火球茎或洞穴肉粒，随时过来，炉子不看日历……哦对了。欢迎来到圣所。我这才意识到之前一直没说过这句。",
-        "objectives": {
-          "0": {
-            "label": "已拜见耶罗长老"
-          },
-          "1": {
-            "label": "已在炉边喂食"
-          }
-        },
-        "dialog": {
-          "complain": "又要跑腿？我才刚从那洞里爬出来。",
-          "complainReply": "不不，听我说完，这次不是洞里的活儿……这次简单，就是走一趟，好好喂我一次。这是我求过你最轻松的一件事了，我保证，同频共振，绝不骗你。",
-          "refuse": "我自己去找我的训练，谢了。",
-          "refuseReply": "……那也行吧。一个灵魂还没准备好之前，是没法强求学东西的。等哪天不是\"还没准备好\"了，门就一直开着……给，这个还是拿着吧，好歹你来了一趟。"
-        }
-      },
-      "q_keep_him_lit": {
-        "title": "Keep Him Lit",
-        "text": "三次，朋友，就是这个数……不是什么神圣的数字，就是刚好能把一个人情变成一个习惯，习惯才是我真正信的那种信仰……回来喂炉子三次，分开的三次，先后顺序不重要，残火球茎还是洞穴肉粒也不重要，只要你做到了，我就信你是真的打算留下来，不是路过顺道办完事就走……",
-        "completion": "三次都到了……你不再只是个访客了，朋友，你是在守着一样活着的东西，这就是全部的意义，虽然没人问过我，但我还是要说……给，拿着这个吧，它什么用也没有，只是个念想，跟咱们这儿的人一样……",
-        "objectives": {
-          "0": {
-            "label": "已在炉边喂食三次"
-          }
-        },
-        "dialog": {
-          "complain": "我不是已经喂过你一次了吗？这还不够？",
-          "complainReply": "一次是个人情，朋友，三次才是习惯，人情我吃过亏……这不是炉子需不需要，炉子好得很，我照顾得来，这是关于你愿不愿意自己走回来，不是因为任务标记逼你来的……三次。不急着数。",
-          "refuse": "我不会分三次来做这件事。一次就够了。",
-          "refuseReply": "……好吧。好吧，我懂你的意思，朋友，这条线划得也算公道……这样吧，还是拿着，严格说不算你挣来的，但我给出去的大半也不算，频率这东西，其实没真的在计较。"
         }
       },
       "q_root_hollow_boars": {
@@ -7132,7 +6564,7 @@ export const zh_CN: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "根穴的清算",
         "text": "我就说句本职上不该说的实话：五头，是我乐观了。底下的窝还在不断往外拱。再杀八头，我便能结清这一季，不必第三回去改记录。记录不喜被改。我也不喜。",
-        "completion": "结案。签字。归档。这一季总算能照原定的历程走了，毕竟又有人来看着这本历书。你帮了一个极小的会众一个大忙。我得澄清一句：这会众，就是我。这本历书本身比这安排还要古老，装订出自一双我从未谋面的手，记着一个我不愿去加总的数目。曾经有人在此极为用心。我不过是尽力跟上罢了。",
+        "completion": "结案。签字。归档。这一季总算能照原定的历程走了，毕竟又有人来看着这本历书。你帮了一个极小的会众一个大忙。我得澄清一句：这会众，就是我。",
         "objectives": {
           "0": {
             "label": "野猪已杀"
@@ -7156,46 +6588,6 @@ export const zh_CN: EnTranslations = {
         "objectives": {
           "0": {
             "label": "森林狼已杀"
-          }
-        }
-      },
-      "q_have_you_eaten": {
-        "title": "你吃过了吗？",
-        "text": "门口有个吟游诗人，靠铜板过活，铜板来了才有饭吃，而铜板难得来。我这儿有一碗热的，还多出一份。替我给他送去，好吗？别告诉他这是可怜他。就说这是多出来的。",
-        "completion": "你回来了。他吃了吗？很好。那就好。那你呢？……你没吃，我看得出来。那就坐下吧。要成为一个好人，不必伟大。伟大不是善良。吃吧。",
-        "objectives": {
-          "0": {
-            "label": "把热饭送给吟游诗人"
-          }
-        }
-      },
-      "q_someone_your_own_size": {
-        "title": "找个和你一般大的",
-        "text": "根穴附近有个女人，这世道待她不公。她的名字被从册子上划掉了，人们对待一个被划掉的名字，就当它听不见。去陪她坐一会儿吧。你不必去修补什么。只要做一个和她一般大的人就好。",
-        "completion": "你留下来了。她不会说这有什么要紧，可它要紧，我向你保证它要紧。来，这个给你。一段柳枝，取自我很喜欢的一棵柳树。它什么用也没有。它只记得，在没人逼你的时候，你依然选择了善良。",
-        "objectives": {
-          "0": {
-            "label": "陪奥拉坐了一会儿"
-          }
-        }
-      },
-      "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
-        "objectives": {
-          "0": {
-            "label": "Water carried up the willow path"
-          }
-        }
-      },
-      "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
-        "objectives": {
-          "0": {
-            "label": "Water given to the buried root"
           }
         }
       }
@@ -7372,23 +6764,15 @@ export const zh_CN: EnTranslations = {
       }
     },
     "itemSets": {
-      "boundstone_vanguard": {
-        "name": "缚石先锋铠",
-        "bonus3": "攻击与施法速度提高 15%。"
-      },
       "crownforged": {
         "name": "铸冠战装",
         "bonus2": "攻击强度提高 40 点。",
-        "bonus3": "力量提高 15 点，耐力提高 15 点，攻击与施法速度提高 15%。"
+        "bonus3": "力量提高 15 点，耐力提高 15 点。"
       },
       "deathlord": {
         "name": "死王战甲",
         "bonus2": "攻击强度提高 40 点。",
         "bonus3": "力量提高 15 点，耐力提高 15 点。"
-      },
-      "greyjaw_stalker": {
-        "name": "灰颚潜行者装备",
-        "bonus3": "攻击与施法速度提高 15%。"
       },
       "necromancers": {
         "name": "死灵法师法衣",
@@ -7398,44 +6782,22 @@ export const zh_CN: EnTranslations = {
       "nighttalon": {
         "name": "夜爪皮甲",
         "bonus2": "攻击强度提高 40 点。",
-        "bonus3": "敏捷提高 15 点，致命一击几率提高 2%，攻击与施法速度提高 15%。"
+        "bonus3": "敏捷提高 15 点，致命一击几率提高 2%。"
       },
       "soulflame": {
         "name": "魂焰法衣",
         "bonus2": "受到伤害造成的施法延退降低 50%。",
-        "bonus3": "施法时不会因受到伤害而被延退，且攻击与施法速度提高 15%。"
+        "bonus3": "施法时不会因受到伤害而被延退。"
       },
       "stormcallers": {
         "name": "唤雷者法衣",
         "bonus2": "受到伤害造成的施法延退降低 50%。",
-        "bonus3": "施法时不会因受到伤害而被延退，且攻击与施法速度提高 15%。"
-      },
-      "vale_arcanist": {
-        "name": "山谷秘法师法衣",
-        "bonus3": "攻击与施法速度提高 15%。"
+        "bonus3": "施法时不会因受到伤害而被延退。"
       },
       "wyrmshadow": {
         "name": "龙影外衣",
         "bonus2": "攻击强度提高 40 点。",
         "bonus3": "敏捷提高 15 点，致命一击几率提高 2%。"
-      }
-    },
-    "readables": {
-      "torn_ledger_page": {
-        "title": "撕破的登记簿",
-        "pages": {
-          "0": "根穴，记为休养。闲田庄，记为休养。莫斯岸的那片湖，无论我们记与不记，它自顾自地歇着。按登记簿的规矩，签了名，注了日期。",
-          "1": "本季至今的清点：路石缝里冒出三株幼苗，我的任何一本历书上都没有这一条。我已经不再划掉它们了。墨迹未干它们就长回来，而那墨水可不便宜。",
-          "2": "给我之后接手此簿的人留一句。数野猪，数狼，数日子。别去数那片绿。它会数回来，而且不会停在你停下的地方。"
-        }
-      },
-      "keepers_marginalia": {
-        "title": "守护者的旁批",
-        "pages": {
-          "0": "夹在一本圣歌都磨没了的圣歌集页边留下的。那笔迹很快，就像一只边走边写的手那样快。",
-          "1": "狼群从林线绕着闲田庄打转，永远是同一个圈，永远顺着日头转。绕得够久的东西，会摸清它所绕之物的形状。我如此。我想，这片土地也如此。",
-          "2": "你若读到这里，说明你停下了脚步，那正是我这辈子唯一没学会的事。歇一会儿吧。外域还会在这儿。而这，恰恰就是它最麻烦的地方。"
-        }
       }
     }
   },

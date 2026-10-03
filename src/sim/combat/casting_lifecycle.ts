@@ -361,31 +361,25 @@ export function castAbility(ctx: SimContext, abilityId: string, pid?: number): v
   if (ability.channel) {
     spendResource(p, res.cost);
     armAbilityCooldown(p, ability.id, res.cooldown);
-    // Spell haste (item-set bonus) shortens the whole channel and so each tick.
-    const channelDuration = ability.channel.duration / (1 + p.spellHaste);
     p.castingAbility = ability.id;
-    p.castTotal = channelDuration;
-    p.castRemaining = channelDuration;
+    p.castTotal = ability.channel.duration;
+    p.castRemaining = ability.channel.duration;
     p.channeling = true;
-    p.channelTickEvery = channelDuration / ability.channel.ticks;
+    p.channelTickEvery = ability.channel.duration / ability.channel.ticks;
     p.channelTickTimer = p.channelTickEvery;
     p.gcdRemaining = Math.max(p.gcdRemaining, gcd);
     ctx.emit({
       type: 'castStart',
       entityId: p.id,
       ability: ability.id,
-      time: channelDuration,
+      time: ability.channel.duration,
     });
     return;
   }
 
   if (res.castTime > 0 && !togglingOff) {
-    // Spell haste (item-set bonus) shortens the cast; Curse of Tongues stretches it.
-    // Physical-school casts ride spellHaste too: set-bonus haste is ONE stat, so
-    // meleeHaste always equals spellHaste and the classic melee-haste scaling falls
-    // out identically. If the haste channels ever split, give physical casts
-    // p.meleeHaste here (and mirror it over the wire for the tooltip).
-    const castTime = (res.castTime * tonguesMult(p)) / (1 + p.spellHaste);
+    // Curse of Tongues stretches the resolved (already haste-adjusted) cast time.
+    const castTime = res.castTime * tonguesMult(p);
     p.castingAbility = ability.id;
     p.castTotal = castTime;
     p.castRemaining = castTime;
@@ -501,27 +495,17 @@ function applyAbility(ctx: SimContext, p: Entity, meta: PlayerMeta, res: Resolve
   const ability = res.def;
   const togglingOff = isToggleBuff(ability) && p.auras.some((a) => a.id === ability.id);
   if (ability.id === 'conjure_water') {
+    spendResource(p, res.cost);
     // higher ranks conjure better water (falls back if the item isn't defined)
     const tiered = `conjured_water${res.rank}`;
-    const waterId = res.rank > 1 && ITEMS[tiered] ? tiered : 'conjured_water';
-    if (!ctx.canAddItem(waterId, 2, p.id)) {
-      ctx.error(p.id, 'Your bags are full.');
-      return;
-    }
-    spendResource(p, res.cost);
-    ctx.addItem(waterId, 2, p.id);
+    ctx.addItem(res.rank > 1 && ITEMS[tiered] ? tiered : 'conjured_water', 2, p.id);
     return;
   }
   if (ability.id === 'conjure_food') {
+    spendResource(p, res.cost);
     // higher ranks conjure heartier fare (falls back if the item isn't defined)
     const tiered = `conjured_bread${res.rank}`;
-    const foodId = res.rank > 1 && ITEMS[tiered] ? tiered : 'conjured_bread';
-    if (!ctx.canAddItem(foodId, 2, p.id)) {
-      ctx.error(p.id, 'Your bags are full.');
-      return;
-    }
-    spendResource(p, res.cost);
-    ctx.addItem(foodId, 2, p.id);
+    ctx.addItem(res.rank > 1 && ITEMS[tiered] ? tiered : 'conjured_bread', 2, p.id);
     return;
   }
   if (ability.id === 'revive_pet') {
@@ -590,9 +574,7 @@ function applyAbility(ctx: SimContext, p: Entity, meta: PlayerMeta, res: Resolve
       sourceId: p.id,
       targetId: target.id,
       school: ability.school,
-      // A spell may override the flying-bolt visual (e.g. Lightning Bolt draws a
-      // jagged electric strike); the projectile MECHANIC below is unchanged.
-      fx: ability.projectileFx ?? 'projectile',
+      fx: 'projectile',
     });
     // The bolt is now in flight: its hit roll and effects resolve when it reaches the
     // target (projectile_travel), not this tick. A target that dies before impact

@@ -34,7 +34,6 @@ describe('aggregateSetBonuses (pure resolver)', () => {
       spi: 0,
       ap: 0,
       crit: 0,
-      haste: 0,
       castPushbackReduction: 0,
     });
   });
@@ -63,12 +62,9 @@ describe('aggregateSetBonuses (pure resolver)', () => {
     expect(aggregateSetBonuses(counts({ [SET_NECROMANCERS]: 3 })).castPushbackReduction).toBe(1);
   });
 
-  it('every set definition lists ascending tiers ending at 3 pieces', () => {
+  it('every set definition lists ascending 2- and 3-piece tiers', () => {
     for (const set of Object.values(ITEM_SETS)) {
-      const pieces = set.bonuses.map((b) => b.pieces);
-      // raid/dungeon families carry 2- and 3-piece tiers; the leveling haste
-      // kits deliberately carry the single 3-piece tier
-      expect([pieces.join(','), set.id]).toEqual([pieces.length === 1 ? '3' : '2,3', set.id]);
+      expect(set.bonuses.map((b) => b.pieces)).toEqual([2, 3]);
     }
   });
 });

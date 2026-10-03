@@ -12,7 +12,6 @@ import { hashPassword, newToken, offensiveName, validPassword, verifyPassword } 
 import {
   type AccountRow,
   accountById,
-  backfillAccountEmailIfEmpty,
   createAccount,
   findAccount,
   highestCharacterForAccount,
@@ -32,7 +31,6 @@ import {
   linkDiscordToAccount,
   peekDiscordPendingLogin,
   setDiscordGuildMember,
-  setDiscordLinkEmail,
   unlinkDiscord,
 } from './discord_db';
 import {
@@ -51,7 +49,6 @@ import {
   parseTokenResponse,
   pkceChallengeFromVerifier,
 } from './discord_oauth';
-import { sendProblem } from './http_errors';
 import { isUniqueViolation, json } from './http_util';
 import {
   authThrottled,
@@ -160,7 +157,7 @@ export async function handleDiscordStart(
   if (!cfg) return json(res, 503, { error: 'Discord integration is not configured' });
   if (discordRateLimited(req, opts.accountId ?? 0)) {
     note('discord.start.rate_limited');
-    return sendProblem(res, 429, 'RATE_LIMITED', 'rate limited', { policy: 'discord' });
+    return json(res, 429, { error: 'rate limited' });
   }
   const state = newToken();
   const codeVerifier = newToken();
@@ -235,18 +232,6 @@ export async function handleDiscordCallback(
   }
 }
 
-// Seed the account's recovery email from a Discord grant, but only when the
-// account has none yet (never clobbering an owner-set address). A no-op when the
-// grant carried no email. email_verified_at is stamped only for a Discord-verified
-// address. Best-effort: shared by every Discord link/login path.
-async function captureDiscordEmail(
-  accountId: number,
-  email: string | null,
-  verified: boolean,
-): Promise<void> {
-  if (email) await backfillAccountEmailIfEmpty(accountId, email, verified);
-}
-
 // Link an authenticated session's account to the Discord identity.
 async function completeLink(
   res: http.ServerResponse,
@@ -260,14 +245,12 @@ async function completeLink(
     discordUserId: user.id,
     username: discordDisplayName(user),
     avatar: user.avatar,
-    email: user.email,
     guildMember,
   });
   if (!linked) {
     note('discord.link.conflict');
     return bouncePage(res, 409, { ok: false, mode, error: 'already_linked' });
   }
-  await captureDiscordEmail(accountId, user.email, user.emailVerified);
   note('discord.link.success');
   return bouncePage(res, 200, { ok: true, mode, username: discordDisplayName(user) });
 }
@@ -296,8 +279,6 @@ async function completeLogin(
       discordUserId: user.id,
       username: discordDisplayName(user),
       avatar: user.avatar,
-      email: user.email,
-      emailVerified: user.emailVerified,
       guildMember,
       ttlMinutes: PENDING_LOGIN_TTL_MINUTES,
     });
@@ -313,10 +294,6 @@ async function completeLogin(
   // Returning Discord user: keep membership fresh, then mint a session.
   const acct = await accountById(accountId);
   await setDiscordGuildMember(pool, accountId, guildMember);
-  // Re-consent may have just granted the email scope for the first time: capture
-  // it onto the link and seed the account's recovery email if it still has none.
-  await setDiscordLinkEmail(pool, accountId, user.email);
-  await captureDiscordEmail(accountId, user.email, user.emailVerified);
   note('discord.login.returning');
   const status = await moderationStatusForAccount(accountId);
   if (status.locked) return bouncePage(res, 403, { ok: false, mode: 'login', error: 'locked' });
@@ -353,13 +330,11 @@ export async function handleDiscordLoginNew(
   res: http.ServerResponse,
   isIpBlocked: (ip: string) => boolean,
 ): Promise<void> {
-  if (discordRateLimited(req, 0))
-    return sendProblem(res, 429, 'RATE_LIMITED', 'rate limited', { policy: 'discord' });
+  if (discordRateLimited(req, 0)) return json(res, 429, { error: 'rate limited' });
   // A blocked IP must not mint a fresh account + session through Discord, exactly as
   // /api/register and /api/login refuse one. Reuse the rate-limit response so the block
   // stays invisible (matches the throttle bucket above; the client already localizes it).
-  if (isIpBlocked(requestIp(req)))
-    return sendProblem(res, 429, 'RATE_LIMITED', 'rate limited', { policy: 'discord' });
+  if (isIpBlocked(requestIp(req))) return json(res, 429, { error: 'rate limited' });
   const body = await readJsonBody(req);
   const linkToken = typeof body.linkToken === 'string' ? body.linkToken : '';
   const pending = await consumeDiscordPendingLogin(pool, linkToken);
@@ -370,8 +345,6 @@ export async function handleDiscordLoginNew(
     username: pending.discord_username ?? '',
     globalName: pending.discord_username,
     avatar: pending.discord_avatar,
-    email: pending.discord_email,
-    emailVerified: pending.discord_email_verified,
   };
   try {
     // Defensive: if this Discord id is already linked (a rare double-submit / two-tab
@@ -384,7 +357,6 @@ export async function handleDiscordLoginNew(
         discordUserId: user.id,
         username: discordDisplayName(user),
         avatar: user.avatar,
-        email: user.email,
         guildMember: pending.guild_member,
       });
       if (!linked) {
@@ -402,11 +374,7 @@ export async function handleDiscordLoginNew(
     } else {
       username = (await accountById(accountId))?.username ?? 'player';
       await setDiscordGuildMember(pool, accountId, pending.guild_member);
-      await setDiscordLinkEmail(pool, accountId, user.email);
     }
-    // Seed the recovery email from the captured Discord address (both a freshly
-    // provisioned account and the race-fallback owner). No-op when it has one.
-    await captureDiscordEmail(accountId, user.email, user.emailVerified);
     const status = await moderationStatusForAccount(accountId);
     if (status.locked) return json(res, 403, { error: status.message });
     const token = await issueDiscordSession(accountId, meta);
@@ -427,12 +395,10 @@ export async function handleDiscordLoginLink(
   res: http.ServerResponse,
   isIpBlocked: (ip: string) => boolean,
 ): Promise<void> {
-  if (discordRateLimited(req, 0))
-    return sendProblem(res, 429, 'RATE_LIMITED', 'rate limited', { policy: 'discord' });
+  if (discordRateLimited(req, 0)) return json(res, 429, { error: 'rate limited' });
   // A blocked IP must not log into (and link Discord onto) an account through this
   // unauthenticated path either, mirroring the /api/login IP gate. Same opaque 429.
-  if (isIpBlocked(requestIp(req)))
-    return sendProblem(res, 429, 'RATE_LIMITED', 'rate limited', { policy: 'discord' });
+  if (isIpBlocked(requestIp(req))) return json(res, 429, { error: 'rate limited' });
   const body = await readJsonBody(req);
   const linkToken = typeof body.linkToken === 'string' ? body.linkToken : '';
   const pending = await peekDiscordPendingLogin(pool, linkToken);
@@ -473,13 +439,9 @@ export async function handleDiscordLoginLink(
     discordUserId: consumed.discord_user_id,
     username: consumed.discord_username,
     avatar: consumed.discord_avatar,
-    email: consumed.discord_email,
     guildMember: consumed.guild_member,
   });
   if (!linked) return json(res, 409, { error: 'already_linked' });
-  // Seed the existing account's recovery email from the captured Discord address
-  // if it still has none (never overwrites an owner-set one).
-  await captureDiscordEmail(account.id, consumed.discord_email, consumed.discord_email_verified);
   note('discord.login.linked_existing');
   const token = await issueDiscordSession(account.id, requestMeta(req));
   return json(res, 200, { token, username: account.username });

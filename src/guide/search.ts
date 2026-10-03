@@ -44,7 +44,7 @@ function buildIndex(): SearchEntry[] {
     );
   }
   for (const z of GUIDE_ZONES) {
-    add(z.name, t('guide.search.typeZone'), `${hrefFor('world')}#zone-${z.id}`);
+    add(z.name, t('guide.search.typeZone'), `${hrefFor('world')}#zone-${z.biome}`);
   }
   for (const f of GUIDE_FAMILIES) {
     add(

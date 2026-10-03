@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
   activePvpOpponentIds,
-  HOVER_REPICK_MS,
-  HoverPickGate,
   handlePickedEntity,
   hoverCursorKind,
   isAttackableEntity,
@@ -135,10 +133,9 @@ describe('activePvpOpponentIds', () => {
           '1v1': { rating: 1500, wins: 0, losses: 0 },
           '2v2': { rating: 1500, wins: 0, losses: 0 },
           fiesta: { rating: 1500, wins: 0, losses: 0 },
-          boarball: { rating: 1500, wins: 0, losses: 0 },
         },
         ladder: [],
-        ladders: { '1v1': [], '2v2': [], fiesta: [], boarball: [] },
+        ladders: { '1v1': [], '2v2': [], fiesta: [] },
         match: {
           oppPid: 3,
           oppName: 'Arena Rival',
@@ -175,10 +172,9 @@ describe('activePvpOpponentIds', () => {
           '1v1': { rating: 1500, wins: 0, losses: 0 },
           '2v2': { rating: 1500, wins: 0, losses: 0 },
           fiesta: { rating: 1500, wins: 0, losses: 0 },
-          boarball: { rating: 1500, wins: 0, losses: 0 },
         },
         ladder: [],
-        ladders: { '1v1': [], '2v2': [], fiesta: [], boarball: [] },
+        ladders: { '1v1': [], '2v2': [], fiesta: [] },
         match: {
           oppPid: 3,
           oppName: 'Arena Rival',
@@ -276,31 +272,5 @@ describe('handlePickedEntity', () => {
 
     expect(targetId).toBe(2);
     expect(attacks).toBe(1);
-  });
-});
-
-describe('HoverPickGate', () => {
-  it('picks on first call and then throttles a stationary pointer', () => {
-    const gate = new HoverPickGate();
-    expect(gate.shouldPick(10, 20, 1000)).toBe(true);
-    expect(gate.shouldPick(10, 20, 1001)).toBe(false);
-    expect(gate.shouldPick(10, 20, 1000 + HOVER_REPICK_MS - 1)).toBe(false);
-    expect(gate.shouldPick(10, 20, 1000 + HOVER_REPICK_MS)).toBe(true);
-  });
-
-  it('re-picks immediately when the pointer moves', () => {
-    const gate = new HoverPickGate();
-    expect(gate.shouldPick(10, 20, 1000)).toBe(true);
-    expect(gate.shouldPick(11, 20, 1001)).toBe(true); // x moved
-    expect(gate.shouldPick(11, 21, 1002)).toBe(true); // y moved
-    expect(gate.shouldPick(11, 21, 1003)).toBe(false); // stationary again
-  });
-
-  it('a movement re-pick restarts the stationary window', () => {
-    const gate = new HoverPickGate();
-    gate.shouldPick(0, 0, 1000);
-    gate.shouldPick(5, 5, 1030); // move at t=1030 re-picks
-    expect(gate.shouldPick(5, 5, 1030 + HOVER_REPICK_MS - 1)).toBe(false);
-    expect(gate.shouldPick(5, 5, 1030 + HOVER_REPICK_MS)).toBe(true);
   });
 });

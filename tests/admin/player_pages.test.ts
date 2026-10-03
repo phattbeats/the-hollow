@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import './_setup';
 import { fireEvent, render, screen, within } from '@testing-library/svelte';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 const accountsPage = {
   rows: [
@@ -109,7 +109,6 @@ vi.mock('../../src/admin/api', () => ({
     throw new Error(`unexpected path ${path}`);
   }),
   apiPost: vi.fn(),
-  apiMe: vi.fn(async () => ({ username: 'alice', roles: [], permissions: [] })),
   getToken: () => 'tok',
   getAdminName: () => 'alice',
   clearSession: () => {},
@@ -119,11 +118,6 @@ import App from '../../src/admin/App.svelte';
 import { t } from '../../src/admin/i18n';
 import Characters from '../../src/admin/pages/Characters.svelte';
 import { auth } from '../../src/admin/state/auth.svelte';
-import { grantPermissions } from './_grant';
-
-beforeEach(() => {
-  grantPermissions();
-});
 
 describe('Players pages', () => {
   it('opens account details from the searchable accounts directory', async () => {

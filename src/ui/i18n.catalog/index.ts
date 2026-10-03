@@ -6,7 +6,6 @@
 import { ITEM_SETS } from '../../sim/data';
 import { worldEntityText as worldNames } from '../world_entity_i18n';
 import { abilityStrings, classAbilityNames } from './abilities';
-import { apiErrorStrings } from './api_error';
 import { coldOpenStrings } from './cold_open';
 import { gameStrings } from './game';
 import { guideStrings } from './guide';
@@ -15,13 +14,11 @@ import { housingStrings } from './housing';
 import { hudStrings } from './hud';
 import { hudChromeStrings } from './hud_chrome';
 import { itemNames, itemStrings } from './items';
-import { mailStrings } from './mail';
 import { mergeEntities, mergeExtra, mergeStrings } from './merge';
 import { questStrings } from './quests';
 import { shellStrings } from './shell';
 
 export { abilityStrings, classAbilityNames } from './abilities';
-export { apiErrorStrings } from './api_error';
 export { coldOpenStrings } from './cold_open';
 export {
   gameStrings,
@@ -44,27 +41,24 @@ export { housingStrings } from './housing';
 export { hudStrings } from './hud';
 export { hudChromeStrings } from './hud_chrome';
 export { itemNames, itemStrings } from './items';
-export { mailStrings } from './mail';
 export { mergeEntities, mergeExtra, mergeStrings } from './merge';
 export { questStrings } from './quests';
 // Re-export the catalog public surface (every name the old i18n.en.ts exported).
 export { shellStrings } from './shell';
 
-type ItemSetEntityText = Record<string, { name: string; bonus2?: string; bonus3?: string }>;
+type ItemSetEntityText = Record<string, { name: string; bonus2: string; bonus3: string }>;
 
 const itemSetEntityText: ItemSetEntityText = Object.fromEntries(
   Object.values(ITEM_SETS)
     .sort((a, b) => a.id.localeCompare(b.id))
-    .map((set) => {
-      // Only tiers the set actually has: the leveling haste kits carry a single
-      // 3-piece tier, so emitting a bonus2 row would bake in an id-fallback string.
-      const bonus2 = set.bonuses.find((bonus) => bonus.pieces === 2)?.text;
-      const bonus3 = set.bonuses.find((bonus) => bonus.pieces === 3)?.text;
-      return [
-        set.id,
-        { name: set.name, ...(bonus2 ? { bonus2 } : {}), ...(bonus3 ? { bonus3 } : {}) },
-      ];
-    }),
+    .map((set) => [
+      set.id,
+      {
+        name: set.name,
+        bonus2: set.bonuses.find((bonus) => bonus.pieces === 2)?.text ?? set.id,
+        bonus3: set.bonuses.find((bonus) => bonus.pieces === 3)?.text ?? set.id,
+      },
+    ]),
 );
 
 type Prev = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -85,19 +79,9 @@ export const en = {
   realmTypes: { normal: 'Normal', pvp: 'PvP', rp: 'RP', rpPvp: 'RP-PvP' },
   game: gameStrings,
   hudChrome: hudChromeStrings,
-  mailUi: mailStrings,
   guide: guideStrings,
-  // World-placed readable book "Read" prompt (PHAA-552). One word, not "wordy"
-  // by the M16 rule, so English-only at PR tier; the build English-fills the
-  // other locales. The book title and page text are entities, not chrome (see
-  // entities.readables + src/ui/entity_i18n.ts). The reader window reuses the
-  // existing questUi.dialog.continue / .close chrome, so no new keys there.
-  readableUi: { prompt: { read: 'Read' } },
   // One-time cold-open intro (cold_open.ts). Own domain, not hud.*, per PHAA-431.
   coldOpen: coldOpenStrings,
-  // Stable API error codes (api_error.ts), the code-first matcher's target
-  // (src/ui/api_error_i18n.ts). Own domain, not errors.api.*, per PHAA-528.
-  apiError: apiErrorStrings,
   // Cosmetic skin-select event overlay. Rarity names reuse itemUi.quality.*.
   skinEvent: {
     title: 'Cosmetic Cache',
@@ -235,9 +219,6 @@ export const en = {
     realm: 'Realm',
     newCharacter: 'New Character',
     appearance: 'Appearance',
-    sex: 'Sex',
-    sexMale: 'Male',
-    sexFemale: 'Female',
     class: 'Class',
     name: 'Name',
     chromaOption: 'Chroma {n}',
@@ -512,105 +493,6 @@ export const en = {
       lastPickSnaps:
         'The last pick snaps. The lock jams. The chest is lost unless you clear the delve again.',
     },
-    // Gathering v0 (PHAA-504): corpse-harvest error text (src/sim/interaction.ts's
-    // harvestCorpse). Same fill scope as hearth/house below: PHAA-504 filled the
-    // five non-Latin locales required by the M16 completeness gate, the rest
-    // ship English + pending.
-    gathering: {
-      nothingToHarvest: 'That corpse has nothing to harvest.',
-      alreadyHarvested: 'This corpse has already been harvested.',
-    },
-    // Brother Greenpaw's hearth (PHAA-421/PHAA-428): /feed command text and his
-    // in-voice feed-response lines. Re-localized through t() against these keys
-    // (src/sim/greenpaw_hearth.ts + the /feed helpLines entry in
-    // src/sim/social/chat.ts); PHAA-428 filled the five non-Latin locales required
-    // by the M16 completeness gate, the rest ship English + pending.
-    hearth: {
-      tooFar: 'You need to be near Brother Greenpaw to feed him.',
-      noItems1:
-        "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
-      noItems2: "nothin' on you but good intentions, huh... intentions don't stoke a furnace.",
-      emberbulb1: "now THAT'S fuel... watch her breathe, friend...",
-      emberbulb2: 'the furnace takes it slow and clean, just like she likes it...',
-      emberbulb3: "stoked and smokin'... the wavelength's openin' up already, i can feel it.",
-      morsel1: '...oh, bless you, friend. bless you and the ground you walk on.',
-      morsel2: "stomach quits singin' hymns for a minute. much obliged...",
-      morsel3: 'a good morsel, is like a good friend... rare, and worth the walk.',
-      helpLine: 'Greenpaw: /feed (bring what burns or what fills, from near the vase).',
-    },
-    // Housing v0 (PHAA-428): the /house command text (src/sim/housing.ts + the
-    // /house helpLines entry in src/sim/social/chat.ts). Same fill scope as hearth
-    // above.
-    house: {
-      mustStandToClaim: 'You must stand on a homestead plot in the Hollow to claim.',
-      alreadyOwn: 'You already own a homestead in the Hollow.',
-      noFreePlot: 'There is no free homestead plot here. Stand on one to claim.',
-      plotTaken: 'That homestead already has an owner.',
-      claimed: 'The homestead is yours. Decorate it with /house place <slot> <kind>.',
-      noHomestead: 'You do not own a homestead. Claim one with /house claim.',
-      mustBeInHollow: 'You must be in the Hollow to tend your homestead.',
-      slotRange: 'Slots are numbered 1 to {count}.',
-      unknownKind: 'Unknown decor kind. Kinds: {kinds}.',
-      placed: 'Placed the {kind} on slot {slot}.',
-      slotEmpty: 'That slot is already empty.',
-      cleared: 'Cleared slot {slot}.',
-      readoutNone:
-        'You own no homestead. Stand on a free plot in the Hollow and type /house claim.',
-      readoutMine: 'Your homestead: {plotId}. Decor: {decor}.',
-      readoutUsage: '/house place <1-{count}> <{kinds}>, /house remove <slot>.',
-      helpLine:
-        'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.',
-    },
-    // Bags capacity (PHAA-491): the pooled-inventory error toasts src/sim/bags.ts
-    // (plus market.ts/quests/quest_commands.ts/social/trade.ts/combat/
-    // casting_lifecycle.ts, which reuse the same literals) emits in English;
-    // sim_i18n.ts re-localizes them through t() against these keys.
-    bags: {
-      full: 'Your bags are full.',
-      socketsFull: 'All your bag slots are full.',
-      swapTooManyItems: 'You have too many items to swap to that bag.',
-      removeTooManyItems: 'You have too many items to remove that bag.',
-      tradeSpace: 'Trade failed: not enough bag space.',
-    },
-    // The bank vault core (PHAA-571): src/sim/bank.ts's deposit/withdraw/buySlots
-    // error + purchase-notice text. Core-only port: no banker NPC exists in zone
-    // content yet, so these strings are not yet player-reachable, but they are
-    // registered here now so the S3 drift guard has a matcher the moment a
-    // follow-up ticket surfaces the bank.
-    bank: {
-      tooFar: 'You are too far from the banker.',
-      noQuestItems: 'You cannot store quest items in the bank.',
-      full: 'Your bank is full.',
-      expansionCapped: 'Your bank cannot be expanded further.',
-      cannotAfford: 'You cannot afford that bank expansion.',
-      purchased: 'You purchase additional bank slots.',
-    },
-    // Homestead v0 (PHAA-533): the open-world Hollow Reaches tier, distinct from
-    // Housing v0's Sanctum plots. Player-facing /homestead command text lives in
-    // src/sim/homestead.ts (the placement rejections, the Greenpaw quest-gate,
-    // the already-own / ground-claimed / sits-at / no-homestead variants) plus the
-    // /homestead /help line in src/sim/social/chat.ts helpLines. Re-localized via
-    // the RULES array in src/ui/sim_i18n.ts (no EXACT entries: the (x, z) readout
-    // is parameterized and the helpLines line goes through the variable-routed
-    // guard below). The (x, z) sit-at position is rounded by the sim.
-    homestead: {
-      outsideArea: 'That is outside the homestead ground. Try Fallow Acres, west of the road.',
-      tooCloseGate: 'Too close to the gate. Move further out.',
-      tooCloseWater: 'Too close to the water.',
-      tooCloseGraveyard: 'Too close to the graveyard.',
-      tooCloseWildlife: 'Too close to the wildlife. Clear the area or move further off.',
-      tooCloseRoad: 'Too close to the road.',
-      tooCloseOther: 'Too close to another homestead.',
-      questGate: "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
-      alreadyOwn: 'You already own a homestead.',
-      claimed: 'The ground is yours. This homestead is claimed.',
-      readoutMine: 'Your homestead sits at ({x}, {z}).',
-      readoutNoHomesteadQuest:
-        "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
-      readoutNoHomesteadHint:
-        'You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.',
-      helpLine: 'Homestead: /homestead, /homestead claim.',
-    },
   },
   // Lockpicking minigame ("Tumbler's Path") panel chrome. Rendered through t()
   // from hud.ts; the pure lockpick_panel.ts view returns stable discriminators
@@ -821,21 +703,6 @@ export const en = {
       flavor: 'The dead have surrendered what they can spare.',
     },
   },
-  boarball: {
-    queue: {
-      join: 'You join the boarball queue. Stand by for three more players…',
-      leave: 'You leave the boarball queue.',
-    },
-    log: {
-      welcome: 'Welcome to boarball! Shoot, pass, and outscore the other team.',
-      kickoff: 'Kickoff!',
-      over: 'Full time! Returning to the world…',
-    },
-    error: {
-      tooFar: "You're not close enough to the ball.",
-      noTeammate: 'No teammate targeted.',
-    },
-  },
   fiesta: {
     bracket: 'Fiesta',
     enterQueue: 'Join the Fiesta!',
@@ -851,7 +718,7 @@ export const en = {
       augmentGained: 'You gain the {name} augment!',
       allyAugment: '{player} chose the {name} augment.',
       welcome: 'Welcome to the 2v2 FIESTA! Score takedowns, grab augments, survive the ring!',
-      go: 'FIESTA, GO!',
+      go: 'FIESTA — GO!',
       over: 'FIESTA OVER! What a party. Returning to the world…',
       powerup: '{player} grabbed {name}!',
     },
@@ -1017,17 +884,6 @@ export const en = {
       crypt_ritual_circle: { name: 'Ritual Circle' },
       kings_signet: { name: "King's Signet" },
       event_skin_token: { name: 'Mysterious Cosmetic Cache' },
-      // Crafted gathering tools, PHAA-507 (upstream #1191): non-Latin fills
-      // (zh_CN/zh_TW/ja_JP/ko_KR/ru_RU) live in src/ui/i18n.locales/<lang>.ts.
-      flint_amber_pick: { name: 'Flint Amber Pick' },
-      bonewood_amber_pick: { name: 'Bonewood Amber Pick' },
-      starleaf_amber_pick: { name: 'Starleaf Amber Pick' },
-      flint_bark_axe: { name: 'Flint Bark Axe' },
-      bonewood_bark_axe: { name: 'Bonewood Bark Axe' },
-      starleaf_bark_axe: { name: 'Starleaf Bark Axe' },
-      flint_spore_sickle: { name: 'Flint Spore Sickle' },
-      bonewood_spore_sickle: { name: 'Bonewood Spore Sickle' },
-      starleaf_spore_sickle: { name: 'Starleaf Spore Sickle' },
       deathless_heartwood: { name: 'Heartwood of the Deathless Crown' },
       kingsbane_last_oath: { name: 'Kingsbane, Last Oath of Thornpeak' },
       crownforged_dreadhelm: { name: 'Crownforged Dreadhelm' },
@@ -1080,7 +936,6 @@ export const en = {
       ...hollowEntities.en.dungeons,
     },
     delves: { ...worldNames.en.entities.delves },
-    readables: { ...hollowEntities.en.readables },
   },
 };
 

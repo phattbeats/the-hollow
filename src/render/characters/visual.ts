@@ -4,7 +4,6 @@
 // mid-distance band. All geometry/materials are shared caches — dispose()
 // only releases mixer bindings.
 import * as THREE from 'three';
-import type { EquipSlot } from '../../sim/types';
 import type { OverheadEmoteId } from '../../world_api';
 import { GFX } from '../gfx';
 import {
@@ -12,15 +11,12 @@ import {
   type BaseState,
   desiredBaseState,
   locomotionTimeScale,
-  noClipMoveFadeTarget,
 } from './anim_state';
 import {
   applyMaterials,
   assembleModel,
   ensureSkinTexture,
   prepareVisual,
-  setBakedArmorVisibility,
-  setEquippedArmor,
   setHeldWeapon,
   skinEmissiveTexture,
   skinTexture,
@@ -40,7 +36,6 @@ const SWIM_PITCH_PROCEDURAL = 1.18;
 const SWIM_RISE = 0.95; // body must break the surface or only the hat floats
 const MIXER_DT_CAP = 0.3; // throttled entities never integrate a huge step
 const GHOST_OPACITY = 0.34;
-const NO_CLIP_FADE_LERP = 5; // ease rate (1/s) toward noClipMoveFadeTarget
 const SOUL_REND_OPACITY = 0.58;
 const SOUL_REND_TINT = new THREE.Color(0x4f0505);
 
@@ -65,24 +60,6 @@ let shadowOnlySingleton: THREE.Material | null = null;
 function shadowOnlyMat(): THREE.Material {
   shadowOnlySingleton ??= new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false });
   return shadowOnlySingleton;
-}
-
-/** Shallow-equality check for the equipped-armor Partial<Record<EquipSlot, string>>.
- *  Faster than JSON.stringify on every setArmor call (the map is small but lives
- *  on the per-frame diff path). SYMMETRIC: a slot present in one map and absent in
- *  the other (an unequip) counts as a difference, so the length check comes first;
- *  without it, going from `{chest: x}` to `{}` (unequip the chest) would read as
- *  equal and skip the re-render that hides the baked cape (PHAA-502 T2a). */
-function armorMapEquals(
-  a: Partial<Record<EquipSlot, string>>,
-  b: Partial<Record<EquipSlot, string>>,
-): boolean {
-  const ak = Object.keys(a) as EquipSlot[];
-  if (ak.length !== Object.keys(b).length) return false;
-  for (const k of ak) {
-    if (a[k] !== b[k]) return false;
-  }
-  return true;
 }
 
 export class CharacterVisual {
@@ -112,8 +89,6 @@ export class CharacterVisual {
   private originalMaterials = new Map<THREE.Mesh, THREE.Material | THREE.Material[]>();
   private ghostMaterials = new Map<THREE.Material, THREE.Material>();
   private soulRendMaterials = new Map<THREE.Material, THREE.Material>();
-  private noClipFadeMaterials = new Map<THREE.Material, THREE.Material>();
-  private noClipFadeOpacity = 1;
 
   private baseState: BaseState = 'idle';
   private current: THREE.AnimationAction | null = null;
@@ -132,21 +107,12 @@ export class CharacterVisual {
   private soulRend = false;
   private bobPhase = Math.random() * Math.PI * 2;
 
-  /** Last-rendered equipped armor (mirrored from the entity's `equippedItems`).
-   *  Diffed per setArmor call so a no-op equip skips the re-attach + material
-   *  pass. null means "no armor ever swapped yet" (a fresh visual that hasn't
-   *  seen a setArmor call); an empty Partial means "wearing nothing in any slot".
-   *  Both states are visually identical (no swap-attached props) so setArmor
-   *  treats them the same. */
-  private armorByItemId: Partial<Record<EquipSlot, string>> | null = null;
-
   constructor(
     key: string,
     entityColor: number,
     skinIndex = 0,
     weaponItemId: string | null = null,
     weaponOverride: WeaponLayoutOverride | null = null,
-    armorByItemId: Partial<Record<EquipSlot, string>> | null = null,
   ) {
     const prep = prepareVisual(key);
     // A cosmetic body (the Combat Mech) keeps its model/clips but can adopt the
@@ -160,26 +126,18 @@ export class CharacterVisual {
     this.entityColor = entityColor;
     this.skinIndex = skinIndex;
     this.weaponItemId = weaponItemId;
-    // Equipped armor ships on the FIRST assembled model so the visual is born
-    // already wearing it (no bare-body pop when a peer streams in mid-fight).
-    // The diff in setArmor treats `null` (never set) and the same content as
-    // "unchanged" so this initial value never re-triggers a swap.
-    this.armorByItemId = armorByItemId ?? null;
     this.height = prep.def.height;
 
     // model: yaw/scale/feet normalization wrapper around the skinned clone. The
     // equipped mainhand item (if the class swaps; see VisualDef.weaponSlot) picks
     // the held weapon model, so the visual is born holding the right weapon.
-    // Equipped armor hangs from the rig's helmet/chest/hips bones the same way.
-    this.model = assembleModel(this.def, weaponItemId, armorByItemId);
+    this.model = assembleModel(this.def, weaponItemId);
     applyMaterials(
       this.model,
       this.def,
       entityColor,
       skinTexture(key, skinIndex),
       skinEmissiveTexture(key, skinIndex),
-      key,
-      skinIndex,
     );
     this.model.traverse((o) => {
       const mesh = o as THREE.Mesh;
@@ -239,10 +197,6 @@ export class CharacterVisual {
     if (idle) {
       idle.play();
       this.current = idle;
-    } else if (this.actions.size === 0) {
-      // No baked animation at all: route materials through the no-clip fade
-      // clone up front so update() has something to mutate opacity on.
-      this.applyVisualMaterials();
     }
   }
 
@@ -283,30 +237,16 @@ export class CharacterVisual {
       }
     }
 
-    // swim pose: Lie_Idle (when the rig has it) + pitch and surface bob.
-    // Only apply the prone pitch + surface rise while the entity is actually
-    // moving through the water; stationary waders stand upright on the lake
-    // bed (their rig's idle pose) and the swim clip would otherwise read as
-    // a sleeping pose (PHAA-473).
-    const actuallySwimming = s.swimming && s.moving && !s.dead;
+    // swim pose: Lie_Idle (when the rig has it) + pitch and surface bob
     const proneAngle = this.action(this.def.clips.swim) ? SWIM_PITCH_CLIP : SWIM_PITCH_PROCEDURAL;
-    const wantPitch = actuallySwimming ? proneAngle : 0;
+    const wantPitch = s.swimming && !s.dead ? proneAngle : 0;
     this.swimPitch += (wantPitch - this.swimPitch) * Math.min(1, dt * 8);
     this.poseWrap.rotation.x = this.swimPitch;
     this.poseWrap.rotation.z = 0;
-    this.poseWrap.position.y = actuallySwimming
-      ? SWIM_RISE + Math.sin(performance.now() / 500 + this.bobPhase) * 0.08
-      : 0;
-
-    // slide-fade-on-move fallback for clip-less rigs (no walk cycle to play,
-    // see noClipMoveFadeTarget): ease opacity toward the target and mutate the
-    // cached fade clones directly, no material swap needed.
-    if (this.actions.size === 0) {
-      const target = noClipMoveFadeTarget(s);
-      this.noClipFadeOpacity +=
-        (target - this.noClipFadeOpacity) * Math.min(1, dt * NO_CLIP_FADE_LERP);
-      for (const mat of this.noClipFadeMaterials.values()) mat.opacity = this.noClipFadeOpacity;
-    }
+    this.poseWrap.position.y =
+      s.swimming && !s.dead
+        ? SWIM_RISE + Math.sin(performance.now() / 500 + this.bobPhase) * 0.08
+        : 0;
 
     // distant corpses show the static idle far mesh — tip it over
     if (this.farMesh && this.farMesh.visible) {
@@ -492,8 +432,6 @@ export class CharacterVisual {
       this.entityColor,
       skinTexture(this.key, skinIndex),
       skinEmissiveTexture(this.key, skinIndex),
-      this.key,
-      skinIndex,
     );
     // re-snapshot the material map ghost/restore relies on, then re-ghost if stealthed
     this.originalMaterials.clear();
@@ -521,48 +459,8 @@ export class CharacterVisual {
       this.entityColor,
       skinTexture(this.key, this.skinIndex),
       skinEmissiveTexture(this.key, this.skinIndex),
-      this.key,
-      this.skinIndex,
     );
     // the model graph changed (weapon meshes added/removed): rebuild the caster
-    // list and re-snapshot originals, then re-apply ghost/stealth overlays.
-    this.originalMaterials.clear();
-    this.rebuildCasters();
-    this.applyVisualMaterials();
-  }
-
-  /** Sibling of setWeapon for armor: reflect the wearer's `equippedItems` on the
-   *  model at runtime (gear equip/unequip). Two independent paths, either or both
-   *  active per class:
-   *   - baked toggle (PHAA-502 T2a): flip the visibility of built-in accessory
-   *     meshes gated by `bakedArmorSlots` (Knight_Helmet, Knight_Cape). A pure
-   *     `.visible` flip on meshes already in the graph, so no re-attach, material
-   *     pass, or caster rebuild is needed.
-   *   - attach swap (`armorSlots`, T1): re-attach the per-slot armor GLBs, then
-   *     re-run the shared material pass, re-snapshot the original-material map, and
-   *     re-apply any active ghost/soul-rend overlay (the model graph changed).
-   *  No-op if unchanged, or if the visual has neither path (mobs/NPCs/forms).
-   *  Cheap and keeps the mixer/animation state, unlike a full visual rebuild. */
-  setArmor(armorByItemId: Partial<Record<EquipSlot, string>> | null): void {
-    // Treat a "never set" field the same as an empty map; both render the class
-    // default attach with no swap on top.
-    const next = armorByItemId ?? null;
-    if (next === this.armorByItemId) return;
-    if (next && this.armorByItemId && armorMapEquals(next, this.armorByItemId)) return;
-    this.armorByItemId = next;
-    // Baked-mesh path: independent of the attach swap below and free of any
-    // material/caster work, so it runs for every def that gates built-in meshes.
-    if (this.def.bakedArmorSlots) setBakedArmorVisibility(this.model, this.def, next);
-    if (!this.def.armorSlots?.length) return;
-    setEquippedArmor(this.model, this.def, next);
-    applyMaterials(
-      this.model,
-      this.def,
-      this.entityColor,
-      skinTexture(this.key, this.skinIndex),
-      skinEmissiveTexture(this.key, this.skinIndex),
-    );
-    // the model graph changed (armor meshes added/removed): rebuild the caster
     // list and re-snapshot originals, then re-apply ghost/stealth overlays.
     this.originalMaterials.clear();
     this.rebuildCasters();
@@ -615,11 +513,9 @@ export class CharacterVisual {
   }
 
   private effectSingleMaterial(material: THREE.Material): THREE.Material {
-    let m = material;
-    if (this.soulRend) m = this.soulRendMaterial(m);
-    else if (this.ghosted) m = this.ghostMaterial(m);
-    if (this.actions.size === 0) m = this.noClipFadeMaterial(m);
-    return m;
+    if (this.soulRend) return this.soulRendMaterial(material);
+    if (this.ghosted) return this.ghostMaterial(material);
+    return material;
   }
 
   private ghostMaterial(material: THREE.Material): THREE.Material {
@@ -652,16 +548,6 @@ export class CharacterVisual {
     }
     this.soulRendMaterials.set(material, marked);
     return marked;
-  }
-
-  private noClipFadeMaterial(material: THREE.Material): THREE.Material {
-    const cached = this.noClipFadeMaterials.get(material);
-    if (cached) return cached;
-    const faded = material.clone();
-    faded.transparent = true;
-    faded.opacity = this.noClipFadeOpacity;
-    this.noClipFadeMaterials.set(material, faded);
-    return faded;
   }
 
   private action(name: string | undefined): THREE.AnimationAction | null {

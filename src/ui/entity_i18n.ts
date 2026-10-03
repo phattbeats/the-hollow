@@ -8,7 +8,6 @@ import {
   MOBS,
   NPCS,
   QUESTS,
-  READABLES_BY_ID,
   ZONES,
 } from '../sim/data';
 import type { ItemDef, PlayerClass } from '../sim/types';
@@ -29,13 +28,8 @@ export type EntityTranslationKind =
   | 'item'
   | 'mob'
   | 'npc'
-  | 'npcIntro'
-  | 'npcJournal'
-  | 'npcDialog'
-  | 'readable'
   | 'quest'
   | 'questObjective'
-  | 'questDialog'
   | 'zone'
   | 'zonePoi'
   | 'dungeon'
@@ -48,23 +42,13 @@ export type EntityTranslationField =
   | 'text'
   | 'completion'
   | 'greeting'
-  | 'introLine'
-  | 'journalLine'
-  | 'npcLine'
-  | 'choiceLabel'
-  | 'readablePage'
-  | 'readableTitle'
   | 'label'
   | 'welcome'
   | 'enterText'
   | 'leaveText'
   | 'bonus2'
   | 'bonus3'
-  | 'flavorText'
-  | 'complain'
-  | 'complainReply'
-  | 'refuse'
-  | 'refuseReply';
+  | 'flavorText';
 
 export type EntityTranslationRequest =
   | { kind: 'class'; id: PlayerClass; field: 'name' | 'description'; values?: InterpolationValues }
@@ -79,42 +63,6 @@ export type EntityTranslationRequest =
   | { kind: 'mob'; id: string; field: 'name'; values?: InterpolationValues }
   | { kind: 'npc'; id: string; field: 'name' | 'title' | 'greeting'; values?: InterpolationValues }
   | {
-      kind: 'npcIntro';
-      id: string;
-      lineIndex: number;
-      field: 'introLine';
-      values?: InterpolationValues;
-    }
-  | {
-      kind: 'npcJournal';
-      id: string;
-      lineIndex: number;
-      field: 'journalLine';
-      values?: InterpolationValues;
-    }
-  | {
-      kind: 'npcDialog';
-      npcId: string;
-      node: string;
-      field: 'npcLine';
-      values?: InterpolationValues;
-    }
-  | {
-      kind: 'npcDialog';
-      npcId: string;
-      choice: string;
-      field: 'choiceLabel';
-      values?: InterpolationValues;
-    }
-  | {
-      kind: 'readable';
-      id: string;
-      pageIndex: number;
-      field: 'readablePage';
-      values?: InterpolationValues;
-    }
-  | { kind: 'readable'; id: string; field: 'readableTitle'; values?: InterpolationValues }
-  | {
       kind: 'quest';
       id: string;
       field: 'title' | 'text' | 'completion';
@@ -125,12 +73,6 @@ export type EntityTranslationRequest =
       questId: string;
       objectiveIndex: number;
       field: 'label';
-      values?: InterpolationValues;
-    }
-  | {
-      kind: 'questDialog';
-      id: string;
-      field: 'complain' | 'complainReply' | 'refuse' | 'refuseReply';
       values?: InterpolationValues;
     }
   | { kind: 'zone'; id: string; field: 'name' | 'welcome'; values?: InterpolationValues }
@@ -266,34 +208,6 @@ function canonicalEntityText(request: EntityTranslationRequest): string {
       if (request.field === 'greeting') return npc.greeting;
       return npc.name;
     }
-    case 'npcIntro':
-      return (
-        NPCS[request.id]?.introLines?.[request.lineIndex] ??
-        `${request.id}.introLines.${request.lineIndex}`
-      );
-    case 'npcJournal':
-      return (
-        NPCS[request.id]?.journalLines?.[request.lineIndex] ??
-        `${request.id}.journalLines.${request.lineIndex}`
-      );
-    case 'npcDialog': {
-      const tree = NPCS[request.npcId]?.dialogTree;
-      if (!tree) return request.npcId;
-      if (request.field === 'npcLine') {
-        return tree.nodes[request.node]?.npcLine ?? `${request.npcId}.dialog.nodes.${request.node}`;
-      }
-      for (const node of Object.values(tree.nodes)) {
-        const choice = node.choices.find((c) => c.id === request.choice);
-        if (choice) return choice.label;
-      }
-      return `${request.npcId}.dialog.choices.${request.choice}`;
-    }
-    case 'readable': {
-      const readable = READABLES_BY_ID[request.id];
-      if (!readable) return request.id;
-      if (request.field === 'readableTitle') return readable.title;
-      return readable.pages[request.pageIndex] ?? `${request.id}.pages.${request.pageIndex}`;
-    }
     case 'quest': {
       const quest = QUESTS[request.id];
       if (!quest) return request.id;
@@ -305,10 +219,6 @@ function canonicalEntityText(request: EntityTranslationRequest): string {
       return (
         QUESTS[request.questId]?.objectives[request.objectiveIndex]?.label ??
         `${request.questId}.${request.objectiveIndex}`
-      );
-    case 'questDialog':
-      return (
-        QUESTS[request.id]?.offerDialog?.[request.field] ?? `${request.id}.dialog.${request.field}`
       );
     case 'zone': {
       const zone = ZONES.find((candidate) => candidate.id === request.id);
@@ -352,26 +262,10 @@ export function entityTranslationKey(request: EntityTranslationRequest): string 
       return `entities.mobs.${entityPathSegment(request.id)}.name`;
     case 'npc':
       return `entities.npcs.${entityPathSegment(request.id)}.${request.field}`;
-    case 'npcIntro':
-      return `entities.npcs.${entityPathSegment(request.id)}.introLines.${request.lineIndex}`;
-    case 'npcJournal':
-      return `entities.npcs.${entityPathSegment(request.id)}.journalLines.${request.lineIndex}`;
-    case 'npcDialog':
-      // Kept to depth 5 (the catalog's TranslationKey template bottoms out at
-      // depth 6): node lines under dialogNode, player choices under dialogChoice.
-      return request.field === 'npcLine'
-        ? `entities.npcs.${entityPathSegment(request.npcId)}.dialogNode.${entityPathSegment(request.node)}`
-        : `entities.npcs.${entityPathSegment(request.npcId)}.dialogChoice.${entityPathSegment(request.choice)}`;
-    case 'readable':
-      return request.field === 'readableTitle'
-        ? `entities.readables.${entityPathSegment(request.id)}.title`
-        : `entities.readables.${entityPathSegment(request.id)}.pages.${request.pageIndex}`;
     case 'quest':
       return `entities.quests.${entityPathSegment(request.id)}.${request.field}`;
     case 'questObjective':
       return `entities.quests.${entityPathSegment(request.questId)}.objectives.${request.objectiveIndex}.label`;
-    case 'questDialog':
-      return `entities.quests.${entityPathSegment(request.id)}.dialog.${request.field}`;
     case 'zone':
       return `entities.zones.${entityPathSegment(request.id)}.${request.field}`;
     case 'zonePoi':
@@ -389,19 +283,7 @@ function requestManifestEntry(request: EntityTranslationRequest): EntityTranslat
       ? `${request.questId}.objectives.${request.objectiveIndex}`
       : request.kind === 'zonePoi'
         ? `${request.zoneId}.pois.${request.poiIndex}`
-        : request.kind === 'npcIntro'
-          ? `${request.id}.introLines.${request.lineIndex}`
-          : request.kind === 'npcJournal'
-            ? `${request.id}.journalLines.${request.lineIndex}`
-            : request.kind === 'npcDialog'
-              ? request.field === 'npcLine'
-                ? `${request.npcId}.dialogNode.${request.node}`
-                : `${request.npcId}.dialogChoice.${request.choice}`
-              : request.kind === 'readable' && request.field === 'readablePage'
-                ? `${request.id}.pages.${request.pageIndex}`
-                : request.kind === 'questDialog'
-                  ? `${request.id}.dialog.${request.field}`
-                  : request.id;
+        : request.id;
   const group: EntityTranslationGroup =
     request.kind === 'class' || request.kind === 'ability'
       ? 'classAbility'
@@ -449,18 +331,6 @@ export function itemFlavorText(item: ItemDef): string | undefined {
 // definition instead of redefining it per module.
 export function classDisplayName(cls: PlayerClass): string {
   return tEntity({ kind: 'class', id: cls, field: 'name' });
-}
-
-// A character's build identity label (GW1 multiclass, PHAA-465): the primary
-// class name alone, or "Primary / Secondary" (e.g. "Ranger / Priest") once a
-// secondary profession is bound. Both names localize through classDisplayName;
-// the " / " is an enumeration separator (like the requiredClass list join), not
-// a translated sentence, so no new t() key is needed. The single shared home so
-// the character sheet, talents window, spellbook, player card, and charselect
-// render the pair identically.
-export function classPairLabel(primary: PlayerClass, secondary: PlayerClass | null): string {
-  const primaryName = classDisplayName(primary);
-  return secondary ? `${primaryName} / ${classDisplayName(secondary)}` : primaryName;
 }
 
 export function zoneDisplayName(zoneId: string): string {
@@ -546,11 +416,7 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
     }
   }
   for (const set of Object.values(ITEM_SETS).sort(compareById)) {
-    // Only tiers the set actually has: the leveling haste kits carry a single
-    // 3-piece tier, so registering a bonus2 row would emit an id-fallback string.
-    const fields: ('name' | 'bonus2' | 'bonus3')[] = ['name'];
-    if (set.bonuses.some((b) => b.pieces === 2)) fields.push('bonus2');
-    if (set.bonuses.some((b) => b.pieces === 3)) fields.push('bonus3');
+    const fields: ('name' | 'bonus2' | 'bonus3')[] = ['name', 'bonus2', 'bonus3'];
     for (const field of fields) {
       entries.push(
         entry(
@@ -607,95 +473,6 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
         entityTranslationKey({ kind: 'npc', id: npc.id, field: 'greeting' }),
       ),
     );
-    (npc.introLines ?? []).forEach((line, lineIndex) => {
-      entries.push(
-        entry(
-          'npcIntro',
-          `${npc.id}.introLines.${lineIndex}`,
-          'introLine',
-          line,
-          'world',
-          entityTranslationKey({ kind: 'npcIntro', id: npc.id, lineIndex, field: 'introLine' }),
-        ),
-      );
-    });
-    (npc.journalLines ?? []).forEach((line, lineIndex) => {
-      entries.push(
-        entry(
-          'npcJournal',
-          `${npc.id}.journalLines.${lineIndex}`,
-          'journalLine',
-          line,
-          'world',
-          entityTranslationKey({ kind: 'npcJournal', id: npc.id, lineIndex, field: 'journalLine' }),
-        ),
-      );
-    });
-    if (npc.dialogTree) {
-      for (const [nodeId, node] of Object.entries(npc.dialogTree.nodes)) {
-        entries.push(
-          entry(
-            'npcDialog',
-            `${npc.id}.dialogNode.${nodeId}`,
-            'npcLine',
-            node.npcLine,
-            'world',
-            entityTranslationKey({
-              kind: 'npcDialog',
-              npcId: npc.id,
-              node: nodeId,
-              field: 'npcLine',
-            }),
-          ),
-        );
-        for (const choice of node.choices) {
-          entries.push(
-            entry(
-              'npcDialog',
-              `${npc.id}.dialogChoice.${choice.id}`,
-              'choiceLabel',
-              choice.label,
-              'world',
-              entityTranslationKey({
-                kind: 'npcDialog',
-                npcId: npc.id,
-                choice: choice.id,
-                field: 'choiceLabel',
-              }),
-            ),
-          );
-        }
-      }
-    }
-  }
-  for (const readable of Object.values(READABLES_BY_ID).sort(compareById)) {
-    entries.push(
-      entry(
-        'readable',
-        readable.id,
-        'readableTitle',
-        readable.title,
-        'world',
-        entityTranslationKey({ kind: 'readable', id: readable.id, field: 'readableTitle' }),
-      ),
-    );
-    readable.pages.forEach((page, pageIndex) => {
-      entries.push(
-        entry(
-          'readable',
-          `${readable.id}.pages.${pageIndex}`,
-          'readablePage',
-          page,
-          'world',
-          entityTranslationKey({
-            kind: 'readable',
-            id: readable.id,
-            pageIndex,
-            field: 'readablePage',
-          }),
-        ),
-      );
-    });
   }
   for (const quest of Object.values(QUESTS).sort(compareById)) {
     entries.push(
@@ -745,20 +522,6 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
         ),
       );
     });
-    if (quest.offerDialog) {
-      for (const part of ['complain', 'complainReply', 'refuse', 'refuseReply'] as const) {
-        entries.push(
-          entry(
-            'questDialog',
-            `${quest.id}.dialog.${part}`,
-            part,
-            quest.offerDialog[part],
-            'world',
-            entityTranslationKey({ kind: 'questDialog', id: quest.id, field: part }),
-          ),
-        );
-      }
-    }
   }
   for (const zone of [...ZONES].sort(compareById)) {
     entries.push(

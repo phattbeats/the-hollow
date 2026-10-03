@@ -34,13 +34,11 @@ vi.mock('../../src/admin/api', () => ({
 
 import { t } from '../../src/admin/i18n';
 import BlockedIps from '../../src/admin/pages/BlockedIps.svelte';
-import { grantPermissions } from './_grant';
 
 beforeEach(() => {
   apiPost.mockReset();
   apiPost.mockResolvedValue({});
   vi.spyOn(window, 'confirm').mockReturnValue(true);
-  grantPermissions();
 });
 
 describe('BlockedIps', () => {

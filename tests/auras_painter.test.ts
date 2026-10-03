@@ -148,7 +148,6 @@ function slot(over: Partial<AuraSlotState> & { key: string }): AuraSlotState {
   return {
     iconKey: over.key,
     isDebuff: false,
-    school: '',
     durationText: '',
     stacksText: '',
     name: over.key,
@@ -313,14 +312,7 @@ describe('AurasPainter: keyed pool over the elided writers', () => {
   it('routes EVERY per-frame write through the elided writers', () => {
     painter.paint(
       state([
-        slot({
-          key: 'a',
-          iconKey: 'ic',
-          isDebuff: true,
-          school: 'nature',
-          durationText: '5s',
-          stacksText: '3',
-        }),
+        slot({ key: 'a', iconKey: 'ic', isDebuff: true, durationText: '5s', stacksText: '3' }),
       ]),
     );
     const has = (m: Call['m'], pred: (c: Call) => boolean) =>
@@ -331,9 +323,6 @@ describe('AurasPainter: keyed pool over the elided writers', () => {
     ).toBe(true);
     // debuff via toggleClass (a structural class, not a color).
     expect(has('toggleClass', (c) => c.args[0] === 'debuff' && c.args[1] === true)).toBe(true);
-    // the school border tint via setAttr(data-school), a structural attribute the
-    // stylesheet maps to a --color-debuff-* token.
-    expect(has('setAttr', (c) => c.args[0] === 'data-school' && c.args[1] === 'nature')).toBe(true);
     // duration + stacks via setText.
     expect(has('setText', (c) => c.args[0] === '5s')).toBe(true);
     expect(has('setText', (c) => c.args[0] === '3')).toBe(true);

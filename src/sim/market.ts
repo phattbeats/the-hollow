@@ -282,40 +282,33 @@ export class Market {
 
   // Buy a listing outright. Coin leaves the buyer, goods enter their bags, and
   // the seller's proceeds (less the Merchant's cut) wait in their collection.
-  // Returns whether a purchase actually happened, so the caller (the server's
-  // 'market_buy' handler, PHAA-512) knows when to flush an atomic character+
-  // market save rather than doing so on every no-op attempt.
-  marketBuy(listingId: number, pid?: number): boolean {
+  marketBuy(listingId: number, pid?: number): void {
     const r = this.ctx.resolve(pid);
-    if (!r) return false;
+    if (!r) return;
     const { meta, e: p } = r;
-    if (p.dead) return false;
+    if (p.dead) return;
     if (!this.nearMerchant(p)) {
       this.ctx.error(meta.entityId, 'You are too far from the Merchant.');
-      return false;
+      return;
     }
     const idx = this.marketListings.findIndex((l) => l.id === listingId);
     if (idx < 0) {
       this.ctx.error(meta.entityId, 'That listing is no longer available.');
-      return false;
+      return;
     }
     const listing = this.marketListings[idx];
     const def = ITEMS[listing.itemId];
     if (!def) {
       this.marketListings.splice(idx, 1);
-      return false;
+      return;
     }
     if (this.marketListingBelongsTo(listing, meta)) {
       this.ctx.error(meta.entityId, 'That is your own listing — cancel it to reclaim it.');
-      return false;
+      return;
     }
     if (meta.copper < listing.price) {
       this.ctx.error(meta.entityId, 'You cannot afford that.');
-      return false;
-    }
-    if (!this.ctx.canAddItem(listing.itemId, listing.count, meta.entityId)) {
-      this.ctx.error(meta.entityId, 'Your bags are full.');
-      return false;
+      return;
     }
     meta.copper -= listing.price;
     this.ctx.addItem(listing.itemId, listing.count, meta.entityId);
@@ -338,7 +331,6 @@ export class Market {
       text: `Bought ${def.name}${listing.count > 1 ? ' x' + listing.count : ''} for ${formatMoney(listing.price)}.`,
       pid: meta.entityId,
     });
-    return true;
   }
 
   // Reclaim your own listing; the escrowed goods go straight back to your bags.
@@ -357,10 +349,6 @@ export class Market {
       this.ctx.error(meta.entityId, 'That is not your listing.');
       return;
     }
-    if (!this.ctx.canAddItem(listing.itemId, listing.count, meta.entityId)) {
-      this.ctx.error(meta.entityId, 'Your bags are full.');
-      return;
-    }
     this.marketListings.splice(idx, 1);
     this.ctx.addItem(listing.itemId, listing.count, meta.entityId);
     const def = ITEMS[listing.itemId];
@@ -373,25 +361,20 @@ export class Market {
   }
 
   // Take everything waiting for you at the Merchant: sale gold and any items
-  // returned from expired listings. Returns whether anything was actually
-  // moved into the buyer's bags, so the caller (the server's 'market_collect'
-  // handler, PHAA-512) knows when to flush an atomic character+market save
-  // rather than doing so on every no-op attempt (a partial collect, gold-only
-  // with a full bag, still counts: it moved goods out of the shared blob).
-  marketCollect(pid?: number): boolean {
+  // returned from expired listings.
+  marketCollect(pid?: number): void {
     const r = this.ctx.resolve(pid);
-    if (!r) return false;
+    if (!r) return;
     const { meta, e: p } = r;
     if (!this.nearMerchant(p)) {
       this.ctx.error(meta.entityId, 'You are too far from the Merchant.');
-      return false;
+      return;
     }
     const col = this.collectionForSeller(meta);
     if (!col || (col.copper <= 0 && col.items.length === 0)) {
       this.ctx.error(meta.entityId, 'You have nothing to collect.');
-      return false;
+      return;
     }
-    let mutated = false;
     if (col.copper > 0) {
       meta.copper += col.copper;
       this.ctx.emit({
@@ -399,27 +382,9 @@ export class Market {
         text: `You collect ${formatMoney(col.copper)} from the Merchant.`,
         pid: meta.entityId,
       });
-      col.copper = 0;
-      mutated = true;
     }
-    // Capacity gate: items that don't fit stay in the collection box (never
-    // destroyed); the gold above is always collected.
-    const kept: typeof col.items = [];
-    for (const s of col.items) {
-      if (this.ctx.canAddItem(s.itemId, s.count, meta.entityId)) {
-        this.ctx.addItem(s.itemId, s.count, meta.entityId);
-        mutated = true;
-      } else {
-        kept.push(s);
-      }
-    }
-    if (kept.length > 0) {
-      col.items = kept;
-      this.ctx.error(meta.entityId, 'Your bags are full.');
-      return mutated;
-    }
+    for (const s of col.items) this.ctx.addItem(s.itemId, s.count, meta.entityId);
     this.marketCollections.delete(this.marketSellerKey(meta));
-    return true;
   }
 
   // Once a second: return expired player listings to their seller's collection.

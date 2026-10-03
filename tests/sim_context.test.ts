@@ -64,16 +64,13 @@ const CALLBACK_KEYS = [
   // elsewhere - deduped, not re-added).
   'spendResource',
   'removeItem',
-  'canAddItem',
   'clearEntityMarker',
   'partyOf',
   'removeFromParty',
   'dropPartyMarkers',
-  // Q1 quest-credit trio + the countItem it consumes; onGreenpawFedForQuests
-  // (PHAA-484) is the hearth's own feed-credit callback.
+  // Q1 quest-credit trio + the countItem it consumes.
   'onMobKilledForQuests',
   'onInventoryChangedForQuests',
-  'onGreenpawFedForQuests',
   'checkQuestReady',
   'countItem',
   // E1 entity-roster surface.
@@ -202,15 +199,15 @@ const CALLBACK_KEYS = [
   'targetEntity',
   'partyCapacity',
   'marketListingBelongsTo',
+  // Housing v0: the /house chat-command branch.
+  'housingChat',
+  // Greenpaw's hearth (PHAA-421): the /feed chat-command branch.
+  'greenpawFeedChat',
   // The Plant's deterministic floor (PHAA-422): the /plant chat-command
   // branch + the real-threshold report-in.
   'plantSpeechChat',
   'notifyPlantThreshold',
   'plantSpeechAmbientChat',
-  // Homestead v0: the /homestead chat-command branch.
-  'homesteadChat',
-  // Gathering v0 (PHAA-504): the corpse-harvest item-selection rng draw.
-  'gatherHarvestItemFor',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -233,7 +230,6 @@ function makeFakeHost() {
       return entities;
     },
     players: new Map(),
-    bankerIds: [],
     primaryId: -1,
     tradeInvites: new Map(),
     duelInvites: new Map(),
@@ -252,7 +248,6 @@ function makeFakeHost() {
     arenaQueue1v1: [],
     arenaQueue2v2: [],
     arenaQueueFiesta: [],
-    arenaQueueBoarball: [],
     arenaBusySlots: new Set(),
     nextArenaMatchId: 1,
     delveRuns: [],
@@ -288,13 +283,6 @@ function makeFakeHost() {
     updateFiestaActive: vi.fn(),
     fiestaRestoreChar: vi.fn(),
     clearFiestaAugments: vi.fn(),
-    createBoarballState: vi.fn(),
-    boarballKickoff: vi.fn(),
-    updateBoarballActive: vi.fn(),
-    boarballStandardize: vi.fn(),
-    boarballRestoreChar: vi.fn(),
-    boarballShoot: vi.fn(),
-    boarballPass: vi.fn(),
     readyArenaFighter: vi.fn(),
     resetForArena: vi.fn(),
     isArenaTeamWiped: vi.fn(() => false),
@@ -303,7 +291,6 @@ function makeFakeHost() {
     fiestaTakedown: vi.fn(),
     fiestaDown: vi.fn(),
     rollLoot: vi.fn(),
-    rollWorldBossLoot: vi.fn(),
     applyHeal: vi.fn(),
     spellCrit: vi.fn(() => 0.05),
     applyAura: vi.fn(),
@@ -321,14 +308,12 @@ function makeFakeHost() {
     // elsewhere in this host - deduped).
     spendResource: vi.fn(),
     removeItem: vi.fn(),
-    canAddItem: vi.fn(() => true),
     clearEntityMarker: vi.fn(),
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
     dropPartyMarkers: vi.fn(),
     onMobKilledForQuests: vi.fn(),
     onInventoryChangedForQuests: vi.fn(),
-    onGreenpawFedForQuests: vi.fn(),
     checkQuestReady: vi.fn(),
     countItem: vi.fn(() => 0),
     lockoutNowMs: vi.fn(() => 0),
@@ -450,11 +435,11 @@ function makeFakeHost() {
     targetEntity: vi.fn(),
     partyCapacity: vi.fn(() => 5),
     marketListingBelongsTo: vi.fn(() => false),
+    housingChat: vi.fn(() => false),
+    greenpawFeedChat: vi.fn(() => false),
     plantSpeechChat: vi.fn(() => false),
     notifyPlantThreshold: vi.fn(),
     plantSpeechAmbientChat: vi.fn(),
-    homesteadChat: vi.fn(() => false),
-    gatherHarvestItemFor: vi.fn(() => null),
   };
   return { host, rng, entities, clock };
 }

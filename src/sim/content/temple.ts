@@ -24,9 +24,7 @@ import type {
 // Archetype class-locks (match content/items.ts so REWARD_ARCHETYPE hand-offs
 // land on an item the whole group can equip).
 const WAR: PlayerClass[] = ['warrior', 'paladin', 'shaman'];
-const WEAPON_WAR: PlayerClass[] = ['warrior', 'rogue', 'hunter', 'shaman', 'paladin'];
 const MAG: PlayerClass[] = ['mage', 'priest', 'warlock', 'druid'];
-const WEAPON_MAG: PlayerClass[] = ['mage', 'priest', 'warlock', 'shaman', 'paladin', 'druid'];
 const ROG: PlayerClass[] = ['rogue', 'hunter'];
 
 // The moongate sits on the south shore of the Glimmermere tarn (-70, 760) in
@@ -542,7 +540,7 @@ export const TEMPLE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 17, max: 28, speed: 2.4 },
     stats: { str: 5, sta: 2 },
     sellValue: 700,
-    requiredClass: WEAPON_WAR,
+    requiredClass: WAR,
   },
   palecoil_rod: {
     id: 'palecoil_rod',
@@ -553,7 +551,7 @@ export const TEMPLE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 18, max: 31, speed: 3.0 },
     stats: { int: 6, spi: 2 },
     sellValue: 700,
-    requiredClass: WEAPON_MAG,
+    requiredClass: MAG,
   },
   tideglass_dirk: {
     id: 'tideglass_dirk',
@@ -610,7 +608,7 @@ export const TEMPLE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 24, max: 38, speed: 2.6 },
     stats: { str: 8, sta: 4 },
     sellValue: 2200,
-    requiredClass: WEAPON_WAR,
+    requiredClass: WAR,
   },
   drownedmoon_scepter: {
     id: 'drownedmoon_scepter',
@@ -621,7 +619,7 @@ export const TEMPLE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 26, max: 42, speed: 3.0 },
     stats: { int: 10, spi: 4 },
     sellValue: 2200,
-    requiredClass: WEAPON_MAG,
+    requiredClass: MAG,
   },
   drownedmoon_kris: {
     id: 'drownedmoon_kris',

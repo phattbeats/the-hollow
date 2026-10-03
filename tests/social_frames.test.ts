@@ -187,7 +187,6 @@ describe('W9 socialInfo via the social/socialpos frames (non-snapshot)', () => {
             rank: 'member',
           },
         ],
-        events: [],
       },
     };
     c.socialInfo = social;

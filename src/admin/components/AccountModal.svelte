@@ -113,7 +113,7 @@
       {:else}
         <AccountDetail
           {detail}
-          includeAdminControls={auth.can('moderation.act')}
+          includeAdminControls
           onChanged={() => {
             void refresh(false);
             onChanged?.();

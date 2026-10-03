@@ -25,7 +25,6 @@ import {
   FIRST_TALENT_LEVEL,
   importBuild,
   type SavedLoadout,
-  type SecondaryAllocation,
   type TalentAllocation,
   type TalentNode,
   talentsFor,
@@ -41,7 +40,6 @@ import type { PainterHostPresentation } from './painter_host';
 import { rovingTarget } from './roving_index';
 import { roleLabel, tTalent } from './talent_i18n';
 import { talentChoiceIconDataUrl, talentNodeIconDataUrl } from './talent_icons';
-import { talentTreeFitScale } from './talent_tree_fit';
 import { buildTalentsView, type TalentsView, type TalentTreeVM } from './talents_view';
 import { svgIcon } from './ui_icons';
 
@@ -130,7 +128,7 @@ function signatureName(abilityId: string): string {
 }
 
 export class TalentsWindow {
-  private tab: 'class' | 'spec' | 'secondary' = 'class';
+  private tab: 'class' | 'spec' = 'class';
   // The element to refocus when the window closes (WCAG 2.2 AA focus return).
   private returnFocus: HTMLElement | null = null;
 
@@ -194,14 +192,11 @@ export class TalentsWindow {
       `<div class="tal-tabs" role="tablist" aria-label="${esc(t('game.talents.title'))}">` +
       `<div class="tal-tab${this.tab === 'class' ? ' active' : ''}" role="tab" tabindex="${this.tab === 'class' ? '0' : '-1'}" aria-selected="${this.tab === 'class'}" aria-controls="tal-body" data-tab="class"><span class="tal-tab-label">${t('game.talents.classTab')}</span><span class="tt-pts">${view.classSpent}</span></div>` +
       `<div class="tal-tab${this.tab === 'spec' ? ' active' : ''}" role="tab" tabindex="${this.tab === 'spec' ? '0' : '-1'}" aria-selected="${this.tab === 'spec'}" aria-controls="tal-body" data-tab="spec"><span class="tal-tab-label">${t('game.talents.specTab')}</span><span class="tt-pts">${view.specSpent}</span></div>` +
-      (view.secondaryCls
-        ? `<div class="tal-tab${this.tab === 'secondary' ? ' active' : ''}" role="tab" tabindex="${this.tab === 'secondary' ? '0' : '-1'}" aria-selected="${this.tab === 'secondary'}" aria-controls="tal-body" data-tab="secondary"><span class="tal-tab-label">${esc(t('game.talents.secondaryTab', { cls: classDisplayName(view.secondaryCls) }))}</span><span class="tt-pts">${view.secondarySpent}/${view.secondaryCap}</span></div>`
-        : '') +
       `</div><div id="tal-body" role="tabpanel"></div>` +
       this.footerHtml(view);
 
     const switchTab = (tab: HTMLElement): void => {
-      this.tab = tab.dataset.tab as 'class' | 'spec' | 'secondary';
+      this.tab = tab.dataset.tab as 'class' | 'spec';
       this.render();
     };
     // WAI-ARIA tabs: roving arrow navigation (Left/Right/Home/End) plus Enter/Space.
@@ -228,36 +223,15 @@ export class TalentsWindow {
     el.querySelector('[data-close]')?.addEventListener('click', () => this.close());
 
     const body = el.querySelector('#tal-body') as HTMLElement;
-    const effectiveTab = this.tab === 'secondary' && !view.secondaryCls ? 'class' : this.tab;
-    if (effectiveTab === 'class') {
+    if (this.tab === 'class') {
       const tree = document.createElement('div');
       tree.className = 'tal-tree';
       body.appendChild(tree);
       this.paintTree(tree, view.classTree, stage);
-    } else if (effectiveTab === 'secondary') {
-      this.paintSecondaryTab(body, view, stage);
     } else {
       this.paintSpecTab(body, view, stage);
     }
     this.wireFooter(el, stage, total);
-  }
-
-  // The secondary profession's own class tree (PHAA-465/467): a dual-tree
-  // tab that only appears when the player has a secondary profession. It has
-  // no spec picker (a secondary never unlocks a specialization), just the
-  // shared-pool cap hint and the tree itself.
-  private paintSecondaryTab(body: HTMLElement, view: TalentsView, stage: TalentAllocation): void {
-    const hint = document.createElement('div');
-    hint.className = 'tal-help';
-    hint.textContent = t('game.talents.secondaryCapHint', {
-      spent: view.secondarySpent,
-      cap: view.secondaryCap,
-    });
-    body.appendChild(hint);
-    const tree = document.createElement('div');
-    tree.className = 'tal-tree';
-    body.appendChild(tree);
-    if (view.secondaryTree) this.paintTree(tree, view.secondaryTree, stage, true);
   }
 
   private paintSpecTab(body: HTMLElement, view: TalentsView, stage: TalentAllocation): void {
@@ -324,29 +298,7 @@ export class TalentsWindow {
     if (view.specTree) this.paintTree(tree, view.specTree, stage);
   }
 
-  // Returns the ranks/choices block a tree paints against: the primary stage
-  // itself for 'class'/'spec', or the (possibly not-yet-created) secondary
-  // block for the dual-tree tab. Does not mutate `stage`.
-  private blockFor(
-    stage: TalentAllocation,
-    isSecondary: boolean,
-  ): { ranks: Record<string, number>; choices: Record<string, string> } {
-    return isSecondary ? (stage.secondary ?? { ranks: {}, choices: {} }) : stage;
-  }
-
-  // Lazily creates stage.secondary (mutates stage in place) so a first pick
-  // in the secondary tree has somewhere to write.
-  private ensureSecondary(stage: TalentAllocation): SecondaryAllocation {
-    if (!stage.secondary) stage.secondary = { spec: null, ranks: {}, choices: {} };
-    return stage.secondary;
-  }
-
-  private paintTree(
-    host: HTMLElement,
-    treeVM: TalentTreeVM,
-    stage: TalentAllocation,
-    isSecondary = false,
-  ): void {
+  private paintTree(host: HTMLElement, treeVM: TalentTreeVM, stage: TalentAllocation): void {
     if (treeVM.empty) {
       host.innerHTML = `<div class="tal-empty">${t('game.talents.pickSpecFirst')}</div>`;
       return;
@@ -387,55 +339,30 @@ export class TalentsWindow {
         badge.textContent = `${vm.ranks}/${vm.maxRank}`;
         div.appendChild(badge);
       }
-      this.deps.attachTooltip(div, () =>
-        this.talentTooltip(n, stage, vm.state === 'dormant', isSecondary),
-      );
+      this.deps.attachTooltip(div, () => this.talentTooltip(n, stage, vm.state === 'dormant'));
       div.addEventListener('click', () => {
         // octagon choice nodes open a classic-MMO-style option flyout; others add a rank
-        if (n.kind === 'choice') this.openChoicePopup(div, n, stage, isSecondary);
-        else this.nodeClick(stage, n, isSecondary);
+        if (n.kind === 'choice') this.openChoicePopup(div, n, stage);
+        else this.nodeClick(stage, n);
       });
       div.addEventListener('keydown', (e) => {
         const ke = e as KeyboardEvent;
         if (ke.key === 'Backspace' || ke.key === 'Delete') {
           ke.preventDefault();
-          this.nodeRemove(stage, n, isSecondary);
+          this.nodeRemove(stage, n);
           return;
         }
         this.keyboardActivate(ke, () => {
-          if (n.kind === 'choice') this.openChoicePopup(div, n, stage, isSecondary);
-          else this.nodeClick(stage, n, isSecondary);
+          if (n.kind === 'choice') this.openChoicePopup(div, n, stage);
+          else this.nodeClick(stage, n);
         });
       });
       div.addEventListener('contextmenu', (e) => {
         e.preventDefault();
-        this.nodeRemove(stage, n, isSecondary);
+        this.nodeRemove(stage, n);
       });
       host.appendChild(div);
     }
-    this.fitTreeToMobileViewport(host, treeVM.width, treeVM.height);
-  }
-
-  // Char/talents mobile landscape redo (issue 1577 follow-up): the tree is a
-  // fixed pixel grid (host.style.width/height above), so on a mobile-touch
-  // landscape phone we scale the whole grid down to whatever room #tal-body
-  // actually has, via the pure talentTreeFitScale, so a full tree reads in one
-  // view instead of needing an internal scroll to see it. Desktop is untouched
-  // (early-return keeps host at its native, unscaled size there).
-  private fitTreeToMobileViewport(host: HTMLElement, width: number, height: number): void {
-    if (!document.body.classList.contains('mobile-touch')) return;
-    const body = host.parentElement;
-    if (!body) return;
-    const available = body.getBoundingClientRect();
-    if (available.width <= 0 || available.height <= 0) return;
-    const scale = talentTreeFitScale(width, height, available.width, available.height);
-    host.style.transformOrigin = 'top left';
-    host.style.transform = scale < 1 ? `scale(${scale})` : '';
-    // Collapse the now-empty margin box back to the scaled visual size, so the
-    // window doesn't reserve the tree's full unscaled footprint and force a
-    // scrollbar anyway (transform never changes the layout box it applies to).
-    host.style.marginRight = scale < 1 ? `${-(width * (1 - scale))}px` : '';
-    host.style.marginBottom = scale < 1 ? `${-(height * (1 - scale))}px` : '';
   }
 
   private setSpec(stage: TalentAllocation, specId: string): void {
@@ -452,59 +379,41 @@ export class TalentsWindow {
     this.render();
   }
 
-  private nodeClick(stage: TalentAllocation, n: TalentNode, isSecondary = false): void {
+  private nodeClick(stage: TalentAllocation, n: TalentNode): void {
     const cls = this.deps.playerClass();
     const total = this.deps.totalPoints();
-    const secondaryCls = this.deps.secondaryClass();
-    const block = isSecondary ? this.ensureSecondary(stage) : stage;
-    const ranks = block.ranks[n.id] ?? 0;
+    const ranks = stage.ranks[n.id] ?? 0;
     if (ranks >= n.maxRank) return;
     const cand = cloneAllocation(stage);
-    if (isSecondary) {
-      const sec = cand.secondary ?? { spec: null, ranks: {}, choices: {} };
-      cand.secondary = { ...sec, ranks: { ...sec.ranks, [n.id]: ranks + 1 } };
-    } else {
-      cand.ranks[n.id] = ranks + 1;
-    }
-    if (!validateAllocation(cls, cand, total, secondaryCls).ok) return;
-    block.ranks[n.id] = ranks + 1;
+    cand.ranks[n.id] = ranks + 1;
+    if (!validateAllocation(cls, cand, total, this.deps.secondaryClass()).ok) return;
+    stage.ranks[n.id] = ranks + 1;
     this.render();
   }
 
-  private nodeRemove(stage: TalentAllocation, n: TalentNode, isSecondary = false): void {
-    const block = isSecondary ? this.ensureSecondary(stage) : stage;
-    const ranks = block.ranks[n.id] ?? 0;
+  private nodeRemove(stage: TalentAllocation, n: TalentNode): void {
+    const ranks = stage.ranks[n.id] ?? 0;
     if (ranks <= 0) return;
     if (ranks - 1 <= 0) {
-      delete block.ranks[n.id];
-      delete block.choices[n.id];
-    } else block.ranks[n.id] = ranks - 1;
+      delete stage.ranks[n.id];
+      delete stage.choices[n.id];
+    } else stage.ranks[n.id] = ranks - 1;
     this.render();
   }
 
-  private talentTooltip(
-    n: TalentNode,
-    stage: TalentAllocation,
-    isDormant: boolean,
-    isSecondary = false,
-  ): string {
-    const block = this.blockFor(stage, isSecondary);
-    const ranks = block.ranks[n.id] ?? 0;
+  private talentTooltip(n: TalentNode, stage: TalentAllocation, isDormant: boolean): string {
+    const ranks = stage.ranks[n.id] ?? 0;
     let html = `<div class="tt-title">${esc(tTalent({ kind: 'talentNode', node: n, field: 'name' }))}</div><div class="tt-sub">${esc(tTalent({ kind: 'talentNode', node: n, field: 'description' }))}</div>`;
     if (n.kind === 'choice') {
       for (const o of n.choices ?? []) {
-        const sel = block.choices[n.id] === o.id;
+        const sel = stage.choices[n.id] === o.id;
         html += `<div class="tt-sub" style="color:${sel ? TAL_COLOR.choiceSel : TAL_COLOR.choiceDim}"><span class="tt-opt-icon" style="background-image:url(${esc(talentChoiceIconDataUrl(o))})"></span> ${esc(tTalent({ kind: 'talentChoice', choice: o, field: 'name' }))} - ${esc(tTalent({ kind: 'talentChoice', choice: o, field: 'description' }))}</div>`;
       }
       html += `<div class="tt-sub" style="color:${TAL_COLOR.hint}">${t('game.talents.cycleHint')}</div>`;
     } else {
       html += `<div class="tt-sub">${t('game.talents.rank')} ${ranks}/${n.maxRank}</div>`;
     }
-    const ct = talentsFor(
-      isSecondary
-        ? (this.deps.secondaryClass() ?? this.deps.playerClass())
-        : this.deps.playerClass(),
-    );
+    const ct = talentsFor(this.deps.playerClass());
     if (n.requires?.length) {
       const names = n.requires
         .map((r) => {
@@ -525,18 +434,11 @@ export class TalentsWindow {
   // classic-MMO-style choice-node picker: clicking an octagon node opens a flyout of
   // its options; selecting one assigns it (spending a point if needed). Anchored to
   // the node, closes on click-away.
-  private openChoicePopup(
-    anchor: HTMLElement,
-    node: TalentNode,
-    stage: TalentAllocation,
-    isSecondary = false,
-  ): void {
+  private openChoicePopup(anchor: HTMLElement, node: TalentNode, stage: TalentAllocation): void {
     document.getElementById('tal-choice-pop')?.remove();
     const cls = this.deps.playerClass();
     const total = this.deps.totalPoints();
-    const secondaryCls = this.deps.secondaryClass();
-    const block = this.blockFor(stage, isSecondary);
-    const ranks = block.ranks[node.id] ?? 0;
+    const ranks = stage.ranks[node.id] ?? 0;
     const pop = document.createElement('div');
     pop.id = 'tal-choice-pop';
     pop.className = 'tal-choice-pop';
@@ -546,11 +448,11 @@ export class TalentsWindow {
     // the Arrow/Home/End handler below moves focus among the rest (so the
     // role=menu announces a pattern the keyboard actually implements).
     const choices = node.choices ?? [];
-    const selIdx = choices.findIndex((o) => block.choices[node.id] === o.id);
+    const selIdx = choices.findIndex((o) => stage.choices[node.id] === o.id);
     const rovingIdx = selIdx >= 0 ? selIdx : 0;
     pop.innerHTML = choices
       .map((o, i) => {
-        const sel = block.choices[node.id] === o.id;
+        const sel = stage.choices[node.id] === o.id;
         return (
           `<div class="tal-choice-opt${sel ? ' sel' : ''}" role="menuitemradio" tabindex="${i === rovingIdx ? '0' : '-1'}" aria-checked="${sel}" data-opt="${esc(o.id)}"><span class="tco-icon" style="background-image:url(${esc(talentChoiceIconDataUrl(o))})"></span>` +
           `<span class="tco-text"><b>${esc(tTalent({ kind: 'talentChoice', choice: o, field: 'name' }))}</b><span>${esc(tTalent({ kind: 'talentChoice', choice: o, field: 'description' }))}</span></span></div>`
@@ -582,26 +484,15 @@ export class TalentsWindow {
       const optId = optEl.getAttribute('data-opt') ?? '';
       if (ranks === 0) {
         const cand = cloneAllocation(stage);
-        if (isSecondary) {
-          const sec = cand.secondary ?? { spec: null, ranks: {}, choices: {} };
-          cand.secondary = {
-            ...sec,
-            ranks: { ...sec.ranks, [node.id]: 1 },
-            choices: { ...sec.choices, [node.id]: optId },
-          };
-        } else {
-          cand.ranks[node.id] = 1;
-          cand.choices[node.id] = optId;
-        }
-        if (!validateAllocation(cls, cand, total, secondaryCls).ok) {
+        cand.ranks[node.id] = 1;
+        cand.choices[node.id] = optId;
+        if (!validateAllocation(cls, cand, total, this.deps.secondaryClass()).ok) {
           dismiss(true); // can't afford / gated: no re-render, so return focus to the node
           return;
         }
-        const mutBlock = isSecondary ? this.ensureSecondary(stage) : stage;
-        mutBlock.ranks[node.id] = 1;
+        stage.ranks[node.id] = 1;
       }
-      const mutBlock = isSecondary ? this.ensureSecondary(stage) : stage;
-      mutBlock.choices[node.id] = optId;
+      stage.choices[node.id] = optId;
       dismiss(false);
       this.render();
     };
@@ -695,7 +586,6 @@ export class TalentsWindow {
     el.querySelector('[data-act="clear"]')?.addEventListener('click', () => {
       stage.ranks = {};
       stage.choices = {};
-      if (stage.secondary) stage.secondary = { spec: null, ranks: {}, choices: {} };
       this.render();
     });
     const saveStagedBuild = (name: string): void => {

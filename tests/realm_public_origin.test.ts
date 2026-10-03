@@ -17,7 +17,7 @@ describe('publicOriginFromRequest', () => {
           'x-forwarded-proto': 'javascript',
         }),
       );
-      expect(origin).toBe('https://thehollow.world');
+      expect(origin).toBe('https://worldofclaudecraft.com');
     } finally {
       if (old === undefined) delete process.env.NODE_ENV;
       else process.env.NODE_ENV = old;

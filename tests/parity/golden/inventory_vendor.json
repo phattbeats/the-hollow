@@ -20,7 +20,7 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 406,
+      "nextId": 399,
       "state": "5bc471b0",
       "events": "741638a5",
       "rng": {
@@ -34,8 +34,8 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "75ba3515",
+      "nextId": 400,
+      "state": "f72bba86",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -47,27 +47,17 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 1000,
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -85,7 +75,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -128,9 +118,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "cc6f4a81",
-      "events": "2ce662ca",
+      "nextId": 400,
+      "state": "cacd71e4",
+      "events": "af1a7632",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -141,26 +131,17 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -175,7 +156,6 @@
               "itemId": "minor_healing_potion"
             }
           ],
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -193,7 +173,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -236,9 +216,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "68bc5191",
-      "events": "47a0cb41",
+      "nextId": 400,
+      "state": "aa04601a",
+      "events": "8026bdca",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -249,27 +229,18 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "helmet": "cryptbone_helm",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -288,7 +259,6 @@
               "itemId": "roadwardens_helm"
             }
           ],
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -306,7 +276,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 120,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -349,9 +319,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "e555aa61",
-      "events": "a7eaac25",
+      "nextId": 400,
+      "state": "3b1be7e6",
+      "events": "0cd0033c",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -362,27 +332,18 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "helmet": "roadwardens_helm",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -401,7 +362,6 @@
               "itemId": "cryptbone_helm"
             }
           ],
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -419,7 +379,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 110,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -462,9 +422,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "33aa23e3",
-      "events": "8712b5f0",
+      "nextId": 400,
+      "state": "4ff32026",
+      "events": "b7114655",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -475,26 +435,17 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -517,7 +468,6 @@
               "itemId": "roadwardens_helm"
             }
           ],
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -535,7 +485,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -578,9 +528,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "f19f9a9b",
-      "events": "f96aab21",
+      "nextId": 400,
+      "state": "9b1e1df8",
+      "events": "888e85c9",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -591,26 +541,17 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -625,7 +566,6 @@
               "itemId": "roadwardens_helm"
             }
           ],
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -655,7 +595,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -699,9 +639,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "94e75b89",
-      "events": "ef31037c",
+      "nextId": 400,
+      "state": "e0eaac48",
+      "events": "f0cddd7e",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -712,26 +652,17 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -742,7 +673,6 @@
               "itemId": "roadwardens_helm"
             }
           ],
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -772,7 +702,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -787,8 +717,7 @@
             "y": 1.5,
             "z": 1.540014
           },
-          "potionCooldownRemaining": 120,
-          "potionCooldownUntil": 120,
+          "potionCooldownUntil": 60,
           "resourceType": "rage",
           "sitting": true,
           "spawnPos": {
@@ -817,9 +746,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "524d9e9a",
-      "events": "7dc61bf6",
+      "nextId": 400,
+      "state": "1f310f6a",
+      "events": "484e8537",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -830,26 +759,17 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -860,7 +780,6 @@
               "itemId": "roadwardens_helm"
             }
           ],
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -879,7 +798,7 @@
               "name": "Might of the Bear",
               "remaining": 900,
               "school": "nature",
-              "sourceId": 406,
+              "sourceId": 399,
               "value": 12
             }
           ],
@@ -902,7 +821,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 210,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -917,8 +836,7 @@
             "y": 1.5,
             "z": 1.540014
           },
-          "potionCooldownRemaining": 120,
-          "potionCooldownUntil": 120,
+          "potionCooldownUntil": 60,
           "resourceType": "rage",
           "sitting": true,
           "spawnPos": {
@@ -947,9 +865,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "ccb3d41a",
-      "events": "e9a3ee9c",
+      "nextId": 400,
+      "state": "2e222a8c",
+      "events": "67a37ce2",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -960,26 +878,17 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -994,7 +903,6 @@
               "itemId": "wolf_fang"
             }
           ],
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1013,7 +921,7 @@
               "name": "Might of the Bear",
               "remaining": 900,
               "school": "nature",
-              "sourceId": 406,
+              "sourceId": 399,
               "value": 12
             }
           ],
@@ -1036,7 +944,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 210,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1051,8 +959,7 @@
             "y": 1.5,
             "z": 1.540014
           },
-          "potionCooldownRemaining": 120,
-          "potionCooldownUntil": 120,
+          "potionCooldownUntil": 60,
           "resourceType": "rage",
           "sitting": true,
           "spawnPos": {
@@ -1081,9 +988,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "8f74875d",
-      "events": "dec1c2dc",
+      "nextId": 400,
+      "state": "55ccf7db",
+      "events": "f4ed95b0",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -1094,26 +1001,17 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 914,
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1128,7 +1026,6 @@
               "itemId": "wolf_fang"
             }
           ],
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1153,7 +1050,7 @@
               "name": "Might of the Bear",
               "remaining": 900,
               "school": "nature",
-              "sourceId": 406,
+              "sourceId": 399,
               "value": 12
             }
           ],
@@ -1176,7 +1073,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 210,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1191,8 +1088,7 @@
             "y": 1.5,
             "z": 1.540014
           },
-          "potionCooldownRemaining": 120,
-          "potionCooldownUntil": 120,
+          "potionCooldownUntil": 60,
           "resourceType": "rage",
           "sitting": true,
           "spawnPos": {
@@ -1221,9 +1117,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "707821ba",
-      "events": "367edcf9",
+      "nextId": 400,
+      "state": "2406be94",
+      "events": "6d03c316",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -1234,26 +1130,17 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 924,
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1264,7 +1151,6 @@
               "itemId": "roadwardens_helm"
             }
           ],
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1293,7 +1179,7 @@
               "name": "Might of the Bear",
               "remaining": 900,
               "school": "nature",
-              "sourceId": 406,
+              "sourceId": 399,
               "value": 12
             }
           ],
@@ -1316,7 +1202,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 210,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1331,8 +1217,7 @@
             "y": 1.5,
             "z": 1.540014
           },
-          "potionCooldownRemaining": 120,
-          "potionCooldownUntil": 120,
+          "potionCooldownUntil": 60,
           "resourceType": "rage",
           "sitting": true,
           "spawnPos": {
@@ -1361,9 +1246,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "05b122d2",
-      "events": "57067df1",
+      "nextId": 400,
+      "state": "b1b942aa",
+      "events": "d2715add",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -1374,26 +1259,17 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 920,
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1408,7 +1284,6 @@
               "itemId": "wolf_fang"
             }
           ],
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1437,7 +1312,7 @@
               "name": "Might of the Bear",
               "remaining": 900,
               "school": "nature",
-              "sourceId": 406,
+              "sourceId": 399,
               "value": 12
             }
           ],
@@ -1460,7 +1335,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 210,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1475,8 +1350,7 @@
             "y": 1.5,
             "z": 1.540014
           },
-          "potionCooldownRemaining": 120,
-          "potionCooldownUntil": 120,
+          "potionCooldownUntil": 60,
           "resourceType": "rage",
           "sitting": true,
           "spawnPos": {
@@ -1505,8 +1379,8 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "05b122d2",
+      "nextId": 400,
+      "state": "b1b942aa",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1518,26 +1392,17 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
-          "bags": [
-            null,
-            null,
-            null,
-            null
-          ],
-          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 920,
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "dialogState": {},
-          "entityId": 406,
+          "entityId": 399,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1552,7 +1417,6 @@
               "itemId": "wolf_fang"
             }
           ],
-          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1581,7 +1445,7 @@
               "name": "Might of the Bear",
               "remaining": 900,
               "school": "nature",
-              "sourceId": 406,
+              "sourceId": 399,
               "value": 12
             }
           ],
@@ -1604,7 +1468,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 210,
-          "id": 406,
+          "id": 399,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1619,8 +1483,7 @@
             "y": 1.5,
             "z": 1.540014
           },
-          "potionCooldownRemaining": 120,
-          "potionCooldownUntil": 120,
+          "potionCooldownUntil": 60,
           "resourceType": "rage",
           "sitting": true,
           "spawnPos": {
