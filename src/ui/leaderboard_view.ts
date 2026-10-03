@@ -27,6 +27,14 @@ export interface LeaderboardViewer {
   name: string;
   level: number;
   lifetimeXp: number;
+  /** PHAA-748: Book of Asphodelia active title id for the local viewer (the
+   *  viewer is always self, so the IWorld seam resolves it deterministically).
+   *  The painter localizes through tEntity; null / undefined renders the bare
+   *  name. Server-built leaderboard rows for OTHER players are not extended
+   *  with titles in this PR: the ClientWorld would need a wire change to
+   *  carry other players' titles, and the IWorld seam already returns null
+   *  for non-self pids until that wire change lands. */
+  titleId?: string | null;
 }
 
 /** One ranked row: rank + the raw class id (painter localizes when known). */
@@ -41,6 +49,10 @@ export interface LeaderboardRow {
   lifetimeXp: number;
   prestigeRank: number;
   me: boolean;
+  /** PHAA-748: server-provided title id for this row (null / undefined when
+   *  the wire does not carry titles for other players). Future server work
+   *  can populate this; the painter's title rendering is already wired. */
+  titleId?: string | null;
 }
 
 /** The viewer's own standing, shown as a sticky row when they are off the page. */
@@ -49,6 +61,9 @@ export interface LeaderboardStanding {
   level: number;
   virtualLevel: number;
   lifetimeXp: number;
+  /** PHAA-748: Book of Asphodelia active title id for the viewer's own
+   *  standing (always self, so the IWorld seam resolves it). */
+  titleId?: string | null;
 }
 
 /** Prev/Next pager state. Null when the whole board fits on one page. */
@@ -109,6 +124,9 @@ export function buildLeaderboardView(input: LeaderboardInput): LeaderboardView {
     lifetimeXp: e.lifetimeXp,
     prestigeRank: e.prestigeRank,
     me: e.name === viewer.name,
+    // PHAA-748: server-side snapshot does not yet carry other players' titles;
+    // left undefined so the painter renders the bare name. Future server work
+    // populating `atitle` on LeaderboardEntry would flow through here.
   }));
   const onPage = rows.some((r) => r.me);
   const standing: LeaderboardStanding | null = onPage
@@ -118,6 +136,10 @@ export function buildLeaderboardView(input: LeaderboardInput): LeaderboardView {
         level: viewer.level,
         virtualLevel: virtualLevel(viewer.lifetimeXp),
         lifetimeXp: viewer.lifetimeXp,
+        // PHAA-748: the viewer's own standing carries their active title id
+        // (resolved by the caller via IWorld.activeTitleFor(viewerPid)); the
+        // painter localizes + prepends.
+        titleId: viewer.titleId,
       };
   const pager: LeaderboardPager | null =
     page.pageCount <= 1

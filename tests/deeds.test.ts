@@ -19,6 +19,7 @@ import {
   setActiveTitle,
 } from '../src/sim/deeds';
 import type { PlayerMeta } from '../src/sim/sim';
+import { Sim } from '../src/sim/sim';
 import type { SimContext } from '../src/sim/sim_context';
 import type { DeedDef, DeedProgress, Entity, SimEvent } from '../src/sim/types';
 
@@ -546,5 +547,73 @@ describe('deeds: setActiveTitle', () => {
 
     setActiveTitle(meta, null);
     expect(meta.activeTitle).toBeNull();
+  });
+});
+
+// PHAA-748 (Book of Asphodelia child 5: title cross-surface rendering).
+// The IWorldDeeds seam grew two per-pid reads, activeTitleFor(pid) and
+// earnedTitlesFor(pid), so render/ui can pull another player's active title
+// for the nameplate / unit-frame / chat / inspect / leaderboard surfaces
+// without ever reaching into a concrete world. The offline Sim resolves the
+// pid through its players map; the online ClientWorld mirrors the local
+// player's title on the wire today and returns null / an empty Set for any
+// other pid until the wire grows per-entity titles.
+describe('deeds: IWorldDeeds per-pid title reads (PHAA-748)', () => {
+  function makeMultiSim(): {
+    sim: Sim;
+    pidSelf: number;
+    pidOther: number;
+  } {
+    const sim = new Sim({ seed: 17, playerClass: 'warrior', noPlayer: true });
+    const pidSelf = sim.addPlayer('warrior', 'Self');
+    const pidOther = sim.addPlayer('mage', 'Other');
+    sim.tick();
+    return { sim, pidSelf, pidOther };
+  }
+
+  it('offline Sim.activeTitleFor returns the per-player active title', () => {
+    const { sim, pidSelf, pidOther } = makeMultiSim();
+    // No titles yet: both pids return null.
+    expect(sim.activeTitleFor(pidSelf)).toBeNull();
+    expect(sim.activeTitleFor(pidOther)).toBeNull();
+    // Earn + set a title on self only; other stays null.
+    const metaSelf = sim.meta(pidSelf);
+    expect(metaSelf).toBeDefined();
+    if (!metaSelf) return;
+    metaSelf.earnedTitles.add('t_wolfslayer');
+    setActiveTitle(metaSelf, 't_wolfslayer');
+    expect(sim.activeTitleFor(pidSelf)).toBe('t_wolfslayer');
+    expect(sim.activeTitleFor(pidOther)).toBeNull();
+    // Clearing it on self restores null.
+    setActiveTitle(metaSelf, null);
+    expect(sim.activeTitleFor(pidSelf)).toBeNull();
+  });
+
+  it('offline Sim.earnedTitlesFor returns the per-player earned-title set', () => {
+    const { sim, pidSelf, pidOther } = makeMultiSim();
+    const metaSelf = sim.meta(pidSelf);
+    const metaOther = sim.meta(pidOther);
+    expect(metaSelf).toBeDefined();
+    expect(metaOther).toBeDefined();
+    if (!metaSelf || !metaOther) return;
+    expect(sim.earnedTitlesFor(pidSelf).size).toBe(0);
+    expect(sim.earnedTitlesFor(pidOther).size).toBe(0);
+    metaSelf.earnedTitles.add('t_wolfslayer');
+    metaSelf.earnedTitles.add('t_blooded');
+    metaOther.earnedTitles.add('t_blooded');
+    expect(sim.earnedTitlesFor(pidSelf)).toEqual(new Set(['t_wolfslayer', 't_blooded']));
+    expect(sim.earnedTitlesFor(pidOther)).toEqual(new Set(['t_blooded']));
+    // The returned Set is the live PlayerMeta.earnedTitles reference, so
+    // adding to it is visible on the next read (the seam returns by-ref).
+    sim.earnedTitlesFor(pidSelf).add('t_rooted');
+    expect(metaSelf.earnedTitles.has('t_rooted')).toBe(true);
+  });
+
+  it('activeTitleFor / earnedTitlesFor return null / empty Set for unknown pids', () => {
+    const { sim } = makeMultiSim();
+    expect(sim.activeTitleFor(-1)).toBeNull();
+    expect(sim.activeTitleFor(999_999)).toBeNull();
+    expect(sim.earnedTitlesFor(-1).size).toBe(0);
+    expect(sim.earnedTitlesFor(999_999).size).toBe(0);
   });
 });
