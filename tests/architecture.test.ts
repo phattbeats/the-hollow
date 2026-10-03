@@ -208,6 +208,10 @@ const RENDER_PURE_CORES = [
   // PHAA-675: pure water shore-depth sample against the active (possibly
   // custom-map) water surface. The Three consumer is water.ts.
   'src/render/water_core.ts',
+  // PHAA-912: pure visibility rule for Drowned Litany puzzle-state props
+  // (sluice valves, grave tablets, corpse candles, bell ropes). The Three
+  // consumer is delve_props.ts and the renderer use site.
+  'src/render/delve_interactable_visibility_core.ts',
 ].map((rel) => join(repoRoot, rel));
 
 // Bare-named pure cores: registered cores (from UI_PURE_CORES + RENDER_PURE_CORES)

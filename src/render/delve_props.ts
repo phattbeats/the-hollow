@@ -5,6 +5,7 @@
 // back to procedural geometry otherwise. No DOM, no sim imports (render-only).
 
 import * as THREE from 'three';
+import { delveInteractableVisible } from './delve_interactable_visibility_core';
 import { buildDungeonPropMesh } from './dungeon';
 import { GFX, surfaceMat } from './gfx';
 
@@ -654,6 +655,21 @@ function buildFallbackCrate(entityId: number): { group: THREE.Group; height: num
 // ---------------------------------------------------------------------------
 // Public API
 // ---------------------------------------------------------------------------
+
+/** Apply the object-view visibility policy after a delve prop mesh is rebuilt.
+ * Stateful `delve_*` props stay in the entity set after use so their consumed
+ * visual variant remains readable; the caller's portal-range check stays here
+ * so the pure core stays DOM/Three-free. Returns the new visible state. */
+export function syncDelveInteractableVisibility(
+  group: THREE.Object3D,
+  templateId: string | null,
+  lootable: boolean,
+  withinPortalRange = true,
+): boolean {
+  const visible = delveInteractableVisible(templateId, lootable) && withinPortalRange;
+  group.visible = visible;
+  return visible;
+}
 
 /**
  * Build a procedural Three.js mesh for a delve interactable entity.

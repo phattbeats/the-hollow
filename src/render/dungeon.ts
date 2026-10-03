@@ -15,6 +15,8 @@
 import * as THREE from 'three';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import type { DelveModuleId } from '../sim/delve_layout';
+import { isLitanyModuleId, polygonWallSegments } from '../sim/delve_litany_layout';
 import { DUNGEONS, instanceOrigin } from '../sim/data';
 import {
   ARENA_LAYOUT,
@@ -58,8 +60,6 @@ export type DungeonInteriorVariant =
   | 'hollow'
   | 'arena'
   | 'nythraxis'
-  // Collapsed Reliquary delve sub-themes (share the ember crypt-stone base, see
-  // isDelveVariant; differ only in wall-side props, clutter, and the dais).
   | 'delve_ossuary'
   | 'delve_bell'
   | 'delve_hall'
@@ -1225,6 +1225,22 @@ export class DungeonInteriors {
     variant: Variant,
     arenaWalls?: PendingArenaWalls,
   ): void {
+    // Polygon-shell wall path: walks the exact shared collision segments and
+    // scales one wall module to each span, with the same variant-keyed wall
+    // and banner logic as the rectangular loop below. This covers the end
+    // faces too (the polygon already closes the room), so there is no
+    // separate end-cap pass and no door gap (Drowned Litany rooms are
+    // teleport-in, matching the sim shell colliders built by
+    // polygonShellColliders in sim/delve_litany_layout.ts). Rotation uses the
+    // SAME rot = atan2(-edgeDz, edgeDx) convention as that sim helper (and
+    // the fence OBBs in sim/colliders.ts): it aligns the OBB/module's local
+    // +x (world (cos(rot), -sin(rot)) under Three's Y-Euler) along the edge
+    // direction, which reproduces the existing side-wall ry for the
+    // west/east straight edges.
+    if (layout.shellPolygon) {
+      this.placePolygonWalls(p, layout.shellPolygon, variant);
+      return;
+    }
     const bannerEvery = variant === 'crypt' ? 4 : 3;
     const wallX = layout.wallX ?? DUNGEON_WALL_X;
     const endWallHw = layout.endWallHw ?? DUNGEON_END_WALL_HW;
