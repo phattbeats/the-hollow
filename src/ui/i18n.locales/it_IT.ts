@@ -4280,15 +4280,9 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     'Sostituire un vecchio pezzo con un miglioramento fresco fa di più per te che giocare alla perfezione con un equipaggiamento che hai superato. Quando cade qualcosa di migliore o una missione te lo offre, prendilo. Non conservare i tuoi oggetti buoni per dopo.',
   'guide.gear.upgradeTitle': 'Tieni il tuo equipaggiamento aggiornato',
-  'guide.lore.aldricBody':
-    "Un umile sacerdote di villaggio che per primo dà un nome al culto su una tomba profanata a Eastbrook, poi ne segue la pista di persona attraverso la palude e fino al muro di Highwatch. È il cuore saldo dell'intera campagna.",
-  'guide.lore.aldricRole': 'Sacerdote della Valle',
   'guide.lore.figuresBody':
     "Una manciata di persone percorre con te tutta la strada. Tieni d'occhio questi nomi, dalla valle alle vette.",
   'guide.lore.figuresTitle': 'Volti che imparerai a conoscere',
-  'guide.lore.marenBody':
-    'Una battitrice di pista dalla voce sommessa che incontri tra le canne di Mirefen, tutta passi silenziosi e una lama corta. Anche lei segue la pista verso nord, ed è il suo orecchio a cogliere le parole che ti mandano alle vette.',
-  'guide.lore.marenRole': "L'Esploratrice del Maresciallo",
   'guide.models.count': '{count} modelli',
   'guide.models.groupClasses': 'Classi',
   'guide.models.groupCreatures': 'Creature',

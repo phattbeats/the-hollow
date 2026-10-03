@@ -115,8 +115,8 @@ export const world: GuidePage = {
           <h2>${esc(t('guide.lore.figuresTitle'))}</h2>
           <p>${esc(t('guide.lore.figuresBody'))}</p>
           <div class="guide-figures">
-            ${loreFigure('Brother Aldric', 'guide.lore.aldricRole', 'guide.lore.aldricBody')}
-            ${loreFigure('Scout Maren', 'guide.lore.marenRole', 'guide.lore.marenBody')}
+            ${loreFigure('Verger Zebediah', 'guide.lore.zebediahRole', 'guide.lore.zebediahBody')}
+            ${loreFigure('Sexton Faddick', 'guide.lore.faddickRole', 'guide.lore.faddickBody')}
           </div>
         </section>
 

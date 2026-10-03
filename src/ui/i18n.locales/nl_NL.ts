@@ -2830,15 +2830,9 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.language.label': 'Taal',
   'guide.language.select': 'Kies een taal',
   'guide.loading': 'Laden...',
-  'guide.lore.aldricBody':
-    'Een nederige dorpspriester die de cultus voor het eerst benoemt bij een geschonden graf in Oostbeekdal, dan zelf het spoor volgt door het moeras en omhoog naar de muur bij Hooguitkijk. Hij is het standvastige hart van de hele veldtocht.',
-  'guide.lore.aldricRole': 'Priester van het Dal',
   'guide.lore.figuresBody':
     'Een handvol mensen lopen de hele weg met je mee. Let op deze namen, van de vallei tot de toppen.',
   'guide.lore.figuresTitle': 'Gezichten die je zult leren kennen',
-  'guide.lore.marenBody':
-    'Een zachtsprekende spoorzoeker die je ontmoet in het riet van Slijkveen, en al stille voeten en een kort lemmet. Ook zij volgt het spoor naar het noorden, en het is haar oor dat de woorden opvangt die je naar de toppen sturen.',
-  'guide.lore.marenRole': 'De Verkenner van de Maarschalk',
   'guide.models.count': '{count} modellen',
   'guide.models.groupClasses': 'Klassen',
   'guide.models.groupCreatures': 'Wezens',

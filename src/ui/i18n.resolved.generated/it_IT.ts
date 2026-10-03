@@ -1103,7 +1103,7 @@ export const it_IT: EnTranslations = {
         "levels": "Livelli da {min} a {max}",
         "cta": "Scopri il mondo",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Valle di Eastbrook",
         "valeBlurb": "Verdi colline e boschi antichi dove inizia ogni avventura.",
         "marshName": "Palude di Mirefen",
@@ -1604,6 +1604,8 @@ export const it_IT: EnTranslations = {
       "typeGroupBody": "Ogni capitolo della storia principale si conclude a una porta di dungeon. L'introduzione è affrontabile in solitaria, ma il colpo finale contro il cattivo di un capitolo è pensato per un gruppo di cinque.",
       "sagaTitle": "Segui la pista verso nord",
       "sagaBody": "La storia principale è una sola lunga caccia. Un culto della morte è all'opera sulle tombe del reame, e ogni capitolo che chiudi ti indica una zona più avanti lungo la strada. Non affronti mai l'intera cospirazione tutta insieme; tiri un filo, e questo ti porta alla mano successiva che lo regge.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "La Valle: un nome su un sigillo",
       "sagaValeBody": "A Eastbrook i morti non vogliono riposare, e il marchio che vi sta dietro appartiene a una setta che si credeva scomparsa da tempo. Risaline la traccia fino a un Richiamatombe che opera nella cripta della cappella, e le sue stesse carte ti indicano l'acquitrino a nord.",
       "sagaMarshTitle": "La palude: una decima di anime",
@@ -1621,10 +1623,10 @@ export const it_IT: EnTranslations = {
     "lore": {
       "figuresTitle": "Volti che imparerai a conoscere",
       "figuresBody": "Una manciata di persone percorre con te tutta la strada. Tieni d'occhio questi nomi, dalla valle alle vette.",
-      "aldricRole": "Sacerdote della Valle",
-      "aldricBody": "Un umile sacerdote di villaggio che per primo dà un nome al culto su una tomba profanata a Eastbrook, poi ne segue la pista di persona attraverso la palude e fino al muro di Highwatch. È il cuore saldo dell'intera campagna.",
-      "marenRole": "L'Esploratrice del Maresciallo",
-      "marenBody": "Una battitrice di pista dalla voce sommessa che incontri tra le canne di Mirefen, tutta passi silenziosi e una lama corta. Anche lei segue la pista verso nord, ed è il suo orecchio a cogliere le parole che ti mandano alle vette."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Dungeon e Incursioni",

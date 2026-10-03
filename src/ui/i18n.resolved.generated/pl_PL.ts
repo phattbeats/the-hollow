@@ -1103,7 +1103,7 @@ export const pl_PL: EnTranslations = {
         "levels": "Poziomy od {min} do {max}",
         "cta": "Zobacz świat",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Dolina Wschodniego Strumienia",
         "valeBlurb": "Zielone wzgórza i stare lasy, gdzie zaczyna się każda przygoda.",
         "marshName": "Trzęsawisko Mokrzawia",
@@ -1604,6 +1604,8 @@ export const pl_PL: EnTranslations = {
       "typeGroupBody": "Każdy rozdział głównej opowieści kończy się u drzwi lochu. Wprowadzenie da się przejść samotnie, lecz ostateczny cios przeciwko złoczyńcy rozdziału jest przeznaczony dla pięcioosobowej drużyny.",
       "sagaTitle": "Podążaj śladem na północ",
       "sagaBody": "Główna opowieść to jeden długi pościg. Kult śmierci działa przy grobach królestwa, a każdy zamknięty rozdział wskazuje o jedną strefę dalej w głąb drogi. Nigdy nie walczysz z całym spiskiem naraz; pociągasz za jedną nić, a ona prowadzi do następnej dłoni, która ją trzyma.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "Dolina: imię na pieczęci",
       "sagaValeBody": "W Dolinie Wschodniego Strumienia zmarli nie zaznają spoczynku, a stojący za tym znak należy do sekty od dawna uważanej za wygasłą. Wytrop go do Grobowego Przyzywacza działającego w krypcie kaplicy, a jego własne papiery skierują cię ku trzęsawisku na północy.",
       "sagaMarshTitle": "Trzęsawisko: dziesięcina dusz",
@@ -1621,10 +1623,10 @@ export const pl_PL: EnTranslations = {
     "lore": {
       "figuresTitle": "Twarze, które poznasz",
       "figuresBody": "Garstka osób przemierza z tobą całą drogę. Wypatruj tych imion od doliny po szczyty.",
-      "aldricRole": "Kapłan Doliny",
-      "aldricBody": "Skromny wiejski kapłan, który jako pierwszy nazywa kult nad zbezczeszczonym grobem we Wschodnim Strumieniu, a potem osobiście podąża jego śladem przez bagna aż pod mur w Wysokiej Straży. To niewzruszone serce całej kampanii.",
-      "marenRole": "Zwiadowczyni Marszałka",
-      "marenBody": "Cicho mówiąca tropicielka, którą spotykasz w trzcinach Mokrzawia, sama cisza stóp i krótkie ostrze. Ona również podąża tropem na północ, a to jej ucho wyłapuje słowa, które wysyłają cię na szczyty."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Lochy i rajdy",

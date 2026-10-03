@@ -24,8 +24,11 @@ const TYPES = [
   ['guide.questsPage.typeGroupTitle', 'guide.questsPage.typeGroupBody'],
 ] as const;
 
-// The villain-ladder saga, zone by zone, as title + body beat cards.
+// The Plant-god arc, zone by zone, as title + body beat cards. Leads with
+// the Reaches (the new sealed-onboarding arc that opens at the vase), then
+// walks the road north through the Vale, the Marsh, and on to the peaks.
 const SAGA = [
+  ['guide.questsPage.sagaReachesTitle', 'guide.questsPage.sagaReachesBody'],
   ['guide.questsPage.sagaValeTitle', 'guide.questsPage.sagaValeBody'],
   ['guide.questsPage.sagaMarshTitle', 'guide.questsPage.sagaMarshBody'],
   ['guide.questsPage.sagaPeaksTitle', 'guide.questsPage.sagaPeaksBody'],
